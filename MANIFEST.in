@@ -16,9 +16,9 @@ include LICENSE
 include MANIFEST.in
 include README.md
 
-include sphinx_book_theme/theme.conf
-recursive-include sphinx_book_theme *.html
-recursive-include sphinx_book_theme *.js
-recursive-include sphinx_book_theme *.png
-recursive-include sphinx_book_theme *.scss
-recursive-include sphinx_book_theme *.svg
+include quantecon_book_theme/theme.conf
+recursive-include quantecon_book_theme *.html
+recursive-include quantecon_book_theme *.js
+recursive-include quantecon_book_theme *.png
+recursive-include quantecon_book_theme *.scss
+recursive-include quantecon_book_theme *.svg

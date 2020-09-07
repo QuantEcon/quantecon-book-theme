@@ -311,7 +311,7 @@ def setup(app):
 
     app.connect("builder-inited", add_static_path)
 
-    app.add_html_theme("sphinx_book_theme", get_html_theme_path())
+    app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
 
     app.add_js_file("quantecon-book-theme.js")

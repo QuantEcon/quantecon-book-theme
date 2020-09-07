@@ -1,8 +1,8 @@
 # -- Project information -----------------------------------------------------
 
-project = "Sphinx Book Theme"
+project = "Quantecon Book Theme"
 copyright = "2020"
-author = "the Executable Book Project"
+author = "The Quantecon Project"
 
 master_doc = "index"
 
@@ -46,9 +46,9 @@ numfig = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_book_theme"
+html_theme = "quantecon_book_theme"
 html_logo = "_static/logo.png"
-html_title = "Sphinx Book Theme"
+html_title = "Quantecon Book Theme"
 html_copy_source = True
 html_sourcelink_suffix = ""
 html_favicon = "_static/logo.png"
@@ -65,7 +65,7 @@ thebe_config = {
 
 html_theme_options = {
     "path_to_docs": "docs",
-    "repository_url": "https://github.com/executablebooks/sphinx-book-theme",
+    "repository_url": "https://github.com/QuantEcon/quantecon-book-theme",
     # "repository_branch": "gh-pages",  # For testing
     "launch_buttons": {
         "binderhub_url": "https://mybinder.org",
@@ -84,4 +84,3 @@ html_theme_options = {
     # "extra_footer": "<a href='https://google.com'>Test</a>",
     # "extra_navbar": "<a href='https://google.com'>Test</a>",
 }
-html_baseurl = "https://sphinx-book-theme.readthedocs.io/en/latest/"

@@ -66,8 +66,8 @@ def docs_live(session):
             # scss files are handled by boussole
             "--ignore", "*.scss",
             "--re-ignore", "_build/.*",
-            # regenerate for all modifications in sphinx_book_theme/
-            "--watch", "sphinx_book_theme",
+            # regenerate for all modifications in quantecon_book_theme/
+            "--watch", "quantecon_book_theme",
             # open the browser after 5 seconds
             "--open-browser",
             # sphinx-build arguments

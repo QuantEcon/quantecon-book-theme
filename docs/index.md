@@ -28,7 +28,7 @@ then, activate the theme in your Sphinx configuration (`conf.py`):
 
 ```
 ...
-html_theme = "sphinx_book_theme"
+html_theme = "quantecon_book_theme"
 ...
 ```
 

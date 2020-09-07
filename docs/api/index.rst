@@ -3,11 +3,11 @@
 Python API
 ==========
 
-.. autodata:: sphinx_book_theme.__version__
+.. autodata:: quantecon_book_theme.__version__
 
-.. autoclass:: sphinx_book_theme.Margin
+.. autoclass:: quantecon_book_theme.Margin
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. autofunction:: sphinx_book_theme.launch.add_hub_urls
+.. autofunction:: quantecon_book_theme.launch.add_hub_urls
