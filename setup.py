@@ -54,7 +54,9 @@ setup(
             "pytest-regressions",
         ],
     },
-    entry_points={"sphinx.html_themes": ["quantecon_book_theme = quantecon_book_theme"]},
+    entry_points={
+        "sphinx.html_themes": ["quantecon_book_theme = quantecon_book_theme"]
+    },
     package_data={
         "quantecon_book_theme": [
             "theme.conf",

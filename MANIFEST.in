@@ -22,3 +22,6 @@ recursive-include quantecon_book_theme *.js
 recursive-include quantecon_book_theme *.png
 recursive-include quantecon_book_theme *.scss
 recursive-include quantecon_book_theme *.svg
+
+# added by check_manifest.py
+recursive-include quantecon_book_theme *.css
