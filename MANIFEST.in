@@ -10,6 +10,7 @@ exclude .pre-commit-config.yaml
 exclude .readthedocs.yml
 exclude .boussole.json
 exclude noxfile.py
+exclude codecov.yml
 
 include CHANGELOG.md
 include LICENSE
