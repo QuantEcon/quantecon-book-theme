@@ -38,7 +38,7 @@ jobs:
         pytest --durations=10 --cov=quantecon_book_theme --cov-report=xml --cov-report=term-missing
 
     - name: Upload to Codecov
-      if: matrix.python-version == 3.7 && github.repository == 'executablebooks/sphinx-book-theme'
+      if: github.repository == 'QuantEcon/quantecon-book-theme'
       uses: codecov/codecov-action@v1
       with:
         name: ebp-sbt-pytests-py3.7
