@@ -1,4 +1,4 @@
-# The Sphinx Book Theme
+# The Quantecon Book Theme
 
 [![badge-url](https://img.shields.io/github/stars/executablebooks/sphinx-book-theme?label=github&style=social)](https://github.com/executablebooks/sphinx-book-theme)
 
