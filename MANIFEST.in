@@ -12,7 +12,6 @@ exclude .boussole.json
 exclude noxfile.py
 exclude codecov.yml
 
-include CHANGELOG.md
 include LICENSE
 include MANIFEST.in
 include README.md
