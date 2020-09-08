@@ -88,7 +88,7 @@ extensions = [
 ]
 ```
 
-If you'd like to activate UI elements for `sphinx-thebe` in the `sphinx-book-theme`,
+If you'd like to activate UI elements for `sphinx-thebe` in the `quantecon-book-theme`,
 add the following theme configuration:
 
 ```python

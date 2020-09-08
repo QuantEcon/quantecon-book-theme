@@ -1,11 +1,11 @@
 # Configuration and page elements
 
-There are a number of ways to configure `sphinx-book-theme`. This page covers some of the main ways
+There are a number of ways to configure `quantecon-book-theme`. This page covers some of the main ways
 to do so. It also serves as a reference to make sure that visual elements look correct
 
 ## Sidebars
 
-There are two different kinds of sidebar-like content in `sphinx-book-theme`,
+There are two different kinds of sidebar-like content in `quantecon-book-theme`,
 typical `{sidebar}` directives, as well as a theme-specific `{margin}` directive.
 This section covers both. Both allow you to place extra content
 separately from your main content.
@@ -156,7 +156,7 @@ this behavior with a code cell by adding a `full-width` tag to the cell.
 
 ## Quotations and epigraphs
 
-Here is what quotations and epigraphs look like in `sphinx-book-theme`:
+Here is what quotations and epigraphs look like in `quantecon-book-theme`:
 
 A quote with no attribution:
 
@@ -277,5 +277,5 @@ html_baseurl = "https://<your-site-baseurl>"
 For example, the value of this field for this documentation is:
 
 ```python
-html_baseurl = "https://sphinx-book-theme.readthedocs.io/en/latest/"
+html_baseurl = "https://quantecon-book-theme.readthedocs.io/en/latest/"
 ```
