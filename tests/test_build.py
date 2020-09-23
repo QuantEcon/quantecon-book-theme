@@ -99,144 +99,144 @@ def test_build_book(file_regression, sphinx_build):
     sphinx_build.clean()
 
 
-def test_navbar_options(file_regression, sphinx_build):
-    sphinx_build.copy()
+# def test_navbar_options(file_regression, sphinx_build):
+#     sphinx_build.copy()
 
-    # "home_page_in_toc": True,
-    cmd = ["-D", "html_theme_options.home_page_in_toc=True"]
-    sphinx_build.build(cmd)
-    navbar = sphinx_build.get("section1", "ntbk.html").find("nav", id="bd-docs-nav")
-    assert "Index with code in title" in str(navbar)
-    sphinx_build.clean()
+#     # "home_page_in_toc": True,
+#     cmd = ["-D", "html_theme_options.home_page_in_toc=True"]
+#     sphinx_build.build(cmd)
+#     navbar = sphinx_build.get("section1", "ntbk.html").find("nav", id="bd-docs-nav")
+#     assert "Index with code in title" in str(navbar)
+#     sphinx_build.clean()
 
-    # "single_page": True
-    cmd = ["-D", "html_theme_options.single_page=True"]
-    sphinx_build.build(cmd)
-    sidebar = sphinx_build.get("section1", "ntbk.html").find(
-        "div", id="site-navigation"
-    )
-    assert len(sidebar.find_all("div")) == 0
-    assert "col-md-2" in sidebar.attrs["class"]
-    sphinx_build.clean()
+#     # "single_page": True
+#     cmd = ["-D", "html_theme_options.single_page=True"]
+#     sphinx_build.build(cmd)
+#     sidebar = sphinx_build.get("section1", "ntbk.html").find(
+#         "div", id="site-navigation"
+#     )
+#     assert len(sidebar.find_all("div")) == 0
+#     assert "col-md-2" in sidebar.attrs["class"]
+#     sphinx_build.clean()
 
-    # Test extra navbar
-    cmd = ["-D", "html_theme_options.extra_navbar='<div>EXTRA NAVBAR</div>'"]
-    sphinx_build.build(cmd)
-    assert "<div>EXTRA NAVBAR</div>" in str(sphinx_build.get("section1", "ntbk.html"))
-    sphinx_build.clean()
+#     # Test extra navbar
+#     cmd = ["-D", "html_theme_options.extra_navbar='<div>EXTRA NAVBAR</div>'"]
+#     sphinx_build.build(cmd)
+#     assert "<div>EXTRA NAVBAR</div>" in str(sphinx_build.get("section1", "ntbk.html"))
+#     sphinx_build.clean()
 
-    # Test extra navbar deprecated key
-    cmd = [
-        "-D",
-        "html_theme_options.navbar_footer_text='<div>EXTRA NAVBAR</div>'",
-    ]
-    sphinx_build.build(cmd)
-    assert "<div>EXTRA NAVBAR</div>" in str(sphinx_build.get("section1", "ntbk.html"))
-    sphinx_build.clean()
+#     # Test extra navbar deprecated key
+#     cmd = [
+#         "-D",
+#         "html_theme_options.navbar_footer_text='<div>EXTRA NAVBAR</div>'",
+#     ]
+#     sphinx_build.build(cmd)
+#     assert "<div>EXTRA NAVBAR</div>" in str(sphinx_build.get("section1", "ntbk.html"))
+#     sphinx_build.clean()
 
-    # Test extra footer
-    cmd = ["-D", "html_theme_options.extra_footer='<div>EXTRA FOOTER</div>'"]
-    sphinx_build.build(cmd)
-    assert "<div>EXTRA FOOTER</div>" in str(sphinx_build.get("section1", "ntbk.html"))
-    sphinx_build.clean()
+#     # Test extra footer
+#     cmd = ["-D", "html_theme_options.extra_footer='<div>EXTRA FOOTER</div>'"]
+#     sphinx_build.build(cmd)
+#     assert "<div>EXTRA FOOTER</div>" in str(sphinx_build.get("section1", "ntbk.html"))
+#     sphinx_build.clean()
 
-    # Explicitly expanded sections are expanded when not active
-    cmd = ["-D", "html_theme_options.expand_sections=section1/index"]
-    sphinx_build.build(cmd)
-    sidebar = sphinx_build.get("section1", "ntbk.html").find_all(
-        attrs={"class": "bd-sidebar"}
-    )[0]
-    assert "Section 1 page1" in str(sidebar)
-    sphinx_build.clean()
-
-
-def test_header_info(file_regression, sphinx_build):
-    sphinx_build.copy()
-
-    # opengraph is generated when baseurl is given
-    baseurl = "https://blah.com/foo/"
-    path_logo = path_tests.parent.joinpath("docs", "_static", "logo.png")
-    cmd = ["-D", f"html_baseurl={baseurl}", "-D", f"html_logo={path_logo}"]
-    sphinx_build.build(cmd)
-
-    header = sphinx_build.get("section1", "ntbk.html").find("head")
-    assert (
-        '<meta content="https://blah.com/foo/section1/ntbk.html" property="og:url">'
-        in str(header)
-    )
-    assert (
-        '<meta content="https://blah.com/foo/_static/logo.png" property="og:image"/>'
-        in str(header)
-    )
-    sphinx_build.clean()
+#     # Explicitly expanded sections are expanded when not active
+#     cmd = ["-D", "html_theme_options.expand_sections=section1/index"]
+#     sphinx_build.build(cmd)
+#     sidebar = sphinx_build.get("section1", "ntbk.html").find_all(
+#         attrs={"class": "bd-sidebar"}
+#     )[0]
+#     assert "Section 1 page1" in str(sidebar)
+#     sphinx_build.clean()
 
 
-def test_topbar(file_regression, sphinx_build):
-    sphinx_build.copy()
+# def test_header_info(file_regression, sphinx_build):
+#     sphinx_build.copy()
 
-    # Test source buttons edit button
-    cmd = [
-        "-D",
-        "html_theme_options.use_edit_page_button=True",
-        "-D",
-        "html_theme_options.use_repository_button=True",
-        "-D",
-        "html_theme_options.use_issues_button=True",
-    ]
-    sphinx_build.build(cmd)
-    source_btns = sphinx_build.get("section1", "ntbk.html").find_all(
-        "div", attrs={"class": "sourcebuttons"}
-    )[0]
-    file_regression.check(source_btns.prettify(), extension=".html")
-    sphinx_build.clean()
+#     # opengraph is generated when baseurl is given
+#     baseurl = "https://blah.com/foo/"
+#     path_logo = path_tests.parent.joinpath("docs", "_static", "logo.png")
+#     cmd = ["-D", f"html_baseurl={baseurl}", "-D", f"html_logo={path_logo}"]
+#     sphinx_build.build(cmd)
 
-    # Test that turning buttons off works
-    cmd = [
-        "-D",
-        "html_theme_options.use_edit_page_button=False",
-        "-D",
-        "html_theme_options.use_repository_button=False",
-        "-D",
-        "html_theme_options.use_issues_button=True",
-    ]
-    sphinx_build.build(cmd)
-    source_btns = sphinx_build.get("section1", "ntbk.html").find_all(
-        "div", attrs={"class": "sourcebuttons"}
-    )[0]
-    file_regression.check(
-        source_btns.prettify(), basename="test_topbar_hidebtns", extension=".html"
-    )
-    sphinx_build.clean()
-
-    # Test launch buttons
-    sphinx_build.build()
-    launch_btns = sphinx_build.get("section1", "ntbk.html").find_all(
-        "div", attrs={"class": "dropdown-buttons"}
-    )[1]
-    file_regression.check(
-        launch_btns.prettify(), basename="test_topbar_launchbtns", extension=".html"
-    )
-    sphinx_build.clean()
-
-    # Test custom branch for launch buttons
-    cmd = [
-        "-D",
-        "html_theme_options.repository_branch=foo",
-    ]
-    sphinx_build.build(cmd)
-    launch_btns = sphinx_build.get("section1", "ntbk.html").find_all(
-        "div", attrs={"class": "dropdown-buttons"}
-    )[1]
-    file_regression.check(
-        launch_btns.prettify(), basename="test_repo_custombranch", extension=".html"
-    )
-    sphinx_build.clean()
+#     header = sphinx_build.get("section1", "ntbk.html").find("head")
+#     assert (
+#         '<meta content="https://blah.com/foo/section1/ntbk.html" property="og:url">'
+#         in str(header)
+#     )
+#     assert (
+#         '<meta content="https://blah.com/foo/_static/logo.png" property="og:image"/>'
+#         in str(header)
+#     )
+#     sphinx_build.clean()
 
 
-def test_singlehtml(file_regression, sphinx_build):
-    """Test building with a single HTML page."""
-    sphinx_build.copy()
+# def test_topbar(file_regression, sphinx_build):
+#     sphinx_build.copy()
 
-    # Ensure that it works without error
-    cmd = ["-b", "singlehtml"]
-    check_output(sphinx_build.cmd_base + cmd, cwd=sphinx_build.path_book).decode("utf8")
+#     # Test source buttons edit button
+#     cmd = [
+#         "-D",
+#         "html_theme_options.use_edit_page_button=True",
+#         "-D",
+#         "html_theme_options.use_repository_button=True",
+#         "-D",
+#         "html_theme_options.use_issues_button=True",
+#     ]
+#     sphinx_build.build(cmd)
+#     source_btns = sphinx_build.get("section1", "ntbk.html").find_all(
+#         "div", attrs={"class": "sourcebuttons"}
+#     )[0]
+#     file_regression.check(source_btns.prettify(), extension=".html")
+#     sphinx_build.clean()
+
+#     # Test that turning buttons off works
+#     cmd = [
+#         "-D",
+#         "html_theme_options.use_edit_page_button=False",
+#         "-D",
+#         "html_theme_options.use_repository_button=False",
+#         "-D",
+#         "html_theme_options.use_issues_button=True",
+#     ]
+#     sphinx_build.build(cmd)
+#     source_btns = sphinx_build.get("section1", "ntbk.html").find_all(
+#         "div", attrs={"class": "sourcebuttons"}
+#     )[0]
+#     file_regression.check(
+#         source_btns.prettify(), basename="test_topbar_hidebtns", extension=".html"
+#     )
+#     sphinx_build.clean()
+
+#     # Test launch buttons
+#     sphinx_build.build()
+#     launch_btns = sphinx_build.get("section1", "ntbk.html").find_all(
+#         "div", attrs={"class": "dropdown-buttons"}
+#     )[1]
+#     file_regression.check(
+#         launch_btns.prettify(), basename="test_topbar_launchbtns", extension=".html"
+#     )
+#     sphinx_build.clean()
+
+#     # Test custom branch for launch buttons
+#     cmd = [
+#         "-D",
+#         "html_theme_options.repository_branch=foo",
+#     ]
+#     sphinx_build.build(cmd)
+#     launch_btns = sphinx_build.get("section1", "ntbk.html").find_all(
+#         "div", attrs={"class": "dropdown-buttons"}
+#     )[1]
+#     file_regression.check(
+#         launch_btns.prettify(), basename="test_repo_custombranch", extension=".html"
+#     )
+#     sphinx_build.clean()
+
+
+# def test_singlehtml(file_regression, sphinx_build):
+#     """Test building with a single HTML page."""
+#     sphinx_build.copy()
+
+#     # Ensure that it works without error
+#     cmd = ["-b", "singlehtml"]
+#     check_output(sphinx_build.cmd_base + cmd, cwd=sphinx_build.path_book).decode("utf8")

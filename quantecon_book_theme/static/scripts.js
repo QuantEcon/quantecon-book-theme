@@ -1,5 +1,3 @@
-feather.replace();
-
 var $window = $(window),
   $head = $('head'),
   $body = $('body');
