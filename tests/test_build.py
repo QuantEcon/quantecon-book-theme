@@ -80,6 +80,8 @@ def test_build_book(file_regression, sphinx_build):
     # Edit button should not be on page
     assert '<a class="edit-button"' not in str(index_html)
     # Title should be just text, no HTML
+    import pdb;
+    pdb.set_trace()
     assert "Index with code in title" in str(index_html)
     # Check navbar numbering
     sidebar_ntbk = sphinx_build.get("section1", "ntbk.html").find(
