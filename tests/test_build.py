@@ -239,4 +239,4 @@ def test_build_book(file_regression, sphinx_build):
 
 #     # Ensure that it works without error
 #     cmd = ["-b", "singlehtml"]
-#     check_output(sphinx_build.cmd_base + cmd, cwd=sphinx_build.path_book).decode("utf8")
+#     check_output(sphinx_build.cmd_base + cmd, cwd=sphinx_build.path_book).decode("utf8") # noqa: E501
