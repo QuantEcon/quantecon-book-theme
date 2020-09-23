@@ -25,19 +25,17 @@
 
         <div class="main">
 
-            <div class="contents">
+            <div class="toc">
 
                 {% set page_toc = get_page_toc_object() %}
 
                 {%- if page_toc | length >= 1 %}
-                <div class="contents__header">
+                <div class="toc__header">
                     On this page
                 </div>
                 {%- endif %}
 
-
-                {% block docs_navbar %}
-                <nav id="bd-toc-nav" class="contents__nav">
+                <nav id="bd-toc-nav" class="toc__nav">
                     <ul class="nav section-nav flex-column">
                         {% for item in page_toc recursive %}
                         <li class="nav-item toc-entry toc-h{{ loop.depth + 1 }}">
@@ -51,9 +49,8 @@
                         {% endfor %}
                     </ul>
                 </nav>
-                {%- endblock %}
 
-                <div class="contents__footer">
+                <div class="toc__footer">
                     {# prev/next buttons #}
                     {% macro prev_next(prev, next, prev_title='', next_title='') %}
                     {%- if next %}
