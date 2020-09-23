@@ -67,6 +67,7 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
+  padding-top: 0px;
   color: #444;
   font-family: 'Source Sans Pro', sans-serif;
   text-rendering: optimizeLegibility;
@@ -274,6 +275,7 @@ tt {
       align-items: center;
       margin: 0 3rem 0 1rem;
       input {
+        display: inline-block;
         width: 200px;
         border: 1px solid #ccc;
         border-radius: 2px;
@@ -351,6 +353,7 @@ tt {
     font-size: 0.9rem;
     ul {
       list-style: none;
+      display: block;
       margin: 0;
       padding: 0;
       ul {
