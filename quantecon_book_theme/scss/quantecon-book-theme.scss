@@ -6,10 +6,6 @@ IMPORTS
 
 @import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,400&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-@import 'normalize';
-@import 'html5boilerplate';
-@import 'syntax';
-
 $breakpoint-xl: 1200px;
 $breakpoint-lg: 992px;
 $breakpoint-md: 768px;
@@ -18,6 +14,11 @@ $breakpoint-sm: 576px;
 $color-primary: #0072bc;
 $color-secondary: #d8655e;
 $color-body: #444444;
+
+@import 'normalize';
+@import 'html5boilerplate';
+@import 'quantecon-defaults';
+@import 'syntax';
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -313,6 +314,7 @@ tt {
 .page {
   max-width: 800px;
   position: relative;
+  flex-grow: 1; 
   &__header {
     border-bottom: 5px solid $color-primary;
     margin: 0 0 4rem 0;
@@ -379,7 +381,7 @@ tt {
   }
 }
 
-.contents {
+.toc {
   @media (max-width: 1220px) {
     display: none;
   }
@@ -611,7 +613,7 @@ tt {
 // }
 
 /* Lecture TOC */
-#Contents {
+#contents {
   border: 0;
   clip: rect(0 0 0 0);
   height: 1px;
@@ -621,23 +623,23 @@ tt {
   position: absolute;
   width: 1px;
 }
-#Contents + ul {
+#contents + ul {
   list-style: none;
   padding: 0 !important;
   border: 1px solid #ddd !important;
   border-width: 0 0 0 1px !important;
   margin: 0 0 0 20px !important;
 }
-#Contents + ul > li {
+#contents + ul > li {
   margin: 0;
 }
-#Contents + ul > li > a {
+#contents + ul > li > a {
   display: none;
 }
-#Contents + ul > li > ul {
+#contents + ul > li > ul {
   list-style: disc;
 }
-#Contents + ul > li > ul > li {
+#contents + ul > li > ul > li {
   margin: 0;
 }
 
