@@ -230,7 +230,7 @@ tt {
   top: 0;
   width: 100%;
   padding: 0 1rem;
-  background-color: #fff;
+  background-color: #efefef;
   border-bottom: 1px solid #ccc;
   &__inner {
     max-width: calc(1320px + 6rem);
@@ -259,6 +259,9 @@ tt {
       opacity: 1;
       transform: scale(1.1);
     }
+    a {
+      color: $color-body;
+    }
     &.btn__plus {
       .font-plus & {
         opacity: 1;
@@ -276,6 +279,7 @@ tt {
       align-items: center;
       margin: 0 3rem 0 1rem;
       input {
+        height: auto;
         display: inline-block;
         width: 200px;
         border: 1px solid #ccc;
@@ -345,6 +349,9 @@ tt {
   top: 5rem;
   align-self: flex-start;
   margin: 0 3rem 0 1rem;
+  &.inactive {
+    display:none;
+  }
   &__header {
     margin: 0 0 1rem 0;
     font-family: 'Source Sans Pro', sans-serif;

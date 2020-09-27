@@ -1,4 +1,4 @@
-{% extends "pydata_sphinx_theme/layout.html" %}
+{%- extends "basic/layout.html" %}
 
 {% block extrahead %}
 
@@ -15,10 +15,18 @@
 {% endif %}
 {% endblock %}
 
+{# Silence the sidebar's, relbar's #}
+{% block header %}{% endblock %}
+{% block relbar1 %}{% endblock %}
+{% block relbar2 %}{% endblock %}
+{% block sidebarsourcelink %}{% endblock %}
+
 {% block body_tag %}
 <body>
 {%- endblock %}
 {%- block content %}
+
+
     <span id="top"></span>
 
     <div class="wrapper">
@@ -36,7 +44,6 @@
                 {%- endif %}
 
 
-                {% block docs_navbar %}
                 <nav id="bd-toc-nav" class="toc__nav">
                     <ul class="nav section-nav flex-column">
                         {% for item in page_toc recursive %}
@@ -51,7 +58,6 @@
                         {% endfor %}
                     </ul>
                 </nav>
-                {%- endblock %}
 
                 <div class="toc__footer">
                     {# prev/next buttons #}
@@ -76,9 +82,9 @@
 
                     <div class="page__header-copy">
 
-                        <p class="page__header-heading"><a href="#">Quantitative Economics with Python</a></p>
+                        <p class="page__header-heading"><a href="/">{{ docstitle | e }}</a></p>
 
-                        <p class="page__header-subheading">Tools and Techniques</p>
+                        <p class="page__header-subheading">{{ pagetitle | e }}</p>
 
                     </div>
 
@@ -131,7 +137,7 @@
 
 
                 <ul class="toolbar__main">
-                    <li data-tippy-content="Home"><i data-feather="home"></i></li>
+                    <li data-tippy-content="Toggle sidebar" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li class="btn__search">
                         <form action="{{ pathto('search') }}" method="get">
                             <input type="search" class="form-control" name="q" id="search-input" placeholder="{{ theme_search_bar_text }}" aria-label="{{ theme_search_bar_text }}" autocomplete="off">
@@ -145,6 +151,7 @@
                 </ul>
 
                 <ul class="toolbar__links">
+                    <li data-tippy-content="Home"><a href="/"><i data-feather="home"></i></a></li>
                     <li data-tippy-content="Download Notebook"><i data-feather="download-cloud"></i></li>
                     <li data-tippy-content="Download PDF"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><i data-feather="github"></i></li>

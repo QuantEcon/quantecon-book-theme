@@ -1,6 +1,7 @@
 var $window = $(window),
   $head = $('head'),
-  $body = $('body');
+  $body = $('body'),
+  $sidebar = $('.sidebar');
 
 function setContrast() {
   var setContrast = localStorage.setContrast;
@@ -26,6 +27,13 @@ $('.btn__contrast').on('click', function (event) {
     localStorage.setContrast = 1;
     $body.addClass('dark-theme');
   }
+});
+
+
+$('.btn__sidebar').on('click', function (event) {
+  event.preventDefault();
+  event.stopPropagation();
+  $sidebar.toggle();
 });
 
 $('.btn__top').on('click', function (event) {
