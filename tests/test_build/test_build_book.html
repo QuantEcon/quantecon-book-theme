@@ -1,17 +1,8 @@
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
- <div class="navbar-brand-box">
-  <a class="navbar-brand text-wrap" href="#">
-   <h1 class="site-logo" id="site-title">
-    Sphinx Book Theme  documentation
-   </h1>
-  </a>
+<div class="sidebar bd-sidebar" id="site-navigation">
+ <div class="sidebar__header">
+  Contents
  </div>
- <form action="search.html" class="bd-search d-flex align-items-center" method="get">
-  <i class="icon fas fa-search">
-  </i>
-  <input aria-label="Search the docs ..." autocomplete="off" class="form-control" id="search-input" name="q" placeholder="Search the docs ..." type="search"/>
- </form>
- <nav aria-label="Main navigation" class="bd-links" id="bd-docs-nav">
+ <nav aria-label="Main navigation" class="sidebar__nav" id="sidebar-nav">
   <p class="caption">
    <span class="caption-text">
     My caption
@@ -42,11 +33,13 @@
    </li>
   </ul>
  </nav>
- <!-- To handle the deprecated key -->
- <div class="navbar_extra_footer">
+ <div class="sidebar__footer">
+  <p>
+   <img src="https://python-programming.quantecon.org/_static/img/qe-logo.png"/>
+  </p>
   Theme by the
-  <a href="https://ebp.jupyterbook.org">
-   Executable Book Project
+  <a href="https://quantecon.org/">
+   QuantEcon
   </a>
  </div>
 </div>
