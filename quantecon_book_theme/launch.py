@@ -29,9 +29,6 @@ def add_hub_urls(
 
     """
 
-    # First decide if we'll insert any links
-    path = app.env.doc2path(pagename)
-
     # If so, insert the URLs depending on the configuration
     config_theme = app.config["html_theme_options"]
     launch_buttons = config_theme.get("launch_buttons", {})
@@ -59,6 +56,7 @@ def add_hub_urls(
     # Add thebe flag in context
     if launch_buttons.get("thebe", False):
         context["use_thebe"] = True
+
 
 def _is_notebook(app, pagename):
     return app.env.metadata[pagename].get("kernelspec")
