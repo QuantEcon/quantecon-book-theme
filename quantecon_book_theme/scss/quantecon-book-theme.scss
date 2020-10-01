@@ -338,6 +338,11 @@ tt {
       margin: 0;
     }
   }
+  // Math equations
+  span.eqno {
+    float: right;
+    font-size: 1.2em;
+  }
 }
 
 .sidebar {
