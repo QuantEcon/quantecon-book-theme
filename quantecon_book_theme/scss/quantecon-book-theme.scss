@@ -326,6 +326,67 @@ tt {
   max-width: 800px;
   position: relative;
   flex-grow: 1;
+  &__toc {
+    @media (max-width: 1220px) {
+      display: none;
+    }
+    position: absolute;
+    right: calc(-250px - 3rem);
+    top: 0;
+    margin: 0;
+    height: 100%;
+    width: 250px;
+    .inner {
+      position: sticky;
+      top: 6rem;
+    }
+    &-header {
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+    }
+    &-nav {
+      font-size: 0.9rem;
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        ul {
+          padding-left: 1rem;
+        }
+        li {
+          margin: 0.25rem 0;
+          padding: 0;
+          a {
+            color: $color-body;
+            opacity: 0.8;
+            &.active {
+              color: $color-primary;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+    &-footer {
+      margin: 2rem 0 0 0;
+      font-size: 0.9rem;
+      a {
+        color: $color-body;
+        opacity: 0.8;
+        text-decoration: none;
+        &:hover {
+          color: $color-primary;
+          opacity: 1;
+        }
+      }
+    }
+    .nav > .active > ul {
+      display: block;
+    }
+    .nav .nav {
+      display: none;
+    }
+  }
   &__header {
     border-bottom: 5px solid $color-primary;
     margin: 0 0 4rem 0;
@@ -354,13 +415,17 @@ tt {
 
 .sidebar {
   @media (max-width: 1340px) {
-    display: none;
+    box-shadow: 10px 10px 5px 9999px rgba(255,255,255,0.7);
   }
-  width: 250px;
-  flex-shrink: 0;
-  top: 5rem;
-  align-self: flex-start;
-  margin: 0 3rem 0 1rem;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #efefef;
+  padding: 2rem;
+  margin: 0;
+  border-right: 1px solid #ccc;
+  height: 100%;
+  width: 300px;
   &.inactive {
     display:none;
   }
@@ -397,64 +462,6 @@ tt {
   &__footer {
     text-align: center;
     margin: 2rem 0 0 0;
-  }
-}
-
-.toc {
-  @media (max-width: 1220px) {
-    display: none;
-  }
-  width: 250px;
-  flex-shrink: 0;
-  position: sticky;
-  top: 6rem;
-  align-self: flex-start;
-  margin: 0 1rem 0 3rem;
-  &__header {
-    font-weight: 700;
-    margin: 0 0 1rem 0;
-  }
-  &__nav {
-    font-size: 0.9rem;
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      ul {
-        padding-left: 1rem;
-      }
-      li {
-        margin: 0.25rem 0;
-        padding: 0;
-        a {
-          color: $color-body;
-          opacity: 0.8;
-          &.active {
-            color: $color-primary;
-            opacity: 1;
-          }
-        }
-      }
-    }
-  }
-  &__footer {
-    margin: 2rem 0 0 0;
-    font-size: 0.9rem;
-    a {
-      color: $color-body;
-      opacity: 0.8;
-      text-decoration: none;
-      &:hover {
-        color: $color-primary;
-        opacity: 1;
-      }
-    }
-  }
-  .nav > .active > ul {
-    display: block;
-  }
-  .nav .nav {
-    display: none;
   }
 }
 
