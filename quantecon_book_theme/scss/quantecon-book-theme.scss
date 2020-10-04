@@ -93,11 +93,12 @@ body {
     }
     .toolbar,
     .drawer,
+    .sidebar,
     .drawer .inner {
       background: #444;
     }
     .btn__search {
-      input {
+      input { 
         background: #444;
         color: #fff;
       }
@@ -159,13 +160,6 @@ h4 {
   font-size: 1.2rem;
   font-family: 'Source Sans Pro', sans-serif;
   color: #000;
-}
-
-/* tableofcontents directive caption option */
-.caption-text {
-  font-weight: normal;
-  font-family: 'PT Serif', serif;
-  font-size: 1.7rem;
 }
 
 strong,
@@ -240,7 +234,7 @@ tt {
   background-color: #efefef;
   border-bottom: 1px solid #ccc;
   &__inner {
-    max-width: calc(1320px + 6rem);
+    //max-width: calc(1320px + 6rem);
     margin: 0 auto 0 auto;
     height: 50px;
     line-height: 1;
@@ -288,7 +282,7 @@ tt {
       input {
         height: auto;
         display: inline-block;
-        width: 200px;
+        width: 175px;
         border: 1px solid #ccc;
         border-radius: 2px;
         background-color: #f8f8f8;
@@ -316,6 +310,11 @@ tt {
     svg {
       width: 20px;
       height: 20px;
+    }
+    @media (max-width: 600px) {
+      &.btn__plus, &.btn__minus, &.btn__fullscreen, &.btn__search {
+        display: none;
+      }
     }
   }
   &__main {
@@ -406,17 +405,22 @@ tt {
       margin: 0;
     }
   }
-  // Math equations
-  span.eqno {
-    float: right;
-    font-size: 1.2em;
+  &__content {
+    /* tableofcontents directive caption option */
+    .caption-text {
+      font-weight: normal;
+      font-family: 'PT Serif', serif;
+      font-size: 1.7rem;
+    }
+    // Math equations
+    span.eqno {
+      float: right;
+      font-size: 1.2em;
+    }
   }
 }
 
 .sidebar {
-  @media (max-width: 1340px) {
-    box-shadow: 10px 10px 5px 9999px rgba(255,255,255,0.7);
-  }
   position: absolute;
   top: 0px;
   left: 0px;
@@ -425,9 +429,25 @@ tt {
   margin: 0;
   border-right: 1px solid #ccc;
   height: 100%;
-  width: 300px;
+  width: 250px;
+  transform: translate3d(0px, 0px, 0px);
+  visibility: visible;
+  transition: all 0.5s ease 0s;
+  @media (max-width: 1340px) {
+    box-shadow: 10px 10px 5px 9999px rgba(255,255,255,0.8);
+    width: 300px;
+  }
+  @media (min-width: 1439px) {
+    width: 300px;
+  }
+  @media (min-width: 1600px) {
+    width: 350px;
+  }
   &.inactive {
-    display:none;
+    //display:none;
+    transform: translate3d(-100%, 0px, 0px);
+    visibility: visible;
+    box-shadow: none;
   }
   &__header {
     margin: 0 0 1rem 0;
@@ -457,6 +477,12 @@ tt {
           }
         }
       }
+    }
+    /* tableofcontents directive caption option */
+    .caption-text {
+      font-weight: normal;
+      font-family: 'PT Serif', serif;
+      //font-size: 1.7rem;
     }
   }
   &__footer {
