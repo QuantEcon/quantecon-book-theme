@@ -93,6 +93,7 @@ body {
     }
     .toolbar,
     .drawer,
+    .sidebar,
     .drawer .inner {
       background: #444;
     }
@@ -233,7 +234,7 @@ tt {
   background-color: #efefef;
   border-bottom: 1px solid #ccc;
   &__inner {
-    max-width: calc(1320px + 6rem);
+    //max-width: calc(1320px + 6rem);
     margin: 0 auto 0 auto;
     height: 50px;
     line-height: 1;
@@ -281,7 +282,7 @@ tt {
       input {
         height: auto;
         display: inline-block;
-        width: 200px;
+        width: 175px;
         border: 1px solid #ccc;
         border-radius: 2px;
         background-color: #f8f8f8;
@@ -310,6 +311,11 @@ tt {
       width: 20px;
       height: 20px;
     }
+    @media (max-width: 600px) {
+      &.btn__plus, &.btn__minus, &.btn__fullscreen, &.btn__search {
+        display: none;
+      }
+    }
   }
   &__main {
   }
@@ -319,6 +325,67 @@ tt {
   max-width: 800px;
   position: relative;
   flex-grow: 1;
+  &__toc {
+    @media (max-width: 1220px) {
+      display: none;
+    }
+    position: absolute;
+    right: calc(-250px - 3rem);
+    top: 0;
+    margin: 0;
+    height: 100%;
+    width: 250px;
+    .inner {
+      position: sticky;
+      top: 6rem;
+    }
+    &-header {
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+    }
+    &-nav {
+      font-size: 0.9rem;
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        ul {
+          padding-left: 1rem;
+        }
+        li {
+          margin: 0.25rem 0;
+          padding: 0;
+          a {
+            color: $color-body;
+            opacity: 0.8;
+            &.active {
+              color: $color-primary;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+    &-footer {
+      margin: 2rem 0 0 0;
+      font-size: 0.9rem;
+      a {
+        color: $color-body;
+        opacity: 0.8;
+        text-decoration: none;
+        &:hover {
+          color: $color-primary;
+          opacity: 1;
+        }
+      }
+    }
+    .nav > .active > ul {
+      display: block;
+    }
+    .nav .nav {
+      display: none;
+    }
+  }
   &__header {
     border-bottom: 5px solid $color-primary;
     margin: 0 0 4rem 0;
@@ -338,19 +405,49 @@ tt {
       margin: 0;
     }
   }
+  &__content {
+    /* tableofcontents directive caption option */
+    .caption-text {
+      font-weight: normal;
+      font-family: 'PT Serif', serif;
+      font-size: 1.7rem;
+    }
+    // Math equations
+    span.eqno {
+      float: right;
+      font-size: 1.2em;
+    }
+  }
 }
 
 .sidebar {
-  @media (max-width: 1340px) {
-    display: none;
-  }
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #efefef;
+  padding: 2rem;
+  margin: 0;
+  border-right: 1px solid #ccc;
+  height: 100%;
   width: 250px;
-  flex-shrink: 0;
-  top: 5rem;
-  align-self: flex-start;
-  margin: 0 3rem 0 1rem;
+  transform: translate3d(0px, 0px, 0px);
+  visibility: visible;
+  transition: all 0.5s ease 0s;
+  @media (max-width: 1340px) {
+    box-shadow: 10px 10px 5px 9999px rgba(255,255,255,0.8);
+    width: 300px;
+  }
+  @media (min-width: 1439px) {
+    width: 300px;
+  }
+  @media (min-width: 1600px) {
+    width: 350px;
+  }
   &.inactive {
-    display:none;
+    //display:none;
+    transform: translate3d(-100%, 0px, 0px);
+    visibility: visible;
+    box-shadow: none;
   }
   &__header {
     margin: 0 0 1rem 0;
@@ -381,68 +478,16 @@ tt {
         }
       }
     }
+    /* tableofcontents directive caption option */
+    .caption-text {
+      font-weight: normal;
+      font-family: 'PT Serif', serif;
+      //font-size: 1.7rem;
+    }
   }
   &__footer {
     text-align: center;
     margin: 2rem 0 0 0;
-  }
-}
-
-.toc {
-  @media (max-width: 1220px) {
-    display: none;
-  }
-  width: 250px;
-  flex-shrink: 0;
-  position: sticky;
-  top: 6rem;
-  align-self: flex-start;
-  margin: 0 1rem 0 3rem;
-  &__header {
-    font-weight: 700;
-    margin: 0 0 1rem 0;
-  }
-  &__nav {
-    font-size: 0.9rem;
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      ul {
-        padding-left: 1rem;
-      }
-      li {
-        margin: 0.25rem 0;
-        padding: 0;
-        a {
-          color: $color-body;
-          opacity: 0.8;
-          &.active {
-            color: $color-primary;
-            opacity: 1;
-          }
-        }
-      }
-    }
-  }
-  &__footer {
-    margin: 2rem 0 0 0;
-    font-size: 0.9rem;
-    a {
-      color: $color-body;
-      opacity: 0.8;
-      text-decoration: none;
-      &:hover {
-        color: $color-primary;
-        opacity: 1;
-      }
-    }
-  }
-  .nav > .active > ul {
-    display: block;
-  }
-  .nav .nav {
-    display: none;
   }
 }
 
