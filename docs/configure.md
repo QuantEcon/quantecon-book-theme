@@ -101,3 +101,16 @@ html_theme_options = {
     ...
 }
 ```
+
+## Use plugins to add/extend features
+
+If you want some extra features in your documentation website or modify an existing one, you can add a list of plugins
+in javascript format, to suit your needs:
+
+```python
+html_theme_options = {
+    ...
+    "plugins_list": ["path-relative-to-config-file.js"]
+    ...
+}
+```

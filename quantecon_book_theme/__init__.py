@@ -3,6 +3,8 @@ from pathlib import Path
 from docutils.parsers.rst import directives
 from docutils import nodes
 from sphinx.util import logging
+from sphinx.util.fileutil import copy_asset
+from sphinx.util.osutil import ensuredir
 from bs4 import BeautifulSoup as bs
 from sass import compile as sass_compile
 
@@ -30,6 +32,15 @@ def add_static_path(app):
         source_dir = str(static_path.parent / "scss")
         output_dir = str(static_path)
         sass_compile(dirname=(source_dir, output_dir), output_style="compressed")
+
+    # copying plugins
+    if "plugins_list" in app.config.html_theme_options:
+        outdir = app.outdir + "/plugins"
+        ensuredir(outdir)
+        for i, asset in enumerate(app.config.html_theme_options["plugins_list"]):
+            assetname = Path(asset).name
+            copy_asset(app.confdir + "/" + asset, outdir)
+            app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
 
 
 def find_url_relative_to_root(pagename, relative_page, path_docs_source):
