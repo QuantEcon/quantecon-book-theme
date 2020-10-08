@@ -53,11 +53,12 @@ jobs:
       - name: Build HTML
         shell: bash -l {0}
         run: |
+          cd lecture-python-programming.myst
           jb build lectures --path-output ./
       - name: Preview Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.1
         with:
-          publish-dir: '_build/html/'
+          publish-dir: 'lecture-python-programming.myst/_build/html/'
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Preview Deploy from GitHub Actions"
