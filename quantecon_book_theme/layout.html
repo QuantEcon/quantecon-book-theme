@@ -22,7 +22,7 @@
 {% block sidebarsourcelink %}{% endblock %}
 
 {% block body_tag %}
-<body{% if master_doc in pagename %} class="main-index"{% endif %}>
+<body{% if master_doc == pagename %} class="main-index"{% endif %}>
 {%- endblock %}
 {%- block content %}
 
