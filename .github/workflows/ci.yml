@@ -19,7 +19,7 @@ jobs:
           python-version: 3.8
           environment-file: lecture-python-programming.myst/environment.yml
           activate-environment: qe-lectures
-       - name: Install quantecon-book-theme
+      - name: Install quantecon-book-theme
         shell: bash -l {0}
         run: |
           python setup.py install
