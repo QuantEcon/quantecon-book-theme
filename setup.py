@@ -48,7 +48,7 @@ setup(
         ],
         "testing": [
             "coverage",
-            "pytest>=3.6,<4",
+            "pytest~=6.0.1",
             "pytest-cov",
             "beautifulsoup4",
             "pytest-regressions",
