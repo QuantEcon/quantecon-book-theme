@@ -39,7 +39,7 @@ setup(
             "ipywidgets",
             "pandas",
             "nbclient",
-            "myst-nb~=0.9.1",
+            "myst-nb~=0.10.1",
             "sphinx-togglebutton>=0.2.1",
             "sphinx-copybutton",
             "plotly",
