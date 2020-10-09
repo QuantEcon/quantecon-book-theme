@@ -6,14 +6,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install quantecon-book-theme
-        shell: bash -l {0}
-        run: |
-          python setup.py install
-      - name: Fetch lecture-python-programming.myst
-        shell: bash -l {0}
-        run: |
-          git clone https://github.com/QuantEcon/lecture-python-programming.myst
       - name: Setup Anaconda
         uses: goanpeca/setup-miniconda@v1
         with:
@@ -23,6 +15,10 @@ jobs:
           python-version: 3.8
           environment-file: lecture-python-programming.myst/environment.yml
           activate-environment: qe-lectures
+       - name: Install quantecon-book-theme
+        shell: bash -l {0}
+        run: |
+          python setup.py install
       - name: Install sphinx-multitoc-numbering
         shell: bash -l {0}
         run: |
@@ -48,6 +44,10 @@ jobs:
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
+      - name: Fetch lecture-python-programming.myst
+        shell: bash -l {0}
+        run: |
+          git clone https://github.com/QuantEcon/lecture-python-programming.myst
       - name: Build HTML
         shell: bash -l {0}
         run: |
