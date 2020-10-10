@@ -84,6 +84,11 @@ body {
     h4 {
       color: #fff !important;
     }
+    cite,
+    code,
+    tt {
+      background-color: transparent;
+    }
     .maths,
     .math {
       color: #fff !important;
@@ -103,6 +108,7 @@ body {
         color: #fff;
       }
     }
+
   }
 }
 
