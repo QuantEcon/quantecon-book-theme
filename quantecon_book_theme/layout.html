@@ -86,7 +86,7 @@
 
                     <div class="page__header-copy">
 
-                        <p class="page__header-heading"><a href="/">{{ docstitle | e }}</a></p>
+                        <p class="page__header-heading"><a href="intro.html">{{ docstitle | e }}</a></p>
 
                         <p class="page__header-subheading">{{ pagetitle | e }}</p>
 
@@ -157,7 +157,7 @@
                 </ul>
 
                 <ul class="toolbar__links">
-                    <li data-tippy-content="Home"><a href="/"><i data-feather="home"></i></a></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
                     {% if ipynb_source %}
                     <li data-tippy-content="Download Notebook"><a href="{{ pathto('_sources', 1) }}/{{ ipynb_source }}" download><i data-feather="download-cloud"></i></a></li>
                     {% endif %}
