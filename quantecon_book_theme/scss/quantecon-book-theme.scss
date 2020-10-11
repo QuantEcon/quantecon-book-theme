@@ -84,6 +84,11 @@ body {
     h4 {
       color: #fff !important;
     }
+    cite,
+    code,
+    tt {
+      background-color: transparent;
+    }
     .maths,
     .math {
       color: #fff !important;
@@ -99,10 +104,13 @@ body {
     }
     .btn__search {
       input {
-        background: #444;
         color: #fff;
+        &:focus {
+          border-color: #fff;
+        }
       }
     }
+
   }
 }
 
@@ -297,7 +305,7 @@ tt {
         }
       }
       svg {
-        background-color: #f8f8f8;
+        background-color: transparent;
         z-index: 999;
       }
       &:hover {
