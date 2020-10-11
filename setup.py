@@ -27,7 +27,7 @@ setup(
         "click",
         "setuptools",
         "libsass",
-        "pydata-sphinx-theme~=0.3.0",
+        "pydata-sphinx-theme~=0.4.0",
         "beautifulsoup4",
     ],
     extras_require={
@@ -39,7 +39,7 @@ setup(
             "ipywidgets",
             "pandas",
             "nbclient",
-            "myst-nb~=0.9.1",
+            "myst-nb~=0.10.1",
             "sphinx-togglebutton>=0.2.1",
             "sphinx-copybutton",
             "plotly",
@@ -48,7 +48,7 @@ setup(
         ],
         "testing": [
             "coverage",
-            "pytest>=3.6,<4",
+            "pytest~=6.0.1",
             "pytest-cov",
             "beautifulsoup4",
             "pytest-regressions",
