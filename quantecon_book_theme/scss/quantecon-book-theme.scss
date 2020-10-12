@@ -110,7 +110,13 @@ body {
         }
       }
     }
-
+    .page__content {
+      .image-reference img {
+        filter: invert(100%) hue-rotate(-180deg) !important;
+        -ms-filter: invert(100%) !important;
+        -webkit-filter: invert(100%) hue-rotate(-180deg) !important;
+      }
+    }
   }
 }
 
