@@ -344,8 +344,7 @@ tt {
     height: 100%;
     width: 250px;
     .inner {
-      position: sticky;
-      top: 6rem;
+      height:100%;
     }
     &-header {
       font-weight: 700;
@@ -375,6 +374,8 @@ tt {
       }
     }
     &-footer {
+      position: sticky;
+      top: 6rem;
       margin: 2rem 0 0 0;
       font-size: 0.9rem;
       a {
