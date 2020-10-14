@@ -49,7 +49,7 @@
 
 
                         <nav id="bd-toc-nav" class="page__toc-nav">
-                            
+
                             <ul class="nav section-nav flex-column">
                                 {% for item in page_toc recursive %}
                                 <li class="nav-item toc-entry toc-h{{ loop.depth + 1 }}">
@@ -190,14 +190,14 @@
     tippy('[data-tippy-content]');
 </script>
 
-{% if google_analytics_id %}
+{% if theme_google_analytics_id %}
 <script>
     window.ga = function () {
         ga.q.push(arguments);
     };
     ga.q = [];
     ga.l = +new Date();
-    ga("create", "{{ google_analytics_id }}", "auto");
+    ga("create", "{{ theme_google_analytics_id }}", "auto");
     ga("set", "anonymizeIp", true);
     ga("set", "transport", "beacon");
     ga("send", "pageview");
