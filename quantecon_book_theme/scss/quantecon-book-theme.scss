@@ -487,7 +487,7 @@ tt {
   top: 0px;
   left: 0px;
   background-color: #efefef;
-  padding: 2rem;
+  //padding: 2rem;
   margin: 0;
   border-right: 1px solid #ccc;
   //height: 100%;
@@ -495,17 +495,16 @@ tt {
   transform: translate3d(0px, 0px, 0px);
   visibility: visible;
   transition: all 0.5s ease 0s;
-
   height: 100vh;
-  overflow-y: scroll;
   position: fixed;
-  padding-top: 5rem;
-  @media (max-width: 1340px) {
+  top:50px;
+  //padding-top: 5rem;
+  @media (max-width: 1500px) {
     box-shadow: 10px 10px 5px 9999px rgba(255,255,255,0.8);
     width: 300px;
   }
   @media (min-width: 1439px) {
-    width: 300px;
+    //width: 300px;
   }
   @media (min-width: 1600px) {
     width: 350px;
@@ -515,6 +514,30 @@ tt {
     transform: translate3d(-100%, 0px, 0px);
     visibility: visible;
     box-shadow: none;
+  }
+  &__toggle {
+    transform: rotate(-90deg);
+    transform-origin: 100% 0;
+    right: 0;
+    top: 4rem;
+    height: 2.5rem;
+    position: absolute;
+    background-color: #efefef;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    border: 1px solid #ccc;
+    border-width: 0px 1px 2px 1px;
+    border-bottom-color: #0072bc;
+    cursor: pointer;
+  }
+  &__inner {
+    overflow-y: scroll;
+    padding: 2rem 2rem 2rem 2rem;
+    height: calc(100% - 4rem);
+    position: fixed;
   }
   &__header {
     margin: 0 0 1rem 0;
@@ -554,7 +577,7 @@ tt {
   }
   &__footer {
     text-align: center;
-    margin: 2rem 0 0 0;
+    //margin: 2rem 0 0 0;
   }
 }
 

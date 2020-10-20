@@ -120,18 +120,21 @@
             {% block docs_sidebar %}
             <div class="sidebar bd-sidebar inactive" id="site-navigation">
 
-                <div class="sidebar__header">
+                <div class="sidebar__toggle">Table of Contents</div>
 
+                <div class="sidebar__inner">
 
-                    Contents
+                    <div class="sidebar__header">
 
-                </div>
+                    </div>
 
-                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
-                    {{ generate_nav_html(include_item_names=True, with_home_page=theme_home_page_in_toc) }}
-                </nav>
+                    <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                        {{ generate_nav_html(include_item_names=True, with_home_page=theme_home_page_in_toc) }}
+                    </nav>
 
-                <div class="sidebar__footer">
+                    <div class="sidebar__footer">
+
+                    </div>
 
                 </div>
 

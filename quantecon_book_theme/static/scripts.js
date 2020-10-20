@@ -2,7 +2,7 @@ var $window = $(window),
     $head = $('head'),
     $body = $('body'),
     $sidebar = $('.sidebar'),
-    $sidebarToggle = $('.btn__sidebar');
+    $sidebarToggle = $('.btn__sidebar, .sidebar__toggle');
 
 function setContrast() {
     var setContrast = localStorage.setContrast;
