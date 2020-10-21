@@ -63,7 +63,11 @@
                                 {% endfor %}
                             </ul>
 
-                            <p><img src="https://python-programming.quantecon.org/_static/img/qe-logo.png"></p>
+                            <p>
+                                {% if logo %}
+                                <img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo">
+                                {% endif %}
+                            </p>
 
                         </nav>
 
