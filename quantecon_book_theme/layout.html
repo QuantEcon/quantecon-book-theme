@@ -65,7 +65,11 @@
 
                             <p>
                                 {% if logo %}
-                                <img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo">
+                                    {% if theme_html_logo_url %}
+                                    <a href={{theme_html_logo_url}}><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
+                                    {% else %}
+                                    <a href={{master_doc}}.html><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
+                                    {% endif %}
                                 {% endif %}
                             </p>
 
