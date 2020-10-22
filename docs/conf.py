@@ -47,11 +47,11 @@ numfig = True
 # a list of builtin themes.
 #
 html_theme = "quantecon_book_theme"
-html_logo = "_static/logo.png"
+html_logo = "_static/qe-logo.png"
 html_title = "Quantecon Book Theme"
 html_copy_source = True
 html_sourcelink_suffix = ""
-html_favicon = "_static/logo.png"
+html_favicon = "_static/qe-logo.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -77,7 +77,8 @@ html_theme_options = {
     "use_edit_page_button": True,
     "use_issues_button": True,
     "use_repository_button": True,
-    "expand_sections": ["reference/index"]
+    "expand_sections": ["reference/index"],
+    "logo_url": "https://quantecon.org"
     # For testing
     # "home_page_in_toc": True,
     # "single_page": True
