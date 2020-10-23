@@ -65,8 +65,8 @@
 
                             <p>
                                 {% if logo %}
-                                    {% if theme_logo_url %}
-                                    <a href={{theme_logo_url}}><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
+                                    {% if theme_header_organisation_url %}
+                                    <a href={{theme_header_organisation_url}}><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
                                     {% else %}
                                     <a href={{master_doc}}.html><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
                                     {% endif %}
@@ -154,7 +154,7 @@
                 <ul class="toolbar__main">
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="{{ master_doc }}.html"><i data-feather="home"></i></a></li>
-                    <li class="btn__qelogo"><a href="{{theme_logo_url}}" title="{{html_title}}"><span class="show-for-sr">{{ docstitle}}</span></a></li>
+                    <li class="btn__qelogo"><a href="{{theme_header_organisation_url}}" title="{{html_title}}"><span class="show-for-sr">{{ theme_header_organisation}}</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="{{ pathto('search') }}" method="get">
                             <input type="search" class="form-control" name="q" id="search-input" placeholder="{{ theme_search_bar_text }}" aria-label="{{ theme_search_bar_text }}" autocomplete="off">
