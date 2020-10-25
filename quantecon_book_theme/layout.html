@@ -2,10 +2,12 @@
 
 {% block extrahead %}
 
+<<<<<<< HEAD
 <!-- Normal Meta Tags -->
-<meta name="description" content={{theme_description}} />
-<meta name="keywords" content="{{theme_keywords}}" />
 <meta name="author" context="{{author}}" />
+<meta name="keywords" content="{{theme_keywords}}" />
+<meta name="description" content={{theme_description}} />
+
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@{{theme_twitter}}" />
@@ -23,6 +25,30 @@
 <meta property="og:site_name" content="{{ docstitle }}" />
 
 <meta name="theme-color" content="#ffffff" />
+=======
+    <!-- HTML metadata -->
+    <meta name="author" content="{{ author | e }}">
+    <meta name="keywords" content="{{ keywords | e }}">
+    <meta name="description" content="{{ description | e }}">
+
+    <!-- Twitter tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@{{ twitter }}">
+    <meta name="twitter:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ title | e }}{% endif %}">
+    <meta name="twitter:description" content="{{ description | e }}">
+    <meta name="twitter:creator" content="@{{ twitter | e }}">
+    <meta name="twitter:image" content="{{ twitter_logo_url | e }}">
+
+    <!-- Opengraph tags -->
+    <meta property="og:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ title | e }}{% endif %}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ pageurl | e }}" />
+    <meta property="og:image" content="{{ og_logo_url }}" />
+    <meta property="og:description" content="{{ description | e }}" />
+    <meta property="og:site_name" content="{{ title | e }}" />
+
+    <meta name="theme-color" content="#ffffff" />
+>>>>>>> c138239aa1b05e4d96e43da40988c4f57b7b373a
 
 {% endblock %}
 
