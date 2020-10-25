@@ -8,17 +8,17 @@
 <meta name="author" context="{{author}}" />
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="{{theme_twitter_site}}" />
-<meta name="twitter:title" content="{{ pagetitle }}"/>
+<meta name="twitter:site" content="@{{theme_twitter}}" />
+<meta name="twitter:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ title | e }}{% endif %}"/>
 <meta name="twitter:description" content="{{theme_description | e }}">
-<meta name="twitter:creator" content="{{theme_twitter_site}}">
-<meta name="twitter:image" content="{{ theme_twitter_image}}">
+<meta name="twitter:creator" content="@{{theme_twitter}}">
+<meta name="twitter:image" content="{{ theme_twitter_logo_url}}">
 
 <!-- Opengraph tags -->
 <meta property="og:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ docstitle | e }}{% endif %}" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="{{ pageurl }}" />
-<meta property="og:image" content="{{theme_og_image}}" />
+<meta property="og:url" content="{{ pageurl | e }}" />
+<meta property="og:image" content="{{theme_og_logo_url}}" />
 <meta property="og:description" content="{{theme_description | e }}" />
 <meta property="og:site_name" content="{{ docstitle }}" />
 
