@@ -30,6 +30,16 @@ $('.btn__contrast').on('click', function (event) {
     }
 });
 
+// Tooltips
+
+tippy('[data-tippy-content]', {
+    touch: false,
+});
+
+// Icons
+
+feather.replace();
+
 // Sidebar toggles
 
 function openSidebar() {
@@ -100,7 +110,6 @@ $('.btn__fullscreen').on('click', function () {
 function setFontSize() {
     // Get font size from local storage
     var toolbarFont = localStorage.toolbarFont;
-    console.log(toolbarFont);
     if (toolbarFont == 1) {
         $('html').addClass('font-plus');
     } else if (toolbarFont == -1) {
