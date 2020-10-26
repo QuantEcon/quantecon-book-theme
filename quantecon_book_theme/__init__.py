@@ -199,12 +199,12 @@ def add_to_context(app, pagename, templatename, context, doctree):
         context["pagetitle"] = title.astext()
 
     # Add a shortened page text to the context using the sections text
-    if doctree:
+    if not len(context["theme_description"]) > 0 and doctree:
         description = ""
         for section in doctree.traverse(nodes.section):
             description += section.astext().replace("\n", " ")
         description = description[:160]
-        context["page_description"] = description
+        context["theme_description"] = description
 
     # Add the author if it exists
     if app.config.author != "unknown":
