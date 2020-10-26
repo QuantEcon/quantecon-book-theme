@@ -623,6 +623,24 @@ tt {
   border-bottom: 1px solid #e1e1e1;
 }
 
+.admonition {
+  margin: 1.5625em auto;
+  padding: 0 .6rem .8rem!important;
+  overflow: hidden;
+  page-break-inside: avoid;
+  border-left: .2rem solid #007bff;
+  border-radius: .1rem;
+  box-shadow: 0 .2rem .5rem rgba(0,0,0,.05),0 0 .05rem rgba(0,0,0,.1);
+  transition: color .25s,background-color .25s,border-color .25s;
+  .admonition-title {
+    position: relative;
+    margin: 0 -.6rem!important;
+    padding: .4rem .6rem .4rem 2rem;
+    font-weight: 700;
+    background-color: rgba(68,138,255,.1);
+  }
+}
+
 // div[class^='collapse'] .highlight {
 //   height: 22.4rem;
 //   overflow: hidden;
