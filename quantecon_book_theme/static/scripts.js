@@ -53,9 +53,10 @@ $sidebarToggle.on('click', function (event) {
     }
     if (window.innerWidth <= 1340) {
         $(document.body).on('click', function (e) {
-            if ($(e.target).closest('.sidebar').length != 0) return false;
-            closeSidebar();
-            $body.off('click');
+            if (!$(event.target).is('.sidebar *')) {
+                closeSidebar();
+                $body.off('click');
+            }
         });
     }
 });
