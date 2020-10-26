@@ -75,7 +75,7 @@
                                 {% endfor %}
                             </ul>
 
-                            <p>
+                            <p class="logo">
                                 {% if logo %}
                                     {% if theme_header_organisation_url %}
                                     <a href={{theme_header_organisation_url}}><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
@@ -84,6 +84,8 @@
                                     {% endif %}
                                 {% endif %}
                             </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
 
                         </nav>
 
