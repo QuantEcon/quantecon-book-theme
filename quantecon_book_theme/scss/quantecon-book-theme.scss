@@ -520,7 +520,7 @@ tt {
 
     &-copy {
       display: flex;
-      justify-content: space-between;
+      //justify-content: space-between;
 
       @media (max-width: $breakpoint-md) {
         flex-direction: column-reverse;
