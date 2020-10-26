@@ -2,28 +2,28 @@
 
 {% block extrahead %}
 
-    <!-- HTML metadata -->
-    <meta name="author" content="{{ author | e }}">
-    <meta name="keywords" content="{{ keywords | e }}">
-    <meta name="description" content="{{ description | e }}">
+<!-- Normal Meta Tags -->
+<meta name="author" context="{{ author | e }}" />
+<meta name="keywords" content="{{ theme_keywords | e }}" />
+<meta name="description" content={{ theme_description | e }} />
 
-    <!-- Twitter tags -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@{{ twitter }}">
-    <meta name="twitter:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ title | e }}{% endif %}">
-    <meta name="twitter:description" content="{{ description | e }}">
-    <meta name="twitter:creator" content="@{{ twitter | e }}">
-    <meta name="twitter:image" content="{{ twitter_logo_url | e }}">
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@{{ theme_twitter | e }}" />
+<meta name="twitter:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ title | e }}{% endif %}"/>
+<meta name="twitter:description" content="{{ theme_description | e }}">
+<meta name="twitter:creator" content="@{{ theme_twitter | e }}">
+<meta name="twitter:image" content="{{ theme_twitter_logo_url | e }}">
 
-    <!-- Opengraph tags -->
-    <meta property="og:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ title | e }}{% endif %}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{{ pageurl | e }}" />
-    <meta property="og:image" content="{{ og_logo_url }}" />
-    <meta property="og:description" content="{{ description | e }}" />
-    <meta property="og:site_name" content="{{ title | e }}" />
+<!-- Opengraph tags -->
+<meta property="og:title" content="{% if pagetitle %}{{ pagetitle | e }}{% else %}{{ docstitle | e }}{% endif %}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ pageurl | e }}" />
+<meta property="og:image" content="{{ theme_og_logo_url | e }}" />
+<meta property="og:description" content="{{ theme_description | e }}" />
+<meta property="og:site_name" content="{{ docstitle | e }}" />
 
-    <meta name="theme-color" content="#ffffff" />
+<meta name="theme-color" content="#ffffff" />
 
 {% endblock %}
 
