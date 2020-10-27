@@ -911,7 +911,6 @@ tt {
 
   .math {
     color: #333;
-    margin: 2rem 0;
   }
 
   a .math {
@@ -920,6 +919,10 @@ tt {
 
   span.math {
     font-size: 0.92rem;
+  }
+
+  div.math {
+    margin: 2rem 0;
   }
 
   .MathJax {
