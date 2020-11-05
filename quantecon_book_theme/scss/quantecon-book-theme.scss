@@ -940,6 +940,21 @@ tt {
 
 }
 
+// Cell-specific controls
+div.cell {
+
+  div.cell_output {
+      padding-right: 0;
+  }
+
+  &.tag_scroll-output {
+      div.cell_output {
+          max-height: 24em;
+          overflow-y: auto;
+      }
+  }
+}
+
 // div[class^='collapse'] .highlight {
 //   height: 22.4rem;
 //   overflow: hidden;
