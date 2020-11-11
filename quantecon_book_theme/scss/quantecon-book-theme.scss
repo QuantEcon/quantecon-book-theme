@@ -961,6 +961,13 @@ div.cell {
           overflow-y: auto;
       }
   }
+
+  &.tag_scroll-input {
+    div.cell_input {
+        max-height: 24em;
+        overflow-y: auto;
+    }
+  }
 }
 
 // div[class^='collapse'] .highlight {
