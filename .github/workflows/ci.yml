@@ -10,7 +10,9 @@ jobs:
         shell: bash -l {0}
         run: |
           git clone https://github.com/QuantEcon/lecture-python-programming.myst
+          cd lecture-python-programming.myst
           git checkout sphinx-tojupyter
+          cd ..
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v2
         with:
