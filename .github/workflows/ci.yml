@@ -18,7 +18,7 @@ jobs:
           miniconda-version: 'latest'
           python-version: 3.8
           environment-file: lecture-python-programming.myst/environment.yml
-          activate-environment: qe-lectures
+          activate-environment: lecture-python-programming
       - name: Install quantecon-book-theme
         shell: bash -l {0}
         run: |
