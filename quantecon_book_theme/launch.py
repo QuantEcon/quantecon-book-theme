@@ -32,6 +32,29 @@ def add_hub_urls(
     # If so, insert the URLs depending on the configuration
     config_theme = app.config["html_theme_options"]
     launch_buttons = config_theme.get("launch_buttons", {})
+
+    if config_theme.get("nb_repository_url"):
+        repo_url = _get_repo_url(config_theme)
+
+        # Parse the repo parts from the URL
+        org, repo = _split_repo_url(repo_url)
+
+        branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "master"
+        binderhub_url = (
+            config_theme["binderhub_url"]
+            if "binderhub_url" in config_theme
+            else "https://mybinder.org"
+        )
+
+        context["binder_url"] = (
+            f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
+            f"urlpath=tree/{ pagename }.ipynb"
+        )
+
+        if org is None and repo is None:
+            # Skip the rest because the repo_url isn't right
+            return
+
     if not launch_buttons or not _is_notebook(app, pagename):
         return
 
@@ -56,6 +79,24 @@ def add_hub_urls(
     # Add thebe flag in context
     if launch_buttons.get("thebe", False):
         context["use_thebe"] = True
+
+
+def _split_repo_url(url):
+    """Split a repository URL into an org / repo combination."""
+    if "github.com/" in url:
+        end = url.split("github.com/")[-1]
+        org, repo = end.split("/")[:2]
+    else:
+        SPHINX_LOGGER.warning(
+            f"Currently Binder/JupyterHub repositories must be on GitHub, got {url}"
+        )
+        org = repo = None
+    return org, repo
+
+
+def _get_repo_url(config):
+    repo_url = config.get("nb_repository_url")
+    return repo_url
 
 
 def _is_notebook(app, pagename):
