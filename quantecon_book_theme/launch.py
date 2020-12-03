@@ -33,26 +33,27 @@ def add_hub_urls(
     config_theme = app.config["html_theme_options"]
     launch_buttons = config_theme.get("launch_buttons", {})
 
-    repo_url = _get_repo_url(config_theme)
+    if config_theme.get("nb_repository_url"):
+        repo_url = _get_repo_url(config_theme)
 
-    # Parse the repo parts from the URL
-    org, repo = _split_repo_url(repo_url)
+        # Parse the repo parts from the URL
+        org, repo = _split_repo_url(repo_url)
 
-    branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "master"
-    binderhub_url = (
-        config_theme["binderhub_url"]
-        if "binderhub_url" in config_theme
-        else "https://mybinder.org"
-    )
+        branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "master"
+        binderhub_url = (
+            config_theme["binderhub_url"]
+            if "binderhub_url" in config_theme
+            else "https://mybinder.org"
+        )
 
-    context["binder_url"] = (
-        f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
-        f"urlpath=tree/{ pagename }.ipynb"
-    )
+        context["binder_url"] = (
+            f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
+            f"urlpath=tree/{ pagename }.ipynb"
+        )
 
-    if org is None and repo is None:
-        # Skip the rest because the repo_url isn't right
-        return
+        if org is None and repo is None:
+            # Skip the rest because the repo_url isn't right
+            return
 
     if not launch_buttons or not _is_notebook(app, pagename):
         return
@@ -95,10 +96,6 @@ def _split_repo_url(url):
 
 def _get_repo_url(config):
     repo_url = config.get("nb_repository_url")
-    if not repo_url:
-        raise ValueError(
-            "You must provide the key: `repository_url` to use launch buttons."
-        )
     return repo_url
 
 
