@@ -38,8 +38,15 @@ def add_hub_urls(
     # Parse the repo parts from the URL
     org, repo = _split_repo_url(repo_url)
 
+    branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "master"
+    binderhub_url = (
+        config_theme["binderhub_url"]
+        if "binderhub_url" in config_theme
+        else "https://mybinder.org"
+    )
+
     context["binder_url"] = (
-        f"{config_theme['binderhub_url']}/v2/gh/{org}/{repo}/master?"
+        f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
         f"urlpath=tree/{ pagename }.ipynb"
     )
 
