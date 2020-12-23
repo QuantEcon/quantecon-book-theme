@@ -184,12 +184,10 @@ def add_to_context(app, pagename, templatename, context, doctree):
         if "github_repo" in context:
             github_repo = context["github_repo"]
             if github_repo in app.srcdir:
-                index = app.srcdir.index(github_repo)
-                return (
-                    "/tree/"
-                    + context["github_version"]
-                    + app.srcdir[index + len(github_repo) :]
-                )
+                index = app.srcdir.rfind(github_repo)
+                branch = context["github_version"]
+                folder = app.srcdir[index + len(github_repo) :]
+                return "/tree/" + branch + folder
         return ""
 
     context["github_sourcefolder"] = get_github_src_folder(app)
