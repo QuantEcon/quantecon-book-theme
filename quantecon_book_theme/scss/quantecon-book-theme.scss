@@ -838,6 +838,16 @@ tt {
     visibility: visible;
   }
 
+  // Code blocks should have a margin, but code *cells* get margin from a parent
+  div.highlight {
+    background: none;
+    margin-bottom: 1em;
+  }
+
+  div.cell div.highlight {
+    margin-bottom: 0em;
+  }
+
   .cell .input,
   .cell .output {
     position: relative;
