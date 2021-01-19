@@ -862,20 +862,20 @@ tt {
     width: 45px;
   }
 
-  .cell .output .prompt:before,
-  .cell .input .prompt:before {
-    visibility: visible;
-    position: absolute;
-    top: 0rem;
-    right: 0;
-    content: 'Out';
-    font-weight: bold;
-    font-size: 16px;
-    text-align: right;
-    color: #d84315;
-    font-family: monospace, serif;
-    font-weight: 400;
-  }
+  // .cell .output .prompt:before,
+  // .cell .input .prompt:before {
+  //   visibility: visible;
+  //   position: absolute;
+  //   top: 0rem;
+  //   right: 0;
+  //   content: 'Out';
+  //   font-weight: bold;
+  //   font-size: 16px;
+  //   text-align: right;
+  //   color: #d84315;
+  //   font-family: monospace, serif;
+  //   font-weight: 400;
+  // }
 
   .cell .input .prompt:before {
     content: 'In';
