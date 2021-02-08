@@ -10,7 +10,7 @@ from sass import compile as sass_compile
 
 from .launch import add_hub_urls
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
