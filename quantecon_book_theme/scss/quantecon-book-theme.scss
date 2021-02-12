@@ -268,13 +268,13 @@ tt {
   display: flex;
   flex-direction: row-reverse;
   justify-content: center;
-  padding: 4rem 0 0 0;
   padding-left: 2rem;
   padding-right: 2rem;
+  padding-top: calc(4rem + 52px);
 }
 
 .toolbar {
-  position: sticky;
+  position: fixed;
   top: 0;
   width: 100%;
   padding: 0 1rem;
