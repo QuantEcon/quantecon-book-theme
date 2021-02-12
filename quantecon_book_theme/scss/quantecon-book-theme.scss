@@ -148,6 +148,10 @@ body {
   }
 }
 
+.section, .reference, .math {
+  scroll-margin-top: 60px;
+}
+
 h1 {
   font-weight: 900;
   font-size: 3rem;
@@ -270,11 +274,11 @@ tt {
   justify-content: center;
   padding-left: 2rem;
   padding-right: 2rem;
-  padding-top: calc(4rem + 52px);
+  padding-top: 4rem;
 }
 
 .toolbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 100%;
   padding: 0 1rem;
