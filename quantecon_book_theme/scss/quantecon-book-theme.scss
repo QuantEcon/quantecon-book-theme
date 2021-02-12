@@ -149,7 +149,8 @@ body {
 }
 
 .section, .reference, .math {
-  scroll-margin-top: 60px;
+  padding-top: 60px;
+  margin-top: -60px;
 }
 
 h1 {
