@@ -1,6 +1,22 @@
 # quantecon-book-theme
 A Jupyter Book Theme for QuantEcon Book Style Projects
 
+## Usage
+
+To use this theme in [Jupyter Book](https://github.com/executablebooks/jupyter-book):
+
+1. Install the theme
+
+  `pip install git+https://github.com/QuantEcon/quantecon-book-theme.git`
+
+2. Add the theme to your `_config.yml` file:
+
+  ```yaml
+  sphinx:
+      config:
+          html_theme: quantecon_book_theme
+  ```
+
 ## Updating Fixtures for Tests
 
 ### Updating test regression files on layout changes
