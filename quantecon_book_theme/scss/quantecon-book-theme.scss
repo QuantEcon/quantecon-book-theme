@@ -961,6 +961,16 @@ tt {
     font-size: 0.92rem;
   }
 
+  .figure {
+    text-align: center;
+    &.align-left {
+      text-align: left;
+    }
+    &.align-right {
+      text-align: right;
+    }
+  }
+
 }
 
 // Cell-specific controls
