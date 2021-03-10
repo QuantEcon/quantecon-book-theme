@@ -971,8 +971,8 @@ tt {
     }
   }
 
-  img {
-    .cell_output & {
+  .cell_output {
+     img {
       display: block;
       margin-left: auto;
       margin-right: auto;
