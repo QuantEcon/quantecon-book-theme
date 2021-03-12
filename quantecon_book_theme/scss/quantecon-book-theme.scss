@@ -961,6 +961,24 @@ tt {
     font-size: 0.92rem;
   }
 
+  .figure {
+    text-align: center;
+    &.align-left {
+      text-align: left;
+    }
+    &.align-right {
+      text-align: right;
+    }
+  }
+
+  .cell_output {
+     img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
 }
 
 // Cell-specific controls
