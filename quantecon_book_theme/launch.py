@@ -29,6 +29,10 @@ def add_hub_urls(
 
     """
 
+    # First decide if we'll insert any links
+    path = app.env.doc2path(pagename)
+    extension = Path(path).suffix
+
     # If so, insert the URLs depending on the configuration
     config_theme = app.config["html_theme_options"]
     launch_buttons = config_theme.get("launch_buttons", {})
@@ -38,8 +42,42 @@ def add_hub_urls(
 
         # Parse the repo parts from the URL
         org, repo = _split_repo_url(repo_url)
+        if org is None and repo is None:
+            # Skip the rest because the repo_url isn't right
+            return
+
+        branch = _get_branch(config_theme)
+
+        # Construct the extra URL parts (app and relative path)
+        notebook_interface_prefixes = {"classic": "tree", "jupyterlab": "lab/tree"}
+        notebook_interface = launch_buttons.get("notebook_interface", "classic")
+        if notebook_interface not in notebook_interface_prefixes:
+            raise ValueError(
+                (
+                    "Notebook UI for Binder/JupyterHub links must be one"
+                    f"of {tuple(notebook_interface_prefixes.keys())},"
+                    f"not {notebook_interface}"
+                )
+            )
+        ui_pre = notebook_interface_prefixes[notebook_interface]
+
+        # Check if we have a non-ipynb file, but an ipynb of same name exists
+        # If so, we'll use the ipynb extension instead of the text extension
+        if extension != ".ipynb" and Path(path).with_suffix(".ipynb").exists():
+            extension = ".ipynb"
+
+        # Construct a path to the file relative to the repository root
+        book_relpath = config_theme.get("path_to_docs", "").strip("/")
+        if book_relpath != "":
+            book_relpath += "/"
+        path_rel_repo = f"{book_relpath}{pagename}{extension}"
 
         branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "master"
+        # Now build infrastructure-specific links
+        jupyterhub_url = launch_buttons.get("jupyterhub_url")
+        binderhub_url = launch_buttons.get("binderhub_url")
+        colab_url = launch_buttons.get("colab_url")
+        context["launch_buttons"] = []
         binderhub_url = (
             config_theme["binderhub_url"]
             if "binderhub_url" in config_theme
@@ -50,6 +88,27 @@ def add_hub_urls(
             f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
             f"urlpath=tree/{ pagename }.ipynb"
         )
+        context["launch_buttons"].append(
+            {"name": "binder_hub", "url": context["binder_url"]}
+        )
+
+        if jupyterhub_url:
+            url = (
+                f"{jupyterhub_url}/hub/user-redirect/git-pull?"
+                f"repo={repo_url}&urlpath={ui_pre}/{repo}/{path_rel_repo}"
+                f"&branch={branch}"
+            )
+            context["jupyterhub_url"] = url
+            context["launch_buttons"].append(
+                {"name": "jupyterhub_url", "url": context["jupyterhub_url"]}
+            )
+
+        if colab_url:
+            url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{path_rel_repo}"
+            context["colab_url"] = url
+            context["launch_buttons"].append(
+                {"name": "colab_url", "url": context["colab_url"]}
+            )
 
         if org is None and repo is None:
             # Skip the rest because the repo_url isn't right
@@ -101,3 +160,10 @@ def _get_repo_url(config):
 
 def _is_notebook(app, pagename):
     return app.env.metadata[pagename].get("kernelspec")
+
+
+def _get_branch(config_theme):
+    branch = config_theme.get("repository_branch")
+    if not branch:
+        branch = "master"
+    return branch

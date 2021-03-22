@@ -218,3 +218,36 @@ for (var i = 0; i < contentTables.length; i++) {
     contentTables[i].parentNode.insertBefore(wrapper, contentTables[i]);
     wrapper.appendChild(contentTables[i]);
 }
+
+// Notebook Launcher popup
+if ( document.getElementById('settingsButton') ) {
+	const template = document.getElementById('settingsModal');
+	template.style.display = 'block';
+	tippy('#settingsButton', {
+	  content: template,
+	  theme: 'light-border',
+	  animation: 'shift-away',
+	  inertia: true,
+	  duration: [200,200],
+	  arrow: true,
+	  arrowType: 'round',
+	  delay: [200, 200],
+	  interactive: true,
+	  trigger: "click"
+	});
+}
+
+// onchangeListener for launcher popup
+let onChangeListener = () => {
+    let private = document.getElementById("launcher-private-input").value
+    if ($(this.event.currentTarget)[0].getAttribute("id").indexOf("private") > -1) {
+        let pagename = document.getElementsByClassName("page")[0].getAttribute("id")
+        const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=https://github.com/QuantEcon/quantecon-notebooks-datascience&urlpath=lab/tree/quantecon-notebooks-datascience/";
+        url = private + repoPrefix + pagename + ".ipynb";
+        launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
+    } else {
+        let url = document.getElementById("launcher-public-input").value
+        let launchButton = document.getElementById("launchButton")
+        launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
+    }
+}

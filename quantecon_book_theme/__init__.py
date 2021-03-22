@@ -298,6 +298,17 @@ def update_thebe_config(app, env, docnames):
     env.config.thebe_config = thebe_config
 
 
+def update_all(app, env):
+    """During development, if CSS/JS has changed, all files should be re-written,
+    to load the correct resources.
+    """
+    if (
+        app.config.html_theme_options.get("theme_dev_mode", False)
+        and env.book_theme_resources_changed
+    ):
+        return list(env.all_docs.keys())
+
+
 def _string_or_bool(var):
     if isinstance(var, str):
         return var.lower() == "true"
@@ -333,6 +344,7 @@ def setup(app):
     app.connect("html-page-context", add_hub_urls)
 
     app.connect("builder-inited", add_static_path)
+    app.connect("env-updated", update_all)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
