@@ -181,6 +181,9 @@ MathJax.Hub.Config({
         ],
         processEscapes: true,
     },
+    CommonHTML: {
+        scale: 92
+    },
 });
 
 /* Collapsed code block */
