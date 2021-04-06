@@ -89,7 +89,7 @@ def add_hub_urls(
             f"urlpath=tree/{ pagename }.ipynb"
         )
         context["launch_buttons"].append(
-            {"name": "binder_hub", "url": context["binder_url"]}
+            {"name": "BinderHub", "url": context["binder_url"]}
         )
 
         if jupyterhub_url:
@@ -100,14 +100,14 @@ def add_hub_urls(
             )
             context["jupyterhub_url"] = url
             context["launch_buttons"].append(
-                {"name": "jupyterhub_url", "url": context["jupyterhub_url"]}
+                {"name": "JupyterHub", "url": context["jupyterhub_url"]}
             )
 
         if colab_url:
             url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{path_rel_repo}"
             context["colab_url"] = url
             context["launch_buttons"].append(
-                {"name": "colab_url", "url": context["colab_url"]}
+                {"name": "Colab", "url": context["colab_url"]}
             )
 
         # if multiple launch servers then show the dropdown setting icon
