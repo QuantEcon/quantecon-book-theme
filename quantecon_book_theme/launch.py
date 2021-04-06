@@ -110,6 +110,14 @@ def add_hub_urls(
                 {"name": "colab_url", "url": context["colab_url"]}
             )
 
+        # if multiple launch servers then show the dropdown setting icon
+        if len(context["launch_buttons"]) == 1:
+            context["default_server"] = context["launch_buttons"][0]["url"]
+            context["show_settings"] = False
+        else:
+            context["default_server"] = context["binder_url"]
+            context["show_settings"] = True
+
         if org is None and repo is None:
             # Skip the rest because the repo_url isn't right
             return
