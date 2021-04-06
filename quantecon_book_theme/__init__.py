@@ -285,6 +285,7 @@ def update_thebe_config(app, env, docnames):
 
     # Update the selectors to find thebe-enabled cells
     selector = thebe_config.get("selector", "") + ",.cell"
+
     thebe_config["selector"] = selector.lstrip(",")
 
     selector_input = (
