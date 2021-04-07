@@ -27,7 +27,7 @@ setup(
         "click",
         "setuptools",
         "libsass",
-        "pydata-sphinx-theme~=0.4.0",
+        "pydata-sphinx-theme~=0.4.1",
         "beautifulsoup4",
     ],
     extras_require={
@@ -47,11 +47,12 @@ setup(
             "sphinx-thebe",
         ],
         "testing": [
+            "myst_nb~=0.11.1",
             "coverage",
             "pytest~=6.0.1",
             "pytest-cov",
             "beautifulsoup4",
-            "pytest-regressions",
+            "pytest-regressions~=2.0.1",
         ],
     },
     entry_points={
