@@ -745,6 +745,9 @@ tt {
       text-align: left;
       vertical-align: top;
       border: 0;
+      >p {
+        margin: 0;
+      }
     }
 
     th {
@@ -885,20 +888,6 @@ tt {
     content: 'In';
     color: #303f9f;
     top: 0.25rem;
-  }
-
-  div.content-table~table {
-    border: 0;
-    border-collapse: collapse;
-  }
-
-  div.content-table~table td,
-  div.content-table~table th {
-    padding: 1px 8px 1px 5px;
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 1px solid #aaa;
   }
 
   .headerlink {
