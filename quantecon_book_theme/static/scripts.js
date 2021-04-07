@@ -211,7 +211,7 @@ for (var i = 0; i < collapsableCodeToggles.length; i++) {
 
 /* Wrap container around all tables allowing hirizontal scroll */
 
-const contentTables = document.querySelectorAll('.content table');
+const contentTables = document.querySelectorAll('.page__content table');
 for (var i = 0; i < contentTables.length; i++) {
     var wrapper = document.createElement('div');
     wrapper.classList.add('table-container');
