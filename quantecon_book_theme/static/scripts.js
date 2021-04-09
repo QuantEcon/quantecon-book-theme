@@ -218,3 +218,20 @@ for (var i = 0; i < contentTables.length; i++) {
     contentTables[i].parentNode.insertBefore(wrapper, contentTables[i]);
     wrapper.appendChild(contentTables[i]);
 }
+
+if ( document.getElementById('downloadButton') ) {
+	const template = document.getElementById('DownloadPDFModal');
+	template.style.display = 'block';
+	tippy('#downloadButton', {
+	  content: template,
+	  theme: 'light-border',
+	  animation: 'shift-away',
+	  inertia: true,
+	  duration: [200,200],
+	  arrow: true,
+	  arrowType: 'round',
+	  delay: [200, 200],
+	  interactive: true,
+	  trigger: "click"
+	});
+}
