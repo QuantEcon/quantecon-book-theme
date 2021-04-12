@@ -190,6 +190,8 @@ def add_to_context(app, pagename, templatename, context, doctree):
                 return "/tree/" + branch + folder
         return ""
 
+    # default value is book.tex
+    context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
     context["github_sourcefolder"] = get_github_src_folder(app)
 
     # Update the page title because HTML makes it into the page title occasionally
