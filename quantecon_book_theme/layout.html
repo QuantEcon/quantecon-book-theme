@@ -192,20 +192,20 @@
                     {%- if theme_nb_repository_url %}
                     <li data-tippy-content="Launch Notebook"><a href="{{binder_url}}" target="_blank"><i data-feather="play-circle"></i></a></li>
                     {%- endif %}
-                    <li data-tippy-content="Download PDF" id="downloadButton"><i data-feather="file"></i></li>
+                    <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}{{github_sourcefolder}}/{{ sourcename }}" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
 
         </div> <!-- .toolbar -->
-        <div id="DownloadPDFModal" style="display: none;">
-            <ul class="pdf-options">
-                <li class="download-pdf-book">
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
                     <p>File</p>
                 </li>
                 <li class="download-pdf-file">
-                    <p>Book</p>
+                    <a href="_book/python.pdf" download><p style="color: white;">Book</p></a>
                 </li>
             </ul>
         </div>
@@ -220,11 +220,11 @@
 {% for item in theme_plugins_list %}
     <script src={{item}}></script>
 {% endfor %}
-<script src="_static/scripts.js"></script>
 <script>
     feather.replace()
     tippy('[data-tippy-content]');
 </script>
+<script src="_static/scripts.js"></script>
 
 {% if theme_google_analytics_id %}
 <script>
