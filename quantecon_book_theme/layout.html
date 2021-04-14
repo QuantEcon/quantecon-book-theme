@@ -231,7 +231,7 @@
 
     </div> <!-- .wrapper-->
 
-<script src="_static/plugins.js"></script>
+<script src="{{relative_dir}}_static/plugins.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 <script src="https://unpkg.com/@popperjs/core@2"></script>
@@ -240,7 +240,7 @@
 {% for item in theme_plugins_list %}
     <script src={{item}}></script>
 {% endfor %}
-<script src="_static/scripts.js"></script>
+<script src="{{relative_dir}}_static/scripts.js"></script>
 <script>
     feather.replace()
     tippy('[data-tippy-content]');

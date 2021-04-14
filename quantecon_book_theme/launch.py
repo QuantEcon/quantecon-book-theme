@@ -72,7 +72,7 @@ def add_hub_urls(
             book_relpath += "/"
         path_rel_repo = f"{book_relpath}{pagename}{extension}"
 
-        branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "master"
+        branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "main"
         # Now build infrastructure-specific links
         jupyterhub_url = launch_buttons.get("jupyterhub_url")
         binderhub_url = launch_buttons.get("binderhub_url")
@@ -173,5 +173,5 @@ def _is_notebook(app, pagename):
 def _get_branch(config_theme):
     branch = config_theme.get("repository_branch")
     if not branch:
-        branch = "master"
+        branch = "main"
     return branch
