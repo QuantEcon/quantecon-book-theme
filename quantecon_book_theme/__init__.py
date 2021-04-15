@@ -342,5 +342,4 @@ def setup(app):
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
 
-    app.add_js_file("quantecon-book-theme.js")
     app.add_directive("margin", Margin, override=True)
