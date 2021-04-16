@@ -105,9 +105,6 @@ def add_hub_urls(
             )
 
         if colab_url:
-            import pdb
-
-            pdb.set_trace()
             url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{path_rel_repo}"
             context["colab_url"] = url
             context["launch_buttons"].append(
