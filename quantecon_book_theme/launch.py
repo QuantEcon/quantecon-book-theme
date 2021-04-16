@@ -71,7 +71,7 @@ def add_hub_urls(
         book_relpath = config_theme.get("path_to_docs", "").strip("/")
         if book_relpath != "":
             book_relpath += "/"
-        path_rel_repo = f"{book_relpath}{pagename}{extension}"
+        path_rel_repo = f"{repo_subpath}{book_relpath}{pagename}{extension}"
 
         branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "main"
         # Now build infrastructure-specific links
