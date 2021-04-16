@@ -41,7 +41,7 @@ def add_hub_urls(
         repo_url = _get_repo_url(config_theme)
 
         # Parse the repo parts from the URL
-        org, repo = _split_repo_url(repo_url)
+        org, repo, repo_subpath = _split_repo_url(repo_url)
         if org is None and repo is None:
             # Skip the rest because the repo_url isn't right
             return
@@ -63,8 +63,9 @@ def add_hub_urls(
 
         # Check if we have a non-ipynb file, but an ipynb of same name exists
         # If so, we'll use the ipynb extension instead of the text extension
-        if extension != ".ipynb" and Path(path).with_suffix(".ipynb").exists():
-            extension = ".ipynb"
+        # if extension != ".ipynb" and Path(path).with_suffix(".ipynb").exists():
+        #     extension = ".ipynb"
+        extension = ".ipynb"  # since we have nb_repo url
 
         # Construct a path to the file relative to the repository root
         book_relpath = config_theme.get("path_to_docs", "").strip("/")
@@ -86,7 +87,7 @@ def add_hub_urls(
 
         context["binder_url"] = (
             f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
-            f"urlpath=tree/{ pagename }.ipynb"
+            f"urlpath=tree/{repo_subpath}{ pagename }.ipynb"
         )
         context["launch_buttons"].append(
             {"name": "BinderHub", "url": context["binder_url"]}
@@ -104,6 +105,9 @@ def add_hub_urls(
             )
 
         if colab_url:
+            import pdb
+
+            pdb.set_trace()
             url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{path_rel_repo}"
             context["colab_url"] = url
             context["launch_buttons"].append(
@@ -153,12 +157,13 @@ def _split_repo_url(url):
     if "github.com/" in url:
         end = url.split("github.com/")[-1]
         org, repo = end.split("/")[:2]
+        repo_subpath = "/".join(end.split("/")[2:]) + "/"
     else:
         SPHINX_LOGGER.warning(
             f"Currently Binder/JupyterHub repositories must be on GitHub, got {url}"
         )
-        org = repo = None
-    return org, repo
+        org = repo = repo_subpath = None
+    return org, repo, repo_subpath
 
 
 def _get_repo_url(config):
