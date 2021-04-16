@@ -71,7 +71,7 @@ def add_hub_urls(
         book_relpath = config_theme.get("path_to_docs", "").strip("/")
         if book_relpath != "":
             book_relpath += "/"
-        path_rel_repo = f"{repo_subpath}{book_relpath}{pagename}{extension}"
+        path_rel_repo = f"{book_relpath}{pagename}{extension}"
 
         branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "main"
         # Now build infrastructure-specific links
@@ -105,7 +105,7 @@ def add_hub_urls(
             )
 
         if colab_url:
-            url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{path_rel_repo}"
+            url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{repo_subpath}{path_rel_repo}"  # noqa: E501
             context["colab_url"] = url
             context["launch_buttons"].append(
                 {"name": "Colab", "url": context["colab_url"]}
