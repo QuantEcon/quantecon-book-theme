@@ -43,6 +43,11 @@ def add_hub_urls(
         # Parse the repo parts from the URL
         org, repo, repo_subpath = _split_repo_url(repo_url)
         repo_url = repo_url.replace("/" + repo_subpath, "")
+        if repo_subpath:
+            repo_subpath += (
+                "/"  # compatibility of code for cases which dont have this var
+            )
+
         if org is None and repo is None:
             # Skip the rest because the repo_url isn't right
             return
@@ -74,7 +79,7 @@ def add_hub_urls(
             book_relpath += "/"
         path_rel_repo = f"{book_relpath}{pagename}{extension}"
 
-        branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "main"
+        branch = config_theme["nb_branch"] if "nb_branch" in config_theme else "master"
         # Now build infrastructure-specific links
         jupyterhub_url = launch_buttons.get("jupyterhub_url")
         binderhub_url = launch_buttons.get("binderhub_url")
@@ -88,7 +93,7 @@ def add_hub_urls(
 
         context["binder_url"] = (
             f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
-            f"urlpath=tree/{repo_subpath}/{ pagename }.ipynb"
+            f"urlpath=tree/{repo_subpath}{ pagename }.ipynb"
         )
         context["launch_buttons"].append(
             {"name": "BinderHub", "url": context["binder_url"]}
@@ -97,7 +102,7 @@ def add_hub_urls(
         if jupyterhub_url:
             url = (
                 f"{jupyterhub_url}/jupyter/hub/user-redirect/git-pull?"
-                f"repo={repo_url}&urlpath={ui_pre}/{repo}/{repo_subpath}/{path_rel_repo}"  # noqa: E501
+                f"repo={repo_url}&urlpath={ui_pre}/{repo}/{repo_subpath}{path_rel_repo}"  # noqa: E501
                 f"&branch={branch}"
             )
             context["jupyterhub_url"] = url
@@ -106,7 +111,7 @@ def add_hub_urls(
             )
 
         if colab_url:
-            url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{repo_subpath}/{path_rel_repo}"  # noqa: E501
+            url = f"{colab_url}/github/{org}/{repo}/blob/{branch}/{repo_subpath}{path_rel_repo}"  # noqa: E501
             context["colab_url"] = url
             context["launch_buttons"].append(
                 {"name": "Colab", "url": context["colab_url"]}
