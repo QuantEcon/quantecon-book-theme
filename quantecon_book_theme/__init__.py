@@ -80,7 +80,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
         # Grab the raw toctree object and structure it so we can manipulate it
         toc_sphinx = context["generate_nav_html"](
             startdepth=level - 1,
-            maxdepth=-1,
+            maxdepth=level + 1,
             kind="sidebar",
             collapse=False,
             titles_only=True,
