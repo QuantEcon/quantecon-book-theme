@@ -1,22 +1,11 @@
 """A lightweight book theme based on the pydata sphinx theme."""
 from pathlib import Path
 
-try:
-    import importlib.resources as resources
-except ImportError:
-    # python < 3.7
-    import importlib_resources as resources
-
 from docutils.parsers.rst import directives
 from docutils import nodes
 from sphinx.util import logging
-from sphinx.util.fileutil import copy_asset
-from sphinx.util.osutil import ensuredir
 from bs4 import BeautifulSoup as bs
-from sass import compile as sass_compile
-import os
 
-from . import static as theme_static
 from .launch import add_hub_urls
 
 __version__ = "0.1.5"
@@ -30,74 +19,6 @@ def get_html_theme_path():
     """Return list of HTML theme paths."""
     theme_path = str(Path(__file__).parent.absolute())
     return theme_path
-
-
-def add_static_paths(app):
-    """Ensure CSS/JS is loaded."""
-    app.env.book_theme_resources_changed = False
-
-    output_static_folder = Path(app.outdir) / "_static"
-    theme_static_files = resources.contents(theme_static)
-
-    if (
-        app.config.html_theme_options.get("theme_dev_mode", False)
-        and output_static_folder.exists()
-    ):
-        # during development, the JS/CSS may change, if this is the case,
-        # we want to remove the old files and ensure that the new files are loaded
-        for path in output_static_folder.glob("quantecon-book-theme*"):
-            if path.name not in theme_static_files:
-                app.env.book_theme_resources_changed = True
-                path.unlink()
-        # note sphinx treats theme css different to regular css
-        # (it is specified in theme.conf), so we don't directly use app.add_css_file
-        for fname in resources.contents(theme_static):
-            if fname.endswith(".css"):
-                if not (output_static_folder / fname).exists():
-                    (output_static_folder / fname).write_bytes(
-                        resources.read_binary(theme_static, fname)
-                    )
-                    app.env.book_theme_resources_changed = True
-
-    # add javascript
-    for fname in resources.contents(theme_static):
-        if fname.endswith(".js"):
-            app.add_js_file(fname)
-
-
-def update_all(app, env):
-    """During development, if CSS/JS has changed, all files should be re-written,
-    to load the correct resources.
-    """
-    if (
-        app.config.html_theme_options.get("theme_dev_mode", False)
-        and env.book_theme_resources_changed
-    ):
-        return list(env.all_docs.keys())
-
-
-def add_static_path(app):
-    """Ensure CSS/JS is loaded."""
-    app.env.book_theme_resources_changed = False
-
-    static_path = Path(__file__).parent.joinpath("static").absolute()
-    app.config.html_static_path.append(str(static_path))
-
-    # Compile the css file if it's not been compiled already
-    compiled_css_file = static_path / "quantecon-book-theme.css"
-    if not compiled_css_file.exists():
-        source_dir = str(static_path.parent / "scss")
-        output_dir = str(static_path)
-        sass_compile(dirname=(source_dir, output_dir), output_style="compressed")
-
-    # copying plugins
-    if "plugins_list" in app.config.html_theme_options:
-        outdir = app.outdir + "/plugins"
-        ensuredir(outdir)
-        for i, asset in enumerate(app.config.html_theme_options["plugins_list"]):
-            assetname = Path(asset).name
-            copy_asset(app.confdir + "/" + asset, outdir)
-            app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
 
 
 def find_url_relative_to_root(pagename, relative_page, path_docs_source):
@@ -393,19 +314,13 @@ class Margin(directives.body.Sidebar):
 
 def setup(app):
     # Configuration for Juypter Book
+    app.setup_extension("sphinx_book_theme")
     app.connect("html-page-context", add_hub_urls)
-    app.connect("env-updated", update_all)
-
-    # add translations
-    package_dir = os.path.abspath(os.path.dirname(__file__))
-    locale_dir = os.path.join(package_dir, "translations", "locales")
-    app.add_message_catalog(MESSAGE_CATALOG_NAME, locale_dir)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
 
     app.add_js_file("quantecon-book-theme.js")
-    app.add_directive("margin", Margin, override=True)
 
     return {
         "parallel_read_safe": True,

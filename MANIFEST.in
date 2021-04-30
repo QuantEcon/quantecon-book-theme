@@ -4,6 +4,8 @@ exclude docs
 recursive-exclude docs *
 exclude tests
 recursive-exclude tests *
+exclude src
+recursive-exclude src *
 
 exclude .flake8
 exclude .pre-commit-config.yaml
@@ -11,14 +13,13 @@ exclude .readthedocs.yml
 exclude .boussole.json
 exclude noxfile.py
 exclude codecov.yml
+exclude tox.ini
 
 include LICENSE
 include MANIFEST.in
 include README.md
+include web-compile-config.yml
 
 include quantecon_book_theme/theme.conf
 recursive-include quantecon_book_theme *.html
-recursive-include quantecon_book_theme *.js
-recursive-include quantecon_book_theme *.png
-recursive-include quantecon_book_theme *.scss
-recursive-include quantecon_book_theme *.svg
+recursive-include quantecon_book_theme/static *.js *.png *.css *.svg
