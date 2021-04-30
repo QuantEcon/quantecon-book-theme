@@ -71,6 +71,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
         include_item_names=False,
         with_home_page=False,
         prev_section_numbers=None,
+        kind="sidebar",
     ):
         # Config stuff
         config = app.env.config
