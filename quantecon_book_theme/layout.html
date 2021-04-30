@@ -51,7 +51,7 @@
 
                     <div class="inner">
 
-                        {% set page_toc = get_page_toc_object() %}
+                        {% set page_toc = generate_toc_html() %}
 
                         {%- if page_toc | length >= 1 %}
                         <div class="page__toc-header">
