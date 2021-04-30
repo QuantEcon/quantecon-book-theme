@@ -53,7 +53,7 @@
 
                     <div class="inner">
 
-                        {% set page_toc = get_page_toc_object() %}
+                        {% set page_toc = generate_toc_html() %}
 
                         {%- if page_toc | length >= 1 %}
                         <div class="page__toc-header">
@@ -158,7 +158,7 @@
                 </div>
 
                 <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
-                    {{ generate_nav_html(include_item_names=True, with_home_page=theme_home_page_in_toc, kind="sidebar") }}
+                    {{ sbt_generate_nav_html(include_item_names=False, with_home_page=theme_home_page_in_toc) }}
                 </nav>
 
                 <div class="sidebar__footer">

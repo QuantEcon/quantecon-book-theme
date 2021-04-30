@@ -27,9 +27,8 @@ setup(
         "click",
         "setuptools",
         "libsass",
-        "pydata-sphinx-theme~=0.6.0",
-        "beautifulsoup4>=4.6.1,<5",
-        'importlib-resources>=3.0,<3.5; python_version < "3.7"',
+        "pydata-sphinx-theme~=0.6.1",
+        "beautifulsoup4",
     ],
     extras_require={
         "code_style": ["flake8<3.8.0,>=3.7.0", "black", "pre-commit~=2.7.0"],
