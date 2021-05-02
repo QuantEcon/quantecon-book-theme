@@ -1,10 +1,11 @@
 """A lightweight book theme based on the pydata sphinx theme."""
 from pathlib import Path
 
-from docutils.parsers.rst import directives
 from docutils import nodes
 from sphinx.util import logging
 from bs4 import BeautifulSoup as bs
+from sphinx.util.fileutil import copy_asset
+from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
@@ -41,6 +42,26 @@ def find_url_relative_to_root(pagename, relative_page, path_docs_source):
     path_from_page_dir = path_rel_from_page_dir.resolve()
     page_rel_root = path_from_page_dir.relative_to(source_dir).joinpath(path_rel.name)
     return page_rel_root
+
+
+def add_static_path(app):
+    """Ensure CSS/JS is loaded."""
+    static_path = Path(__file__).parent.joinpath("static").absolute()
+    app.config.html_static_path.append(str(static_path))
+
+    # copying plugins
+    if "plugins_list" in app.config.html_theme_options:
+        outdir = app.outdir + "/plugins"
+        ensuredir(outdir)
+        for i, asset in enumerate(app.config.html_theme_options["plugins_list"]):
+            assetname = Path(asset).name
+            copy_asset(app.confdir + "/" + asset, outdir)
+            app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
+
+    # Javascript
+    for fname in static_path.iterdir():
+        if ".js" in fname.suffix:
+            app.add_js_file(fname.name)
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
@@ -239,52 +260,6 @@ def add_to_context(app, pagename, templatename, context, doctree):
             context[key] = _string_or_bool(context[key])
 
 
-def update_thebe_config(app, env, docnames):
-    """Update thebe configuration with SBT-specific values"""
-    theme_options = env.config.html_theme_options
-    if theme_options.get("launch_buttons", {}).get("thebe") is True:
-        if not hasattr(env.config, "thebe_config"):
-            SPHINX_LOGGER.warning(
-                (
-                    "Thebe is activated but not added to extensions list. "
-                    "Add `sphinx_thebe` to your site's extensions list."
-                )
-            )
-            return
-        # Will be empty if it doesn't exist
-        thebe_config = env.config.thebe_config
-    else:
-        return
-
-    if not theme_options.get("launch_buttons", {}).get("thebe"):
-        return
-
-    # Update the repository branch and URL
-    # Assume that if there's already a thebe_config, then we don't want to over-ride
-    if "repository_url" not in thebe_config:
-        thebe_config["repository_url"] = theme_options.get("repository_url")
-    if "repository_branch" not in thebe_config:
-        branch = theme_options.get("repository_branch")
-        if not branch:
-            # Explicitly check in case branch is ""
-            branch = "master"
-        thebe_config["repository_branch"] = branch
-
-    # Update the selectors to find thebe-enabled cells
-    selector = thebe_config.get("selector", "") + ",.cell"
-    thebe_config["selector"] = selector.lstrip(",")
-
-    selector_input = (
-        thebe_config.get("selector_input", "") + ",.cell_input div.highlight"
-    )
-    thebe_config["selector_input"] = selector_input.lstrip(",")
-
-    selector_output = thebe_config.get("selector_output", "") + ",.cell_output"
-    thebe_config["selector_output"] = selector_output.lstrip(",")
-
-    env.config.thebe_config = thebe_config
-
-
 def _string_or_bool(var):
     if isinstance(var, str):
         return var.lower() == "true"
@@ -294,34 +269,13 @@ def _string_or_bool(var):
         return var is None
 
 
-class Margin(directives.body.Sidebar):
-    """Goes in the margin to the right of the page."""
-
-    optional_arguments = 1
-    required_arguments = 0
-
-    def run(self):
-        """Run the directive."""
-        if not self.arguments:
-            self.arguments = [""]
-        nodes = super().run()
-        nodes[0].attributes["classes"].append("margin")
-
-        # Remove the "title" node if it is empty
-        if not self.arguments:
-            nodes[0].children.pop(0)
-        return nodes
-
-
 def setup(app):
     # Configuration for Juypter Book
-    app.setup_extension("sphinx_book_theme")
     app.connect("html-page-context", add_hub_urls)
+    app.connect("builder-inited", add_static_path)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
-
-    app.add_js_file("quantecon-book-theme.js")
 
     return {
         "parallel_read_safe": True,

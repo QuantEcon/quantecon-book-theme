@@ -185,46 +185,46 @@ $('.btn__minus').on('click', function (event) {
     setFontSize();
 });
 
-// Declare MathJax Macros for the Appropriate Macros
-MathJax.Hub.Config({
-    TeX: {
-        Macros: {
-            Var: '\\mathop{\\mathrm{Var}}',
-            trace: '\\mathop{\\mathrm{trace}}',
-            argmax: '\\mathop{\\mathrm{arg\\,max}}',
-            argmin: '\\mathop{\\mathrm{arg\\,min}}',
-            proj: '\\mathop{\\mathrm{proj}}',
-            col: '\\mathop{\\mathrm{col}}',
-            Span: '\\mathop{\\mathrm{span}}',
-            epsilon: '\\varepsilon',
-            EE: '\\mathbb{E}',
-            PP: '\\mathbb{P}',
-            RR: '\\mathbb{R}',
-            NN: '\\mathbb{N}',
-            ZZ: '\\mathbb{Z}',
-            aA: '\\mathcal{A}',
-            bB: '\\mathcal{B}',
-            cC: '\\mathcal{C}',
-            dD: '\\mathcal{D}',
-            eE: '\\mathcal{E}',
-            fF: '\\mathcal{F}',
-            gG: '\\mathcal{G}',
-            hH: '\\mathcal{H}',
-        },
-    },
-});
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [
-            ['$', '$'],
-            ['\\(', '\\)'],
-        ],
-        processEscapes: true,
-    },
-    CommonHTML: {
-        scale: 92
-    },
-});
+// // Declare MathJax Macros for the Appropriate Macros
+// MathJax.Hub.Config({
+//     TeX: {
+//         Macros: {
+//             Var: '\\mathop{\\mathrm{Var}}',
+//             trace: '\\mathop{\\mathrm{trace}}',
+//             argmax: '\\mathop{\\mathrm{arg\\,max}}',
+//             argmin: '\\mathop{\\mathrm{arg\\,min}}',
+//             proj: '\\mathop{\\mathrm{proj}}',
+//             col: '\\mathop{\\mathrm{col}}',
+//             Span: '\\mathop{\\mathrm{span}}',
+//             epsilon: '\\varepsilon',
+//             EE: '\\mathbb{E}',
+//             PP: '\\mathbb{P}',
+//             RR: '\\mathbb{R}',
+//             NN: '\\mathbb{N}',
+//             ZZ: '\\mathbb{Z}',
+//             aA: '\\mathcal{A}',
+//             bB: '\\mathcal{B}',
+//             cC: '\\mathcal{C}',
+//             dD: '\\mathcal{D}',
+//             eE: '\\mathcal{E}',
+//             fF: '\\mathcal{F}',
+//             gG: '\\mathcal{G}',
+//             hH: '\\mathcal{H}',
+//         },
+//     },
+// });
+// MathJax.Hub.Config({
+//     tex2jax: {
+//         inlineMath: [
+//             ['$', '$'],
+//             ['\\(', '\\)'],
+//         ],
+//         processEscapes: true,
+//     },
+//     CommonHTML: {
+//         scale: 92
+//     },
+// });
 
 /* Collapsed code block */
 
