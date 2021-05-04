@@ -989,6 +989,9 @@ div.cell {
 .bd-sidebar .nav li>a {
   padding: 0px;
   font-size: 0.9rem;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 // div[class^='collapse'] .highlight {

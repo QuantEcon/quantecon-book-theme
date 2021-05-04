@@ -271,6 +271,8 @@ def _string_or_bool(var):
 
 def setup(app):
     # Configuration for Juypter Book
+    app.setup_extension("sphinx_book_theme")
+
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_static_path)
 
