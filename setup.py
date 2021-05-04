@@ -27,7 +27,7 @@ setup(
         "click",
         "setuptools",
         "libsass",
-        "pydata-sphinx-theme~=0.6.1",
+        "sphinx_book_theme~=0.1.0",
         "beautifulsoup4",
         'importlib-resources>=3.0,<3.5; python_version < "3.7"',
     ],
