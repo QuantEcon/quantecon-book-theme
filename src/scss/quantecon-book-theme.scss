@@ -663,6 +663,9 @@ tt {
         margin: 0.25rem 0;
         padding: 0;
 
+        .caption {
+          margin-top: 1rem !important;
+        }
         a {
           color: $color-body;
           opacity: 0.8;
@@ -986,11 +989,13 @@ div.cell {
   }
 }
 
-.bd-sidebar .nav li>a {
-  padding: 0px;
-  font-size: 0.9rem;
+.bd-sidebar .nav {
   &:hover {
     text-decoration: underline;
+  }
+  li>a {
+    padding: 0px;
+    font-size: 0.9rem;
   }
 }
 
