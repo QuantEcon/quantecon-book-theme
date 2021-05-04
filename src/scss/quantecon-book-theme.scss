@@ -282,6 +282,7 @@ tt {
   top: 0;
   width: 100%;
   padding: 0 1rem;
+  z-index: 2;
   background-color: #efefef;
   border-bottom: 1px solid #ccc;
 
@@ -603,6 +604,7 @@ tt {
   //position: absolute;
   top: 0px;
   left: 0px;
+  z-index: 1;
   background-color: #efefef;
   padding: 2rem;
   margin: 0;
