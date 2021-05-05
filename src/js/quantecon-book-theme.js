@@ -198,6 +198,24 @@ $(document).ready(() => {
         wrapper.appendChild(contentTables[i]);
     }
 
+    /* Download button dropdown */
+    if ( document.getElementById('downloadButton') ) {
+        const template = document.getElementById('downloadPDFModal');
+        template.style.display = 'block';
+        tippy('#downloadButton', {
+            content: template,
+            theme: 'light-border',
+            animation: 'shift-away',
+            inertia: true,
+            duration: [200,200],
+            arrow: true,
+            arrowType: 'round',
+            delay: [200, 200],
+            interactive: true,
+            trigger: "click"
+        });
+    }
+
     // Notebook Launcher popup
     if ( document.getElementById('settingsButton') ) {
         const template = document.getElementById('settingsModal');
