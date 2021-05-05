@@ -42,8 +42,8 @@ def add_hub_urls(
 
         # Parse the repo parts from the URL
         org, repo, repo_subpath = _split_repo_url(repo_url)
-        repo_url = repo_url.replace("/" + repo_subpath, "")
         if repo_subpath:
+            repo_url = repo_url.replace("/" + repo_subpath, "")
             repo_subpath += (
                 "/"  # compatibility of code for cases which dont have this var
             )
