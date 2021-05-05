@@ -197,24 +197,4 @@ $(document).ready(() => {
         contentTables[i].parentNode.insertBefore(wrapper, contentTables[i]);
         wrapper.appendChild(contentTables[i]);
     }
-    window.MathJax = {
-        tex: {
-            inlineMath: [
-                ['$', '$'],
-                ['\\(', '\\)'],
-            ],
-            processEscapes: true
-        },
-        chtml: {
-            scale: 0.92
-        },
-        options: {
-            menuOptions: {
-                settings: {
-                    renderer: 'SVG'
-                }
-            }
-        },
-        displayAlign: "center"
-    };
 })

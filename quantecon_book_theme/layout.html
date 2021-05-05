@@ -199,6 +199,37 @@
             touch: false,
         });
         feather.replace();
+        window.MathJax = {
+            startup: {
+                ready: () => {
+                console.log('MathJax is loaded, but not yet initialized');
+                MathJax.startup.defaultReady();
+                console.log('MathJax is initialized, and the initial typeset is queued');
+                }
+            },
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)'],
+                ],
+                processEscapes: true
+            },
+            chtml: {
+                scale: 0.92,
+                displayAlign: "center"
+            },
+            svg: {
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            options: {
+                menuOptions: {
+                    settings: {
+                        renderer: 'SVG'
+                    }
+                }
+            },
+        };
     </script>
 {%- endblock %}
 
