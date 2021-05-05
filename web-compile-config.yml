@@ -1,0 +1,13 @@
+web-compile:
+  sass:
+    files:
+      src/scss/quantecon-book-theme.scss: quantecon_book_theme/static/quantecon-book-theme.[hash].css
+    precision: 5
+    sourcemap: false
+    format: compressed
+  js:
+    files:
+      src/js/quantecon-book-theme.js: quantecon_book_theme/static/quantecon-book-theme.[hash].js
+  jinja:
+    files:
+      src/jinja/theme.conf.j2: quantecon_book_theme/theme.conf

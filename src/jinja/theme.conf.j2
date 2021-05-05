@@ -1,7 +1,7 @@
 # Note: this should only be changed in src/jinja/theme.conf.j2
 [theme]
 inherit = pydata_sphinx_theme
-stylesheet = quantecon-book-theme.81ced7c9c8e742383647ff9145dfaf9c.css
+stylesheet = {{ "src/scss/quantecon-book-theme.scss" | compiled_name }}
 
 [options]
 single_page = False
