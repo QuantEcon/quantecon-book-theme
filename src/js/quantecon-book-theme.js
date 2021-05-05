@@ -228,7 +228,6 @@ $(document).ready(() => {
         let url = document.getElementById("launcher-public-input").value
         let launchButton = document.getElementById("launchButton")
         launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
-        }
     }
 
 })

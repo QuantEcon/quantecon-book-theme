@@ -11,4 +11,4 @@ const contentTables=document.querySelectorAll('.page__content table');for(var i=
 if(document.getElementById('settingsButton')){const template=document.getElementById('settingsModal');template.style.display='block';tippy('#settingsButton',{content:template,theme:'light-border',animation:'shift-away',inertia:true,duration:[200,200],arrow:true,arrowType:'round',delay:[200,200],interactive:true,trigger:"click"});}
 window.onChangeListener=()=>{let url=document.getElementById("launcher-public-input").value
 let launchButton=document.getElementById("launchButton")
-launchButton.getElementsByTagName("a")[0].setAttribute("href",url)}}})
+launchButton.getElementsByTagName("a")[0].setAttribute("href",url)}})
