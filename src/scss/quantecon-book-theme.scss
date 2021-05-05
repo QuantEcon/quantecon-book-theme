@@ -282,6 +282,7 @@ tt {
   top: 0;
   width: 100%;
   padding: 0 1rem;
+  z-index: 2;
   background-color: #efefef;
   border-bottom: 1px solid #ccc;
 
@@ -603,6 +604,7 @@ tt {
   //position: absolute;
   top: 0px;
   left: 0px;
+  z-index: 1;
   background-color: #efefef;
   padding: 2rem;
   margin: 0;
@@ -660,7 +662,6 @@ tt {
       li {
         margin: 0.25rem 0;
         padding: 0;
-
         a {
           color: $color-body;
           opacity: 0.8;
@@ -678,6 +679,9 @@ tt {
       font-weight: normal;
       font-family: 'PT Serif', serif;
       //font-size: 1.7rem;
+    }
+    .caption {
+      margin-top: 1rem;
     }
   }
 
@@ -779,7 +783,7 @@ tt {
     .admonition-title {
       position: relative;
       margin: 0 -1rem;
-      padding: 0.25rem 1rem;
+      padding: 0.25rem 2rem;
       font-weight: 700;
       background-color: #0072bc26;
     }
@@ -935,7 +939,6 @@ tt {
   .MathJax {
     color: #333;
     margin: 2rem 0;
-    display: inline !important; // Fix to remove padding on focus
   }
 
   a .MathJax {
@@ -980,6 +983,16 @@ div.cell {
     div.cell_input {
         max-height: 24em;
         overflow-y: auto;
+    }
+  }
+}
+
+.bd-sidebar .nav {
+  li>a {
+    padding: 0px;
+    font-size: 0.9rem;
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

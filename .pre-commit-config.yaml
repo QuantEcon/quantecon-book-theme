@@ -30,3 +30,15 @@ repos:
     rev: "0.39"
     hooks:
     - id: check-manifest
+
+  - repo: https://github.com/executablebooks/web-compile
+    rev: v0.2.1
+    hooks:
+      - id: web-compile
+        files: >-
+            (?x)^(
+                web-compile-config.yml|
+                src/.*|
+                quantecon_book_theme/static/.*|
+                quantecon_book_theme/theme.conf
+            )$
