@@ -27,7 +27,7 @@ setup(
         "click",
         "setuptools",
         "libsass",
-        "pydata-sphinx-theme~=0.4.1",
+        "pydata-sphinx-theme~=0.6.1",
         "beautifulsoup4",
     ],
     extras_require={

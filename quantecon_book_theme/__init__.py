@@ -10,7 +10,7 @@ from sass import compile as sass_compile
 
 from .launch import add_hub_urls
 
-__version__ = "0.1.4"
+__version__ = "0.1.7"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ def find_url_relative_to_root(pagename, relative_page, path_docs_source):
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
-    def generate_nav_html(
+    def sbt_generate_nav_html(
         level=1,
         include_item_names=False,
         with_home_page=False,
@@ -78,8 +78,13 @@ def add_to_context(app, pagename, templatename, context, doctree):
             with_home_page = with_home_page.lower() == "true"
 
         # Grab the raw toctree object and structure it so we can manipulate it
-        toc_sphinx = context["toctree"](
-            maxdepth=-1, collapse=False, titles_only=True, includehidden=True
+        toc_sphinx = context["generate_nav_html"](
+            startdepth=level - 1,
+            maxdepth=level + 1,
+            kind="sidebar",
+            collapse=False,
+            titles_only=True,
+            includehidden=True,
         )
         toctree = bs(toc_sphinx, "html.parser")
 
@@ -136,7 +141,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
 
         return toctree.prettify()
 
-    context["generate_nav_html"] = generate_nav_html
+    context["sbt_generate_nav_html"] = sbt_generate_nav_html
 
     def generate_toc_html():
         """Return the within-page TOC links in HTML."""
