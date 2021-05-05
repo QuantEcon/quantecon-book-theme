@@ -45,7 +45,6 @@ setup(
             "sphinx-copybutton",
             "plotly",
             "sphinxcontrib-bibtex~=2.2",
-            "sphinx-thebe",
         ],
         "testing": [
             "myst_nb~=0.11.1",
@@ -53,7 +52,9 @@ setup(
             "pytest~=6.0.1",
             "pytest-cov",
             "beautifulsoup4",
+            "sphinx_thebe",
             "pytest-regressions~=2.0.1",
+            "sphinx_copybutton",
         ],
     },
     entry_points={
