@@ -995,6 +995,9 @@ div.cell {
       text-decoration: underline;
     }
   }
+  label {
+    display: none;
+  }
 }
 
 #settingsModal {
