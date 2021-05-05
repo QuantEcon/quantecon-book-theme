@@ -1,5 +1,6 @@
 """A lightweight book theme based on the pydata sphinx theme."""
 from pathlib import Path
+import os
 
 from docutils import nodes
 from sphinx.util import logging
@@ -184,6 +185,12 @@ def add_to_context(app, pagename, templatename, context, doctree):
     # default value is book.tex
     context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
     context["github_sourcefolder"] = get_github_src_folder(app)
+
+    # check if book pdf folder is present
+    if os.path.isdir(app.outdir + "/_pdf"):
+        context["pdf_book_path"] = (
+            app.outdir + "/_pdf/" + context["pdf_book_name"] + ".pdf"
+        )
 
     # Update the page title because HTML makes it into the page title occasionally
     if pagename in app.env.titles:

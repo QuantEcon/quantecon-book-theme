@@ -198,9 +198,11 @@
                 <li class="download-pdf-book" onClick="window.print()">
                     <p>Lecture (PDF)</p>
                 </li>
+                {% if pdf_book_path %}
                 <li class="download-pdf-file">
-                    <a href="_pdf/{{pdf_book_name}}.pdf" download><p style="color: white;">Book (PDF)</p></a>
+                    <a href="{{ pdf_book_path }}" download><p style="color: white;">Book (PDF)</p></a>
                 </li>
+                {%- endif %}
             </ul>
         </div>
         <div id="settingsModal" style="display: none;">
