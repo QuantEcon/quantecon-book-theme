@@ -85,3 +85,5 @@ html_theme_options = {
     # "extra_footer": "<a href='https://google.com'>Test</a>",
     # "extra_navbar": "<a href='https://google.com'>Test</a>",
 }
+bibtex_bibfiles = ["references.bib"]
+bibtex_reference_style = "author_year"

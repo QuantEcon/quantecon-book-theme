@@ -1,5 +1,11 @@
-{%- extends "basic/layout.html" %}
+{%- extends "pydata_sphinx_theme/layout.html" %}
 
+{% block css %}
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    {{ super() }}
+{% endblock %}
 {% block extrahead %}
 
 <!-- Normal Meta Tags -->
@@ -22,9 +28,7 @@
 <meta property="og:image" content="{{ theme_og_logo_url | e }}" />
 <meta property="og:description" content="{{ theme_description | e }}" />
 <meta property="og:site_name" content="{{ docstitle | e }}" />
-
 <meta name="theme-color" content="#ffffff" />
-
 {% endblock %}
 
 {# Silence the sidebar's, relbar's #}
@@ -51,7 +55,7 @@
 
                     <div class="inner">
 
-                        {% set page_toc = get_page_toc_object() %}
+                        {% set page_toc = generate_toc_html() %}
 
                         {%- if page_toc | length >= 1 %}
                         <div class="page__toc-header">
@@ -61,20 +65,7 @@
 
 
                         <nav id="bd-toc-nav" class="page__toc-nav">
-
-                            <ul class="nav section-nav flex-column">
-                                {% for item in page_toc recursive %}
-                                <li class="nav-item toc-entry toc-h{{ loop.depth + 1 }}">
-                                    <a href="{{ item.url }}" class="nav-link">{{ item.title }}</a>
-                                    {%- if item.children -%}
-                                    <ul class="nav section-nav flex-column">
-                                        {{ loop(item.children) }}
-                                    </ul>
-                                    {%- endif %}
-                                </li>
-                                {% endfor %}
-                            </ul>
-
+                            {{ page_toc }}
                             <p class="logo">
                                 {% if logo %}
                                     {% if theme_header_organisation_url %}
@@ -156,7 +147,7 @@
                 </div>
 
                 <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
-                    {{ generate_nav_html(include_item_names=True, with_home_page=theme_home_page_in_toc) }}
+                    {{ sbt_generate_nav_html(include_item_names=False, with_home_page=theme_home_page_in_toc) }}
                 </nav>
 
                 <div class="sidebar__footer">
@@ -230,35 +221,37 @@
         </div>
 
     </div> <!-- .wrapper-->
-
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
-<script src="{{relative_dir}}_static/plugins.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-{% for item in theme_plugins_list %}
-    <script src={{item}}></script>
-{% endfor %}
-<script src="{{relative_dir}}_static/scripts.js"></script>
-<script>
-    feather.replace()
-    tippy('[data-tippy-content]');
-</script>
-
-{% if theme_google_analytics_id %}
-<script>
-    window.ga = function () {
-        ga.q.push(arguments);
-    };
-    ga.q = [];
-    ga.l = +new Date();
-    ga("create", "{{ theme_google_analytics_id }}", "auto");
-    ga("set", "anonymizeIp", true);
-    ga("set", "transport", "beacon");
-    ga("send", "pageview");
-</script>
-<script src="https://www.google-analytics.com/analytics.js" async></script>
-{% endif %}
+    <script>
+        // Tooltips
+        tippy('[data-tippy-content]', {
+            touch: false,
+        });
+        feather.replace();
+        window.MathJax = {
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)'],
+                ],
+                processEscapes: true
+            },
+            chtml: {
+                scale: 0.92,
+                displayAlign: "center"
+            },
+            svg: {
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            options: {
+                menuOptions: {
+                    settings: {
+                        renderer: 'SVG'
+                    }
+                }
+            },
+        };
+    </script>
 {%- endblock %}
 
 {% block docs_toc %}
