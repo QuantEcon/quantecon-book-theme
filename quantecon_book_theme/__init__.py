@@ -121,23 +121,6 @@ def add_to_context(app, pagename, templatename, context, doctree):
                 toctree.new_tag("i", attrs={"class": ["fas", "fa-external-link-alt"]})
             )
 
-        # Remove children of all top-level pages unless config says to expand them
-        expand_sections = config.html_theme_options.get("expand_sections", [])
-        if isinstance(expand_sections, str):
-            expand_sections = []
-
-        for li in toctree("li", attrs={"class": "toctree-l1"}):
-            page_rel_root = find_url_relative_to_root(
-                pagename, li.find("a").attrs["href"], app.srcdir
-            )
-            if li.find("ul"):
-                do_collapse = (
-                    "active" not in li.attrs["class"]
-                    and str(page_rel_root) not in expand_sections
-                )
-                if do_collapse:
-                    li.find("ul").decompose()
-
         # Add bootstrap classes for first `ul` items
         for ul in toctree("ul", recursive=False):
             ul.attrs["class"] = ul.attrs.get("class", []) + ["nav", "sidenav_l1"]
