@@ -94,6 +94,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  img {
+    max-width: 100%;
+  }
+
   &.dark-theme {
     background: #333;
     color: #fff !important;
