@@ -1,35 +1,35 @@
 $(document).ready(() => {
 
     // Avoid `console` errors in browsers that lack a console.
-    (function() {
+    (function () {
         var method;
-        var noop = function () {};
+        var noop = function () { };
         var methods = [
-        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-        'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
+            'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+            'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+            'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+            'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
         ];
         var length = methods.length;
         var console = (window.console = window.console || {});
 
         while (length--) {
-        method = methods[length];
+            method = methods[length];
 
-        // Only stub undefined methods.
-        if (!console[method]) {
-            console[method] = noop;
-        }
+            // Only stub undefined methods.
+            if (!console[method]) {
+                console[method] = noop;
+            }
         }
     }());
 
     // Place any jQuery/helper plugins in here.
 
     var $window = $(window),
-    $head = $('head'),
-    $body = $('body'),
-    $sidebar = $('.sidebar'),
-    $sidebarToggle = $('.btn__sidebar');
+        $head = $('head'),
+        $body = $('body'),
+        $sidebar = $('.sidebar'),
+        $sidebarToggle = $('.btn__sidebar');
 
     function setContrast() {
         var setContrast = localStorage.setContrast;
@@ -199,7 +199,7 @@ $(document).ready(() => {
     }
 
     /* Download button dropdown */
-    if ( document.getElementById('downloadButton') ) {
+    if (document.getElementById('downloadButton')) {
         const template = document.getElementById('downloadPDFModal');
         template.style.display = 'block';
         tippy('#downloadButton', {
@@ -207,7 +207,7 @@ $(document).ready(() => {
             theme: 'light-border',
             animation: 'shift-away',
             inertia: true,
-            duration: [200,200],
+            duration: [200, 200],
             arrow: true,
             arrowType: 'round',
             delay: [200, 200],
@@ -217,20 +217,20 @@ $(document).ready(() => {
     }
 
     // Notebook Launcher popup
-    if ( document.getElementById('settingsButton') ) {
+    if (document.getElementById('settingsButton')) {
         const template = document.getElementById('settingsModal');
         template.style.display = 'block';
         tippy('#settingsButton', {
-        content: template,
-        theme: 'light-border',
-        animation: 'shift-away',
-        inertia: true,
-        duration: [200,200],
-        arrow: true,
-        arrowType: 'round',
-        delay: [200, 200],
-        interactive: true,
-        trigger: "click"
+            content: template,
+            theme: 'light-border',
+            animation: 'shift-away',
+            inertia: true,
+            duration: [200, 200],
+            arrow: true,
+            arrowType: 'round',
+            delay: [200, 200],
+            interactive: true,
+            trigger: "click"
         });
     }
 
@@ -247,5 +247,71 @@ $(document).ready(() => {
         let launchButton = document.getElementById("launchButton")
         launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
     }
+
+    // Tooltips
+    tippy('[data-tippy-content]', {
+        touch: false,
+    });
+
+    feather.replace();
+
+    window.MathJax = {
+        tex: {
+            inlineMath: [
+                ['$', '$'],
+                ['\\(', '\\)'],
+            ],
+            processEscapes: true,
+            Macros: {
+                Var: '\\mathop{\\mathrm{Var}}',
+                trace: '\\mathop{\\mathrm{trace}}',
+                argmax: '\\mathop{\\mathrm{arg\\,max}}',
+                argmin: '\\mathop{\\mathrm{arg\\,min}}',
+                proj: '\\mathop{\\mathrm{proj}}',
+                col: '\\mathop{\\mathrm{col}}',
+                Span: '\\mathop{\\mathrm{span}}',
+                epsilon: '\\varepsilon',
+                EE: '\\mathbb{E}',
+                PP: '\\mathbb{P}',
+                RR: '\\mathbb{R}',
+                NN: '\\mathbb{N}',
+                ZZ: '\\mathbb{Z}',
+                aA: '\\mathcal{A}',
+                bB: '\\mathcal{B}',
+                cC: '\\mathcal{C}',
+                dD: '\\mathcal{D}',
+                eE: '\\mathcal{E}',
+                fF: '\\mathcal{F}',
+                gG: '\\mathcal{G}',
+                hH: '\\mathcal{H}',
+            },
+        },
+        chtml: {
+            scale: 0.92,
+            displayAlign: "center"
+        },
+        svg: {
+            scale: 0.92,
+            displayAlign: "center",
+        },
+        options: {
+            menuOptions: {
+                settings: {
+                    renderer: 'SVG'
+                }
+            }
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$', '$'],
+                ['\\(', '\\)'],
+            ],
+            processEscapes: true,
+        },
+        CommonHTML: {
+            scale: 92
+        },
+        jax: ["input/TeX", "output/SVG"],
+    };
 
 })

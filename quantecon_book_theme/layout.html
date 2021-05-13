@@ -234,37 +234,7 @@
         </div>
 
     </div> <!-- .wrapper-->
-    <script>
-        // Tooltips
-        tippy('[data-tippy-content]', {
-            touch: false,
-        });
-        feather.replace();
-        window.MathJax = {
-            tex: {
-                inlineMath: [
-                    ['$', '$'],
-                    ['\\(', '\\)'],
-                ],
-                processEscapes: true
-            },
-            chtml: {
-                scale: 0.92,
-                displayAlign: "center"
-            },
-            svg: {
-                scale: 0.92,
-                displayAlign: "center",
-            },
-            options: {
-                menuOptions: {
-                    settings: {
-                        renderer: 'SVG'
-                    }
-                }
-            },
-        };
-    </script>
+
 {%- endblock %}
 
 {% block docs_toc %}
