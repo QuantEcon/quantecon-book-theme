@@ -126,6 +126,13 @@ body {
       background: #222 !important;
     }
 
+    svg {
+      g {
+        fill: #fff !important;
+        stroke: #fff !important;
+      }
+    }
+
     .toolbar,
     .drawer,
     .sidebar,
