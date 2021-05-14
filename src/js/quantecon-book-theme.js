@@ -248,6 +248,12 @@ $(window).on('load', () => {
         launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
     }
 
+    // Tooltips
+    tippy('[data-tippy-content]', {
+        touch: false,
+    });
+    feather.replace();
+
     window.MathJax = {
         loader: {load: ['[tex]/boldsymbol']},
         tex: {packages: {'[+]': ['boldsymbol']}},
