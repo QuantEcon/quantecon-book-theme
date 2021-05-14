@@ -164,7 +164,7 @@
 
                 <ul class="toolbar__main">
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
-                    <li data-tippy-content="Home"><a href="{{ master_doc }}.html"><i data-feather="home"></i></a></li>
+                    <li data-tippy-content="Home"><a href="{{ master_url }}"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="{{theme_header_organisation_url}}" title="{{html_title}}"><span class="show-for-sr">{{ theme_header_organisation}}</span></a></li>
                     <!-- <li class="btn__search">
                         <form action="{{ pathto('search') }}" method="get">
@@ -240,30 +240,6 @@
             touch: false,
         });
         feather.replace();
-        window.MathJax = {
-            tex: {
-                inlineMath: [
-                    ['$', '$'],
-                    ['\\(', '\\)'],
-                ],
-                processEscapes: true
-            },
-            chtml: {
-                scale: 0.92,
-                displayAlign: "center"
-            },
-            svg: {
-                scale: 0.92,
-                displayAlign: "center",
-            },
-            options: {
-                menuOptions: {
-                    settings: {
-                        renderer: 'SVG'
-                    }
-                }
-            },
-        };
     </script>
 {%- endblock %}
 

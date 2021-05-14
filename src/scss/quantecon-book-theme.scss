@@ -94,6 +94,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  img {
+    max-width: 100%;
+  }
+
   &.dark-theme {
     background: #333;
     color: #fff !important;
@@ -102,7 +106,8 @@ body {
     h1,
     h2,
     h3,
-    h4 {
+    h4,
+    p {
       color: #fff !important;
     }
 
@@ -119,6 +124,13 @@ body {
 
     .highlight {
       background: #222 !important;
+    }
+
+    svg {
+      g {
+        fill: #fff !important;
+        stroke: #fff !important;
+      }
     }
 
     .toolbar,
