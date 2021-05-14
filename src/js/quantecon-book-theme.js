@@ -1,4 +1,4 @@
-$(document).ready(() => {
+$(window).on('load', () => {
 
     // Avoid `console` errors in browsers that lack a console.
     (function() {
@@ -247,5 +247,32 @@ $(document).ready(() => {
         let launchButton = document.getElementById("launchButton")
         launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
     }
+
+    window.MathJax = {
+        loader: {load: ['[tex]/boldsymbol']},
+        tex: {packages: {'[+]': ['boldsymbol']}},
+        tex: {
+            inlineMath: [
+                ['$', '$'],
+                ['\\(', '\\)'],
+            ],
+            processEscapes: true
+        },
+        chtml: {
+            scale: 0.92,
+            displayAlign: "center"
+        },
+        svg: {
+            scale: 0.92,
+            displayAlign: "center",
+        },
+        options: {
+            menuOptions: {
+                settings: {
+                    renderer: 'SVG'
+                }
+            }
+        },
+    };
 
 })
