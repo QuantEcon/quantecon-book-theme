@@ -1032,6 +1032,16 @@ div.cell {
   }
 }
 
+blockquote {
+  padding: 0.5rem 2rem;
+  margin: 1rem 0;
+  border-left: 5px solid #1665ad;
+  p {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+  }
+}
+
 // div[class^='collapse'] .highlight {
 //   height: 22.4rem;
 //   overflow: hidden;
