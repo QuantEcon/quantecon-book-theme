@@ -164,18 +164,28 @@ $(window).on('load', () => {
 
     /* Collapsed code block */
 
-    const collapsableCodeBlocks = document.querySelectorAll("div[class^='collapse'] .highlight");
+    const collapsableCodeBlocks = document.querySelectorAll("div[class^='cell tag_collapse']");
     for (var i = 0; i < collapsableCodeBlocks.length; i++) {
+        const collapsableCodeBlocksH = collapsableCodeBlocks[i].querySelectorAll(".highlight")[0]
+        collapsableCodeBlocks[i].classList.forEach(el => {
+            if(el.includes("tag_collapse")) {
+                index = el.indexOf("-")
+                height = el.substring(index+1)
+                if(height && !isNaN(height)){
+                    collapsableCodeBlocksH.style.height = parseInt(height) + 0.5 + "em" // 0.5 to account for padding
+                }
+            }
+        })
         const toggleContainer = document.createElement('div');
         toggleContainer.innerHTML = '<a href="#" class="toggle toggle-less" style="display:none;"><span class="icon icon-angle-double-up"></span><em>Show less...</em></a><a href="#" class="toggle toggle-more"><span class="icon icon-angle-double-down"></span><em>Show more...</em></a>';
-        collapsableCodeBlocks[i].parentNode.insertBefore(toggleContainer, collapsableCodeBlocks[i].nextSibling);
+        collapsableCodeBlocksH.parentNode.insertBefore(toggleContainer, collapsableCodeBlocksH.nextSibling);
     }
 
-    const collapsableCodeToggles = document.querySelectorAll("div[class^='collapse'] .toggle");
+    const collapsableCodeToggles = document.querySelectorAll("div[class^='cell tag_collapse'] .toggle");
     for (var i = 0; i < collapsableCodeToggles.length; i++) {
         collapsableCodeToggles[i].addEventListener('click', function (e) {
             e.preventDefault();
-            var codeBlock = this.closest('div[class^="collapse"]');
+            var codeBlock = this.closest('div[class^="cell tag_collapse"]');
             if (codeBlock.classList.contains('expanded')) {
                 codeBlock.classList.remove('expanded');
                 this.style.display = 'none';
