@@ -238,6 +238,9 @@ $(window).on('load', () => {
     window.onChangeListener = () => {
         let private = document.getElementById("launcher-private-input").value
         if ($(this.event.currentTarget)[0].getAttribute("id").indexOf("private") > -1) {
+            if (!private.includes("http") && !private.includes("https")) {
+                private = "http://" + private
+            }
             let pagename = document.getElementsByClassName("page")[0].getAttribute("id")
             let repo = document.getElementById("launcher-private-input").dataset.repourl
             let urlpath = document.getElementById("launcher-private-input").dataset.urlpath
