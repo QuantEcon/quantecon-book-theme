@@ -236,16 +236,19 @@ $(window).on('load', () => {
 
     // onchangeListener for launcher popup
     window.onChangeListener = () => {
-        // let private = document.getElementById("launcher-private-input").value
-        // if ($(this.event.currentTarget)[0].getAttribute("id").indexOf("private") > -1) {
-        //     let pagename = document.getElementsByClassName("page")[0].getAttribute("id")
-        //     const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=https://github.com/QuantEcon/quantecon-notebooks-datascience&urlpath=lab/tree/quantecon-notebooks-datascience/";
-        //     url = private + repoPrefix + pagename + ".ipynb";
-        //     launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
-        // } else {
-        let url = document.getElementById("launcher-public-input").value
-        let launchButton = document.getElementById("launchButton")
-        launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
+        let private = document.getElementById("launcher-private-input").value
+        if ($(this.event.currentTarget)[0].getAttribute("id").indexOf("private") > -1) {
+            let pagename = document.getElementsByClassName("page")[0].getAttribute("id")
+            let repo = document.getElementById("launcher-private-input").dataset.repourl
+            let urlpath = document.getElementById("launcher-private-input").dataset.urlpath
+            const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repo + "&urlpath=" + urlpath;
+            url = private + repoPrefix + pagename + ".ipynb";
+            launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
+        } else {
+            let url = document.getElementById("launcher-public-input").value
+            let launchButton = document.getElementById("launchButton")
+            launchButton.getElementsByTagName("a")[0].setAttribute("href", url)
+        }
     }
 
     // Tooltips
