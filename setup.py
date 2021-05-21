@@ -29,6 +29,7 @@ setup(
         "libsass",
         "sphinx_book_theme~=0.1.0",
         "beautifulsoup4",
+        "web-compile",
         'importlib-resources>=3.0,<3.5; python_version < "3.7"',
     ],
     extras_require={

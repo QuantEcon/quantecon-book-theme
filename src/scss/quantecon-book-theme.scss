@@ -971,6 +971,55 @@ tt {
     }
   }
 
+  div[class^='cell tag_collapse'] {
+    .toggle {
+      display: block;
+      border: 1px solid #ddd;
+      border-width: 0px 1px 1px 1px;
+      padding: 0.5rem 25px;
+      outline: 0;
+      position: relative;
+      text-align: center;
+      &:hover {
+        text-decoration: none;
+        background: #f7f7f7;
+      }
+      span {
+        color: #444;
+        position: relative;
+        top: 3px;
+        left: -5px;
+      }
+      em {
+        font-style: normal;
+      }
+    }
+    .highlight {
+      height: 22.4rem;
+      overflow: hidden;
+      margin-bottom: 0;
+      &:after {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+        background: url(/_static/img/code-block-fade.png) repeat-x bottom left;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &.expanded {
+      .highlight {
+        height: auto;
+        &:after {
+          content: none;
+        }
+      }
+    }
+  }
+
   .cell_output {
      img {
       display: block;
