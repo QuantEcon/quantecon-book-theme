@@ -183,7 +183,7 @@
                     {%- if theme_nb_repository_url %}
                     <li data-tippy-content="Launch Notebook" id="launchButton"><a href="{{default_server}}" target="_blank"><i data-feather="play-circle"></i></a></li>
                     {%- if show_settings %}
-                        <li class="settings-button" id="settingsButton"><i data-feather="settings"></i></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="settings"></i></div></li>
                     {%- endif %}
                     {%- endif %}
                     <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
@@ -218,6 +218,7 @@
                 <i class="fas fa-check-circle"></i>
             </li> -->
             </ul>
+            <p class="launch"><a href="#" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
         </div>
 
     </div> <!-- .wrapper-->
