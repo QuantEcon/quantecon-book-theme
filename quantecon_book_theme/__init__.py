@@ -1,5 +1,6 @@
 """A lightweight book theme based on the pydata sphinx theme."""
 from pathlib import Path
+import os
 
 from docutils import nodes
 from sphinx.util import logging
@@ -9,7 +10,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.1.7"
+__version__ = "0.2.1"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -65,13 +66,14 @@ def add_static_path(app):
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
+    """ Functions and variable additions to context."""
+
     def sbt_generate_nav_html(
         level=1,
         include_item_names=False,
         with_home_page=False,
     ):
         # Config stuff
-        config = app.env.config
         if isinstance(with_home_page, str):
             with_home_page = with_home_page.lower() == "true"
 
@@ -92,14 +94,9 @@ def add_to_context(app, pagename, templatename, context, doctree):
 
         # Add the master_doc page as the first item if specified
         if with_home_page:
-            # Pull metadata about the master doc
-            master_doc = config["master_doc"]
-            master_doctree = app.env.get_doctree(master_doc)
-            master_url = context["pathto"](master_doc)
-            master_title = list(master_doctree.traverse(nodes.title))[0].astext()
+            master_title = master_doctree.traverse(nodes.title)[0].astext()
             if len(master_title) == 0:
                 raise ValueError(f"Landing page missing a title: {master_doc}")
-            master_title = master_title[0].astext()
             li_class = "toctree-l1"
             if context["pagename"] == master_doc:
                 li_class += " current"
@@ -126,8 +123,6 @@ def add_to_context(app, pagename, templatename, context, doctree):
             ul.attrs["class"] = ul.attrs.get("class", []) + ["nav", "sidenav_l1"]
 
         return toctree.prettify()
-
-    context["sbt_generate_nav_html"] = sbt_generate_nav_html
 
     def generate_toc_html():
         """Return the within-page TOC links in HTML."""
@@ -169,8 +164,6 @@ def add_to_context(app, pagename, templatename, context, doctree):
             out = ""
         return out
 
-    context["generate_toc_html"] = generate_toc_html
-
     def get_github_src_folder(app):
         if "github_repo" in context:
             github_repo = context["github_repo"]
@@ -181,7 +174,22 @@ def add_to_context(app, pagename, templatename, context, doctree):
                 return "/tree/" + branch + folder
         return ""
 
+    # Pull metadata about the master doc
+    master_doc = app.config["master_doc"]
+    master_doctree = app.env.get_doctree(master_doc)
+    master_url = context["pathto"](master_doc)
+    context["master_url"] = master_url
+
+    # default value is book.tex
+    context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
     context["github_sourcefolder"] = get_github_src_folder(app)
+
+    context["sbt_generate_nav_html"] = sbt_generate_nav_html
+    context["generate_toc_html"] = generate_toc_html
+
+    # check if book pdf folder is present
+    if os.path.isdir(app.outdir + "/_pdf"):
+        context["pdf_book_path"] = "_pdf/" + context["pdf_book_name"] + ".pdf"
 
     # Update the page title because HTML makes it into the page title occasionally
     if pagename in app.env.titles:

@@ -95,6 +95,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  img {
+    max-width: 100%;
+  }
+
   &.dark-theme {
     background: #333;
     color: #fff !important;
@@ -103,7 +107,8 @@ body {
     h1,
     h2,
     h3,
-    h4 {
+    h4,
+    p {
       color: #fff !important;
     }
 
@@ -120,6 +125,13 @@ body {
 
     .highlight {
       background: #222 !important;
+    }
+
+    svg {
+      g {
+        fill: #fff !important;
+        stroke: #fff !important;
+      }
     }
 
     .toolbar,
@@ -145,6 +157,10 @@ body {
         -ms-filter: invert(100%) !important;
         -webkit-filter: invert(100%) hue-rotate(-180deg) !important;
       }
+    }
+
+    .reference.external, .reference.internal {
+      font-weight: 800;
     }
   }
 }
@@ -957,6 +973,55 @@ tt {
     }
   }
 
+  div[class^='cell tag_collapse'] {
+    .toggle {
+      display: block;
+      border: 1px solid #ddd;
+      border-width: 0px 1px 1px 1px;
+      padding: 0.5rem 25px;
+      outline: 0;
+      position: relative;
+      text-align: center;
+      &:hover {
+        text-decoration: none;
+        background: #f7f7f7;
+      }
+      span {
+        color: #444;
+        position: relative;
+        top: 3px;
+        left: -5px;
+      }
+      em {
+        font-style: normal;
+      }
+    }
+    .highlight {
+      height: 22.4rem;
+      overflow: hidden;
+      margin-bottom: 0;
+      &:after {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+        background: url(/_static/img/code-block-fade.png) repeat-x bottom left;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &.expanded {
+      .highlight {
+        height: auto;
+        &:after {
+          content: none;
+        }
+      }
+    }
+  }
+
   .cell_output {
      img {
       display: block;
@@ -999,6 +1064,36 @@ div.cell {
   }
   label {
     display: none;
+  }
+}
+
+#settingsModal {
+
+  .modal-title {
+    text-align: center;
+  }
+
+  p {
+    color: white;
+    font-size: 1em;
+    margin: 0.5rem 0rem;
+  }
+}
+
+#downloadPDFModal {
+  p {
+    color: white;
+    margin: 0.5rem 0rem;
+  }
+}
+
+blockquote {
+  padding: 0.5rem 2rem;
+  margin: 1rem 0;
+  border-left: 5px solid #1665ad;
+  p {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
   }
 }
 
