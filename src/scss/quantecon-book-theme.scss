@@ -169,6 +169,13 @@ body {
   scroll-margin-top: 60px;
 }
 
+p {
+  margin-bottom: revert;
+  margin-top: revert;
+  font-size: revert;
+  color: revert;
+}
+
 h1 {
   font-weight: 900;
   font-size: 3rem;
