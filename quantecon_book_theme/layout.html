@@ -181,9 +181,10 @@
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/{{ pagename }}.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     {%- if theme_nb_repository_url %}
+                    {% if launch_buttons is defined and launch_buttons|length > 1 %}
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                    {%- else %}
                     <li data-tippy-content="Launch Notebook" id="launchButton"><a href="{{default_server}}" target="_blank"><i data-feather="play-circle"></i></a></li>
-                    {%- if show_settings %}
-                        <li class="settings-button" id="settingsButton"><i data-feather="settings"></i></li>
                     {%- endif %}
                     {%- endif %}
                     {%- if pdf_book_path %}
