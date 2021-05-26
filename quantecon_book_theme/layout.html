@@ -219,7 +219,7 @@
             <ul class="modal-servers">
             <li class="active launcher-public">
                 <span class="label">Public</span>
-                <select id="launcher-public-input" onchange="onChangeListener()">
+                <select id="launcher-public-input">
                 {% for item in launch_buttons%}
                     <option value="{{item.url}}">{{item.name}}</option>
                 {% endfor %}
@@ -228,7 +228,7 @@
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="{{theme_nb_repository_url}}" data-urlpath="{{jupyterhub_urlpath}}" onchange="onChangeListener()">
+                <input type="text" id="launcher-private-input" data-repourl="{{theme_nb_repository_url}}" data-urlpath="{{jupyterhub_urlpath}}">
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
@@ -282,13 +282,20 @@
                   localStorage.launcherPrivate = launcherPrivateValue;
                   setLaunchServer();
                 });
-                const notebookPath = document.getElementById('nb_filname_with_path').textContent;
+
+                const pageName = "{{pagename}}";
+                const repoURL = "{{theme_nb_repository_url}}";
+                const urlPath = "{{jupyterhub_urlpath}}";
+
+                //const notebookPath = document.getElementById('nb_filname_with_path').textContent;
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
                 // Function to update the "Launch Notebook" link href
                 function setLaunchServer(){
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=https://github.com/QuantEcon/quantecon-notebooks-datascience&urlpath=lab/tree/quantecon-notebooks-datascience/";
-                    launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix + notebookPath;
+                    //const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=https://github.com/QuantEcon/quantecon-notebooks-datascience&urlpath=lab/tree/quantecon-notebooks-datascience/";
+                    const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlpath;
+                    //url = private + repoPrefix + pagename + ".ipynb";
+                    launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix + pageName;
                   } else if ( localStorage.launcherType == 'launcher-public' ){
                     launchNotebookLinkURL = localStorage.launcherPublic + notebookPath;
                   }
