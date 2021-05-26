@@ -1121,6 +1121,9 @@ blockquote {
       &.active {
         border-color: #1665ad;
         background: rgba(22, 101, 173, 0.15);
+        i {
+          color: #1665ad;
+        }
       }
       .label {
         flex-shrink: 0;
