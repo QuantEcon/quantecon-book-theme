@@ -287,17 +287,21 @@
                 const repoURL = "{{theme_nb_repository_url}}";
                 const urlPath = "{{jupyterhub_urlpath}}";
 
+                console.log( "pageName = {{pagename}}");
+                console.log( "repoURL = {{theme_nb_repository_url}}");
+                console.log( "urlPath = {{jupyterhub_urlpath}}");
+
                 //const notebookPath = document.getElementById('nb_filname_with_path').textContent;
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
                 // Function to update the "Launch Notebook" link href
                 function setLaunchServer(){
                   if ( localStorage.launcherType == 'launcher-private' ) {
                     //const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=https://github.com/QuantEcon/quantecon-notebooks-datascience&urlpath=lab/tree/quantecon-notebooks-datascience/";
-                    const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlPath;
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlPath;
                     //url = private + repoPrefix + pagename + ".ipynb";
                     launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix + pageName;
                   } else if ( localStorage.launcherType == 'launcher-public' ){
-                    launchNotebookLinkURL = localStorage.launcherPublic + pageName + ".ipynb";;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
                   }
                   launchNotebookLink.href = launchNotebookLinkURL;
                 }
