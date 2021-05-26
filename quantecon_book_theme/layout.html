@@ -293,11 +293,11 @@
                 function setLaunchServer(){
                   if ( localStorage.launcherType == 'launcher-private' ) {
                     //const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=https://github.com/QuantEcon/quantecon-notebooks-datascience&urlpath=lab/tree/quantecon-notebooks-datascience/";
-                    const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlpath;
+                    const repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlPath;
                     //url = private + repoPrefix + pagename + ".ipynb";
                     launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix + pageName;
                   } else if ( localStorage.launcherType == 'launcher-public' ){
-                    launchNotebookLinkURL = localStorage.launcherPublic + notebookPath;
+                    launchNotebookLinkURL = localStorage.launcherPublic + pageName + ".ipynb";;
                   }
                   launchNotebookLink.href = launchNotebookLinkURL;
                 }
