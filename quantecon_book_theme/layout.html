@@ -291,8 +291,8 @@
                 // Function to update the "Launch Notebook" link href
                 function setLaunchServer(){
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlPath + pageName + ".ipynb";
-                    launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix + pageName;
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlPath;
+                    launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix + pageName + ".ipynb";
                   } else if ( localStorage.launcherType == 'launcher-public' ){
                     launchNotebookLinkURL = localStorage.launcherPublic;
                   }
