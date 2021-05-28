@@ -262,6 +262,12 @@
                 }
                 const launcherPublic = document.getElementById('launcher-public-input');
                 const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "{{pagename}}";
+                const repoURL = "{{theme_nb_repository_url}}";
+                const urlPath = "{{jupyterhub_urlpath}}";
+                const branch = "{{repo_branch}}"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
                 // Highlight public server option if previous selection exists
                 if (typeof localStorage.launcherPublic !== 'undefined') {
                   launcherPublic.value = localStorage.launcherPublic;
@@ -283,22 +289,23 @@
                   setLaunchServer();
                 });
 
-                const pageName = "{{pagename}}";
-                const repoURL = "{{theme_nb_repository_url}}";
-                const urlPath = "{{jupyterhub_urlpath}}";
-                const branch = "{{repo_branch}}"
-                const launchNotebookLink = document.getElementById('advancedLaunchButton');
-
                 // Function to update the "Launch Notebook" link href
                 function setLaunchServer(){
+                  launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
                     let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
                     if (!privateServer.includes("http")) {
                         privateServer = "http://" + privateServer
                     }
                     launchNotebookLinkURL = privateServer + repoPrefix;
-                  } else if ( localStorage.launcherType == 'launcher-public' ){
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
                     launchNotebookLinkURL = localStorage.launcherPublic;
                   }
                   launchNotebookLink.href = launchNotebookLinkURL;
