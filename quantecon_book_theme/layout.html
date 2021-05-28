@@ -294,13 +294,13 @@
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
                     let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
-                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")
                         launchNotebookLink.style.background = "grey"
                         return
                     }
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
                     if (!privateServer.includes("http")) {
                         privateServer = "http://" + privateServer
                     }
