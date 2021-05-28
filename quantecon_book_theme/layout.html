@@ -308,7 +308,7 @@
                   } else if ( localStorage.launcherType == 'launcher-public' ) {
                     launchNotebookLinkURL = localStorage.launcherPublic;
                   }
-                  launchNotebookLink.href = launchNotebookLinkURL;
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
                 }
                 // Check if user has previously selected a server
                 if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
