@@ -228,7 +228,7 @@
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="{{theme_nb_repository_url}}" data-urlpath="{{jupyterhub_urlpath}}">
+                <input type="text" id="launcher-private-input" data-repourl="{{theme_nb_repository_url}}" data-urlpath="{{jupyterhub_urlpath}}" data-branch={{repo_branch}}>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
@@ -286,13 +286,14 @@
                 const pageName = "{{pagename}}";
                 const repoURL = "{{theme_nb_repository_url}}";
                 const urlPath = "{{jupyterhub_urlpath}}";
+                const branch = "{{repo_branch}}"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 
                 // Function to update the "Launch Notebook" link href
                 function setLaunchServer(){
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&urlpath=" + urlPath;
-                    launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix + pageName + ".ipynb";
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix;
                   } else if ( localStorage.launcherType == 'launcher-public' ){
                     launchNotebookLinkURL = localStorage.launcherPublic;
                   }

@@ -99,15 +99,16 @@ def add_hub_urls(
             {"name": "BinderHub", "url": context["binder_url"]}
         )
 
+        urlpath = ui_pre + "/" + repo + "/" + repo_subpath + path_rel_repo
+        url = (
+            f"{jupyterhub_url}/jupyter/hub/user-redirect/git-pull?"
+            f"repo={repo_url}&urlpath={urlpath}"  # noqa: E501
+            f"&branch={branch}"
+        )
+        context["jupyterhub_url"] = url
+        context["jupyterhub_urlpath"] = urlpath
+        context["repo_branch"] = branch
         if jupyterhub_url:
-            urlpath = ui_pre + "/" + repo + "/" + repo_subpath + path_rel_repo
-            url = (
-                f"{jupyterhub_url}/jupyter/hub/user-redirect/git-pull?"
-                f"repo={repo_url}&urlpath={urlpath}"  # noqa: E501
-                f"&branch={branch}"
-            )
-            context["jupyterhub_url"] = url
-            context["jupyterhub_urlpath"] = urlpath
             context["launch_buttons"].append(
                 {"name": "JupyterHub", "url": context["jupyterhub_url"]}
             )
