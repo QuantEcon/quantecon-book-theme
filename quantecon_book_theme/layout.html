@@ -293,7 +293,11 @@
                 function setLaunchServer(){
                   if ( localStorage.launcherType == 'launcher-private' ) {
                     let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
-                    launchNotebookLinkURL = localStorage.launcherPrivate.replace(/\/$/, "") + repoPrefix;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
                   } else if ( localStorage.launcherType == 'launcher-public' ){
                     launchNotebookLinkURL = localStorage.launcherPublic;
                   }
