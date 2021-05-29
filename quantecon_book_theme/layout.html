@@ -181,11 +181,7 @@
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/{{ pagename }}.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     {%- if theme_nb_repository_url %}
-                    {% if launch_buttons is defined and launch_buttons|length > 1 %}
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                    {%- else %}
-                    <li data-tippy-content="Launch Notebook" id="launchButton"><a href="{{default_server}}" target="_blank"><i data-feather="play-circle"></i></a></li>
-                    {%- endif %}
                     {%- endif %}
                     {%- if pdf_book_path %}
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
@@ -209,7 +205,7 @@
             </ul>
         </div>
         <div id="settingsModal" style="display: none;">
-            <p class="modal-title">QuantEcon Notebook Launcher</p>
+            <p class="modal-title"> Notebook Launcher </p>
             <div class="modal-desc">
             <p>
                 Choose public or private cloud service for "Launch" button.
@@ -274,8 +270,6 @@
                 }
                 // Update local storage upon public server selection
                 launcherPublic.addEventListener('change', (event) => {
-                  launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
-                  localStorage.launcherPublic = launcherPublicValue;
                   setLaunchServer();
                 });
                 // Populate private server input if previous entry exists
@@ -284,13 +278,11 @@
                 }
                 // Update local storage when a private server is entered
                 launcherPrivate.addEventListener('input', (event) => {
-                  launcherPrivateValue = launcherPrivate.value;
-                  localStorage.launcherPrivate = launcherPrivateValue;
                   setLaunchServer();
                 });
 
                 // Function to update the "Launch Notebook" link href
-                function setLaunchServer(){
+                function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
                     let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
@@ -300,12 +292,15 @@
                         launchNotebookLink.style.background = "grey"
                         return
                     }
+                    localStorage.launcherPrivate = launcherPrivateValue;
                     privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
                     if (!privateServer.includes("http")) {
                         privateServer = "http://" + privateServer
                     }
                     launchNotebookLinkURL = privateServer + repoPrefix;
                   } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
                     launchNotebookLinkURL = localStorage.launcherPublic;
                   }
                   if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
