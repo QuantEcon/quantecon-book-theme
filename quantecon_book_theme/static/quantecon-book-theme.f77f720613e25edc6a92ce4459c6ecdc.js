@@ -23,4 +23,4 @@ let urlpath=document.getElementById("launcher-private-input").dataset.urlpath
 const repoPrefix="/jupyter/hub/user-redirect/git-pull?repo="+repo+"&urlpath="+urlpath;url=private+repoPrefix+pagename+".ipynb";launchButton.getElementsByTagName("a")[0].setAttribute("href",url)}else{let url=document.getElementById("launcher-public-input").value
 let launchButton=document.getElementById("launchButton")
 launchButton.getElementsByTagName("a")[0].setAttribute("href",url)}}
-tippy('[data-tippy-content]',{touch:false,});feather.replace();window.MathJax={loader:{load:['[tex]/boldsymbol']},tex:{packages:{'[+]':['boldsymbol']}},tex:{inlineMath:[['$','$'],['\\(','\\)'],],processEscapes:true},chtml:{scale:0.92,displayAlign:"center"},svg:{scale:0.92,displayAlign:"center",},options:{menuOptions:{settings:{renderer:'SVG'}}},};})
+tippy('[data-tippy-content]',{touch:false,});feather.replace();})
