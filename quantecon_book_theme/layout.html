@@ -314,6 +314,9 @@
         </div>
 
     </div> <!-- .wrapper-->
+    {%- block scripts_end %}
+    {{ generate_google_analytics_script(id=theme_google_analytics_id) }}
+    {%- endblock %}
 {%- endblock %}
 
 {% block docs_toc %}
