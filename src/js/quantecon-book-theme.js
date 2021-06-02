@@ -260,31 +260,4 @@ $(window).on('load', () => {
     });
     feather.replace();
 
-    window.MathJax = {
-        loader: {load: ['[tex]/boldsymbol']},
-        tex: {packages: {'[+]': ['boldsymbol']}},
-        tex: {
-            inlineMath: [
-                ['$', '$'],
-                ['\\(', '\\)'],
-            ],
-            processEscapes: true
-        },
-        chtml: {
-            scale: 0.92,
-            displayAlign: "center"
-        },
-        svg: {
-            scale: 0.92,
-            displayAlign: "center",
-        },
-        options: {
-            menuOptions: {
-                settings: {
-                    renderer: 'SVG'
-                }
-            }
-        },
-    };
-
 })
