@@ -80,6 +80,14 @@ $ pre-commit install
 
 ### Working on the theme
 
+If you just want to compile the javascript files and stylesheets, and reflect your changes. You need to run:
+
+```console
+web-compile
+```
+
+This will generate a new hashed file if there has been a change.
+
 If you're making changes to your local copy of this theme, you can get feedback on the rendered documentation output,
 by either building the documentation "statically":
 
@@ -88,7 +96,7 @@ $ tox -e docs-clean
 $ tox -e docs-update
 ```
 
-This will generate the HTML documentation and compile the relevant stylesheets.
+This will generate the HTML documentation and compile the relevant stylesheets and js.
 The generated documentation which can be viewed in `docs/_build/`.
 
 Alternatively, you can have the documentation built "live", as you modify files:
