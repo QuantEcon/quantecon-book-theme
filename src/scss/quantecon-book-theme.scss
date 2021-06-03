@@ -1064,6 +1064,7 @@ div.cell {
     font-size: 0.9rem;
     &:hover {
       text-decoration: underline;
+      cursor: pointer;
     }
   }
   label {
@@ -1072,9 +1073,16 @@ div.cell {
 }
 
 #downloadPDFModal {
+  ul {
+    padding: 0.5em;
+    list-style-type: none;
+  }
   p {
-    color: white;
-    margin: 0.5rem 0rem;
+    margin: 0rem;
+    color: #0072bc;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
