@@ -32,3 +32,7 @@ If updating the sidebar html, then one of the easier steps to update this test f
 2. Run `pytest` in your command line, which will then generate a new file. Check if the file is at par with your expectations, contains elements which you added/modified.
 
 Now future pytests will test against this file, and the subsequent tests should pass.
+
+## Contributing Guide
+
+The docs for the contributing guide of this repository: https://github.com/QuantEcon/quantecon-book-theme/blob/master/docs/contributing.md
