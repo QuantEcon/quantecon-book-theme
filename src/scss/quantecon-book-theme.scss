@@ -1064,7 +1064,6 @@ div.cell {
     font-size: 0.9rem;
     &:hover {
       text-decoration: underline;
-      cursor: pointer;
     }
   }
   label {
@@ -1082,6 +1081,7 @@ div.cell {
     color: #0072bc;
     &:hover {
       text-decoration: underline;
+      cursor: pointer;
     }
   }
 }
