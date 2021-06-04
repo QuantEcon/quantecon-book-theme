@@ -1,4 +1,4 @@
-$(window).on('load', () => {
+document.addEventListener("DOMContentLoaded", function(){
 
     // Avoid `console` errors in browsers that lack a console.
     (function() {
@@ -23,13 +23,15 @@ $(window).on('load', () => {
         }
     }());
 
-    // Place any jQuery/helper plugins in here.
+    // Set DOM elements variables
 
     var $window = $(window),
     $head = $('head'),
     $body = $('body'),
     $sidebar = $('.sidebar'),
     $sidebarToggle = $('.btn__sidebar');
+
+    // Toolbar contrast toggle
 
     function setContrast() {
         var setContrast = localStorage.setContrast;
@@ -288,4 +290,4 @@ $(window).on('load', () => {
     });
     feather.replace();
 
-})
+});
