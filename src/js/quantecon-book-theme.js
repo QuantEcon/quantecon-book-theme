@@ -23,6 +23,10 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }());
 
+    // Load feather icon set
+
+    feather.replace();
+
     // Set DOM elements variables
 
     var $window = $(window),
@@ -288,6 +292,5 @@ document.addEventListener("DOMContentLoaded", function(){
     tippy('[data-tippy-content]', {
         touch: false,
     });
-    feather.replace();
 
 });
