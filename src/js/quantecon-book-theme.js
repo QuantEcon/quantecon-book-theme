@@ -1,6 +1,6 @@
 // Open sidebar if localStorage set
 if (localStorage.setSidebar == 1) {
-    sidebarToggle = document.querySelector('.btn__sidebar');
+    sidebarToggle = document.querySelector('btn__sidebar');
     sidebarToggle.classList.add("btn-active");
 }
 
