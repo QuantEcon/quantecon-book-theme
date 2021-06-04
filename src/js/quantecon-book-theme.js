@@ -1,32 +1,8 @@
-// Set DOM elements variables
-
-var $window = $(window),
-$head = $('head'),
-$body = $('body'),
-$sidebar = $('.sidebar'),
-$sidebarToggle = $('.btn__sidebar');
-
-function openSidebar() {
-    $sidebarToggle.addClass('btn-active');
-    $sidebar.removeClass('inactive');
-    $(".toolbar svg.feather.feather-menu").replaceWith(feather.icons.x.toSvg());
-    localStorage.setSidebar = 1;
+// Open sidebar if localStorage set
+if (localStorage.setSidebar == 1) {
+    sidebarToggle = document.querySelector('.btn__sidebar');
+    sidebarToggle.classList.add("btn-active");
 }
-function closeSidebar() {
-    $sidebarToggle.removeClass('btn-active');
-    $sidebar.addClass('inactive');
-    $(".toolbar svg.feather.feather-x").replaceWith(feather.icons.menu.toSvg());
-    localStorage.setSidebar = 0;
-}
-
-function setSidebar() {
-    var setSidebar = localStorage.setSidebar;
-    if (setSidebar == 1) {
-        openSidebar();
-    }
-}
-
-setSidebar();
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -57,7 +33,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
     feather.replace();
 
+    // Set DOM elements variables
 
+    var $window = $(window),
+    $head = $('head'),
+    $body = $('body'),
+    $sidebar = $('.sidebar'),
+    $sidebarToggle = $('.btn__sidebar');
 
     // Toolbar contrast toggle
 
@@ -89,7 +71,27 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Sidebar toggles
 
+    function setSidebar() {
+        var setSidebar = localStorage.setSidebar;
+        if (setSidebar == 1) {
+            openSidebar();
+        }
+    }
 
+    setSidebar();
+
+    function openSidebar() {
+        $sidebarToggle.addClass('btn-active');
+        $sidebar.removeClass('inactive');
+        $(".toolbar svg.feather.feather-menu").replaceWith(feather.icons.x.toSvg());
+        localStorage.setSidebar = 1;
+    }
+    function closeSidebar() {
+        $sidebarToggle.removeClass('btn-active');
+        $sidebar.addClass('inactive');
+        $(".toolbar svg.feather.feather-x").replaceWith(feather.icons.menu.toSvg());
+        localStorage.setSidebar = 0;
+    }
 
     $(document).on('click', '.btn__sidebar', function (event) {
         event.preventDefault();
