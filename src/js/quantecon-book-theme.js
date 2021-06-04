@@ -1,9 +1,3 @@
-// Open sidebar if localStorage set
-if (localStorage.setSidebar == 1) {
-    var sidebarToggle = document.querySelector('.btn__sidebar');
-    sidebarToggle.classList.add("btn-active");
-}
-
 document.addEventListener("DOMContentLoaded", function(){
 
     // Avoid `console` errors in browsers that lack a console.
