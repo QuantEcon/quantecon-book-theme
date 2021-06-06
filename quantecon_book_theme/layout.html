@@ -72,7 +72,11 @@
 
                 <div class="page__toc">
 
+                    {% if sticky_toc is defined and sticky_toc is sameas true %}
+                    <div class="inner sticky">
+                    {%- else %}
                     <div class="inner">
+                    {%- endif %}
 
                         {% set page_toc = generate_toc_html() %}
 
