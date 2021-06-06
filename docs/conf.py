@@ -88,4 +88,4 @@ html_theme_options = {
 bibtex_bibfiles = ["references.bib"]
 bibtex_reference_style = "author_year"
 
-persistent_sidebar = "true"
+persistent_sidebar = True
