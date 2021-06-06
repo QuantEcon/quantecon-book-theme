@@ -156,7 +156,12 @@
             </div> <!-- .page -->
 
             {% block docs_sidebar %}
+
+            {% if persistent_sidebar is defined and persistent_sidebar is sameas true %}
+            <div class="sidebar bd-sidebar inactive persistent" id="site-navigation">
+            {%- else %}
             <div class="sidebar bd-sidebar inactive" id="site-navigation">
+            {%- endif %}
 
                 <div class="sidebar__header">
 

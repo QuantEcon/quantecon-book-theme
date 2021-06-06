@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     function setSidebar() {
         var setSidebar = localStorage.setSidebar;
-        if (setSidebar == 1) {
+        if ( (setSidebar == 1) && ($sidebar.hasClass('persistent')) ) {
             openSidebar();
         }
     }
