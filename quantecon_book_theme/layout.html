@@ -13,7 +13,23 @@
             processEscapes: true,
             macros: {
                 "argmax" : "arg\\,max",
-                "argmin" : "arg\\,min"
+                "argmin" : "arg\\,min",
+                "col"    : "col",
+                "Span"   :  "span",
+                "epsilon": "\\varepsilon",
+                "EE": "\\mathbb{E}",
+                "PP": "\\mathbb{P}",
+                "RR": "\\mathbb{R}",
+                "NN": "\\mathbb{N}",
+                "ZZ": "\\mathbb{Z}",
+                "aA": "\\mathcal{A}",
+                "bB": "\\mathcal{B}",
+                "cC": "\\mathcal{C}",
+                "dD": "\\mathcal{D}",
+                "eE": "\\mathcal{E}",
+                "fF": "\\mathcal{F}",
+                "gG": "\\mathcal{G}",
+                "hH": "\\mathcal{H}",
             }
           },
           svg: {
@@ -157,7 +173,7 @@
 
             {% block docs_sidebar %}
 
-            {% if persistent_sidebar is defined and persistent_sidebar is sameas true %}
+            {% if theme_persistent_sidebar is defined and theme_persistent_sidebar is sameas true %}
             <div class="sidebar bd-sidebar inactive persistent" id="site-navigation">
             {%- else %}
             <div class="sidebar bd-sidebar inactive" id="site-navigation">
