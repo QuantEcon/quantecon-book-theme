@@ -1,4 +1,4 @@
-$(window).on('load', () => {
+document.addEventListener("DOMContentLoaded", function(){
 
     // Avoid `console` errors in browsers that lack a console.
     (function() {
@@ -23,13 +23,19 @@ $(window).on('load', () => {
         }
     }());
 
-    // Place any jQuery/helper plugins in here.
+    // Load feather icon set
+
+    feather.replace();
+
+    // Set DOM elements variables
 
     var $window = $(window),
     $head = $('head'),
     $body = $('body'),
     $sidebar = $('.sidebar'),
     $sidebarToggle = $('.btn__sidebar');
+
+    // Toolbar contrast toggle
 
     function setContrast() {
         var setContrast = localStorage.setContrast;
@@ -59,15 +65,26 @@ $(window).on('load', () => {
 
     // Sidebar toggles
 
+    function setSidebar() {
+        var setSidebar = localStorage.setSidebar;
+        if ( (setSidebar == 1) && ($sidebar.hasClass('persistent')) && ($(window).width() > 1340) ) {
+            openSidebar();
+        }
+    }
+
+    setSidebar();
+
     function openSidebar() {
         $sidebarToggle.addClass('btn-active');
         $sidebar.removeClass('inactive');
         $(".toolbar svg.feather.feather-menu").replaceWith(feather.icons.x.toSvg());
+        localStorage.setSidebar = 1;
     }
     function closeSidebar() {
         $sidebarToggle.removeClass('btn-active');
         $sidebar.addClass('inactive');
         $(".toolbar svg.feather.feather-x").replaceWith(feather.icons.menu.toSvg());
+        localStorage.setSidebar = 0;
     }
 
     $(document).on('click', '.btn__sidebar', function (event) {
@@ -275,6 +292,5 @@ $(window).on('load', () => {
     tippy('[data-tippy-content]', {
         touch: false,
     });
-    feather.replace();
 
-})
+});
