@@ -4,41 +4,43 @@
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script>
-        MathJax = {
-          loader: {load: ['[tex]/boldsymbol']},
-          tex: {
-            packages: {'[+]': ['boldsymbol']},
-            inlineMath: [['$', '$'], ['\\(', '\\)']],
-            processEscapes: true,
-            macros: {
-                "argmax" : "arg\\,max",
-                "argmin" : "arg\\,min",
-                "col"    : "col",
-                "Span"   :  "span",
-                "epsilon": "\\varepsilon",
-                "EE": "\\mathbb{E}",
-                "PP": "\\mathbb{P}",
-                "RR": "\\mathbb{R}",
-                "NN": "\\mathbb{N}",
-                "ZZ": "\\mathbb{Z}",
-                "aA": "\\mathcal{A}",
-                "bB": "\\mathcal{B}",
-                "cC": "\\mathcal{C}",
-                "dD": "\\mathcal{D}",
-                "eE": "\\mathcal{E}",
-                "fF": "\\mathcal{F}",
-                "gG": "\\mathcal{G}",
-                "hH": "\\mathcal{H}",
-            }
-          },
-          svg: {
-            fontCache: 'global',
-            scale: 0.92,
-            displayAlign: "center",
-          },
-        };
-    </script>
+    {% if mathjax_version == 3 %}
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol']},
+            tex: {
+                packages: {'[+]': ['boldsymbol']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    {% endif %}
     {{ super() }}
 {% endblock %}
 {% block extrahead %}
