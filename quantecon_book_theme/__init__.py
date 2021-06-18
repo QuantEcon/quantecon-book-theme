@@ -7,6 +7,7 @@ from sphinx.util import logging
 from bs4 import BeautifulSoup as bs
 from sphinx.util.fileutil import copy_asset
 from sphinx.util.osutil import ensuredir
+from docutils.parsers.rst import directives
 
 from .launch import add_hub_urls
 
@@ -263,6 +264,25 @@ def _string_or_bool(var):
         return var
     else:
         return var is None
+
+
+class Margin(directives.body.Sidebar):
+    """Goes in the margin to the right of the page."""
+
+    optional_arguments = 1
+    required_arguments = 0
+
+    def run(self):
+        """Run the directive."""
+        if not self.arguments:
+            self.arguments = [""]
+        nodes = super().run()
+        nodes[0].attributes["classes"].append("margin")
+
+        # Remove the "title" node if it is empty
+        if not self.arguments:
+            nodes[0].children.pop(0)
+        return nodes
 
 
 def setup(app):

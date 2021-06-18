@@ -47,7 +47,7 @@ fig
 
 and the same example with `jupyter-sphinx`.
 
-```{jupyter-execute}
+```{code-cell} ipython3
 import plotly.io as pio
 import plotly.express as px
 import plotly.offline as py
