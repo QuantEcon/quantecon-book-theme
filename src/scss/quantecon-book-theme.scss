@@ -499,6 +499,13 @@ tt {
               opacity: 1;
             }
           }
+
+          &.active {
+            a {
+              color: $color-primary;
+              font-weight: bold;
+            }
+          }
         }
       }
       .logo {
