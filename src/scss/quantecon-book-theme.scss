@@ -342,6 +342,10 @@ tt {
         a {
           color: $color-body;
         }
+        path {
+          fill: inherit;
+          stroke: inherit;
+        }
 
         &.btn__plus {
           opacity: 0.5;
@@ -1039,6 +1043,10 @@ tt {
 
 // Cell-specific controls
 div.cell {
+
+  &.container, .container {
+    width: 100% !important;
+  }
 
   div.cell_output {
       padding-right: 0;
