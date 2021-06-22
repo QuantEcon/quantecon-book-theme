@@ -281,6 +281,6 @@ $(window).on('load', () => {
     feather.replace();
 
     // Highlight page TOC links as user scrolls
-    $(".page__toc-nav ul").scrollspy();
+    $(".sticky .page__toc-nav ul").scrollspy();
 
 })
