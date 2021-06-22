@@ -501,8 +501,8 @@ tt {
           }
 
           &.active {
-            a {
-              color: $color-primary;
+            >a {
+              //color: $color-primary;
               font-weight: bold;
             }
           }
