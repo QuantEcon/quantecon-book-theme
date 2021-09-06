@@ -108,7 +108,7 @@
                                     {% if theme_header_organisation_url %}
                                     <a href={{theme_header_organisation_url}}><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
                                     {% else %}
-                                    <a href={{master_doc}}.html><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
+                                    <a href="{{ master_url }}"><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
                                     {% endif %}
                                 {% endif %}
                             </p>
@@ -140,7 +140,7 @@
 
                     <div class="page__header-copy">
 
-                        <p class="page__header-heading"><a href="{{ master_doc }}.html">{{ docstitle | e }}</a></p>
+                        <p class="page__header-heading"><a href="{{ master_url }}">{{ docstitle | e }}</a></p>
 
                         <p class="page__header-subheading">{{ pagetitle | e }}</p>
 
