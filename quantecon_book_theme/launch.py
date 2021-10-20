@@ -52,8 +52,6 @@ def add_hub_urls(
             # Skip the rest because the repo_url isn't right
             return
 
-        branch = _get_branch(config_theme)
-
         # Construct the extra URL parts (app and relative path)
         notebook_interface_prefixes = {"classic": "tree", "jupyterlab": "lab/tree"}
         notebook_interface = launch_buttons.get("notebook_interface", "classic")
@@ -180,7 +178,7 @@ def _is_notebook(app, pagename):
 
 
 def _get_branch(config_theme):
-    branch = config_theme.get("repository_branch")
+    branch = config_theme.get("nb_branch")
     if not branch:
         branch = "master"
     return branch
