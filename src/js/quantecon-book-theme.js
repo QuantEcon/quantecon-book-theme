@@ -77,13 +77,13 @@ document.addEventListener("DOMContentLoaded", function(){
     function openSidebar() {
         $sidebarToggle.addClass('btn-active');
         $sidebar.removeClass('inactive');
-        $(".toolbar svg.feather.feather-menu").replaceWith(feather.icons.x.toSvg());
+        $(".qe-toolbar svg.feather.feather-menu").replaceWith(feather.icons.x.toSvg());
         localStorage.setSidebar = 1;
     }
     function closeSidebar() {
         $sidebarToggle.removeClass('btn-active');
         $sidebar.addClass('inactive');
-        $(".toolbar svg.feather.feather-x").replaceWith(feather.icons.menu.toSvg());
+        $(".qe-toolbar svg.feather.feather-x").replaceWith(feather.icons.menu.toSvg());
         localStorage.setSidebar = 0;
     }
 
