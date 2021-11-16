@@ -83,7 +83,7 @@ def test_build_book(file_regression, sphinx_build):
     assert "Index with code in title" in str(index_html)
     # Check navbar numbering
     sidebar_ntbk = sphinx_build.get("section1", "ntbk.html").find(
-        "nav", id="sidebar-nav"
+        "nav", id="qe-sidebar-nav"
     )
     # Pages and sub-pages should be numbered
     assert "1. Page 1" in str(sidebar_ntbk)

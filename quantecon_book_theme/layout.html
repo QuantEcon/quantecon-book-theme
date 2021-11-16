@@ -82,26 +82,26 @@
 
     <span id="top"></span>
 
-    <div class="wrapper">
+    <div class="qe-wrapper">
 
-        <div class="main">
+        <div class="qe-main">
 
-            <div class="page" id={{pagename}}>
+            <div class="qe-page" id={{pagename}}>
 
-                <div class="page__toc">
+                <div class="qe-page__toc">
 
                     <div class="inner">
 
                         {% set page_toc = generate_toc_html() %}
 
                         {%- if page_toc | length >= 1 %}
-                        <div class="page__toc-header">
+                        <div class="qe-page__toc-header">
                             On this page
                         </div>
                         {%- endif %}
 
 
-                        <nav id="bd-toc-nav" class="page__toc-nav">
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             {{ page_toc }}
                             <p class="logo">
                                 {% if logo %}
@@ -117,7 +117,7 @@
 
                         </nav>
 
-                        <div class="page__toc-footer">
+                        <div class="qe-page__toc-footer">
                             {# prev/next buttons #}
                             {% macro prev_next(prev, next, prev_title='', next_title='') %}
                             {%- if next %}
@@ -136,24 +136,24 @@
 
                 </div>
 
-                <div class="page__header">
+                <div class="qe-page__header">
 
-                    <div class="page__header-copy">
+                    <div class="qe-page__header-copy">
 
-                        <p class="page__header-heading"><a href="{{ master_url }}">{{ docstitle | e }}</a></p>
+                        <p class="qe-page__header-heading"><a href="{{ master_url }}">{{ docstitle | e }}</a></p>
 
-                        <p class="page__header-subheading">{{ pagetitle | e }}</p>
+                        <p class="qe-page__header-subheading">{{ pagetitle | e }}</p>
 
                     </div>
 
-                    <p class="page__header-authors">{{ author }}</p>
+                    <p class="qe-page__header-authors">{{ author }}</p>
 
                 </div> <!-- .page__header -->
 
 
 
                 {% block docs_main %}
-                <main class="page__content" role="main">
+                <main class="qe-page__content" role="main">
                     {% block docs_body %}
                     <div>
                         {% block body %} {% endblock %}
@@ -163,7 +163,7 @@
                 {% endblock %}
 
 
-                <footer class="page__footer">
+                <footer class="qe-page__footer">
 
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
@@ -176,23 +176,23 @@
             {% block docs_sidebar %}
 
             {% if theme_persistent_sidebar is defined and theme_persistent_sidebar is sameas true %}
-            <div class="sidebar bd-sidebar inactive persistent" id="site-navigation">
+            <div class="qe-sidebar bd-sidebar inactive persistent" id="site-navigation">
             {%- else %}
-            <div class="sidebar bd-sidebar inactive" id="site-navigation">
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
             {%- endif %}
 
-                <div class="sidebar__header">
+                <div class="qe-sidebar__header">
 
 
                     Contents
 
                 </div>
 
-                <nav class="sidebar__nav" id="sidebar-nav" aria-label="Main navigation">
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
                     {{ sbt_generate_nav_html(include_item_names=False, with_home_page=theme_home_page_in_toc) }}
                 </nav>
 
-                <div class="sidebar__footer">
+                <div class="qe-sidebar__footer">
 
                 </div>
 
@@ -200,11 +200,11 @@
             {% endblock %}
         </div> <!-- .main -->
 
-        <div class="toolbar">
+        <div class="qe-toolbar">
 
-            <div class="toolbar__inner">
+            <div class="qe-toolbar__inner">
 
-                <ul class="toolbar__main">
+                <ul class="qe-toolbar__main">
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="{{ master_url }}"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="{{theme_header_organisation_url}}" title="{{html_title}}"><span class="show-for-sr">{{ theme_header_organisation}}</span></a></li>
@@ -216,7 +216,7 @@
                     </li> -->
                 </ul>
 
-                <ul class="toolbar__links">
+                <ul class="qe-toolbar__links">
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
