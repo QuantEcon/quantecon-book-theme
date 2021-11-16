@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var $window = $(window),
     $head = $('head'),
     $body = $('body'),
-    $sidebar = $('.sidebar'),
+    $sidebar = $('.qe-sidebar'),
     $sidebarToggle = $('.btn__sidebar');
 
     // Toolbar contrast toggle
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     /* Wrap container around all tables allowing hirizontal scroll */
 
-    const contentTables = document.querySelectorAll('.page__content table');
+    const contentTables = document.querySelectorAll('.qe-page__content table');
     for (var i = 0; i < contentTables.length; i++) {
         var wrapper = document.createElement('div');
         wrapper.classList.add('table-container');
