@@ -10,7 +10,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.2.3"
+__version__ = "0.3.1"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -189,7 +189,11 @@ def add_to_context(app, pagename, templatename, context, doctree):
 
     # check if book pdf folder is present
     if os.path.isdir(app.outdir + "/_pdf"):
-        context["pdf_book_path"] = "_pdf/" + context["pdf_book_name"] + ".pdf"
+        context["pdf_book_path"] = "/_pdf/" + context["pdf_book_name"] + ".pdf"
+
+    # check if notebook folder is present
+    if os.path.isdir(app.outdir + "/_notebooks"):
+        context["notebook_path"] = "/_notebooks/" + context["pagename"] + ".ipynb"
 
     # Update the page title because HTML makes it into the page title occasionally
     if pagename in app.env.titles:
@@ -215,6 +219,11 @@ def add_to_context(app, pagename, templatename, context, doctree):
             (app.config.html_baseurl.rstrip("/"), "_static/" + context["logo"])
         )
 
+    # Check mathjax version and set it in a variable
+    if app.config["mathjax_path"] and "@3" in app.config["mathjax_path"]:
+        context["mathjax_version"] = 3
+    else:
+        context["mathjax_version"] = 2
     # Add HTML context variables that the pydata theme uses that we configure elsewhere
     # For some reason the source_suffix sometimes isn't there even when doctree is
     if doctree and context.get("page_source_suffix"):
