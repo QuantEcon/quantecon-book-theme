@@ -27,13 +27,13 @@ setup(
         "click",
         "setuptools",
         "libsass~=0.20.1",
-        "sphinx_book_theme~=0.1.0",
+        "sphinx_book_theme~=0.3.2",
         "beautifulsoup4",
         "web-compile",
         'importlib-resources>=3.0,<3.5; python_version < "3.7"',
     ],
     extras_require={
-        "code_style": ["flake8<3.8.0,>=3.7.0", "black", "pre-commit~=2.7.0"],
+        "code_style": ["flake8<3.8.0,>=3.7.0", "black~=20.8b1", "pre-commit~=2.7.0"],
         "sphinx": [
             "folium",
             "numpy",
