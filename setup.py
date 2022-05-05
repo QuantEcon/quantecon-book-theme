@@ -30,6 +30,7 @@ setup(
         "sphinx_book_theme~=0.1.0",
         "beautifulsoup4",
         "web-compile",
+        "markupsafe==2.0.1"
         'importlib-resources>=3.0,<3.5; python_version < "3.7"',
     ],
     extras_require={
@@ -48,7 +49,7 @@ setup(
             "sphinxcontrib-bibtex~=2.2",
         ],
         "testing": [
-            "myst_nb~=0.11.1",
+            "myst-nb~=0.11.1",
             "coverage",
             "pytest~=6.0.1",
             "pytest-cov",
