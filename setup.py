@@ -30,8 +30,7 @@ setup(
         "sphinx_book_theme~=0.1.0",
         "beautifulsoup4",
         "web-compile",
-        "markupsafe==2.0.1"
-        'importlib-resources>=3.0,<3.5; python_version < "3.7"',
+        "markupsafe==2.0.1" 'importlib-resources>=3.0,<3.5; python_version < "3.7"',
     ],
     extras_require={
         "code_style": ["flake8<3.8.0,>=3.7.0", "black", "pre-commit~=2.7.0"],
