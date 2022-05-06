@@ -10,7 +10,7 @@ jobs:
         shell: bash -l {0}
         run: |
           git clone https://github.com/QuantEcon/lecture-python-programming.myst
-          git checkout rhs-toc-sticky
+          cd lecture-python-programming.myst && git checkout rhs-toc-sticky && cd ..
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v2
         with:
