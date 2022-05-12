@@ -31,6 +31,7 @@ setup(
         "beautifulsoup4",
         "web-compile",
         "markupsafe~=2.0.1",
+        "sphinx<5,>=3",
         'importlib-resources>=3.0,<3.5; python_version < "3.7"',
     ],
     extras_require={
