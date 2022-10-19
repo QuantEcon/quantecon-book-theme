@@ -26,7 +26,7 @@ setup(
         "click",
         "setuptools",
         "libsass~=0.20.1",
-        "sphinx_book_theme~=0.1.0",
+        "sphinx_book_theme",
         "beautifulsoup4",
         "web-compile",
         "markupsafe~=2.0.1",
