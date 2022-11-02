@@ -66,7 +66,7 @@ def add_static_path(app):
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
-    """ Functions and variable additions to context."""
+    """Functions and variable additions to context."""
 
     def sbt_generate_nav_html(
         level=1,
