@@ -180,10 +180,6 @@ def add_to_context(app, pagename, templatename, context, doctree):
     master_url = context["pathto"](master_doc)
     context["master_url"] = master_url
 
-    # default value is book.tex
-    context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
-    context["github_sourcefolder"] = get_github_src_folder(app)
-
     context["sbt_generate_nav_html"] = sbt_generate_nav_html
     context["generate_toc_html"] = generate_toc_html
 
@@ -248,6 +244,10 @@ def add_to_context(app, pagename, templatename, context, doctree):
     else:
         # Disable using the button so we don't get errors
         context["theme_use_edit_page_button"] = False
+
+    # default value is book.tex
+    context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
+    context["github_sourcefolder"] = get_github_src_folder(app)
 
     # Make sure the context values are bool
     btns = [
