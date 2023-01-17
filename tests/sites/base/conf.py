@@ -16,7 +16,7 @@ html_theme = "quantecon_book_theme"
 html_baseurl = "https://sphinx-book-theme.readthedocs.org"
 html_copy_source = True
 html_sourcelink_suffix = ""
-jupyter_execute_notebooks = "auto"
+nb_execution_mode = "auto"
 
 # Base options, we can add other key/vals later
 html_theme_options = {
