@@ -22,7 +22,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "pyyaml",
-        "sphinxx>=4,<7",
+        "sphinx>=4,<7",
         "docutils",
         "click",
         "setuptools",
