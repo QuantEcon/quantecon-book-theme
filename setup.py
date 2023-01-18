@@ -22,8 +22,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         "pyyaml",
-        "docutils>=0.15",
-        "sphinx",
+        "sphinxx>=4,<7",
+        "docutils",
         "click",
         "setuptools",
         "libsass~=0.20.1",
