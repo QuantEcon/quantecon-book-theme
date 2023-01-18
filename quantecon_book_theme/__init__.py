@@ -78,7 +78,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
             with_home_page = with_home_page.lower() == "true"
 
         # Grab the raw toctree object and structure it so we can manipulate it
-        toc_sphinx = context["generate_toctree_html"](
+        toctree = context["generate_toctree_html"](
             startdepth=level - 1,
             maxdepth=level + 1,
             kind="sidebar",
@@ -86,7 +86,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
             titles_only=True,
             includehidden=True,
         )
-        toctree = bs(toc_sphinx, "html.parser")
+        # toctree = bs(toc_sphinx, "html.parser")
 
         # pair "current" with "active" since that's what we use w/ bootstrap
         for li in toctree("li", {"class": "current"}):
