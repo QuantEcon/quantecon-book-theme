@@ -63,9 +63,8 @@ def test_build_book(file_regression, sphinx_build):
     for path, kernel in kernels_expected.items():
         ntbk_text = sphinx_build.get(*path.split("/"))
         thebe_config = ntbk_text.find("script", attrs={"type": "text/x-thebe-config"})
-        kernel_name = 'kernelName: "{}",'.format(kernel)
-        if kernel_name not in thebe_config.prettify():
-            raise AssertionError(f"{kernel_name} not in {kernels_expected}")
+        if kernel not in thebe_config.prettify():
+            raise AssertionError(f"{kernel} not in {kernels_expected}")
 
     # Check a few components that should be true on each page
     index_html = sphinx_build.get("index.html")

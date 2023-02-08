@@ -55,6 +55,7 @@ setup(
             "sphinx_thebe",
             "pytest-regressions~=2.0.1",
             "sphinx_copybutton",
+            "sphinx_togglebutton",
         ],
     },
     entry_points={
