@@ -32,7 +32,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.8", None),
-    "sphinx": ("https://www.sphinx-doc.org/en/3.x", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master", None),
 }
 nitpick_ignore = [
     ("py:class", "docutils.nodes.document"),
@@ -78,7 +78,6 @@ html_theme_options = {
     "use_issues_button": True,
     "use_repository_button": True,
     "expand_sections": ["reference/index"],
-    "logo_url": "https://quantecon.org"
     # For testing
     # "home_page_in_toc": True,
     # "single_page": True
