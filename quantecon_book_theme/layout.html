@@ -189,7 +189,7 @@
                 </div>
 
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
-                    {{ sbt_generate_nav_html(include_item_names=False, with_home_page=theme_home_page_in_toc) }}
+                    {{ sbt_generate_toctree_html(include_item_names=False, with_home_page=theme_home_page_in_toc) }}
                 </nav>
 
                 <div class="qe-sidebar__footer">
@@ -359,7 +359,6 @@
 
     </div> <!-- .wrapper-->
     {%- block scripts_end %}
-    {{ generate_google_analytics_script(id=theme_google_analytics_id) }}
     {%- endblock %}
 {%- endblock %}
 

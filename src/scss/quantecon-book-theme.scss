@@ -755,10 +755,6 @@ tt {
 /* Custom content styles */
 .qe-page__content {
 
-  .table-container {
-    overflow-x: scroll;
-  }
-
   table {
     max-width: 100%;
     border-collapse: collapse;
@@ -964,7 +960,6 @@ tt {
 
   .MathJax {
     color: #333;
-    margin: 2rem 0;
   }
 
   a .MathJax {
@@ -1032,7 +1027,10 @@ tt {
   }
 
   .cell_output {
-     img {
+    table {
+      table-layout: auto;
+    }
+    img {
       display: block;
       margin-left: auto;
       margin-right: auto;
