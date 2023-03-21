@@ -185,6 +185,8 @@ def add_to_context(app, pagename, templatename, context, doctree):
 
     # check if book pdf folder is present
     if os.path.isdir(app.outdir + "/_pdf"):
+        if "pdf_book_name" not in context:
+            context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
         context["pdf_book_path"] = "/_pdf/" + context["pdf_book_name"] + ".pdf"
 
     # check if notebook folder is present
@@ -246,7 +248,8 @@ def add_to_context(app, pagename, templatename, context, doctree):
         context["theme_use_edit_page_button"] = False
 
     # default value is book.tex
-    context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
+    if "pdf_book_name" not in context:
+        context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
     context["github_sourcefolder"] = get_github_src_folder(app)
 
     # Make sure the context values are bool
