@@ -597,8 +597,7 @@ tt {
     /* tableofcontents directive caption option */
     .caption-text {
       font-weight: normal;
-      font-family: 'PT Serif', serif;
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
 
     // Math equations
@@ -974,6 +973,19 @@ tt {
     }
     &.align-right {
       text-align: right;
+    }
+    p.caption {
+      span.caption-number {
+        font-style: normal;
+        font-weight: 700;
+      }
+    }
+  }
+
+  figcaption {
+    span.caption-number {
+      font-style: normal;
+      font-weight: 700;
     }
   }
 
