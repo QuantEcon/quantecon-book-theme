@@ -32,7 +32,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.8", None),
-    "sphinx": ("https://www.sphinx-doc.org/en/3.x", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master", None),
 }
 nitpick_ignore = [
     ("py:class", "docutils.nodes.document"),
@@ -57,7 +57,7 @@ html_favicon = "_static/qe-logo.png"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
-jupyter_execute_notebooks = "cache"
+nb_execution_mode = "cache"
 thebe_config = {
     "repository_url": "https://github.com/binder-examples/jupyter-stacks-datascience",
     "repository_branch": "master",
@@ -78,7 +78,6 @@ html_theme_options = {
     "use_issues_button": True,
     "use_repository_button": True,
     "expand_sections": ["reference/index"],
-    "logo_url": "https://quantecon.org"
     # For testing
     # "home_page_in_toc": True,
     # "single_page": True

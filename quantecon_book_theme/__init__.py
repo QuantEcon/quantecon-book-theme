@@ -10,7 +10,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.3.1"
+__version__ = "0.4.2"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -68,7 +68,7 @@ def add_static_path(app):
 def add_to_context(app, pagename, templatename, context, doctree):
     """Functions and variable additions to context."""
 
-    def sbt_generate_nav_html(
+    def sbt_generate_toctree_html(
         level=1,
         include_item_names=False,
         with_home_page=False,
@@ -78,7 +78,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
             with_home_page = with_home_page.lower() == "true"
 
         # Grab the raw toctree object and structure it so we can manipulate it
-        toc_sphinx = context["generate_nav_html"](
+        toctree = context["generate_toctree_html"](
             startdepth=level - 1,
             maxdepth=level + 1,
             kind="sidebar",
@@ -86,7 +86,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
             titles_only=True,
             includehidden=True,
         )
-        toctree = bs(toc_sphinx, "html.parser")
+        # toctree = bs(toc_sphinx, "html.parser")
 
         # pair "current" with "active" since that's what we use w/ bootstrap
         for li in toctree("li", {"class": "current"}):
@@ -180,15 +180,15 @@ def add_to_context(app, pagename, templatename, context, doctree):
     master_url = context["pathto"](master_doc)
     context["master_url"] = master_url
 
-    # default value is book.tex
-    context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
-    context["github_sourcefolder"] = get_github_src_folder(app)
-
-    context["sbt_generate_nav_html"] = sbt_generate_nav_html
+    context["sbt_generate_toctree_html"] = sbt_generate_toctree_html
     context["generate_toc_html"] = generate_toc_html
 
     # check if book pdf folder is present
     if os.path.isdir(app.outdir + "/_pdf"):
+        if "pdf_book_name" not in context:
+            context["pdf_book_name"] = app.config.latex_documents[0][1].replace(
+                ".tex", ""
+            )
         context["pdf_book_path"] = "/_pdf/" + context["pdf_book_name"] + ".pdf"
 
     # check if notebook folder is present
@@ -248,6 +248,11 @@ def add_to_context(app, pagename, templatename, context, doctree):
     else:
         # Disable using the button so we don't get errors
         context["theme_use_edit_page_button"] = False
+
+    # default value is book.tex
+    if "pdf_book_name" not in context:
+        context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
+    context["github_sourcefolder"] = get_github_src_folder(app)
 
     # Make sure the context values are bool
     btns = [
