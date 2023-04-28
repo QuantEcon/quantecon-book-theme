@@ -171,7 +171,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
             github_repo = context["github_repo"]
             if github_repo in app.srcdir:
                 index = app.srcdir.rfind(github_repo)
-                branch = config_theme.get("repository_branch", "")
+                branch = config_theme.get("nb_branch", "")
                 if branch == "":
                     branch = "main"
                 folder = app.srcdir[index + len(github_repo) :]
