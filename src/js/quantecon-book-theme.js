@@ -63,6 +63,18 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     });
 
+    // search button
+    $('#search-icon').on('click', function (event) {
+        elem = $(event.target.parentNode).find("#search-input")
+        console.log("will it show?")
+        console.log(elem)
+        if (elem.css("display") == "inline-block") {
+            elem.css("display", "none")
+        } else {
+            elem.css("display", "inline-block")
+        }
+    });
+
     // Sidebar toggles
 
     function setSidebar() {

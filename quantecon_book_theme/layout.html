@@ -208,12 +208,12 @@
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="{{ master_url }}"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="{{theme_header_organisation_url}}" title="{{html_title}}"><span class="show-for-sr">{{ theme_header_organisation}}</span></a></li>
-                    <!-- <li class="btn__search">
+                    <li class="btn__search">
                         <form action="{{ pathto('search') }}" method="get">
                             <input type="search" class="form-control" name="q" id="search-input" placeholder="{{ theme_search_bar_text }}" aria-label="{{ theme_search_bar_text }}" autocomplete="off">
-                            <i data-feather="search"></i>
+                            <i data-feather="search" id="search-icon"></i>
                         </form>
-                    </li> -->
+                    </li>
                 </ul>
 
                 <ul class="qe-toolbar__links">
