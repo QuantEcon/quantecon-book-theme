@@ -68,6 +68,8 @@ def add_static_path(app):
 def add_to_context(app, pagename, templatename, context, doctree):
     """Functions and variable additions to context."""
 
+    config_theme = app.config.html_theme_options
+
     def sbt_generate_toctree_html(
         level=1,
         include_item_names=False,
@@ -169,9 +171,11 @@ def add_to_context(app, pagename, templatename, context, doctree):
             github_repo = context["github_repo"]
             if github_repo in app.srcdir:
                 index = app.srcdir.rfind(github_repo)
-                branch = context["github_version"]
+                branch = config_theme.get("nb_branch", "")
+                if branch == "":
+                    branch = "main"
                 folder = app.srcdir[index + len(github_repo) :]
-                return "/tree/" + branch + folder
+                return "/blob/" + branch + folder
         return ""
 
     # Pull metadata about the master doc
@@ -227,7 +231,6 @@ def add_to_context(app, pagename, templatename, context, doctree):
     # Add HTML context variables that the pydata theme uses that we configure elsewhere
     # For some reason the source_suffix sometimes isn't there even when doctree is
     if doctree and context.get("page_source_suffix"):
-        config_theme = app.config.html_theme_options
         repo_url = config_theme.get("repository_url", "")
         # Only add the edit button if `repository_url` is given
         if repo_url:
