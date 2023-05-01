@@ -297,6 +297,6 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     // Highlight page TOC links as user scrolls
-    $(".sticky .page__toc-nav ul").scrollspy();
+    $(".sticky #bd-toc-nav ul").scrollspy();
 
 })

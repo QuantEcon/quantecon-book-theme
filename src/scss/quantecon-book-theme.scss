@@ -1481,6 +1481,11 @@ dl.module, dl.class, dl.exception, dl.function, dl.decorator, dl.data, dl.method
   }
 }
 
+.toctree-checkbox[type="checkbox"] {
+  position: absolute;
+  left: 400rem;
+}
+
 // div[class^='collapse'] .highlight {
 //   height: 22.4rem;
 //   overflow: hidden;
