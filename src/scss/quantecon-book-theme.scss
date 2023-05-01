@@ -1483,6 +1483,14 @@ dl.module, dl.class, dl.exception, dl.function, dl.decorator, dl.data, dl.method
   }
 }
 
+.toctree-wrapper {
+  .caption-text {
+    font-weight: normal;
+    font-family: 'PT Serif', serif;
+    font-size: 1.2rem;
+  }
+}
+
 // div[class^='collapse'] .highlight {
 //   height: 22.4rem;
 //   overflow: hidden;
