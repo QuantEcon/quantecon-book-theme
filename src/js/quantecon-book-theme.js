@@ -300,6 +300,16 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 
+    /**
+     * remove the search hint for now
+     */
+    (function(){
+        let forms = document.querySelectorAll("form.bd-search");
+        forms.forEach(
+            (f) => (f.querySelector(".search-button__kbd-shortcut").remove())
+        );
+    }());
+
     // Tooltips
     tippy('[data-tippy-content]', {
         touch: false,

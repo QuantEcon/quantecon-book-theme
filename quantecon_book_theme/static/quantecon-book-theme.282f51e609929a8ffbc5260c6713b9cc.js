@@ -28,4 +28,4 @@ let urlpath=document.getElementById("launcher-private-input").dataset.urlpath
 const repoPrefix="/jupyter/hub/user-redirect/git-pull?repo="+repo+"&urlpath="+urlpath;url=private+repoPrefix+pagename+".ipynb";launchButton.getElementsByTagName("a")[0].setAttribute("href",url)}else{let url=document.getElementById("launcher-public-input").value
 let launchButton=document.getElementById("launchButton")
 launchButton.getElementsByTagName("a")[0].setAttribute("href",url)}}
-tippy('[data-tippy-content]',{touch:false,});});
+(function(){let forms=document.querySelectorAll("form.bd-search");forms.forEach((f)=>(f.querySelector(".search-button__kbd-shortcut").remove()));}());tippy('[data-tippy-content]',{touch:false,});});
