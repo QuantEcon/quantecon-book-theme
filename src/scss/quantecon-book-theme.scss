@@ -382,9 +382,9 @@ tt {
           input {
             height: auto;
             display: inline-block;
-            width: 175px;
+            width: 350px;
             border: 1px solid #ccc;
-            border-radius: 2px;
+            border-radius: 4px;
             background-color: #f8f8f8;
             margin: 0 -28px 0 0;
             line-height: 1;
@@ -726,6 +726,10 @@ tt {
   }
 }
 
+#search-results {
+  margin-top: 2rem;
+}
+
 .bd-search {
   background-color: #eff1f2;
   border-bottom: 0;
@@ -740,7 +744,6 @@ tt {
     border: solid 1px rgba(210, 215, 217, 0.75);
     background: #ffffff;
     border-radius: 0.3rem;
-    padding: 0 1em;
     width: 100%;
   }
 
@@ -757,6 +760,15 @@ tt {
     right: 2.75rem;
     text-align: center;
     top: 2rem;
+  }
+
+  .search-button__kbd-shortcut {
+    right: 3em;
+  }
+
+  i.fa-solid.fa-magnifying-glass {
+    left: 3rem;
+    bottom: 50px;
   }
 }
 
