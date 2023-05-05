@@ -467,7 +467,10 @@ tt {
     width: 200px;
 
     .inner {
-      height: 100%;
+      &.sticky {
+        position: sticky;
+        top: 7rem;
+      }
     }
 
     &-header {
@@ -498,6 +501,13 @@ tt {
             &.active {
               color: $color-primary;
               opacity: 1;
+            }
+          }
+
+          &.active {
+            >a {
+              //color: $color-primary;
+              font-weight: bold;
             }
           }
         }
@@ -532,7 +542,7 @@ tt {
     }
 
     .nav>.active>ul {
-      display: block;
+      // display: block;
     }
 
     .nav .nav {
@@ -1481,6 +1491,11 @@ dl.module, dl.class, dl.exception, dl.function, dl.decorator, dl.data, dl.method
       font-size: 80%;
       padding-left: 24px;
   }
+}
+
+.toctree-checkbox[type="checkbox"] {
+  position: absolute;
+  left: 400rem;
 }
 
 .toctree-wrapper {

@@ -42,3 +42,4 @@ repos:
                 quantecon_book_theme/static/.*|
                 quantecon_book_theme/theme.conf
             )$
+        additional_dependencies: ['markupsafe==2.0.1']
