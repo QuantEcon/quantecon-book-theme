@@ -382,7 +382,6 @@ tt {
           input {
             height: auto;
             display: inline-block;
-            width: 350px;
             border: 1px solid #ccc;
             border-radius: 4px;
             background-color: #f8f8f8;
@@ -390,18 +389,31 @@ tt {
             line-height: 1;
             font-size: 0.9rem;
             padding: 0.3rem 0.5rem;
-            transition: all 0.2s linear;
             outline: 0;
-            display: none;
-
+            width: 0;
+            visibility: hidden;
+            transition: width 0.3s;
+            &.search-open {
+              width: 350px;
+              visibility: visible;
+            }
             &:focus {
-              border-color: $color-body;
+              border-color: #999;
+            }
+            &::-webkit-search-decoration,
+            &::-webkit-search-cancel-button,
+            &::-webkit-search-results-button,
+            &::-webkit-search-results-decoration {
+              -webkit-appearance:none;
             }
           }
 
           svg {
+            position: relative;
             background-color: transparent;
             z-index: 999;
+            top: -1px;
+            left: -4px;
           }
 
           &:hover {
