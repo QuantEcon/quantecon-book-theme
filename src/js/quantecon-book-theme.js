@@ -64,13 +64,14 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     // search button
+
     $('#search-icon').on('click', function (event) {
         if ( $('#search-input').hasClass('search-open') ) {
             $('#search-input').closest("form").trigger( "submit" );
         } else {
             $('#search-input').addClass('search-open').focus();
             $(this).css('pointer-events', 'none');
-        }  
+        }
     });
 
     $('#search-input').on('focusout', function () {
