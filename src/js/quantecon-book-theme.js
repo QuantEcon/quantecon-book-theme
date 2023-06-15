@@ -64,14 +64,20 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
     // search button
+
     $('#search-icon').on('click', function (event) {
-        elem = $(event.target.parentNode).find("#search-input")
-        console.log("will it show?")
-        console.log(elem)
-        if (elem.css("display") == "inline-block") {
-            elem.css("display", "none")
+        if ( $('#search-input').hasClass('search-open') ) {
+            $('#search-input').closest("form").trigger( "submit" );
         } else {
-            elem.css("display", "inline-block")
+            $('#search-input').addClass('search-open').focus();
+            $(this).css('pointer-events', 'none');
+        }
+    });
+
+    $('#search-input').on('focusout', function () {
+        if ( !$(this).val() ) {
+            $(this).removeClass('search-open');
+            $('#search-icon').css('pointer-events', 'auto');
         }
     });
 
