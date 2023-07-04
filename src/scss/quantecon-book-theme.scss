@@ -100,16 +100,21 @@ body {
   }
 
   &.dark-theme {
-    background: #333;
-    color: #fff !important;
+    background: #222;
+    color: #fff;
 
     a,
     h1,
     h2,
     h3,
     h4,
+    h5,
     p {
-      color: #fff !important;
+      color: #fff;
+    }
+
+    .qe-toolbar__inner > ul > li > a, .qe-sidebar__nav ul > li > a {
+      color: #fff;
     }
 
     cite,
@@ -124,7 +129,10 @@ body {
     }
 
     .highlight {
-      background: #222 !important;
+      background: #111 !important;
+      .n, .p {
+        color: #fff;
+      }
     }
 
     svg {
@@ -152,6 +160,9 @@ body {
     }
 
     .qe-page__content {
+      .MathJax {
+        color: #fff !important;
+      }
       .image-reference img {
         filter: invert(100%) hue-rotate(-180deg) !important;
         -ms-filter: invert(100%) !important;
@@ -161,6 +172,40 @@ body {
 
     .reference.external, .reference.internal {
       font-weight: 800;
+    }
+
+    nav.contents {
+      background-color: #333;
+    }
+
+    div.admonition, .admonition {
+      background-color: #333;
+      box-shadow: none !important;
+    }
+
+    pre {
+      background-color: #333;
+      color: #fff;
+    }
+
+    aside.sidebar {
+      background-color: #333;
+    }
+
+    button.toggle-button.toggle-button-hidden::before {
+      color: #fff;
+    }
+
+    aside.topic, div.topic, div.topic.contents, nav.contents {
+      background-color: #333;
+      box-shadow: none !important;
+    }
+
+    blockquote, blockquote p {
+      color: #fff;
+    }
+    table tbody .row-even p {
+      color: #333;
     }
   }
 }
