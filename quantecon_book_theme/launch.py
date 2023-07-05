@@ -93,9 +93,9 @@ def add_hub_urls(
             f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
             f"urlpath=tree/{repo_subpath}{ pagename }.ipynb"
         )
-        context["launch_buttons"].append(
-            {"name": "BinderHub", "url": context["binder_url"]}
-        )
+        # context["launch_buttons"].append(
+        #     {"name": "BinderHub", "url": context["binder_url"]}
+        # )
 
         urlpath = ui_pre + "/" + repo + "/" + repo_subpath + path_rel_repo
         url = (
