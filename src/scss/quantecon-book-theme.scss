@@ -221,6 +221,11 @@ body {
     .bd-search-container ul.search li div.context, .bd-search-container ul.search li p.context {
       color: #fff;
     }
+
+    li.btn__search input {
+      background-color: #333;
+      color: #fff;
+    }
   }
 }
 
