@@ -210,7 +210,7 @@ body {
       color: #333;
     }
 
-    div.cell details.below-input>summary, div.cell div.cell_input, div.cell details.above-input>summary{
+    div.cell details.below-input>summary, div.cell div.cell_input, div.cell details.above-input>summary {
       background-color: #333;
     }
 
@@ -222,7 +222,7 @@ body {
       color: #fff;
     }
 
-    li.btn__search input {
+    .qe-toolbar__inner>ul>li.btn__search input {
       background-color: #333;
       color: #fff;
     }
