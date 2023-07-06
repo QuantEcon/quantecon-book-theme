@@ -151,6 +151,7 @@ body {
 
     .btn__search {
       input {
+        background-color: #333;
         color: #fff;
 
         &:focus {
@@ -215,6 +216,10 @@ body {
 
     .tippy-box {
       background-color: #333;
+    }
+
+    .bd-search-container ul.search li div.context, .bd-search-container ul.search li p.context {
+      color: #fff;
     }
   }
 }
