@@ -83,19 +83,21 @@ def add_hub_urls(
         binderhub_url = launch_buttons.get("binderhub_url")
         colab_url = launch_buttons.get("colab_url")
         context["launch_buttons"] = []
-        binderhub_url = (
-            config_theme["binderhub_url"]
-            if "binderhub_url" in config_theme
-            else "https://mybinder.org"
-        )
 
-        context["binder_url"] = (
-            f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
-            f"urlpath=tree/{repo_subpath}{ pagename }.ipynb"
-        )
-        context["launch_buttons"].append(
-            {"name": "BinderHub", "url": context["binder_url"]}
-        )
+        if binderhub_url:
+            binderhub_url = (
+                config_theme["binderhub_url"]
+                if "binderhub_url" in config_theme
+                else "https://mybinder.org"
+            )
+
+            context["binder_url"] = (
+                f"{binderhub_url}/v2/gh/{org}/{repo}/{branch}?"
+                f"urlpath=tree/{repo_subpath}{ pagename }.ipynb"
+            )
+            context["launch_buttons"].append(
+                {"name": "BinderHub", "url": context["binder_url"]}
+            )
 
         urlpath = ui_pre + "/" + repo + "/" + repo_subpath + path_rel_repo
         url = (
@@ -122,7 +124,7 @@ def add_hub_urls(
         if len(context["launch_buttons"]) == 1:
             context["default_server"] = context["launch_buttons"][0]["url"]
         else:
-            context["default_server"] = context["binder_url"]
+            context["default_server"] = context["colab_url"]
 
         if org is None and repo is None:
             # Skip the rest because the repo_url isn't right
