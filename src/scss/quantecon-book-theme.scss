@@ -151,6 +151,7 @@ body {
 
     .btn__search {
       input {
+        background-color: #333;
         color: #fff;
 
         &:focus {
@@ -209,12 +210,21 @@ body {
       color: #333;
     }
 
-    div.cell details.below-input>summary, div.cell div.cell_input, div.cell details.above-input>summary{
+    div.cell details.below-input>summary, div.cell div.cell_input, div.cell details.above-input>summary {
       background-color: #333;
     }
 
     .tippy-box {
       background-color: #333;
+    }
+
+    .bd-search-container ul.search li div.context, .bd-search-container ul.search li p.context {
+      color: #fff;
+    }
+
+    .qe-toolbar__inner>ul>li.btn__search input {
+      background-color: #333;
+      color: #fff;
     }
   }
 }
