@@ -6,5 +6,3 @@ var READTHEDOCS_DATA = {
   language: "en",
   proxied_api_host: "https://readthedocs.org",
 };
-
-const SPHINX_HIGHLIGHT_ENABLED = true
