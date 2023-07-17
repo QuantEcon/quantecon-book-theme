@@ -23,11 +23,11 @@ setup(
     install_requires=[
         "pyyaml",
         "sphinx>=4,<7",
-        "docutils",
+        "docutils==0.17.1",
         "click",
         "setuptools",
         "libsass~=0.20.1",
-        "sphinx_book_theme~=1.0.0",
+        "sphinx_book_theme~=1.0.1",
         "beautifulsoup4",
         "web-compile",
     ],

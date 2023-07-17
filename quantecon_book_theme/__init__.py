@@ -286,7 +286,7 @@ def setup(app):
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
-
+    app.add_js_file("rtd-data.js")
     return {
         "parallel_read_safe": True,
         "parallel_write_safe": True,
