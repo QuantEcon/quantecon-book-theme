@@ -7,8 +7,6 @@ from functools import lru_cache
 from docutils import nodes
 from sphinx.util import logging
 from bs4 import BeautifulSoup as bs
-from sphinx.util.fileutil import copy_asset
-from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
@@ -48,24 +46,24 @@ def find_url_relative_to_root(pagename, relative_page, path_docs_source):
     return page_rel_root
 
 
-def add_static_path(app):
-    """Ensure CSS/JS is loaded."""
-    static_path = Path(__file__).parent.joinpath("static").absolute()
-    app.config.html_static_path.append(str(static_path))
+# def add_static_path(app):
+#     """Ensure CSS/JS is loaded."""
+#     static_path = Path(__file__).parent.joinpath("static").absolute()
+#     app.config.html_static_path.append(str(static_path))
 
-    # copying plugins
-    if "plugins_list" in app.config.html_theme_options:
-        outdir = app.outdir + "/plugins"
-        ensuredir(outdir)
-        for i, asset in enumerate(app.config.html_theme_options["plugins_list"]):
-            assetname = Path(asset).name
-            copy_asset(app.confdir + "/" + asset, outdir)
-            app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
+#     # copying plugins
+#     if "plugins_list" in app.config.html_theme_options:
+#         outdir = app.outdir + "/plugins"
+#         ensuredir(outdir)
+#         for i, asset in enumerate(app.config.html_theme_options["plugins_list"]):
+#             assetname = Path(asset).name
+#             copy_asset(app.confdir + "/" + asset, outdir)
+#             app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
 
-    # Javascript
-    for fname in static_path.iterdir():
-        if ".js" in fname.suffix:
-            app.add_js_file(fname.name)
+#     # Javascript
+#     for fname in static_path.iterdir():
+#         if ".js" in fname.suffix:
+#             app.add_js_file(fname.name)
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
@@ -333,7 +331,7 @@ def setup(app):
     app.setup_extension("sphinx_book_theme")
 
     app.connect("html-page-context", add_hub_urls)
-    app.connect("builder-inited", add_static_path)
+    # app.connect("builder-inited", add_static_path)
     app.connect("html-page-context", hash_html_assets)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
