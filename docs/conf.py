@@ -1,5 +1,4 @@
 # -- Project information -----------------------------------------------------
-import os
 
 project = "Quantecon Book Theme"
 copyright = "2020"
@@ -34,14 +33,11 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.8", None),
     "sphinx": ("https://www.sphinx-doc.org/en/master", None),
-    "pst": ("https://pydata-sphinx-theme.readthedocs.io/en/latest/", None),
 }
 nitpick_ignore = [
     ("py:class", "docutils.nodes.document"),
     ("py:class", "docutils.parsers.rst.directives.body.Sidebar"),
 ]
-
-suppress_warnings = ["myst.domains", "ref.ref"]
 
 numfig = True
 
@@ -90,24 +86,3 @@ html_theme_options = {
 }
 bibtex_bibfiles = ["references.bib"]
 bibtex_reference_style = "author_year"
-
-
-def setup(app):
-    # -- To demonstrate ReadTheDocs switcher -------------------------------------
-    # This links a few JS and CSS files that mimic the environment that RTD uses
-    # so that we can test RTD-like behavior. We don't need to run it on RTD and we
-    # don't wanted it loaded in GitHub Actions because it messes up the lighthouse
-    # results.
-    if not os.environ.get("READTHEDOCS") and not os.environ.get("GITHUB_ACTIONS"):
-        app.add_css_file(
-            "https://assets.readthedocs.org/static/css/readthedocs-doc-embed.css"
-        )
-        app.add_css_file("https://assets.readthedocs.org/static/css/badge_only.css")
-
-        # Create the dummy data file so we can link it
-        # ref: https://github.com/readthedocs/readthedocs.org/blob/bc3e147770e5740314a8e8c33fec5d111c850498/readthedocs/core/static-src/core/js/doc-embed/footer.js  # noqa: E501
-        app.add_js_file("rtd-data.js")
-        app.add_js_file(
-            "https://assets.readthedocs.org/static/javascript/readthedocs-doc-embed.js",
-            priority=501,
-        )
