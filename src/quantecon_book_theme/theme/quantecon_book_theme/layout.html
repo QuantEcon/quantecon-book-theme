@@ -2,6 +2,8 @@
 
 {% block css %}
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     {% if mathjax_version == 3 %}
         <script>
             MathJax = {
@@ -203,6 +205,7 @@
             <div class="qe-toolbar__inner">
 
                 <ul class="qe-toolbar__main">
+                    <p>hello</p>
                     <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                     <li data-tippy-content="Home"><a href="{{ master_url }}"><i data-feather="home"></i></a></li>
                     <li class="btn__qelogo"><a href="{{theme_header_organisation_url}}" title="{{html_title}}"><span class="show-for-sr">{{ theme_header_organisation}}</span></a></li>
@@ -271,8 +274,6 @@
             </li>
             </ul>
             <p class="launch"><a href="{{default_server}}" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
-            <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

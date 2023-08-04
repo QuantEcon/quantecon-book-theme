@@ -42,6 +42,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install jupyter-book
+          pip install requests
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
