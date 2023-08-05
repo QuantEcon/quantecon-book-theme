@@ -26,11 +26,9 @@ dependencies = [
   "sphinx>=4,<7",
   "docutils==0.17.1",
   "click",
-  "setuptools",
   "libsass~=0.20.1",
   "sphinx_book_theme~=1.0.1",
   "beautifulsoup4",
-  "web-compile",
 ]
 
 license = { file = "LICENSE" }
@@ -61,15 +59,16 @@ doc = [
     "ipywidgets",
     "pandas",
     "nbclient",
-    "myst-nb~=0.17.1",
+    "myst-nb",
     "sphinx-togglebutton>=0.2.1",
     "sphinx-thebe",
     "sphinx-copybutton",
+    "docutils==0.17.1", # docutils 0.18, 0.19 need a patch fix https://sourceforge.net/p/docutils/patches/195/, un-pin when 0.20 is released
     "plotly",
     "sphinxcontrib-bibtex>=2.2.0,<=2.5.0",
 ]
 test = [
-    "myst_nb~=0.17.1",
+    "myst_nb",
     "coverage",
     "pytest~=7.1",
     "pytest-cov",
