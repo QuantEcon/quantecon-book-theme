@@ -12,7 +12,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.5.4"
+__version__ = "0.5.3"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -48,11 +48,7 @@ def find_url_relative_to_root(pagename, relative_page, path_docs_source):
     return page_rel_root
 
 
-def add_static_path(app):
-    """Ensure CSS/JS is loaded."""
-    static_path = Path(__file__).parent.joinpath("static").absolute()
-    app.config.html_static_path.append(str(static_path))
-
+def add_plugins_list(app):
     # copying plugins
     if "plugins_list" in app.config.html_theme_options:
         outdir = app.outdir + "/plugins"
@@ -61,11 +57,6 @@ def add_static_path(app):
             assetname = Path(asset).name
             copy_asset(app.confdir + "/" + asset, outdir)
             app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
-
-    # Javascript
-    for fname in static_path.iterdir():
-        if ".js" in fname.suffix:
-            app.add_js_file(fname.name)
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
@@ -334,7 +325,7 @@ def setup(app):
     app.add_js_file("scripts/quantecon-book-theme.js")
 
     app.connect("html-page-context", add_hub_urls)
-    # app.connect("builder-inited", add_static_path)
+    app.connect("builder-inited", add_plugins_list)
     app.connect("html-page-context", hash_html_assets)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
