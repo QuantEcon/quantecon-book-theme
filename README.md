@@ -35,4 +35,4 @@ Now future pytests will test against this file, and the subsequent tests should 
 
 ## Contributing Guide
 
-The docs for the contributing guide of this repository: https://github.com/QuantEcon/quantecon-book-theme/blob/master/docs/contributing.md
+The docs for the contributing guide of this repository: https://github.com/QuantEcon/quantecon-book-theme/blob/master/docs/contributing/index.md
