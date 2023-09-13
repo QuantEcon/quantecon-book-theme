@@ -13,7 +13,7 @@ $breakpoint-sm: 576px;
 
 $color-primary: #1E64C8;
 $color-secondary: #d8655e;
-$color-body: #444444;
+$color-body: #838282;
 
 @import 'normalize';
 @import 'html5boilerplate';
@@ -100,7 +100,7 @@ body {
   }
 
   &.dark-theme {
-    background: #222;
+    background: #37373b;
     color: #fff;
 
     a,
