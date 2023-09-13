@@ -1,21 +1,21 @@
 from setuptools import setup, find_packages
 from pathlib import Path
 
-lines = Path("quantecon_book_theme").joinpath("__init__.py")
+lines = Path("quantumghent_book_theme").joinpath("__init__.py")
 for line in lines.read_text().split("\n"):
     if line.startswith("__version__ ="):
         version = line.split(" = ")[-1].strip('"')
         break
 
 setup(
-    name="quantecon-book-theme",
+    name="quantumghent-book-theme",
     version=version,
     python_requires=">=3.6",
-    author="Project Jupyter Contributors",
+    author="QuantumGhent",
     author_email="jupyter@googlegroups.com",
     # this should be a whitespace separated string of keywords, not a list
     keywords="reproducible science environments scholarship notebook",
-    description="Theme for Quantecon lectures",
+    description="Theme for quantumghent lectures",
     long_description=Path("./README.md").read_text(),
     long_description_content_type="text/markdown",
     license="BSD",
@@ -59,10 +59,10 @@ setup(
         ],
     },
     entry_points={
-        "sphinx.html_themes": ["quantecon_book_theme = quantecon_book_theme"]
+        "sphinx.html_themes": ["quantumghent_book_theme = quantumghent_book_theme"]
     },
     package_data={
-        "quantecon_book_theme": [
+        "quantumghent_book_theme": [
             "theme.conf",
             # Templates
             "*.html",

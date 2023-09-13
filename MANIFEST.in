@@ -18,6 +18,6 @@ include MANIFEST.in
 include README.md
 include web-compile-config.yml
 
-include quantecon_book_theme/theme.conf
-recursive-include quantecon_book_theme *.html
-recursive-include quantecon_book_theme/static *.js *.png *.css *.svg
+include quantumghent_book_theme/theme.conf
+recursive-include quantumghent_book_theme *.html
+recursive-include quantumghent_book_theme/static *.js *.png *.css *.svg

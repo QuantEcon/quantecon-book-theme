@@ -39,6 +39,6 @@ repos:
             (?x)^(
                 web-compile-config.yml|
                 src/.*|
-                quantecon_book_theme/static/.*|
-                quantecon_book_theme/theme.conf
+                quantumghent_book_theme/static/.*|
+                quantumghent_book_theme/theme.conf
             )$
