@@ -197,7 +197,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
 
     # check if notebook folder is present
     if os.path.isdir(app.outdir + "/_notebooks"):
-        context["notebook_path"] = "/_notebooks/" + context["pagename"] + ".ipynb"
+        context["notebook_path"] = "/TensorTutorials" + "/_notebooks/" + context["pagename"] + ".ipynb"
 
     # Update the page title because HTML makes it into the page title occasionally
     if pagename in app.env.titles:
