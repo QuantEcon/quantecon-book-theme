@@ -141,3 +141,11 @@ body {
   margin: 10px 0 0 0;
   color: #444;
 }
+
+div.exercise p.admonition-title::before {
+  content: var(--pst-icon-admonition-pencil);
+}
+
+div.exercise p.admonition-title::after {
+  content: "";
+}
