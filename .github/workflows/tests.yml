@@ -14,14 +14,14 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: "3.10"
     - uses: pre-commit/action@v3.0.0
 
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.9, "3.10"]
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }} and Sphinx ${{ matrix.sphinx }}
@@ -43,7 +43,7 @@ jobs:
       if: github.repository == 'QuantEcon/quantecon-book-theme'
       uses: codecov/codecov-action@v3.1.0
       with:
-        name: ebp-sbt-pytests-py3.7
+        name: ebp-qbt-pytests-${{ matrix.python-version}}
         flags: pytests
         file: ./coverage.xml
         fail_ci_if_error: true
@@ -56,10 +56,10 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
-      - name: Set up Python 3.9
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: "3.10"
       - name: Build package
         run: |
           pip install wheel
