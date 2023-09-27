@@ -142,10 +142,10 @@ body {
   color: #444;
 }
 
-div.exercise p.admonition-title::before {
-  content: var(--pst-icon-admonition-pencil);
+div.exercise.admonition p.admonition-title::before {
+  content: "";
 }
 
 div.exercise p.admonition-title::after {
-  content: "";
+  content: var(--pst-icon-admonition-todo);
 }
