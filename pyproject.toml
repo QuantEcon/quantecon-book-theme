@@ -1,0 +1,86 @@
+[build-system]
+requires = ["sphinx-theme-builder >= 0.2.0a7"]
+build-backend = "sphinx_theme_builder"
+
+[tool.sphinx-theme-builder]
+node-version = "16.13.2"
+theme-name = "quantecon_book_theme"
+additional-compiled-static-assets = [
+  "locales/"
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+
+[project]
+name = "quantecon-book-theme"
+description = "A clean book theme for scientific explanations and documentation with Sphinx"
+dynamic = ["version"]
+readme = "README.md"
+
+requires-python = ">=3.7"
+dependencies = [
+  "pyyaml",
+  "sphinx>=4,<7",
+  "docutils==0.17.1",
+  "click",
+  "libsass~=0.20.1",
+  "sphinx_book_theme~=1.0.1",
+  "beautifulsoup4",
+]
+
+license = { file = "LICENSE" }
+# TODO: Add email of the maintainer
+maintainers = [
+  { name = "Executable Books Team", email = "executablebooks@gmail.com" },
+]
+
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3",
+  "Framework :: Sphinx",
+  "Framework :: Sphinx :: Theme",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+code_style = [
+    "flake8<3.8.0,>=3.7.0",
+    "black",
+    "pre-commit"
+]
+doc = [
+    "folium",
+    "numpy",
+    "matplotlib",
+    "ipywidgets",
+    "pandas",
+    "nbclient",
+    "myst-nb",
+    "sphinx-togglebutton>=0.2.1",
+    "sphinx-thebe",
+    "sphinx-copybutton",
+    "docutils==0.17.1", # docutils 0.18, 0.19 need a patch fix https://sourceforge.net/p/docutils/patches/195/, un-pin when 0.20 is released
+    "plotly",
+    "sphinxcontrib-bibtex>=2.2.0,<=2.5.0",
+]
+test = [
+    "myst_nb",
+    "coverage",
+    "pytest~=7.1",
+    "pytest-cov",
+    "beautifulsoup4",
+    "sphinx_thebe",
+    "pytest-regressions~=2.0.1",
+    "sphinx_copybutton",
+    "sphinx_togglebutton",
+]
+
+[project.entry-points]
+"sphinx.html_themes" = { quantecon_book_theme = "quantecon_book_theme" }
+
+[project.urls]
+Repository = "https://github.com/QuantEcon/quantecon-book-theme"

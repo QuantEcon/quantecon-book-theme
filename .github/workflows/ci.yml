@@ -23,7 +23,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip uninstall -y quantecon-book-theme
-          python setup.py install
+          python -m pip install .
       - name: Install sphinx-multitoc-numbering
         shell: bash -l {0}
         run: |

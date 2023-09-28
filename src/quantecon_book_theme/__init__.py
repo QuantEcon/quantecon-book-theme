@@ -1,6 +1,8 @@
 """A lightweight book theme based on the pydata sphinx theme."""
 from pathlib import Path
 import os
+import hashlib
+from functools import lru_cache
 
 from docutils import nodes
 from sphinx.util import logging
@@ -19,7 +21,8 @@ MESSAGE_CATALOG_NAME = "booktheme"
 
 def get_html_theme_path():
     """Return list of HTML theme paths."""
-    theme_path = str(Path(__file__).parent.absolute())
+    parent = Path(__file__).parent.resolve()
+    theme_path = parent / "theme" / "quantecon_book_theme"
     return theme_path
 
 
@@ -45,11 +48,7 @@ def find_url_relative_to_root(pagename, relative_page, path_docs_source):
     return page_rel_root
 
 
-def add_static_path(app):
-    """Ensure CSS/JS is loaded."""
-    static_path = Path(__file__).parent.joinpath("static").absolute()
-    app.config.html_static_path.append(str(static_path))
-
+def add_plugins_list(app):
     # copying plugins
     if "plugins_list" in app.config.html_theme_options:
         outdir = app.outdir + "/plugins"
@@ -58,11 +57,6 @@ def add_static_path(app):
             assetname = Path(asset).name
             copy_asset(app.confdir + "/" + asset, outdir)
             app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
-
-    # Javascript
-    for fname in static_path.iterdir():
-        if ".js" in fname.suffix:
-            app.add_js_file(fname.name)
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
@@ -268,6 +262,54 @@ def add_to_context(app, pagename, templatename, context, doctree):
             context[key] = _string_or_bool(context[key])
 
 
+@lru_cache(maxsize=None)
+def _gen_hash(path: str) -> str:
+    return hashlib.sha1(path.read_bytes()).hexdigest()
+
+
+def hash_assets_for_files(assets: list, theme_static: Path, context):
+    """Generate a hash for assets, and append to its entry in context.
+
+    assets: a list of assets to hash, each path should be relative to
+         the theme's static folder.
+
+    theme_static: a path to the theme's static folder.
+
+    context: the Sphinx context object where asset links are stored. These are:
+        `css_files` and `script_files` keys.
+    """
+    for asset in assets:
+        # CSS assets are stored in css_files, JS assets in script_files
+        asset_type = "css_files" if asset.endswith(".css") else "script_files"
+        if asset_type in context:
+            # Define paths to the original asset file, and its linked file in Sphinx
+            asset_sphinx_link = f"_static/{asset}"
+            asset_source_path = theme_static / asset
+            if not asset_source_path.exists():
+                SPHINX_LOGGER.warning(
+                    f"Asset {asset_source_path} does not exist, not linking."
+                )
+            # Find this asset in context, and update it to include the digest
+            if asset_sphinx_link in context[asset_type]:
+                hash = _gen_hash(asset_source_path)
+                ix = context[asset_type].index(asset_sphinx_link)
+                context[asset_type][ix] = asset_sphinx_link + "?digest=" + hash
+
+
+def hash_html_assets(app, pagename, templatename, context, doctree):
+    """Add ?digest={hash} to assets in order to bust cache when changes are made.
+
+    The source files are in `static` while the built HTML is in `_static`.
+    """
+    assets = ["scripts/quantecon-book-theme.js"]
+    # Only append the book theme CSS if it's explicitly this theme. Sub-themes
+    # will define their own CSS file, so if a sub-theme is used, this code is
+    # run but the book theme CSS file won't be linked in Sphinx.
+    if app.config.html_theme == "quantecon_book_theme":
+        assets.append("styles/quantecon-book-theme.css")
+    hash_assets_for_files(assets, get_html_theme_path() / "static", context)
+
+
 def _string_or_bool(var):
     if isinstance(var, str):
         return var.lower() == "true"
@@ -280,13 +322,14 @@ def _string_or_bool(var):
 def setup(app):
     # Configuration for Juypter Book
     app.setup_extension("sphinx_book_theme")
+    app.add_js_file("scripts/quantecon-book-theme.js")
 
     app.connect("html-page-context", add_hub_urls)
-    app.connect("builder-inited", add_static_path)
+    app.connect("builder-inited", add_plugins_list)
+    app.connect("html-page-context", hash_html_assets)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
-
     return {
         "parallel_read_safe": True,
         "parallel_write_safe": True,

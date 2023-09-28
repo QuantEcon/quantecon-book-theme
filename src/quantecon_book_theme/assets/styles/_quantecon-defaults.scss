@@ -1,0 +1,151 @@
+body {
+  div.cell div.cell_input {
+    border-left-color: $color-primary;
+  }
+}
+
+#qe-notebook-header {
+  display: none;
+}
+
+/* Homepage */
+.home-intro {
+  display: flex;
+  align-content: center;
+}
+
+.home-detail {
+}
+
+.home-blurb {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.home-intro .sponsor {
+  list-style: none;
+  padding: 0;
+  flex-shrink: 0;
+  margin: 0 60px 0 4rem;
+  text-align: center;
+}
+
+.home-intro .sponsor li {
+  display: block;
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.web-version {
+  display: inline-block;
+  padding: 2rem 0rem;
+}
+
+.web-version a {
+  display: block;
+  color: #23262c;
+  border: 1px solid #23262c;
+  border-radius: 5px;
+  padding: 1rem 40px 1rem 120px;
+  position: relative;
+}
+
+.web-version a:hover {
+  border-color: #23262c;
+  text-decoration: none;
+  background: #23262c;
+  color: #fff;
+}
+
+.web-version a:hover p {
+  color: #eee;
+}
+
+.web-version a .thumb {
+  position: absolute;
+  left: 40px;
+  top: 1rem;
+  font-size: 3.5rem;
+  color: #23262c;
+}
+
+.web-version a .thumb img {
+  width: 50px;
+}
+
+.web-version a h2 {
+  line-height: 1;
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.web-version a p {
+  margin: 10px 0 0 0;
+  color: #444;
+}
+
+.home-alternatives {
+  padding: 1rem 0rem;
+}
+
+.home-alternatives ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0;
+}
+
+.home-alternatives li {
+  padding: 0;
+  margin: 1rem 1rem;
+}
+
+.home-alternatives li a {
+  display: block;
+  color: #23262c;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem 25px 1rem 75px;
+  position: relative;
+}
+
+.home-alternatives li a:hover {
+  border-color: #23262c;
+  text-decoration: none;
+  background: #23262c;
+  color: #fff;
+}
+
+.home-alternatives li a:hover svg {
+  color: #fff;
+}
+
+.home-alternatives li a:hover p {
+  color: #eee;
+}
+
+.home-alternatives li a svg {
+  position: absolute;
+  left: 25px;
+  top: 1rem;
+  font-size: 2rem;
+  color: #23262c;
+}
+
+.home-alternatives li a h3 {
+  line-height: 1;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.home-alternatives li a p {
+  margin: 10px 0 0 0;
+  color: #444;
+}
+
+div.exercise.admonition p.admonition-title::before {
+  content: "";
+}
+
+div.exercise p.admonition-title::after {
+  content: var(--pst-icon-admonition-todo);
+}

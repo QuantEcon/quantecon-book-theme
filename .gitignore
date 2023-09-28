@@ -134,3 +134,8 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+# nodejs
+.nodeenv/
+node_modules/
+node_modules

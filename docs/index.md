@@ -46,7 +46,7 @@ configure
 Controlling page elements <layout>
 notebooks
 launch
-contributing
+contributing/index
 GitHub repository <https://github.com/quantecon/quantecon-book-theme>
 ```
 
