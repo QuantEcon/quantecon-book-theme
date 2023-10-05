@@ -166,7 +166,8 @@ body {
       .MathJax {
         color: #fff !important;
       }
-      .image-reference img {
+      .image-reference img,
+      figure img {
         filter: invert(100%) hue-rotate(-180deg) !important;
         -ms-filter: invert(100%) !important;
         -webkit-filter: invert(100%) hue-rotate(-180deg) !important;
@@ -236,6 +237,21 @@ body {
     .qe-toolbar__inner > ul > li.btn__search input {
       background-color: #333;
       color: #fff;
+    }
+
+    tbody tr:nth-child(even) {
+      color: white;
+    }
+    thead tr th {
+      color: white;
+    }
+
+    .highlight .nn {
+      color: white;
+    }
+
+    mjx-math mjx-mstyle {
+      color: white !important;
     }
   }
 }
