@@ -167,7 +167,8 @@ body {
         color: #fff !important;
       }
       .image-reference img,
-      figure img {
+      figure img,
+      .cell_output img {
         filter: invert(100%) hue-rotate(-180deg) !important;
         -ms-filter: invert(100%) !important;
         -webkit-filter: invert(100%) hue-rotate(-180deg) !important;
@@ -252,6 +253,18 @@ body {
 
     mjx-math mjx-mstyle {
       color: white !important;
+    }
+
+    #settingsModal {
+      span {
+        color: white;
+      }
+    }
+
+    .cell_output .output.text_plain,
+    .cell_output .output.stream,
+    .cell_output .output.stderr {
+      border: 0rem;
     }
   }
 }
