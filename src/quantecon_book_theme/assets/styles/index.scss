@@ -99,6 +99,14 @@ body {
     max-width: 100%;
   }
 
+  .logo-img {
+    display: block;
+  }
+
+  .dark-logo-img {
+    display: none;
+  }
+
   &.dark-theme {
     background: #222;
     color: #fff;
@@ -127,6 +135,14 @@ body {
     .maths,
     .math {
       color: #fff !important;
+    }
+
+    .logo-img {
+      display: none;
+    }
+
+    .dark-logo-img {
+      display: block;
     }
 
     .highlight {

@@ -56,6 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
     $head = $("head"),
     $body = $("body"),
     $sidebar = $(".qe-sidebar"),
+    $lighLogo = $(".logo-img"),
+    $darkLogo = $(".dark-logo-img"),
     $sidebarToggle = $(".btn__sidebar");
 
   // Toolbar contrast toggle
@@ -83,6 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
       $(this).addClass("btn-active");
       localStorage.setContrast = 1;
       $body.addClass("dark-theme");
+      if (!$darkLogo.length) {
+        $lighLogo.css("display", "block");
+      }
     }
   });
 
