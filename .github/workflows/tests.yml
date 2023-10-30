@@ -56,10 +56,10 @@ jobs:
         pytest --durations=10 --cov=quantecon_book_theme --cov-report=xml --cov-report=term-missing
 
     - name: Upload to Codecov
-      if: github.repository == 'QuantEcon/quantecon-book-theme'
-      uses: codecov/codecov-action@v3.1.0
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == 3.9 && github.repository == 'QuantEcon/quantecon-book-theme' && github.event_name == 'pull_request'
+      uses: codecov/codecov-action@v3.1.4
       with:
-        name: ebp-qbt-pytests-${{ matrix.python-version}}
+        name: ebp-qbt-pytests-py3.7
         flags: pytests
         file: ./coverage.xml
         fail_ci_if_error: true
