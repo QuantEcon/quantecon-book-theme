@@ -114,3 +114,18 @@ html_theme_options = {
     ...
 }
 ```
+
+## Add a dark mode version of your logo
+
+To optimize your branding for dark mode, consider creating a dedicated dark mode variant of your logo.
+Then, configure the theme settings to display this variant when dark mode is active, using the following configuration:
+
+```python
+html_theme_options = {
+    ...
+    "dark_logo": "name-of-dark-logo-image"
+    ...
+}
+```
+
+The image is expected to be in the `_static` folder of your source repository.

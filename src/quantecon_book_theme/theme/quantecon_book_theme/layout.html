@@ -106,7 +106,10 @@
                             <p class="logo">
                                 {% if logo %}
                                     {% if theme_header_organisation_url %}
-                                    <a href={{theme_header_organisation_url}}><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
+                                    <a href={{theme_header_organisation_url}}><img src="{{ pathto('_static/' + logo, 1) }}" class="logo logo-img" alt="logo"></a>
+                                    {% if theme_dark_logo %}
+                                    <a href={{theme_header_organisation_url}}><img src="{{ pathto('_static/' + theme_dark_logo, 1) }}" class="dark-logo-img" alt="logo"></a>
+                                    {% endif %}
                                     {% else %}
                                     <a href="{{ master_url }}"><img src="{{ pathto('_static/' + logo, 1) }}" class="logo" alt="logo"></a>
                                     {% endif %}
