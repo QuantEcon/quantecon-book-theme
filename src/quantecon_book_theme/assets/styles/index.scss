@@ -107,6 +107,27 @@ body {
     display: none;
   }
 
+  .cell.tag_margin,
+  .cell.tag_popout,
+  .margin.docutils.container,
+  aside.margin,
+  div.margin,
+  figure.margin {
+    width: 33%;
+    margin: 0 -36% 0 0;
+    clear: right;
+    @media (max-width: $breakpoint-md) {
+      z-index: 2;
+      position: relative;
+      width: 40%;
+      float: right;
+      background-color: unset;
+      font-size: 0.9em;
+      margin-left: 0.5rem;
+      margin-right: 0rem;
+    }
+  }
+
   &.dark-theme {
     background: #222;
     color: #fff;
@@ -374,9 +395,6 @@ a {
   text-decoration: none;
   transition: all 0.15s linear;
   overflow-wrap: break-word;
-}
-
-a:link {
 }
 
 a:hover {
