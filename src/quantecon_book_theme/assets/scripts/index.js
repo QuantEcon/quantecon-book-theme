@@ -376,6 +376,34 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   })();
 
+  // Intersection Observer for hiding 'Back To Top' when overlapping margins
+  const targetElements = document.getElementsByClassName("margin");
+  const BackToTop = document.getElementsByClassName("qe-page__toc-footer")[0];
+
+  // Function to be called when the intersection changes
+  const handleIntersection = (entries, observer) => {
+    entries.forEach((entry) => {
+      // If the target element is intersecting with the certain div
+      if (entry.isIntersecting) {
+        // Hide the element
+        BackToTop.style.display = "none";
+      } else {
+        // Show the element
+        BackToTop.style.display = "";
+      }
+    });
+  };
+
+  // Create the Intersection Observer
+  const observer = new IntersectionObserver(handleIntersection, {
+    root: null, // observing intersections relative to the viewport
+    rootMargin: "0px 0px -80% 0px",
+  });
+
+  // Start observing the target element
+  // Start observing each target element
+  Array.from(targetElements).forEach((el) => observer.observe(el));
+
   // Tooltips
   tippy("[data-tippy-content]", {
     touch: false,
