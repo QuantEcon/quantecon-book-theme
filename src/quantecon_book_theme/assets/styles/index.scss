@@ -4,7 +4,9 @@ IMPORTS
 -----------------------------------
 */
 
-@import url("https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,400&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.7.0/style.css");
+@import url("https://cdn.huhuhang.com/fonts/Merriweather.css");
+@import url("https://cdn.huhuhang.com/fonts/SmileySans.css");
 
 $breakpoint-xl: 1200px;
 $breakpoint-lg: 992px;
@@ -76,27 +78,22 @@ html {
   }
 }
 
-.show-for-sr {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-}
-
 body {
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 400;
   padding-top: 0px;
   color: #444;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Merriweather", "LXGW WenKai Lite", -apple-system,
+    "Microsoft Yahei";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   img {
     max-width: 100%;
+    display: block;
+    margin: auto;
   }
 
   .logo-img {
@@ -296,6 +293,15 @@ p {
   margin-top: revert;
   font-size: revert;
   color: revert;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Merriweather", "Smiley Sans Oblique", -apple-system,
+    "Microsoft Yahei" !important;
 }
 
 h1 {
@@ -547,18 +553,6 @@ tt {
             input {
               border-color: $color-body;
             }
-          }
-        }
-
-        &.btn__qelogo {
-          a {
-            display: block;
-            overflow: hidden;
-            height: 30px;
-            width: 105px;
-            background: url(https://assets.quantecon.org/img/menubar/qemb-logo.png)
-              no-repeat left top;
-            background-size: 105px 30px;
           }
         }
 

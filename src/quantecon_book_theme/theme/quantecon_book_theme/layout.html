@@ -48,7 +48,7 @@
 <!-- Normal Meta Tags -->
 <meta name="author" context="{{ author | e }}" />
 <meta name="keywords" content="{{ theme_keywords | e }}" />
-<meta name="description" content={{ theme_description | e }} />
+<meta name="description" content="{{ theme_description | e }}" />
 
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
@@ -119,9 +119,6 @@
                                 {% endif %}
                                 {% endif %}
                             </p>
-
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
-
                         </nav>
 
                         <div class="qe-page__toc-footer">
@@ -138,7 +135,7 @@
                                     {{ prev_title or prev.title }}</a></p>
                             {%- endif %}
                             {% endmacro %}
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            <p><a href="#top"><strong>↑ Back to top</strong></a></p>
                         </div>
 
                     </div>
@@ -173,13 +170,10 @@
 
 
                 <footer class="qe-page__footer">
-
-                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img
-                                src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
-
-                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons
-                        Attribution-ShareAlike 4.0 International.</p>
-
+                    <p xmlns:cc="http://creativecommons.org/ns#">This work is licensed under <a
+                            href="http://creativecommons.org/licenses/by-nd/4.0/?ref=chooser-v1" target="_blank"
+                            rel="license noopener noreferrer" style="display:inline-block;">CC BY-ND 4.0</a>
+                    </p>
                 </footer> <!-- .page__footer -->
 
             </div> <!-- .page -->
@@ -193,7 +187,6 @@
                     {%- endif %}
 
                     <div class="qe-sidebar__header">
-
 
                         Contents
 
@@ -218,8 +211,7 @@
                     <ul class="qe-toolbar__main">
                         <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
                         <li data-tippy-content="Home"><a href="{{ master_url }}"><i data-feather="home"></i></a></li>
-                        <li class="btn__qelogo"><a href="{{theme_header_organisation_url}}" title="{{html_title}}"><span
-                                    class="show-for-sr">{{ theme_header_organisation}}</span></a></li>
+                        <li><a href="{{ master_url }}"></a><span>{{ theme_header_organisation}}</span></a></li>
                     </ul>
 
                     <ul class="qe-toolbar__links">
