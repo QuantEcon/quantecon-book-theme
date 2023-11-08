@@ -397,11 +397,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create the Intersection Observer
   const observer = new IntersectionObserver(handleIntersection, {
     root: null, // observing intersections relative to the viewport
-    rootMargin: "0px 0px -80% 0px",
+    rootMargin: "0px 0px -80% 0px", // when the targetElement is 80% above the viewport
   });
 
-  // Start observing the target element
-  // Start observing each target element
+  // Start observing the target elements
   Array.from(targetElements).forEach((el) => observer.observe(el));
 
   // Tooltips
