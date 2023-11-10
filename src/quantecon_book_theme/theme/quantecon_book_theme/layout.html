@@ -172,7 +172,8 @@
                 <footer class="qe-page__footer">
                     <p xmlns:cc="http://creativecommons.org/ns#">该作品由 {{ author }} 创作，基于 <a
                             href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank"
-                            rel="license noopener noreferrer" style="display:inline-block;">署名-非商业性使用-相同方式共享 4.0 国际</a> 授权协议许可，请严格遵循。
+                            rel="license noopener noreferrer" style="display:inline-block;">署名-非商业性使用-相同方式共享 4.0 国际</a>
+                        授权协议许可，请严格遵循。
                     </p>
                 </footer> <!-- .page__footer -->
 
@@ -223,8 +224,7 @@
                         <li data-tippy-content="全屏" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                         <li data-tippy-content="增加字体大小" class="btn__plus"><i data-feather="plus-circle"></i>
                         </li>
-                        <li data-tippy-content="减小字体大小" class="btn__minus"><i
-                                data-feather="minus-circle"></i></li>
+                        <li data-tippy-content="减小字体大小" class="btn__minus"><i data-feather="minus-circle"></i></li>
                         <li data-tippy-content="深色模式" class="btn__contrast"><i data-feather="sunset"></i>
                         </li>
                     </ul>
@@ -232,128 +232,7 @@
                 </div>
 
             </div> <!-- .toolbar -->
-            <div id="downloadPDFModal" style="display: none;">
-                <ul class="pdf-options" style="display: block;">
-                    <li class="download-pdf-book" onClick="window.print()">
-                        <p>Lecture (PDF)</p>
-                    </li>
-                    <li class="download-pdf-file">
-                        <a href="{{ pdf_book_path }}" download>
-                            <p>Book (PDF)</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="settingsModal" style="display: none;">
-                <p class="modal-title"> Notebook Launcher </p>
-                <div class="modal-desc">
-                    <p>
-                        Choose public or private cloud service for "Launch" button.
-                    </p>
-                </div>
-                <p class="modal-subtitle">Select a server</p>
-                <ul class="modal-servers">
-                    <li class="active launcher-public">
-                        <span class="label">Public</span>
-                        <select id="launcher-public-input">
-                            {% for item in launch_buttons%}
-                            <option value="{{item.url}}">{{item.name}}</option>
-                            {% endfor %}
-                        </select>
-                        <i class="fas fa-check-circle"></i>
-                    </li>
-                    <li class="launcher-private">
-                        <span class="label">Private</span>
-                        <input type="text" id="launcher-private-input" data-repourl="{{theme_nb_repository_url}}"
-                            data-urlpath="{{jupyterhub_urlpath}}" data-branch={{repo_branch}}>
-                        <i class="fas fa-check-circle"></i>
-                    </li>
-                </ul>
-                <p class="launch"><a href="{{default_server}}" id="advancedLaunchButton" target="_blank">Launch
-                        Notebook</a></p>
-                <script>
-                    // QuantEcon Notebook Launcher
-                    const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
-                    // Highlight the server type if previous selection exists
-                    if (typeof localStorage.launcherType !== 'undefined') {
-                        for (var i = 0; i < launcherTypeElements.length; i++) {
-                            launcherTypeElements[i].classList.remove('active');
-                            if (launcherTypeElements[i].classList.contains(localStorage.launcherType)) {
-                                launcherTypeElements[i].classList.add('active');
-                            }
-                        }
-                    }
-                    // Highlight server type on click and set local storage value
-                    for (var i = 0; i < launcherTypeElements.length; i++) {
-                        launcherTypeElements[i].addEventListener('click', function () {
-                            for (var j = 0; j < launcherTypeElements.length; j++) {
-                                launcherTypeElements[j].classList.remove('active');
-                            }
-                            this.classList.add('active');
-                            if (this.classList.contains('launcher-private')) {
-                                localStorage.launcherType = 'launcher-private';
-                            } else if (this.classList.contains('launcher-public')) {
-                                localStorage.launcherType = 'launcher-public';
-                            }
-                            setLaunchServer();
-                        })
-                    }
-                    const launcherPublic = document.getElementById('launcher-public-input');
-                    const launcherPrivate = document.getElementById('launcher-private-input');
-                    const pageName = "{{pagename}}";
-                    const repoURL = "{{theme_nb_repository_url}}";
-                    const urlPath = "{{jupyterhub_urlpath}}";
-                    const branch = "{{repo_branch}}"
-                    const launchNotebookLink = document.getElementById('advancedLaunchButton');
 
-                    // Highlight public server option if previous selection exists
-                    if (typeof localStorage.launcherPublic !== 'undefined') {
-                        launcherPublic.value = localStorage.launcherPublic;
-                    }
-                    // Update local storage upon public server selection
-                    launcherPublic.addEventListener('change', (event) => {
-                        setLaunchServer();
-                    });
-                    // Populate private server input if previous entry exists
-                    if (typeof localStorage.launcherPrivate !== 'undefined') {
-                        launcherPrivate.value = localStorage.launcherPrivate;
-                    }
-                    // Update local storage when a private server is entered
-                    launcherPrivate.addEventListener('input', (event) => {
-                        setLaunchServer();
-                    });
-
-                    // Function to update the "Launch Notebook" link href
-                    function setLaunchServer() {
-                        launchNotebookLink.removeAttribute("style")
-                        if (localStorage.launcherType == 'launcher-private') {
-                            let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
-                            launcherPrivateValue = launcherPrivate.value
-                            if (!launcherPrivateValue) {
-                                launchNotebookLink.removeAttribute("href")
-                                launchNotebookLink.style.background = "grey"
-                                return
-                            }
-                            localStorage.launcherPrivate = launcherPrivateValue;
-                            privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
-                            if (!privateServer.includes("http")) {
-                                privateServer = "http://" + privateServer
-                            }
-                            launchNotebookLinkURL = privateServer + repoPrefix;
-                        } else if (localStorage.launcherType == 'launcher-public') {
-                            launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
-                            localStorage.launcherPublic = launcherPublicValue;
-                            launchNotebookLinkURL = localStorage.launcherPublic;
-                        }
-                        if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
-                    }
-                    // Check if user has previously selected a server
-                    if ((typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined')) {
-                        setLaunchServer();
-                    }
-                </script>
-
-            </div>
 
         </div> <!-- .wrapper-->
         {%- block scripts_end %}
