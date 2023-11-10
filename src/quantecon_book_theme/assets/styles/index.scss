@@ -599,7 +599,8 @@ tt {
     width: 200px;
 
     .inner {
-      height: 100%;
+      position: sticky;
+      top: 6rem;
     }
 
     &-header {
@@ -646,8 +647,6 @@ tt {
     }
 
     &-footer {
-      position: sticky;
-      top: 6rem;
       margin: 2rem 0 0 0;
       font-size: 0.9rem;
 
