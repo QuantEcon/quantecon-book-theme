@@ -126,6 +126,9 @@ body {
       margin-left: 0.5rem;
       margin-right: 0rem;
     }
+    .sidebar-title:empty {
+      display: none;
+    }
   }
 
   &.dark-theme {
