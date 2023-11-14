@@ -20,6 +20,7 @@ $color-body: #444444;
 @import "quantecon-defaults";
 @import "syntax";
 @import "tippy-themes";
+@import "margin";
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -105,30 +106,6 @@ body {
 
   .dark-logo-img {
     display: none;
-  }
-
-  .cell.tag_margin,
-  .cell.tag_popout,
-  .margin.docutils.container,
-  aside.margin,
-  div.margin,
-  figure.margin {
-    width: 33%;
-    margin: 0 -36% 0 0;
-    clear: right;
-    @media (max-width: $breakpoint-md) {
-      z-index: 2;
-      position: relative;
-      width: 40%;
-      float: right;
-      background-color: unset;
-      font-size: 0.9em;
-      margin-left: 0.5rem;
-      margin-right: 0rem;
-    }
-    .sidebar-title:empty {
-      display: none;
-    }
   }
 
   &.dark-theme {

@@ -377,9 +377,13 @@ document.addEventListener("DOMContentLoaded", function () {
   })();
 
   // Intersection Observer for hiding 'Back To Top' when overlapping margins
-  const targetElements = document.getElementsByClassName("margin");
+  const Margin = document.getElementsByClassName("margin");
+  const figCaption = document.querySelectorAll(
+    "figure.margin-caption figcaption",
+  );
   const BackToTop = document.getElementsByClassName("qe-page__toc-footer")[0];
 
+  const targetElements = Array.from(Margin).concat(Array.from(figCaption));
   // Function to be called when the intersection changes
   const handleIntersection = (entries, observer) => {
     entries.forEach((entry) => {

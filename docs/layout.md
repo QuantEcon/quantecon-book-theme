@@ -19,7 +19,7 @@ right TOC should hide itself automatically.
 ### Margins
 
 You can specify content that should exist in the right margin. This will behave
-like a regular sidebar until the screen hits a certain width, at which point this
+like a regular sidebar until the screen hits a certain width (1200px to be exact), at which point this
 content will "pop out" to the right white space. To add margin content, use this syntax:
 
 ````
