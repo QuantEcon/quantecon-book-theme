@@ -32,7 +32,7 @@ $margin-offset: -$margin-width-relative-to-content;
   margin-left: 0.5rem;
 
   // Wide screens and printing should force margin behavior
-  @media (min-width: $breakpoint-lg), print {
+  @media (min-width: $breakpoint-xl), print {
     width: $margin-width-width-gutter;
     margin: 0 $margin-offset 0 0;
 
@@ -69,7 +69,7 @@ label.margin-toggle {
   sup {
     user-select: none;
   }
-  @media (max-width: $breakpoint-lg) {
+  @media (max-width: $breakpoint-xl) {
     cursor: pointer;
     color: rgb(0, 113, 188);
     &.marginnote-label {
@@ -83,7 +83,7 @@ label.margin-toggle {
 
 input.margin-toggle {
   display: none;
-  @media (max-width: $breakpoint-lg) {
+  @media (max-width: $breakpoint-xl) {
     &:checked + .sidenote,
     &:checked + .marginnote {
       display: block;
@@ -107,7 +107,7 @@ input.margin-toggle {
     }
     @include margin-content();
     border-left: none;
-    @media (max-width: $breakpoint-lg) {
+    @media (max-width: $breakpoint-xl) {
       display: none;
     }
   }
@@ -150,7 +150,7 @@ input.margin-toggle {
       }
     }
 
-    @media (min-width: $breakpoint-lg) {
+    @media (min-width: $breakpoint-xl) {
       // No border for margin sidebars on wide screen
       border: none;
 
@@ -205,7 +205,7 @@ input.margin-toggle {
   div.full-width {
     z-index: 2;
     position: relative;
-    @media (min-width: $breakpoint-lg) {
+    @media (min-width: $breakpoint-xl) {
       max-width: $content-fullwidth-width;
       width: $content-fullwidth-width;
     }
