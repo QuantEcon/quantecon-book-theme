@@ -330,13 +330,6 @@ a {
   text-decoration: underline;
 }
 
-a:hover {
-}
-
-a:visited {
-  //color: darken($primary, 20%);
-}
-
 h1,
 h2,
 h3,
@@ -382,19 +375,13 @@ a {
   overflow-wrap: break-word;
 }
 
-a:link {
+a:visited {
+  color: #004979;
 }
 
 a:hover {
   color: #004979;
   text-decoration: underline;
-}
-
-a:active {
-}
-
-a:visited {
-  color: #004979;
 }
 
 pre {
