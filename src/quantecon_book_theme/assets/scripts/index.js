@@ -376,6 +376,18 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   })();
 
+  (function () {
+    const authors = document.getElementsByClassName(
+      "qe-page__header-authors",
+    )[0].innerText;
+    // adding authors to the page
+    if (authors) {
+      const h1a = document.querySelector("h1 a");
+      const newParagraph = document.createElement("p");
+      newParagraph.textContent = authors;
+      h1a.insertAdjacentElement("afterend", newParagraph);
+    }
+  })();
   // Tooltips
   tippy("[data-tippy-content]", {
     touch: false,
