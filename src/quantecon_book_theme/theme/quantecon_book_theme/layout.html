@@ -152,7 +152,13 @@
                     {%- if theme_authors | length > 0 %}
                         <p class="qe-page__header-authors">
                             {% for author in theme_authors %}
-                                <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                {% if loop.last and theme_authors|length >= 2 %}
+                                    and <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                {% elif loop.first and theme_authors|length <= 2 %}
+                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                {% else %}
+                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>,
+                                {% endif %}
                             {% endfor %}
                         </p>
                     {%- else %}
