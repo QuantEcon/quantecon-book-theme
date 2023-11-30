@@ -148,8 +148,17 @@
                         <p class="qe-page__header-subheading">{{ pagetitle | e }}</p>
 
                     </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                    {%- if theme_authors | length > 2 %}
+                        <p class="qe-page__header-authors">
+                            {% for author in theme_authors %}
+                                <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                            {% endfor %}
+                        </p>
+                    {%- else %}
+                        <p class="qe-page__header-authors">{{ author }}</p>
+                    {%- endif %}
 
-                    <p class="qe-page__header-authors">{{ author }}</p>
 
                 </div> <!-- .page__header -->
 
