@@ -149,7 +149,7 @@
 
                     </div>
                     <!-- length 2, since its a string and empty dict has length 2 - {} -->
-                    {%- if theme_authors | length > 2 %}
+                    {%- if theme_authors | length > 0 %}
                         <p class="qe-page__header-authors">
                             {% for author in theme_authors %}
                                 <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
