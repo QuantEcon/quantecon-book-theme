@@ -102,6 +102,22 @@ html_theme_options = {
 }
 ```
 
+## Add authors to your documentation
+
+If you'd like to add a list of authors to your documentation, you can do so with the following configuration:
+
+```python
+html_theme_options = {
+    ...
+    "authors": [
+        {"name": "author1", "url": "bio-link1"},
+        {"name": "author2", "url": "bio-link2"},
+    ]
+}
+```
+
+Authors with there bio links will be displayed just below the title of the page.
+
 ## Use plugins to add/extend features
 
 If you want some extra features in your documentation website or modify an existing one, you can add a list of plugins
