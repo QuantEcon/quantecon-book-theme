@@ -405,6 +405,38 @@ document.addEventListener("DOMContentLoaded", function () {
     // insert p tag after h1, even if no authors for styling
     h1.insertAdjacentElement("afterend", newParagraph);
   })();
+
+  // Intersection Observer for hiding 'Back To Top' when overlapping margins
+  const Margin = document.getElementsByClassName("margin");
+  const figCaption = document.querySelectorAll(
+    "figure.margin-caption figcaption",
+  );
+  const BackToTop = document.getElementsByClassName("qe-page__toc-footer")[0];
+
+  const targetElements = Array.from(Margin).concat(Array.from(figCaption));
+  // Function to be called when the intersection changes
+  const handleIntersection = (entries, observer) => {
+    entries.forEach((entry) => {
+      // If the target element is intersecting with the certain div
+      if (entry.isIntersecting) {
+        // Hide the element
+        BackToTop.style.display = "none";
+      } else {
+        // Show the element
+        BackToTop.style.display = "";
+      }
+    });
+  };
+
+  // Create the Intersection Observer
+  const observer = new IntersectionObserver(handleIntersection, {
+    root: null, // observing intersections relative to the viewport
+    rootMargin: "0px 0px -80% 0px", // when the targetElement is 80% above the viewport
+  });
+
+  // Start observing the target elements
+  Array.from(targetElements).forEach((el) => observer.observe(el));
+
   // Tooltips
   tippy("[data-tippy-content]", {
     touch: false,

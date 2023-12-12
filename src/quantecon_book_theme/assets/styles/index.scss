@@ -20,6 +20,7 @@ $color-body: #444444;
 @import "quantecon-defaults";
 @import "syntax";
 @import "tippy-themes";
+@import "margin";
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -378,9 +379,6 @@ a {
   text-decoration: none;
   transition: all 0.15s linear;
   overflow-wrap: break-word;
-}
-
-a:link {
 }
 
 a:hover {
