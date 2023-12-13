@@ -376,6 +376,41 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   })();
 
+  /**
+   * Add authors to the heading of toc page
+   */
+  (function () {
+    const authors = document.getElementsByClassName(
+      "qe-page__header-authors",
+    )[0];
+    const fontSize = authors.getAttribute("font-size");
+    const h1 = document.querySelector(".main-index h1");
+
+    // check if its the main toc page
+    if (!h1) {
+      return;
+    }
+    // creating a p tag for styling and author links
+    const newParagraph = document.createElement("p");
+    newParagraph.setAttribute("id", "qe-page-author-links");
+    newParagraph.setAttribute(
+      "style",
+      fontSize ? `font-size: ${fontSize}px` : "",
+    );
+
+    //check if there are authors
+    const isAuthor =
+      authors &&
+      ((authors.querySelectorAll("a").length &&
+        authors.querySelectorAll("a")[0].innerText !== "") ||
+        authors.innerText !== "");
+    if (isAuthor) {
+      newParagraph.innerHTML = authors.innerHTML;
+    }
+    // insert p tag after h1, even if no authors for styling
+    h1.insertAdjacentElement("afterend", newParagraph);
+  })();
+
   // Intersection Observer for hiding 'Back To Top' when overlapping margins
   const Margin = document.getElementsByClassName("margin");
   const figCaption = document.querySelectorAll(

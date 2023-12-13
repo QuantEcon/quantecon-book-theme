@@ -303,6 +303,10 @@ h1 {
   font-weight: 900;
   font-size: 3rem;
   margin: 0 0 1rem 0;
+  p {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+  }
 }
 
 h2 {
@@ -753,10 +757,14 @@ tt {
 
 .main-index {
   h1 {
+    font-weight: 700;
+    margin-bottom: 0px;
+    padding: 0 0 1rem 0;
+  }
+  #qe-page-author-links {
     border-bottom: 5px solid #0072bc;
     margin: 0 0 2rem 0;
     padding: 0 0 1rem 0;
-    font-weight: 700;
   }
 }
 
