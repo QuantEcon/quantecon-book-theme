@@ -383,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const authors = document.getElementsByClassName(
       "qe-page__header-authors",
     )[0];
-
+    const fontSize = authors.getAttribute("font-size");
     const h1 = document.querySelector(".main-index h1");
 
     // check if its the main toc page
@@ -393,6 +393,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // creating a p tag for styling and author links
     const newParagraph = document.createElement("p");
     newParagraph.setAttribute("id", "qe-page-author-links");
+    newParagraph.setAttribute(
+      "style",
+      fontSize ? `font-size: ${fontSize}px` : "",
+    );
 
     //check if there are authors
     const isAuthor =
