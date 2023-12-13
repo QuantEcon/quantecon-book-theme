@@ -150,7 +150,7 @@
                     </div>
                     <!-- length 2, since its a string and empty dict has length 2 - {} -->
                     {%- if theme_authors | length > 0 %}
-                        <p class="qe-page__header-authors" font-size="{{theme_author_font_size}}">
+                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
                             {% for author in theme_authors %}
                                 {% if loop.last and theme_authors|length >= 2 %}
                                     and <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
@@ -162,7 +162,7 @@
                             {% endfor %}
                         </p>
                     {%- else %}
-                        <p class="qe-page__header-authors" font-size="{{theme_author_font_size}}">{{ author }}</p>
+                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
                     {%- endif %}
 
 
