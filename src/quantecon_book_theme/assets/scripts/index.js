@@ -401,8 +401,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //check if there are authors
     const isAuthor =
       authors &&
-      authors.querySelectorAll("a").length &&
-      authors.querySelectorAll("a")[0].innerText !== "";
+      ((authors.querySelectorAll("a").length &&
+        authors.querySelectorAll("a")[0].innerText !== "") ||
+        authors.innerText !== "");
     if (isAuthor) {
       newParagraph.innerHTML = authors.innerHTML;
     }
