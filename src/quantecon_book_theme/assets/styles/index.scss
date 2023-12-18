@@ -14,6 +14,7 @@ $breakpoint-sm: 576px;
 $color-primary: #0072bc;
 $color-secondary: #d8655e;
 $color-body: #444444;
+$color-body-light: #888888;
 
 @import "normalize";
 @import "html5boilerplate";
@@ -192,6 +193,11 @@ body {
       }
     }
 
+    .toc-entry {
+      a.nav-link {
+        color: rgb(166, 166, 166);
+      }
+    }
     .reference.external,
     .reference.internal {
       font-weight: 800;
@@ -704,7 +710,7 @@ tt {
       flex-shrink: 0;
 
       a {
-        color: $color-body !important;
+        color: $color-body;
       }
 
       @media (max-width: $breakpoint-md) {
