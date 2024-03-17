@@ -377,6 +377,44 @@ document.addEventListener("DOMContentLoaded", function () {
   })();
 
   /**
+   * Redirect to a URL and paste the content in admonition
+   */
+  (function () {
+    let redirect = document.getElementById("redirect");
+    console.log(redirect, "redirect url");
+    if (redirect) {
+      window.location.href =
+        redirect.getAttribute("data-url") +
+        "?redirected_from=" +
+        window.location.pathname +
+        "&content=" +
+        redirect.getAttribute("data-content");
+    }
+  })();
+
+  /**
+   * Get the path redirected from
+   */
+  (function () {
+    let redirectedFrom = window.location.search;
+    if (redirectedFrom.includes("redirected_from")) {
+      // Create a URLSearchParams object from the query string
+      var searchParams = new URLSearchParams(redirectedFrom);
+      // Get the value of a particular variable from the query string
+      var redirectedFromUrl = searchParams.get("redirected_from");
+      var redirectedFromContent = searchParams.get("content");
+      if (redirectedFromContent) {
+        var admonition = document.getElementsByClassName(
+          "redirect-admonition",
+        )[0];
+        admonition.classList.remove("hidden");
+        var para = admonition.getElementsByTagName("p")[1];
+        para.innerHTML = redirectedFromContent;
+      }
+    }
+  })();
+
+  /**
    * Add authors to the heading of toc page
    */
   (function () {
