@@ -85,9 +85,14 @@
     <div class="qe-wrapper">
 
         <div class="qe-main">
-
+            {%- if pagename in theme_redirects %}
+                <div id="redirect" data-url="{{theme_redirects[pagename]['url']}}" data-content="{{theme_redirects[pagename]['redirect_text']}}"></div>
+            {%- endif %}
             <div class="qe-page" id={{pagename}}>
-
+                <div class="redirect-admonition warning admonition hidden">
+                    <p class="admonition-title">Redirected Page</p>
+                    <p></p>
+                </div>
                 <div class="qe-page__toc">
 
                     <div class="inner">
@@ -99,8 +104,6 @@
                             On this page
                         </div>
                         {%- endif %}
-
-
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             {{ page_toc }}
                             <p class="logo">
