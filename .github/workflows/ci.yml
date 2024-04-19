@@ -36,7 +36,7 @@ jobs:
         run: |
           git clone https://github.com/executablebooks/sphinx-exercise.git
           cd sphinx-exercise
-          python setup.py install
+          python -m pip install .
           cd ../ && rm -rf sphinx-exercise
       - name: Install Dependencies
         shell: bash -l {0}
