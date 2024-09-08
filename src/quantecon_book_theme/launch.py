@@ -182,5 +182,5 @@ def _is_notebook(app, pagename):
 def _get_branch(config_theme):
     branch = config_theme.get("nb_branch")
     if not branch:
-        branch = "master"
+        branch = "main"
     return branch

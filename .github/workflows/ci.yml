@@ -57,7 +57,7 @@ jobs:
         uses: nwtgck/actions-netlify@v1.1
         with:
           publish-dir: 'lecture-python-programming.myst/_build/html/'
-          production-branch: master
+          production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Preview Deploy from GitHub Actions"
         env:
