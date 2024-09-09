@@ -36,7 +36,7 @@ jobs:
           cd lecture-python-programming.myst
           jb build lectures --path-output ./
       - name: Preview Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.1
+        uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: 'lecture-python-programming.myst/_build/html/'
           production-branch: main
