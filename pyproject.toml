@@ -70,11 +70,11 @@ doc = [
 test = [
     "myst_nb",
     "coverage",
-    "pytest~=7.1",
+    "pytest",
     "pytest-cov",
     "beautifulsoup4",
     "sphinx_thebe",
-    "pytest-regressions~=2.0.1",
+    "pytest-regressions",
     "sphinx_copybutton",
     "sphinx_togglebutton",
 ]
