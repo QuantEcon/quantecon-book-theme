@@ -16,7 +16,7 @@ jobs:
           auto-update-conda: true
           auto-activate-base: true
           miniconda-version: 'latest'
-          python-version: "3.10"
+          python-version: "3.11"
           environment-file: lecture-python-programming.myst/environment.yml
           activate-environment: lecture-python-programming
       - name: Install quantecon-book-theme
@@ -24,24 +24,6 @@ jobs:
         run: |
           pip uninstall -y quantecon-book-theme
           python -m pip install .
-      - name: Install sphinx-multitoc-numbering
-        shell: bash -l {0}
-        run: |
-          git clone https://github.com/executablebooks/sphinx-multitoc-numbering.git
-          cd sphinx-multitoc-numbering
-          python setup.py install
-          cd ../ && rm -rf sphinx-multitoc-numbering
-      - name: Install sphinx-exercise
-        shell: bash -l {0}
-        run: |
-          git clone https://github.com/executablebooks/sphinx-exercise.git
-          cd sphinx-exercise
-          python setup.py install
-          cd ../ && rm -rf sphinx-exercise
-      - name: Install Dependencies
-        shell: bash -l {0}
-        run: |
-          pip install jupyter-book
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
