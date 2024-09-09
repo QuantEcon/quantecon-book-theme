@@ -24,7 +24,7 @@ html_theme_options = {
     "repository_url": "https://github.com/executablebooks/sphinx-book-theme",
     "nb_repository_url": "https://github.com/executablebooks/sphinx-book-theme",
     "navigation_with_keys": True,
-    # "repository_branch": "master",  # Not using this, should default to master
+    # "repository_branch": "main",  # Not using this, should default to main
     "launch_buttons": {
         "binderhub_url": "https://mybinder.org",
         "jupyterhub_url": "https://datahub.berkeley.edu",
