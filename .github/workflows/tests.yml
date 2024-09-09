@@ -27,9 +27,6 @@ jobs:
         # keep multiple versions of regression tests on file and this creates lots of
         # noise in the tests.
         sphinx: ["~=5.0"]
-        include:
-        - os: macos-latest
-          python-version: "3.11"
     runs-on: ${{ matrix.os }}
 
     steps:
