@@ -19,7 +19,7 @@
       "file-loader": "^6.2.0",
       "node-sass": "^9.0.0",
       "optimize-css-assets-webpack-plugin": "^6.0.1",
-      "style-loader": "^4.0.0",
+      "style-loader": "^4.0.0"
     },
     "dependencies": {
       "optimize-css-assets-webpack-plugin": "^6.0.1"
