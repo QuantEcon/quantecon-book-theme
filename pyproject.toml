@@ -20,10 +20,10 @@ description = "A clean book theme for scientific explanations and documentation 
 dynamic = ["version"]
 readme = "README.md"
 
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 dependencies = [
   "pyyaml",
-  "sphinx>=6,<9",
+  "sphinx>=5",
   "click",
   "libsass~=0.20.1",
   "sphinx_book_theme~=1.1.3",
