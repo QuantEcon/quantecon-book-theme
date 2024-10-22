@@ -24,10 +24,10 @@ requires-python = ">=3.7"
 dependencies = [
   "pyyaml",
   "sphinx>=4,<7",
-  "docutils==0.17.1",
+  "docutils",
   "click",
   "libsass~=0.20.1",
-  "sphinx_book_theme~=1.0.1",
+  "sphinx_book_theme~=1.1.0",
   "beautifulsoup4",
 ]
 
