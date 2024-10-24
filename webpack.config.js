@@ -34,7 +34,6 @@ module.exports = {
           {
             loader: "css-loader",
             options: {
-              sourceMap: true,
               url: false,
             },
           },
@@ -42,7 +41,6 @@ module.exports = {
             // Loads a SASS/SCSS file and compiles it to CSS
             loader: "sass-loader",
             options: {
-              sourceMap: true,
               sassOptions: { outputStyle: "expanded" },
             },
           },
