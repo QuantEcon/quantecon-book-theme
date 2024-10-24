@@ -4,24 +4,17 @@ IMPORTS
 -----------------------------------
 */
 
+@use "colors";
+@use "breakpoints";
+
+@forward "normalize";
+@forward "html5boilerplate";
+@forward "quantecon-defaults";
+@forward "syntax";
+@forward "tippy-themes";
+@forward "margin";
+
 @import url("https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,400&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
-$breakpoint-xl: 1200px;
-$breakpoint-lg: 992px;
-$breakpoint-md: 768px;
-$breakpoint-sm: 576px;
-
-$color-primary: #0072bc;
-$color-secondary: #d8655e;
-$color-body: #444444;
-$color-body-light: #888888;
-
-@import "normalize";
-@import "html5boilerplate";
-@import "quantecon-defaults";
-@import "syntax";
-@import "tippy-themes";
-@import "margin";
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -41,7 +34,7 @@ html {
     font-size: 0.9rem;
   }
 
-  @media (min-width: $breakpoint-md) {
+  @media (min-width: breakpoints.$md) {
     font-size: 16px;
 
     &.font-plus {
@@ -53,7 +46,7 @@ html {
     }
   }
 
-  @media (min-width: $breakpoint-lg) {
+  @media (min-width: breakpoints.$lg) {
     font-size: 18px;
 
     &.font-plus {
@@ -65,7 +58,7 @@ html {
     }
   }
 
-  @media (min-width: $breakpoint-xl) {
+  @media (min-width: breakpoints.$xl) {
     font-size: 18px;
 
     &.font-plus {
@@ -473,7 +466,7 @@ tt {
         }
 
         a {
-          color: $color-body;
+          color: colors.$body;
         }
         path {
           fill: inherit;
@@ -553,7 +546,7 @@ tt {
             transform: none;
 
             input {
-              border-color: $color-body;
+              border-color: colors.$body;
             }
           }
         }
@@ -580,7 +573,7 @@ tt {
           height: 20px;
         }
 
-        @media (max-width: $breakpoint-sm) {
+        @media (max-width: breakpoints.$sm) {
           &.btn__plus,
           &.btn__minus,
           &.btn__fullscreen,
@@ -597,20 +590,20 @@ tt {
   max-width: 800px;
   position: relative;
   flex-grow: 1;
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: breakpoints.$md) {
     max-width: 100%;
   }
   &__toc {
-    @media (max-width: 1350px) {
-      display: none;
-    }
-
     position: absolute;
     right: calc(-200px - 3rem);
     top: 0;
     margin: 0;
     height: 100%;
     width: 200px;
+
+    @media (max-width: 1350px) {
+      display: none;
+    }
 
     .inner {
       height: 100%;
@@ -638,11 +631,11 @@ tt {
           padding: 0;
 
           a {
-            color: $color-body;
+            color: colors.$body;
             opacity: 0.8;
 
             &.active {
-              color: $color-primary;
+              color: colors.$primary;
               opacity: 1;
             }
           }
@@ -666,12 +659,12 @@ tt {
       font-size: 0.9rem;
 
       a {
-        color: $color-body;
+        color: colors.$body;
         opacity: 0.8;
         text-decoration: none;
 
         &:hover {
-          color: $color-primary;
+          color: colors.$primary;
           opacity: 1;
         }
       }
@@ -691,7 +684,7 @@ tt {
       display: none;
     }
 
-    border-bottom: 5px solid $color-primary;
+    border-bottom: 5px solid colors.$primary;
     margin: 0 0 4rem 0;
     padding: 0 0 1rem 0;
 
@@ -699,7 +692,7 @@ tt {
       display: flex;
       //justify-content: space-between;
 
-      @media (max-width: $breakpoint-md) {
+      @media (max-width: breakpoints.$md) {
         flex-direction: column-reverse;
       }
     }
@@ -710,10 +703,10 @@ tt {
       flex-shrink: 0;
 
       a {
-        color: $color-body;
+        color: colors.$body;
       }
 
-      @media (max-width: $breakpoint-md) {
+      @media (max-width: breakpoints.$md) {
         font-weight: 400;
         font-size: 0.9rem;
       }
@@ -722,7 +715,7 @@ tt {
     &-subheading {
       margin: 0;
 
-      @media (max-width: $breakpoint-md) {
+      @media (max-width: breakpoints.$md) {
         margin: 0 0 0.5rem 0;
         font-weight: 700;
       }
@@ -732,7 +725,7 @@ tt {
       margin: 0.25rem 0 0 0;
       font-size: 0.9rem;
 
-      @media (max-width: $breakpoint-md) {
+      @media (max-width: breakpoints.$md) {
         font-size: 0.8rem;
       }
     }
@@ -837,11 +830,11 @@ tt {
         margin: 0.25rem 0;
         padding: 0;
         a {
-          color: $color-body;
+          color: colors.$body;
           opacity: 0.8;
 
           &.active {
-            color: $color-primary;
+            color: colors.$primary;
             opacity: 1;
           }
         }
@@ -1199,7 +1192,9 @@ div.admonition,
   margin: 1.5rem auto;
   padding: 0 1rem 0.5rem 1rem;
   page-break-inside: avoid;
-  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1), 0 0 0.05rem rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 0.2rem 0.5rem rgba(0, 0, 0, 0.1),
+    0 0 0.05rem rgba(0, 0, 0, 0.1);
   > .admonition-title {
     position: relative;
     margin: 0 -1rem;
@@ -1337,13 +1332,13 @@ blockquote {
       display: block;
       text-decoration: none;
       font-weight: normal;
-      background: $color-primary;
+      background: colors.$primary;
       color: #fff;
       padding: 0.25rem 0.5rem;
       border-radius: 2px;
       text-align: center;
       &:hover {
-        background: $color-body;
+        background: colors.$body;
       }
     }
   }
