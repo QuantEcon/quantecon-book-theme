@@ -1,6 +1,8 @@
+@use "colors";
+
 body {
   div.cell div.cell_input {
-    border-left-color: $color-primary;
+    border-left-color: colors.$primary;
   }
 }
 
