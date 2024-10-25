@@ -12,7 +12,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.7.3"
+__version__ = "0.7.4"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -214,7 +214,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
     # pageurl will already be set by Sphinx if so
     if app.config.html_baseurl and app.config.html_logo:
         context["logourl"] = "/".join(
-            (app.config.html_baseurl.rstrip("/"), "_static/" + context["logo"])
+            (app.config.html_baseurl.rstrip("/"), context["logo_url"])
         )
 
     # Check mathjax version and set it in a variable
