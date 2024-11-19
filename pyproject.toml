@@ -26,7 +26,7 @@ dependencies = [
   "sphinx>=5,<6",
   "docutils",
   "click",
-  "libsass~=0.20.1",
+  "libsass~=0.23.0",
   "sphinx_book_theme~=1.1.0",
   "beautifulsoup4",
 ]
@@ -63,7 +63,7 @@ doc = [
     "sphinx-togglebutton>=0.2.1",
     "sphinx-thebe",
     "sphinx-copybutton",
-    "docutils==0.17.1", # docutils 0.18, 0.19 need a patch fix https://sourceforge.net/p/docutils/patches/195/, un-pin when 0.20 is released
+    "docutils>=0.20",
     "plotly",
     "sphinxcontrib-bibtex>=2.2.0,<=2.5.0",
 ]
