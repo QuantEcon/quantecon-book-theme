@@ -23,7 +23,7 @@ readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
   "pyyaml",
-  "sphinx>=5,<8",
+  "sphinx>=5,<6",
   "docutils",
   "click",
   "libsass~=0.20.1",
