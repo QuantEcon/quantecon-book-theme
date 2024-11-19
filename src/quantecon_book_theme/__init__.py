@@ -323,6 +323,7 @@ def setup(app):
     # Configuration for Juypter Book
     app.setup_extension("sphinx_book_theme")
     app.add_js_file("scripts/quantecon-book-theme.js")
+    app.setup_extension("sphinxcontrib.jquery")
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
