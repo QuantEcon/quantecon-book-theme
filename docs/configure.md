@@ -21,7 +21,10 @@ html_theme_options = {
 }
 ```
 
-as this will remove the QuantEcon logo from the top toolbar. 
+as this will remove the QuantEcon logo from the top toolbar.
+
+This will also override some colors styles for a slightly different look 
+for the theme.
 
 ## Source repository buttons
 
