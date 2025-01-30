@@ -353,10 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let urlpath = document.getElementById("launcher-private-input").dataset
         .urlpath;
       const repoPrefix =
-        "/user-redirect/git-pull?repo=" +
-        repo +
-        "&urlpath=" +
-        urlpath;
+        "/user-redirect/git-pull?repo=" + repo + "&urlpath=" + urlpath;
       url = privateInput + repoPrefix + pagename + ".ipynb";
       launchButton.getElementsByTagName("a")[0].setAttribute("href", url);
     } else {
