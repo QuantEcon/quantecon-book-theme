@@ -353,7 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let urlpath = document.getElementById("launcher-private-input").dataset
         .urlpath;
       const repoPrefix =
-        "/jupyter/hub/user-redirect/git-pull?repo=" +
+        "/user-redirect/git-pull?repo=" +
         repo +
         "&urlpath=" +
         urlpath;

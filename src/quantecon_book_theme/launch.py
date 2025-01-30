@@ -101,7 +101,7 @@ def add_hub_urls(
 
         urlpath = ui_pre + "/" + repo + "/" + repo_subpath + path_rel_repo
         url = (
-            f"{jupyterhub_url}/jupyter/hub/user-redirect/git-pull?"
+            f"{jupyterhub_url}/user-redirect/git-pull?"
             f"repo={repo_url}&urlpath={urlpath}"  # noqa: E501
             f"&branch={branch}"
         )
