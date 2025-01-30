@@ -26,6 +26,14 @@ repos:
     rev: 6.0.0
     hooks:
     - id: flake8
+      # E221 multiple spaces before operator
+      # E222 multiple spaces after operator
+      # E231 missing whitespace after ','
+      # E201 whitespace after '{'
+      # E202 whitespace before '}'
+      # E203 whitespace before ':'
+      # W503 line break before binary operator
+      args: ["--ignore=E201,E202,E203,E221,E222,E231,W503"]
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v3.0.0-alpha.4

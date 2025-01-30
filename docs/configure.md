@@ -9,6 +9,23 @@ to use MyST markdown with your Sphinx website,
 see [the MyST-parser documentation](https://myst-parser.readthedocs.io/)
 ```
 
+## Disabling QuantEcon Official Components
+
+If you are a project using this theme please use
+
+```python
+html_theme_options = {
+    ...
+    "quantecon_project": False,
+    ...
+}
+```
+
+as this will remove the QuantEcon logo from the top toolbar.
+
+This will also override some colors styles for a slightly different look
+for the theme.
+
 ## Source repository buttons
 
 There are a collection of buttons that you can use to link back to your source
