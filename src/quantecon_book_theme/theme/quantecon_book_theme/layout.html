@@ -79,6 +79,40 @@
 {%- endblock %}
 {%- block content %}
 
+<!-- Override QuantEcon theme colors -->
+{%- if not theme_quantecon_project %}
+<style>
+a {
+    color: #313131;
+}
+a:hover {
+    color: #313131;
+}
+a:visited {
+  color: #111111;
+}
+
+.main-index {
+  #qe-page-author-links {
+    border-bottom: 5px solid #313131;
+  }
+}
+
+.qe-page__header {
+  border-bottom: 5px solid #313131;
+}
+
+.qe-page__footer {
+    border-top: 5px solid #313131;
+}
+
+.toctree-wrapper {
+    .caption-text {
+        color: #111111
+    }
+}
+</style>
+{%- endif %}
 
     <span id="top"></span>
 
