@@ -192,7 +192,12 @@ def add_to_context(app, pagename, templatename, context, doctree):
     # check if notebook folder is present
     if os.path.isdir(app.outdir + "/_notebooks"):
         if "download_nb_path" in app.config.html_theme_options:
-            context["notebook_path"] = app.config.html_theme_options["download_nb_path"] + "/_notebooks/" + context["pagename"] + ".ipynb"
+            context["notebook_path"] = (
+                app.config.html_theme_options["download_nb_path"]
+                + "/_notebooks/"
+                + context["pagename"]
+                + ".ipynb"
+            )
         else:
             context["notebook_path"] = "/_notebooks/" + context["pagename"] + ".ipynb"
 
