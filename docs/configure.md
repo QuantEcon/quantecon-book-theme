@@ -162,3 +162,17 @@ html_theme_options = {
 ```
 
 The image is expected to be in the `_static` folder of your source repository.
+
+## Specifying the hosting location for Download Notebooks
+
+While this location is auto-configured to be `/_notebooks/` (which works in most deployment cases) this option
+enables you to specify a different location for more complex url structures such as those found when using
+GitHub pages (without a custom URL)
+
+```python
+html_theme_options = {
+    ...
+    "download_nb_path" : https://{{ GitHub Account}}.github.io/{{ repo }}/
+    ...
+}
+```
