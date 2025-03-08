@@ -12,7 +12,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.8.1"
+__version__ = "0.8.2"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -191,7 +191,15 @@ def add_to_context(app, pagename, templatename, context, doctree):
 
     # check if notebook folder is present
     if os.path.isdir(app.outdir + "/_notebooks"):
-        context["notebook_path"] = "/_notebooks/" + context["pagename"] + ".ipynb"
+        if "download_nb_path" in app.config.html_theme_options:
+            context["notebook_path"] = (
+                app.config.html_theme_options["download_nb_path"]
+                + "/_notebooks/"
+                + context["pagename"]
+                + ".ipynb"
+            )
+        else:
+            context["notebook_path"] = "/_notebooks/" + context["pagename"] + ".ipynb"
 
     # Update the page title because HTML makes it into the page title occasionally
     if pagename in app.env.titles:
