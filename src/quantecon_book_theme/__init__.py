@@ -51,7 +51,7 @@ def find_url_relative_to_root(pagename, relative_page, path_docs_source):
 def add_plugins_list(app):
     # copying plugins
     if "plugins_list" in app.config.html_theme_options:
-        outdir = app.outdir + "/plugins"
+        outdir = app.outdir / "plugins"
         ensuredir(outdir)
         for i, asset in enumerate(app.config.html_theme_options["plugins_list"]):
             assetname = Path(asset).name
@@ -163,12 +163,12 @@ def add_to_context(app, pagename, templatename, context, doctree):
     def get_github_src_folder(app):
         if "github_repo" in context:
             github_repo = context["github_repo"]
-            if github_repo in app.srcdir:
-                index = app.srcdir.rfind(github_repo)
+            if github_repo in str(app.srcdir):
+                index = str(app.srcdir).rfind(github_repo)
                 branch = config_theme.get("nb_branch", "")
                 if branch == "":
                     branch = "main"
-                folder = app.srcdir[index + len(github_repo) :]
+                folder = str(app.srcdir)[index + len(github_repo) :]
                 return "/blob/" + branch + folder
         return ""
 
@@ -182,7 +182,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
     context["generate_toc_html"] = generate_toc_html
 
     # check if book pdf folder is present
-    if os.path.isdir(app.outdir + "/_pdf"):
+    if os.path.isdir(app.outdir / "_pdf"):
         if "pdf_book_name" not in context:
             context["pdf_book_name"] = app.config.latex_documents[0][1].replace(
                 ".tex", ""
@@ -190,7 +190,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
         context["pdf_book_path"] = "/_pdf/" + context["pdf_book_name"] + ".pdf"
 
     # check if notebook folder is present
-    if os.path.isdir(app.outdir + "/_notebooks"):
+    if os.path.isdir(app.outdir / "_notebooks"):
         if "download_nb_path" in app.config.html_theme_options:
             context["notebook_path"] = (
                 app.config.html_theme_options["download_nb_path"]
