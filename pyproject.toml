@@ -28,6 +28,7 @@ dependencies = [
   "click",
   "libsass~=0.23.0",
   "sphinx_book_theme~=1.1.4",
+  "sphinxcontrib-jquery",
   "beautifulsoup4",
 ]
 
