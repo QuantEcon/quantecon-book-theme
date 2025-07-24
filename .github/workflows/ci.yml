@@ -22,7 +22,6 @@ jobs:
       - name: Install quantecon-book-theme
         shell: bash -l {0}
         run: |
-          pip uninstall -y quantecon-book-theme
           python -m pip install .
       - name: Display Conda Environment Versions
         shell: bash -l {0}
