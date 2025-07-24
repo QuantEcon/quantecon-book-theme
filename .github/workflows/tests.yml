@@ -26,7 +26,7 @@ jobs:
         # Only test the latest major release of Sphinx because otherwise we need to
         # keep multiple versions of regression tests on file and this creates lots of
         # noise in the tests.
-        sphinx: ["~=7.0"]
+        sphinx: ["~=7.0", "~=8.0"]
     runs-on: ${{ matrix.os }}
 
     steps:
