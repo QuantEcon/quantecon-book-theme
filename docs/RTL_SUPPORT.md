@@ -10,14 +10,14 @@ To enable RTL support in your Sphinx configuration, add the following to your `c
 html_theme = "quantecon_book_theme"
 
 html_theme_options = {
-    "script_right_to_left": True,  # Enable RTL support
+    "enable_RTL": True,  # Enable RTL support
     # ... other theme options
 }
 ```
 
 ## Configuration
 
-- **Option**: `script_right_to_left`
+- **Option**: `enable_RTL`
 - **Type**: Boolean
 - **Default**: `False`
 - **Description**: When set to `True`, enables right-to-left text direction and adjusts the entire layout for RTL languages.
@@ -48,7 +48,7 @@ language = "ar"  # Arabic language code
 
 html_theme = "quantecon_book_theme"
 html_theme_options = {
-    "script_right_to_left": True,
+    "enable_RTL": True,
     "repository_url": "https://github.com/your-repo/arabic-docs",
     # ... other options
 }
@@ -68,7 +68,7 @@ This RTL implementation supports all RTL scripts including:
 
 You can test the RTL functionality by:
 
-1. Setting `script_right_to_left = True` in your theme options
+1. Setting `enable_RTL = True` in your theme options
 2. Building your Sphinx documentation
 3. Viewing the generated HTML to see the RTL layout adjustments
 
