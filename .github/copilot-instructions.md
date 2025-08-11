@@ -10,7 +10,7 @@ Always reference these instructions first and fallback to search or bash command
 - **CRITICAL**: This project requires both Python 3.13+ and Node.js for full functionality
 - Install required tools in this order:
   - `pip install tox` - Environment and task management
-  - `pip install pre-commit` - Code quality hooks  
+  - `pip install pre-commit` - Code quality hooks
   - `npm install` - Install webpack dependencies (~50 seconds, NEVER CANCEL)
   - `pre-commit install` - Install git hooks
 
@@ -21,7 +21,7 @@ Always reference these instructions first and fallback to search or bash command
 - **Live development**: `tox -e docs-live` - Auto-rebuilding development server (~5-10 minutes initial, NEVER CANCEL. Set timeout to 20+ minutes)
 - **Install theme**: `pip install -e .` - Development installation (~3-10 minutes, NEVER CANCEL. Set timeout to 15+ minutes)
 
-### Testing and Quality Assurance  
+### Testing and Quality Assurance
 - **Run tests**: `tox` or `pytest --durations=10 --cov=quantecon_book_theme --cov-report=xml --cov-report=term-missing` (~5-15 minutes, NEVER CANCEL. Set timeout to 30+ minutes)
 - **Pre-commit checks**: `pre-commit run --all-files` - All formatting and linting (~2-5 minutes, NEVER CANCEL. VALIDATED: flake8 and black work correctly)
 - **Python 3.13 environment**: Tests are configured for Python 3.13 but will work with 3.12+
@@ -45,7 +45,7 @@ After making changes, always test these scenarios:
 ## Key Project Structure
 
 ### Build System Components
-- `package.json` + `webpack.config.js` - Node.js asset compilation 
+- `package.json` + `webpack.config.js` - Node.js asset compilation
 - `pyproject.toml` - Python package configuration and dependencies
 - `tox.ini` - Environment management and common tasks
 - `.pre-commit-config.yaml` - Code quality automation
@@ -54,7 +54,7 @@ After making changes, always test these scenarios:
 ```
 src/quantecon_book_theme/
 ├── __init__.py              # Main theme module
-├── assets/                  # Source CSS/JS (compiled by webpack)  
+├── assets/                  # Source CSS/JS (compiled by webpack)
 ├── launch.py                # Theme utilities
 └── theme/                   # Sphinx theme files and compiled assets
 ```
@@ -94,7 +94,7 @@ src/quantecon_book_theme/
 - **Symptom**: `tox` skips environments with "could not find python interpreter"
 - **Solution**: Tests will work with Python 3.12+ even if configured for 3.13
 
-### Webpack Build Issues  
+### Webpack Build Issues
 - **Symptom**: CSS/JS files not updating after changes
 - **Solution**: Run `npm run build` explicitly before testing
 - **Check**: Verify compiled files exist in `src/quantecon_book_theme/theme/quantecon_book_theme/static/`
@@ -112,7 +112,7 @@ pip install tox pre-commit
 npm install
 pre-commit install
 
-# Development workflow  
+# Development workflow
 npm run build                    # Compile assets (2.5-3 seconds, VALIDATED)
 tox -e docs-live                # Live development server (5-10 minutes)
 pre-commit run --all-files      # Code quality checks (2-5 minutes, VALIDATED)
@@ -120,7 +120,7 @@ flake8 src/                     # Python linting (few seconds, VALIDATED)
 black --check src/              # Formatting check (few seconds, VALIDATED)
 
 # Testing and CI
-tox                             # Full test suite (5-15 minutes) 
+tox                             # Full test suite (5-15 minutes)
 tox -e docs-update              # Build documentation (5-15 minutes)
 ```
 
@@ -157,7 +157,7 @@ webpack.config.js
     },
     "devDependencies": {
       "css-loader": "^6.8.1",
-      "css-minimizer-webpack-plugin": "^4.2.2", 
+      "css-minimizer-webpack-plugin": "^4.2.2",
       "webpack": "^5.0.0",
       "webpack-cli": "^5.0.0",
       "sass": "^1.59.3",
