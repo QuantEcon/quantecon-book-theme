@@ -51,7 +51,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == 3.11 && github.repository == 'QuantEcon/quantecon-book-theme' && github.event_name == 'pull_request'
       uses: codecov/codecov-action@v5.4.3
       with:
-        name: ebp-qbt-pytests-py3.7
+        name: ebp-qbt-pytests-py3.11
         flags: pytests
         file: ./coverage.xml
         fail_ci_if_error: true
