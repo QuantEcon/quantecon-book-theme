@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Simple test to verify RTL configuration option is working correctly.
-This test verifies that the enable_RTL option is properly integrated.
+This test verifies that the enable_rtl option is properly integrated.
 """
 
 
@@ -15,7 +15,7 @@ def test_rtl_config_option():
 
     # Check that the RTL option is present with default False
     assert (
-        "enable_RTL = False" in theme_conf_content
+        "enable_rtl = False" in theme_conf_content
     ), "RTL configuration option should be present in theme.conf with default False"
 
     print("✅ RTL configuration option found in theme.conf")
@@ -31,8 +31,8 @@ def test_rtl_html_template():
 
     # Check that dir="rtl" is conditionally applied
     assert (
-        '{% if theme_enable_RTL %} dir="rtl"{% endif %}' in layout_content
-    ), "HTML layout should conditionally apply dir='rtl' based on theme_enable_RTL"
+        '{% if theme_enable_rtl %} dir="rtl"{% endif %}' in layout_content
+    ), "HTML layout should conditionally apply dir='rtl' based on theme_enable_rtl"
 
     print("✅ RTL HTML template integration found")
 
@@ -47,8 +47,8 @@ def test_rtl_python_integration():
 
     # Check that RTL setting is processed as boolean
     assert (
-        '"theme_enable_RTL"' in init_content
-    ), "Python code should process theme_enable_RTL setting"
+        '"theme_enable_rtl"' in init_content
+    ), "Python code should process theme_enable_rtl setting"
 
     print("✅ RTL Python integration found")
 
@@ -107,7 +107,7 @@ if __name__ == "__main__":
 
         print("\n🎉 All RTL tests passed!")
         print("\nRTL support is properly implemented with:")
-        print("  - Configuration option: enable_RTL = False (default)")
+        print("  - Configuration option: enable_rtl = False (default)")
         print("  - HTML template integration for dir='rtl' attribute")
         print("  - Python code processing RTL setting as boolean")
         print("  - Comprehensive RTL CSS styles for layout adjustments")

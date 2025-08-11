@@ -1,4 +1,5 @@
 """A lightweight book theme based on the pydata sphinx theme."""
+
 from pathlib import Path
 import os
 import hashlib
@@ -264,7 +265,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
         "theme_use_edit_page_button",
         "theme_use_repository_button",
         "theme_use_issues_button",
-        "theme_enable_RTL",
+        "theme_enable_rtl",
     ]
     for key in btns:
         if key in context:
