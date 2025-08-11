@@ -75,7 +75,7 @@
 {% block sidebarsourcelink %}{% endblock %}
 
 {% block body_tag %}
-<body{% if master_doc == pagename %} class="main-index"{% endif %}>
+<body{% if master_doc == pagename %} class="main-index"{% endif %}{% if theme_script_right_to_left %} dir="rtl"{% endif %}>
 {%- endblock %}
 {%- block content %}
 
