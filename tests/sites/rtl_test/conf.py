@@ -25,7 +25,7 @@ html_theme_options = {
     "nb_repository_url": "https://github.com/executablebooks/sphinx-book-theme",
     "navigation_with_keys": True,
     # Test RTL support
-    "script_right_to_left": True,
+    "enable_RTL": True,
     # "repository_branch": "main",  # Not using this, should default to main
     "launch_buttons": {
         "binderhub_url": "https://mybinder.org",
