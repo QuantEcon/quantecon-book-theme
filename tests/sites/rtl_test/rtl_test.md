@@ -6,7 +6,7 @@ This is a test page to demonstrate Right-to-Left (RTL) script support in the Qua
 
 هذا نص تجريبي باللغة العربية لاختبار دعم الكتابة من اليمين إلى اليسار في هذا الموضوع. يجب أن يظهر النص بشكل صحيح مع التوجيه المناسب.
 
-## Hebrew Text Example  
+## Hebrew Text Example
 
 זהו טקסט לדוגמה בעברית לבדיקת תמיכה בכתיבה מימין לשמאל בנושא זה. הטקסט אמור להיות מוצג כראוי עם הכיוון המתאים.
 
