@@ -328,27 +328,9 @@ def _string_or_bool(var):
         return var is None
 
 
-def validate_theme_options(app):
-    """Ensure our custom theme options are recognized."""
-    # Add enable_RTL to the theme's recognized options if not already present
-    if hasattr(app.config, 'html_theme_options') and app.config.html_theme_options:
-        # This ensures the option is not flagged as unsupported
-        if 'enable_RTL' in app.config.html_theme_options:
-            # Validate the option value
-            enable_rtl = app.config.html_theme_options['enable_RTL']
-            if isinstance(enable_rtl, str):
-                app.config.html_theme_options['enable_RTL'] = enable_rtl.lower() == 'true'
-            elif not isinstance(enable_rtl, bool):
-                app.config.html_theme_options['enable_RTL'] = False
-
-
 def setup(app):
     # Configuration for Juypter Book
     app.setup_extension("sphinx_book_theme")
-    
-    # Connect our theme option validation early in the build process
-    app.connect("config-inited", validate_theme_options)
-    
     app.add_js_file("scripts/quantecon-book-theme.js")
     app.add_js_file("scripts/jquery.js")
     app.add_js_file("scripts/_sphinx_javascript_frameworks_compat.js")

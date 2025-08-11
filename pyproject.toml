@@ -20,7 +20,7 @@ description = "A clean book theme for scientific explanations and documentation 
 dynamic = ["version"]
 readme = "README.md"
 
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
   "pyyaml",
   "sphinx>=7,<9",
