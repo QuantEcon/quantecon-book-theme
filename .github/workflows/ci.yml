@@ -16,13 +16,12 @@ jobs:
           auto-update-conda: true
           auto-activate-base: true
           miniconda-version: 'latest'
-          python-version: "3.11"
+          python-version: "3.13"
           environment-file: lecture-python-programming.myst/environment.yml
           activate-environment: lecture-python-programming
       - name: Install quantecon-book-theme
         shell: bash -l {0}
         run: |
-          pip uninstall -y quantecon-book-theme
           python -m pip install .
       - name: Display Conda Environment Versions
         shell: bash -l {0}
