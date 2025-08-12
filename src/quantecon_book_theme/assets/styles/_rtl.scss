@@ -1,0 +1,244 @@
+/*
+-----------------------------------
+RTL (Right-to-Left) Script Support
+-----------------------------------
+*/
+
+@use "breakpoints";
+
+// RTL-specific styles for Arabic, Hebrew, Persian, and other RTL languages
+[dir="rtl"] {
+  // Basic text direction
+  text-align: right;
+
+  // Main layout adjustments
+  .qe-main {
+    flex-direction: row; // Reverse the row-reverse for RTL
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  // Page layout
+  .qe-page {
+    &__toc {
+      // Move TOC to the left side for RTL
+      right: auto;
+      left: calc(-200px - 3rem);
+    }
+
+    &__header {
+      &-copy {
+        flex-direction: row; // Adjust header layout
+
+        @media (max-width: breakpoints.$md) {
+          flex-direction: column;
+        }
+      }
+
+      &-heading {
+        margin: 0 0 0 1rem; // Flip margin for RTL
+
+        @media (max-width: breakpoints.$md) {
+          margin: 0;
+        }
+      }
+    }
+
+    &__content {
+      // Adjust text alignment for content
+      text-align: right;
+
+      // Tables should align properly
+      table {
+        td, th {
+          text-align: right;
+        }
+
+        thead {
+          tr th {
+            text-align: right !important;
+          }
+        }
+      }
+
+      // Code blocks and pre elements maintain LTR for readability
+      pre, code, .highlight {
+        direction: ltr;
+        text-align: left;
+      }
+
+      // Math equations should remain LTR
+      .math, .MathJax, span.eqno {
+        direction: ltr;
+        text-align: left;
+      }
+
+      // Figures and images
+      .figure {
+        &.align-left {
+          text-align: right; // Flip alignment
+        }
+        &.align-right {
+          text-align: left; // Flip alignment
+        }
+      }
+    }
+  }
+
+  // Sidebar adjustments
+  .qe-sidebar {
+    // Move sidebar to the right side for RTL
+    left: auto;
+    right: 0px;
+    border-right: none;
+    border-left: 1px solid #ccc;
+
+    &.inactive {
+      transform: translate3d(100%, 0px, 0px); // Slide to the right when inactive
+    }
+
+    @media (max-width: 1340px) {
+      box-shadow: -10px 10px 5px 9999px rgba(255, 255, 255, 0.8); // Flip shadow direction
+    }
+
+    &__nav {
+      ul {
+        ul {
+          padding-left: 0;
+          padding-right: 1rem; // Flip indentation
+        }
+      }
+    }
+  }
+
+  // Toolbar adjustments
+  .qe-toolbar {
+    &__inner {
+      // Reverse toolbar layout
+      flex-direction: row-reverse;
+
+      > ul {
+        &:first-child {
+          order: 2; // Move first ul to the right
+        }
+
+        &:last-child {
+          order: 1; // Move last ul to the left
+        }
+      }
+    }
+  }
+
+  // TOC navigation
+  .qe-page__toc-nav {
+    ul {
+      ul {
+        padding-left: 0;
+        padding-right: 1rem; // Flip nested list indentation
+      }
+    }
+  }
+
+  // Blockquotes
+  blockquote {
+    border-left: none;
+    border-right: 5px solid #1665ad; // Move border to the right
+    padding: 0.5rem 2rem 0.5rem 0.5rem; // Adjust padding
+  }
+
+  // Navigation links (prev/next)
+  .qe-page__toc-footer {
+    .left-prev {
+      float: right; // Move to right for RTL
+    }
+
+    .right-next {
+      float: left; // Move to left for RTL
+    }
+  }
+
+  // Admonitions
+  div.admonition,
+  .admonition {
+    text-align: right;
+  }
+
+  // Lists
+  ul, ol {
+    margin-right: 0;
+    padding-right: 1.5em;
+    padding-left: 0;
+  }
+
+  // Definition lists
+  dl.simple,
+  dl.field-list {
+    dd {
+      margin-left: 0;
+      margin-right: 1.5em;
+    }
+  }
+
+  dl.glossary {
+    dd {
+      margin-left: 0;
+      margin-right: 1.5em;
+    }
+  }
+
+  dl.footnote {
+    dd {
+      margin-left: 0;
+      margin-right: 3em;
+    }
+
+    dd p {
+      padding-left: 0;
+      padding-right: 1.5em;
+    }
+  }
+
+  dl.citation {
+    margin-left: 0;
+    margin-right: 3em;
+  }
+
+  // Search functionality
+  .bd-search {
+    svg {
+      right: auto;
+      left: 2.75rem; // Move search icon to left
+    }
+
+    .search-button__kbd-shortcut {
+      right: auto;
+      left: 3em;
+    }
+  }
+
+  // Cell outputs and inputs
+  .cell {
+    .output .prompt,
+    .input .prompt {
+      left: auto;
+      right: -55px; // Move prompts to the right
+    }
+  }
+
+  // Settings modal adjustments
+  #settingsModal {
+    .modal-servers {
+      li {
+        i {
+          margin: 0 1rem 0 0; // Flip margin for icons
+        }
+      }
+    }
+  }
+
+  // Anchor links
+  .anchor-link, .headerlink {
+    margin-left: 0;
+    margin-right: 6px; // Move anchor links to the right
+  }
+}

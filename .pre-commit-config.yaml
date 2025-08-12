@@ -33,4 +33,4 @@ repos:
       # E202 whitespace before '}'
       # E203 whitespace before ':'
       # W503 line break before binary operator
-      args: ["--ignore=E201,E202,E203,E221,E222,E231,W503"]
+      args: ["--ignore=E201,E202,E203,E221,E222,E231,E501,W503"]

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTR vs RTL Comparison</title>
+    <link rel="stylesheet" href="../../../src/quantecon_book_theme/theme/quantecon_book_theme/static/styles/quantecon-book-theme.css">
+    <style>
+        .comparison {
+            display: flex;
+            gap: 20px;
+            margin: 20px;
+        }
+        .test-section {
+            flex: 1;
+            border: 2px solid #ccc;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #0072bc;
+            text-align: center;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin: 20px;">QuantEcon Book Theme: LTR vs RTL Comparison</h1>
+
+    <div class="comparison">
+        <!-- LTR Section -->
+        <div class="test-section">
+            <h3>LTR Mode (Default)</h3>
+            <div class="qe-wrapper">
+                <div class="qe-main">
+                    <div class="qe-page">
+                        <div class="qe-page__header">
+                            <div class="qe-page__header-copy">
+                                <p class="qe-page__header-heading">English Book</p>
+                                <p class="qe-page__header-subheading">Testing Left-to-Right Layout</p>
+                            </div>
+                        </div>
+
+                        <div class="qe-page__content">
+                            <h2>English Content</h2>
+                            <p>This is a test of normal left-to-right text flow. The sidebar should be on the left, and text should align to the left.</p>
+
+                            <blockquote>
+                                <p>This is a blockquote in English. The border should be on the left side.</p>
+                            </blockquote>
+
+                            <pre><code>def example():
+    return "Hello World"</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="qe-sidebar">
+                        <div class="qe-sidebar__header">Contents</div>
+                        <nav class="qe-sidebar__nav">
+                            <ul>
+                                <li><a href="#section1">Section 1</a></li>
+                                <li><a href="#section2">Section 2</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="qe-toolbar">
+                    <div class="qe-toolbar__inner">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Search</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#">Download</a></li>
+                            <li><a href="#">Share</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RTL Section -->
+        <div class="test-section" dir="rtl">
+            <h3>RTL Mode (enable_rtl = True)</h3>
+            <div class="qe-wrapper">
+                <div class="qe-main">
+                    <div class="qe-page">
+                        <div class="qe-page__header">
+                            <div class="qe-page__header-copy">
+                                <p class="qe-page__header-heading">كتاب عربي</p>
+                                <p class="qe-page__header-subheading">اختبار تخطيط من اليمين إلى اليسار</p>
+                            </div>
+                        </div>
+
+                        <div class="qe-page__content">
+                            <h2>محتوى عربي</h2>
+                            <p>هذا اختبار لتدفق النص الطبيعي من اليمين إلى اليسار. يجب أن يكون الشريط الجانبي على اليمين، ويجب أن يكون النص محاذاة إلى اليمين.</p>
+
+                            <blockquote>
+                                <p>هذا اقتباس باللغة العربية. يجب أن تكون الحدود على الجانب الأيمن.</p>
+                            </blockquote>
+
+                            <pre><code>def example():
+    return "مرحبا بالعالم"</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="qe-sidebar">
+                        <div class="qe-sidebar__header">المحتويات</div>
+                        <nav class="qe-sidebar__nav">
+                            <ul>
+                                <li><a href="#section1">القسم 1</a></li>
+                                <li><a href="#section2">القسم 2</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <div class="qe-toolbar">
+                    <div class="qe-toolbar__inner">
+                        <ul>
+                            <li><a href="#">الرئيسية</a></li>
+                            <li><a href="#">البحث</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#">تنزيل</a></li>
+                            <li><a href="#">مشاركة</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin: 20px; padding: 20px; background: #e8f4f8; border-radius: 8px;">
+        <h3>Key Differences to Note:</h3>
+        <ul>
+            <li><strong>Text Direction:</strong> LTR flows left-to-right, RTL flows right-to-left</li>
+            <li><strong>Sidebar Position:</strong> LTR has sidebar on left, RTL has sidebar on right</li>
+            <li><strong>Blockquote Borders:</strong> LTR has left border, RTL has right border</li>
+            <li><strong>Code Blocks:</strong> Remain LTR in both modes for better readability</li>
+            <li><strong>Navigation:</strong> Toolbar elements are reversed in RTL mode</li>
+        </ul>
+    </div>
+</body>
+</html>
