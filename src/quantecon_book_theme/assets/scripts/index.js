@@ -258,34 +258,35 @@ document.addEventListener("DOMContentLoaded", function () {
     collapsableCodeBlocks[i].classList.forEach((el) => {
       collapseAccToHeight(el, collapsableCodeBlocksH);
     });
-    const toggleContainer = document.createElement("div");
-    toggleContainer.innerHTML =
-      '<a href="#" class="toggle toggle-less" style="display:none;"><span class="icon icon-angle-double-up"></span><em>Show less...</em></a><a href="#" class="toggle toggle-more"><span class="icon icon-angle-double-down"></span><em>Show more...</em></a>';
+    const toggleBar = document.createElement("div");
+    toggleBar.className = "collapse-toggle-bar";
+    toggleBar.innerHTML =
+      '<span class="collapse-indicator">Click to expand code</span>';
     collapsableCodeBlocksH.parentNode.insertBefore(
-      toggleContainer,
+      toggleBar,
       collapsableCodeBlocksH.nextSibling,
     );
   }
 
   const collapsableCodeToggles = document.querySelectorAll(
-    "div[class^='cell tag_collapse'] .toggle",
+    "div[class^='cell tag_collapse'] .collapse-toggle-bar",
   );
   for (var i = 0; i < collapsableCodeToggles.length; i++) {
     collapsableCodeToggles[i].addEventListener("click", function (e) {
       e.preventDefault();
       var codeBlock = this.closest('div[class^="cell tag_collapse"]');
       codeBlockH = codeBlock.querySelector(".highlight");
+      var indicator = this.querySelector(".collapse-indicator");
+      
       if (codeBlock.classList.contains("expanded")) {
         codeBlock.classList.remove("expanded");
-        this.style.display = "none";
-        this.nextSibling.style.display = "block";
+        indicator.textContent = "Click to expand code";
         codeBlock.classList.forEach((el) => {
           collapseAccToHeight(el, codeBlockH);
         });
       } else {
         codeBlock.classList.add("expanded");
-        this.style.display = "none";
-        this.previousSibling.style.display = "block";
+        indicator.textContent = "Click to collapse code";
         codeBlockH.style.height = "auto";
       }
     });
