@@ -1,4 +1,5 @@
 """A lightweight book theme based on the pydata sphinx theme."""
+
 from pathlib import Path
 import os
 import hashlib
@@ -12,7 +13,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.8.3"
+__version__ = "0.9.0"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -260,12 +261,13 @@ def add_to_context(app, pagename, templatename, context, doctree):
     context["github_sourcefolder"] = get_github_src_folder(app)
 
     # Make sure the context values are bool
-    btns = [
+    blns = [
         "theme_use_edit_page_button",
         "theme_use_repository_button",
         "theme_use_issues_button",
+        "theme_enable_rtl",
     ]
-    for key in btns:
+    for key in blns:
         if key in context:
             context[key] = _string_or_bool(context[key])
 
