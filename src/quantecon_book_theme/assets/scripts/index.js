@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var codeBlock = this.closest('div[class^="cell tag_collapse"]');
       codeBlockH = codeBlock.querySelector(".highlight");
       var indicator = this.querySelector(".collapse-indicator");
-      
+
       if (codeBlock.classList.contains("expanded")) {
         codeBlock.classList.remove("expanded");
         indicator.textContent = "Click to expand code";
