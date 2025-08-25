@@ -2,18 +2,18 @@
     "name": "quantecon_book_theme",
     "repository": "https://github.com/QuantEcon/quantecon-book-theme",
     "scripts": {
-      "build": "webpack"
+        "build": "webpack"
     },
     "devDependencies": {
-    "css-loader": "^6.8.1",
-    "css-minimizer-webpack-plugin": "^4.2.2",
-    "dedent": "^0.7.0",
-    "html-webpack-plugin": "^5.0.0",
-    "mini-css-extract-plugin": "^2.7.5",
-    "sass": "^1.59.3",
-    "sass-loader": "^10.3.1",
-    "webpack": "^5.0.0",
-    "webpack-cli": "^5.0.0",
-    "webpack-dev-server": "^5.2.1"
+        "css-loader": "^6.8.1",
+        "css-minimizer-webpack-plugin": "^4.2.2",
+        "dedent": "^0.7.0",
+        "html-webpack-plugin": "^5.0.0",
+        "mini-css-extract-plugin": "^2.9.4",
+        "sass": "^1.59.3",
+        "sass-loader": "^10.3.1",
+        "webpack": "^5.0.0",
+        "webpack-cli": "^5.0.0",
+        "webpack-dev-server": "^5.2.1"
     }
-  }
+}
