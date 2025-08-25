@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.13"]
+        python-version: ["3.12", "3.13"]
         # Only test the latest major release of Sphinx because otherwise we need to
         # keep multiple versions of regression tests on file and this creates lots of
         # noise in the tests.
@@ -48,7 +48,7 @@ jobs:
         pytest --durations=10 --cov=quantecon_book_theme --cov-report=xml --cov-report=term-missing
 
     - name: Upload to Codecov
-      if: matrix.os == 'ubuntu-latest' && matrix.python-version == 3.13 && github.repository == 'QuantEcon/quantecon-book-theme' && github.event_name == 'pull_request'
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13' && github.repository == 'QuantEcon/quantecon-book-theme' && github.event_name == 'pull_request'
       uses: codecov/codecov-action@v5.4.2
       with:
         name: ebp-qbt-pytests-py3.13
