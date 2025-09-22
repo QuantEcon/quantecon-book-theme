@@ -24,13 +24,13 @@ def test_rtl_module_import():
 def test_rtl_python_theme_processing():
     """Test that the Python code properly processes RTL theme settings"""
     from quantecon_book_theme import _string_or_bool
-    
+
     # Test the _string_or_bool function that processes theme_enable_rtl
     assert _string_or_bool("True") is True
     assert _string_or_bool("False") is False
     assert _string_or_bool(True) is True
     assert _string_or_bool(False) is False
-    
+
     print("✅ RTL theme setting processing works correctly")
 
 
