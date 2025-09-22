@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Import the theme module to ensure coverage can track it
-import quantecon_book_theme
+import quantecon_book_theme  # noqa: E402
 
 
 def test_rtl_module_import():
@@ -88,12 +88,16 @@ def test_rtl_css_styles():
     import os
 
     # Read built CSS file
-    css_path = "src/quantecon_book_theme/theme/quantecon_book_theme/static/styles/quantecon-book-theme.css"
+    css_path = (
+        "src/quantecon_book_theme/theme/quantecon_book_theme/static/styles/"
+        "quantecon-book-theme.css"
+    )
 
     # Skip test if CSS file doesn't exist (assets not built)
     if not os.path.exists(css_path):
         print(
-            "⚠️  Skipping CSS test - assets not built (run 'npm run build' to build assets)"
+            "⚠️  Skipping CSS test - assets not built "
+            "(run 'npm run build' to build assets)"
         )
         return
 
