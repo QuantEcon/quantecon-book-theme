@@ -84,17 +84,19 @@ def test_rtl_python_integration():
 
 def test_rtl_css_styles():
     """Test that RTL CSS styles are built correctly"""
-    
+
     import os
-    
+
     # Read built CSS file
     css_path = "src/quantecon_book_theme/theme/quantecon_book_theme/static/styles/quantecon-book-theme.css"
-    
+
     # Skip test if CSS file doesn't exist (assets not built)
     if not os.path.exists(css_path):
-        print("⚠️  Skipping CSS test - assets not built (run 'npm run build' to build assets)")
+        print(
+            "⚠️  Skipping CSS test - assets not built (run 'npm run build' to build assets)"
+        )
         return
-        
+
     with open(css_path, "r") as f:
         css_content = f.read()
 
