@@ -242,8 +242,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const collapseAccToHeight = (el, elH) => {
     if (el.includes("tag_collapse")) {
-      index = el.indexOf("-");
-      height = el.substring(index + 1);
+      const index = el.indexOf("-");
+      const height = el.substring(index + 1);
       if (height && !isNaN(height)) {
         elH.style.height = parseInt(height) + 0.5 + "em"; // 0.5 to account for padding
       }
