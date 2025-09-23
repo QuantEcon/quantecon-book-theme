@@ -290,8 +290,13 @@ document.addEventListener("DOMContentLoaded", function () {
         codeBlock.classList.remove("expanded");
         indicator.textContent = "Expand";
         collapseAccToHeight(codeBlock.classList, codeBlockH);
-        // Scroll back to the bottom of the code block when collapsing
-        codeBlock.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        
+        // Smart scroll behavior: position the collapsed code block so the reader
+        // can continue reading where they left off. This scrolls to show the bottom
+        // of the collapsed code block, maintaining reading flow continuity.
+        setTimeout(() => {
+          codeBlock.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 50); // Small delay to allow height change to take effect
       } else {
         codeBlock.classList.add("expanded");
         indicator.textContent = "Collapse";
