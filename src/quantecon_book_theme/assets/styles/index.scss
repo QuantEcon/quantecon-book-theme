@@ -608,6 +608,11 @@ tt {
 
     .inner {
       height: 100%;
+      
+      &.sticky {
+        position: sticky;
+        top: 7rem;
+      }
     }
 
     &-header {
@@ -638,6 +643,12 @@ tt {
             &.active {
               color: colors.$primary;
               opacity: 1;
+            }
+          }
+
+          &.active {
+            > a {
+              font-weight: bold;
             }
           }
         }
