@@ -260,11 +260,11 @@ document.addEventListener("DOMContentLoaded", function () {
   for (var i = 0; i < collapsableCodeBlocks.length; i++) {
     const collapsableCodeBlocksH =
       collapsableCodeBlocks[i].querySelectorAll(".highlight")[0];
-    
+
     if (collapsableCodeBlocksH) {
       // Apply initial height based on collapse class
       collapseAccToHeight(collapsableCodeBlocks[i].classList, collapsableCodeBlocksH);
-      
+
       const toggleBar = document.createElement("div");
       toggleBar.className = "collapse-toggle-bar";
       toggleBar.innerHTML =
