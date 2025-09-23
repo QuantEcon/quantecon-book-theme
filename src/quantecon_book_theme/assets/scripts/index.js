@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const toggleBar = document.createElement("div");
       toggleBar.className = "collapse-toggle-bar";
       toggleBar.innerHTML =
-        '<span class="collapse-indicator">Click to expand code</span>';
+        '<span class="collapse-indicator">Expand</span>';
       collapsableCodeBlocksH.parentNode.insertBefore(
         toggleBar,
         collapsableCodeBlocksH.nextSibling,
@@ -288,11 +288,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (codeBlock.classList.contains("expanded")) {
         codeBlock.classList.remove("expanded");
-        indicator.textContent = "Click to expand code";
+        indicator.textContent = "Expand";
         collapseAccToHeight(codeBlock.classList, codeBlockH);
+        // Scroll back to the bottom of the code block when collapsing
+        codeBlock.scrollIntoView({ behavior: 'smooth', block: 'end' });
       } else {
         codeBlock.classList.add("expanded");
-        indicator.textContent = "Click to collapse code";
+        indicator.textContent = "Collapse";
         codeBlockH.style.height = "auto";
       }
     });
