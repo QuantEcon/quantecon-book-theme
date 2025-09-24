@@ -240,52 +240,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* Collapsed code block */
 
-  const collapseAccToHeight = (el, elH) => {
-    if (el.includes("tag_collapse")) {
-      const index = el.indexOf("-");
-      const height = el.substring(index + 1);
-      if (height && !isNaN(height)) {
-        elH.style.height = parseInt(height) + 0.5 + "em"; // 0.5 to account for padding
+  const collapseAccToHeight = (classList, elH) => {
+    for (let className of classList) {
+      if (className.startsWith("tag_collapse-")) {
+        const index = className.indexOf("-");
+        const height = className.substring(index + 1);
+        if (height && !isNaN(height)) {
+          elH.style.height = parseInt(height) + 0.5 + "em"; // 0.5 to account for padding
+          return true;
+        }
       }
     }
+    return false;
   };
+
   const collapsableCodeBlocks = document.querySelectorAll(
-    "div[class^='cell tag_collapse']",
+    "div.cell[class*='tag_collapse']",
   );
   for (var i = 0; i < collapsableCodeBlocks.length; i++) {
     const collapsableCodeBlocksH =
       collapsableCodeBlocks[i].querySelectorAll(".highlight")[0];
-    collapsableCodeBlocks[i].classList.forEach((el) => {
-      collapseAccToHeight(el, collapsableCodeBlocksH);
-    });
-    const toggleContainer = document.createElement("div");
-    toggleContainer.innerHTML =
-      '<a href="#" class="toggle toggle-less" style="display:none;"><span class="icon icon-angle-double-up"></span><em>Show less...</em></a><a href="#" class="toggle toggle-more"><span class="icon icon-angle-double-down"></span><em>Show more...</em></a>';
-    collapsableCodeBlocksH.parentNode.insertBefore(
-      toggleContainer,
-      collapsableCodeBlocksH.nextSibling,
-    );
+
+    if (collapsableCodeBlocksH) {
+      // Apply initial height based on collapse class
+      collapseAccToHeight(collapsableCodeBlocks[i].classList, collapsableCodeBlocksH);
+
+      const toggleBar = document.createElement("div");
+      toggleBar.className = "collapse-toggle-bar";
+      toggleBar.innerHTML =
+        '<span class="collapse-indicator">Expand</span>';
+      collapsableCodeBlocksH.parentNode.insertBefore(
+        toggleBar,
+        collapsableCodeBlocksH.nextSibling,
+      );
+    }
   }
 
   const collapsableCodeToggles = document.querySelectorAll(
-    "div[class^='cell tag_collapse'] .toggle",
+    "div.cell[class*='tag_collapse'] .collapse-toggle-bar",
   );
   for (var i = 0; i < collapsableCodeToggles.length; i++) {
     collapsableCodeToggles[i].addEventListener("click", function (e) {
       e.preventDefault();
-      var codeBlock = this.closest('div[class^="cell tag_collapse"]');
-      codeBlockH = codeBlock.querySelector(".highlight");
+      var codeBlock = this.closest("div.cell[class*='tag_collapse']");
+      var codeBlockH = codeBlock.querySelector(".highlight");
+      var indicator = this.querySelector(".collapse-indicator");
+
       if (codeBlock.classList.contains("expanded")) {
         codeBlock.classList.remove("expanded");
-        this.style.display = "none";
-        this.nextSibling.style.display = "block";
-        codeBlock.classList.forEach((el) => {
-          collapseAccToHeight(el, codeBlockH);
-        });
+        indicator.textContent = "Expand";
+        collapseAccToHeight(codeBlock.classList, codeBlockH);
+
+        // Smart scroll behavior: position the collapsed code block so the reader
+        // can continue reading where they left off. This scrolls to show the bottom
+        // of the collapsed code block, maintaining reading flow continuity.
+        setTimeout(() => {
+          codeBlock.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 50); // Small delay to allow height change to take effect
       } else {
         codeBlock.classList.add("expanded");
-        this.style.display = "none";
-        this.previousSibling.style.display = "block";
+        indicator.textContent = "Collapse";
         codeBlockH.style.height = "auto";
       }
     });

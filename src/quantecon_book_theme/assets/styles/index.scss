@@ -1127,7 +1127,7 @@ tt {
   }
 
   div[class^="cell tag_collapse"] {
-    .toggle {
+    .collapse-toggle-bar {
       display: block;
       border: 1px solid #ddd;
       border-width: 0px 1px 1px 1px;
@@ -1135,22 +1135,24 @@ tt {
       outline: 0;
       position: relative;
       text-align: center;
+      cursor: pointer;
+      background-color: #f9f9f9;
+      transition: background-color 0.2s ease;
+
       &:hover {
         text-decoration: none;
-        background: #f7f7f7;
+        background: #f0f0f0;
       }
-      span {
-        color: #444;
-        position: relative;
-        top: 3px;
-        left: -5px;
-      }
-      em {
-        font-style: normal;
+
+      .collapse-indicator {
+        color: #0072bc;
+        font-size: 0.9rem;
+        font-weight: bold;
+        user-select: none;
       }
     }
+
     .highlight {
-      height: 22.4rem;
       overflow: hidden;
       margin-bottom: 0;
       &:after {
