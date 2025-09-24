@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
         codeBlock.classList.remove("expanded");
         indicator.textContent = "Expand";
         collapseAccToHeight(codeBlock.classList, codeBlockH);
-        
+
         // Smart scroll behavior: position the collapsed code block so the reader
         // can continue reading where they left off. This scrolls to show the bottom
         // of the collapsed code block, maintaining reading flow continuity.
