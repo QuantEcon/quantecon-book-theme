@@ -2,11 +2,56 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 from subprocess import check_output
 from shutil import copytree, rmtree
+from unittest.mock import Mock
 import pytest
+
+from quantecon_book_theme import add_pygments_style_class
 
 
 path_tests = Path(__file__).parent.resolve()
 path_base = path_tests.joinpath("sites", "base")
+
+
+def test_add_pygments_style_class_unit():
+    """Unit test for add_pygments_style_class function to ensure coverage."""
+    # Mock app object
+    app = Mock()
+    context = {}
+    
+    # Test with default (no option set) - should use custom style
+    app.config.html_theme_options = {}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is False
+    
+    # Test with qetheme_code_style=True - should use custom style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": True}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is False
+    
+    # Test with qetheme_code_style=False - should use Pygments style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": False}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is True
+    
+    # Test with string "true" - should use custom style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": "true"}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is False
+    
+    # Test with string "false" - should use Pygments style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": "false"}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is True
+    
+    # Test with string "False" (capital F) - should use Pygments style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": "False"}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is True
 
 
 @pytest.fixture(scope="session")
