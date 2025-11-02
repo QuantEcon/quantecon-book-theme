@@ -2,9 +2,11 @@
  * These styles are only applied when qetheme_code_style is enabled (default).
  * To use Pygments built-in styles instead, set qetheme_code_style = False in html_theme_options
  * and configure pygments_style in conf.py
+ *
+ * Using :where() pseudo-class to keep specificity low so Pygments styles can override when enabled
  */
 
-body:not(.use-pygments-style) {
+:where(body:not(.use-pygments-style)) {
   .highlight .hll {
     background-color: #ffc;
   }

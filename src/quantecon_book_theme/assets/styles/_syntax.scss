@@ -10,8 +10,10 @@
   border-radius: 2px;
 }
 
-/* Background and border for custom QuantEcon style only */
-body:not(.use-pygments-style) .highlight {
+/* Background and border for custom QuantEcon style only
+ * Using :where() to keep specificity low so Pygments styles can override
+ */
+:where(body:not(.use-pygments-style)) .highlight {
   border: 1px solid #e1e1e1;
   background: #f7f7f7;
 }
