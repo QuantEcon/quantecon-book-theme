@@ -302,7 +302,10 @@ def hash_assets_for_files(assets: list, theme_static: Path, context):
             # Find this asset in context, and update it to include the digest
             # Use .filename attribute to avoid deprecation warnings in Sphinx 9+
             for i, css_or_js in enumerate(context[asset_type]):
-                filename = getattr(css_or_js, "filename", str(css_or_js))
+                filename = getattr(css_or_js, "filename", None)
+                # Skip if filename attribute doesn't exist
+                if filename is None:
+                    continue
                 if filename == asset_sphinx_link:
                     hash = _gen_hash(asset_source_path)
                     context[asset_type][i] = asset_sphinx_link + "?digest=" + hash
