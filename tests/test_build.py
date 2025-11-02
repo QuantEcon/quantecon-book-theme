@@ -59,7 +59,7 @@ def test_setup_pygments_css_unit():
     # Mock app object
     app = Mock()
     app.outdir = "/tmp/test_output"
-    
+
     # Test with default (qetheme_code_style=True) - should NOT generate CSS
     app.config.html_theme_options = {}
     with patch("quantecon_book_theme.Path") as mock_path:
@@ -67,63 +67,66 @@ def test_setup_pygments_css_unit():
         # Path should not be called when qetheme_code_style is True
         mock_path.assert_not_called()
         app.add_css_file.assert_not_called()
-    
+
     # Test with qetheme_code_style=False - should generate CSS
     app.reset_mock()
     app.config.html_theme_options = {"qetheme_code_style": False}
     app.config.pygments_style = "monokai"
 
-    with patch("quantecon_book_theme.Path") as mock_path, \
-         patch("pygments.formatters.HtmlFormatter") as mock_formatter:        # Setup mocks
+    with patch("quantecon_book_theme.Path") as mock_path, patch(
+        "pygments.formatters.HtmlFormatter"
+    ) as mock_formatter:  # Setup mocks
         mock_static_dir = MagicMock()
         mock_css_path = MagicMock()
-        mock_path.return_value.__truediv__.return_value.__truediv__.return_value = mock_css_path
+        mock_path.return_value.__truediv__.return_value.__truediv__.return_value = (
+            mock_css_path
+        )
         mock_path.return_value.__truediv__.return_value = mock_static_dir
-        
+
         mock_formatter_instance = MagicMock()
         mock_formatter_instance.get_style_defs.return_value = "/* test css */"
         mock_formatter.return_value = mock_formatter_instance
-        
+
         setup_pygments_css(app)
-        
+
         # Verify HtmlFormatter was called with correct style
         mock_formatter.assert_called_once_with(style="monokai")
         mock_formatter_instance.get_style_defs.assert_called_once_with(".highlight")
-        
+
         # Verify CSS file was added
         app.add_css_file.assert_called_once_with("pygments-quantecon.css")
-    
+
     # Test with qetheme_code_style=False and no pygments_style (should default)
     app.reset_mock()
     app.config.html_theme_options = {"qetheme_code_style": False}
     app.config.pygments_style = None
-    
-    with patch("quantecon_book_theme.Path") as mock_path, \
-         patch("pygments.formatters.HtmlFormatter") as mock_formatter:
-        
+
+    with patch("quantecon_book_theme.Path") as mock_path, patch(
+        "pygments.formatters.HtmlFormatter"
+    ) as mock_formatter:
         mock_formatter_instance = MagicMock()
         mock_formatter_instance.get_style_defs.return_value = "/* test css */"
         mock_formatter.return_value = mock_formatter_instance
-        
+
         setup_pygments_css(app)
-        
+
         # Should default to "default" style
         mock_formatter.assert_called_once_with(style="default")
-    
+
     # Test with string "false" - should generate CSS
     app.reset_mock()
     app.config.html_theme_options = {"qetheme_code_style": "false"}
     app.config.pygments_style = "friendly"
-    
-    with patch("quantecon_book_theme.Path") as mock_path, \
-         patch("pygments.formatters.HtmlFormatter") as mock_formatter:
-        
+
+    with patch("quantecon_book_theme.Path") as mock_path, patch(
+        "pygments.formatters.HtmlFormatter"
+    ) as mock_formatter:
         mock_formatter_instance = MagicMock()
         mock_formatter_instance.get_style_defs.return_value = "/* test css */"
         mock_formatter.return_value = mock_formatter_instance
-        
+
         setup_pygments_css(app)
-        
+
         mock_formatter.assert_called_once_with(style="friendly")
         app.add_css_file.assert_called_once_with("pygments-quantecon.css")
 
