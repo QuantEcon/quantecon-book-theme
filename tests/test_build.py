@@ -239,3 +239,40 @@ def test_build_book(file_regression, sphinx_build):
 #     # Ensure that it works without error
 #     cmd = ["-b", "singlehtml"]
 #     check_output(sphinx_build.cmd_base + cmd, cwd=sphinx_build.path_book).decode("utf8") # noqa: E501
+
+
+def test_qetheme_code_style(sphinx_build):
+    """Test that qetheme_code_style option works correctly."""
+    sphinx_build.copy()
+
+    # Test default behavior - custom code style should be enabled
+    sphinx_build.build()
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # By default, use-pygments-style class should NOT be present
+    assert "use-pygments-style" not in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style disabled
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=False",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # When disabled, use-pygments-style class should be present
+    assert "use-pygments-style" in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style explicitly enabled
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=True",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # When enabled, use-pygments-style class should NOT be present
+    assert "use-pygments-style" not in body_tag.get("class", [])
+    sphinx_build.clean()
