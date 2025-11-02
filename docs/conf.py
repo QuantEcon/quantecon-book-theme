@@ -83,6 +83,12 @@ html_theme_options = {
     # "single_page": True
     # "extra_footer": "<a href='https://google.com'>Test</a>",
     # "extra_navbar": "<a href='https://google.com'>Test</a>",
+    # Uncomment to test Pygments built-in styles:
+    # "qetheme_code_style": False,
 }
+
+# Uncomment to test different Pygments styles:
+# pygments_style = "monokai"
+
 bibtex_bibfiles = ["references.bib"]
 bibtex_reference_style = "author_year"
