@@ -189,11 +189,11 @@ pygments_style = 'friendly'  # or 'monokai', 'github-dark', 'default', etc.
 
 html_theme_options = {
     ...
-    "custom_code_style": False,
+    "qetheme_code_style": False,
     ...
 }
 ```
 
 Available Pygments styles include: `default`, `friendly`, `monokai`, `github-dark`, `github-light`, `tango`, `vim`, and many others. See the [Pygments documentation](https://pygments.org/styles/) for a full list.
 
-When `custom_code_style` is `True` (the default), the custom QuantEcon code highlighting is used and the `pygments_style` setting is ignored. When set to `False`, the theme will respect your `pygments_style` configuration.
+When `qetheme_code_style` is `True` (the default), the custom QuantEcon code highlighting is used and the `pygments_style` setting is ignored. When set to `False`, the theme will respect your `pygments_style` configuration.
