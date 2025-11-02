@@ -300,10 +300,13 @@ def hash_assets_for_files(assets: list, theme_static: Path, context):
                     f"Asset {asset_source_path} does not exist, not linking."
                 )
             # Find this asset in context, and update it to include the digest
-            if asset_sphinx_link in context[asset_type]:
-                hash = _gen_hash(asset_source_path)
-                ix = context[asset_type].index(asset_sphinx_link)
-                context[asset_type][ix] = asset_sphinx_link + "?digest=" + hash
+            # Use .filename attribute to avoid deprecation warnings in Sphinx 9+
+            for i, css_or_js in enumerate(context[asset_type]):
+                filename = getattr(css_or_js, 'filename', str(css_or_js))
+                if filename == asset_sphinx_link:
+                    hash = _gen_hash(asset_source_path)
+                    context[asset_type][i] = asset_sphinx_link + "?digest=" + hash
+                    break
 
 
 def hash_html_assets(app, pagename, templatename, context, doctree):
@@ -326,8 +329,6 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
     When qetheme_code_style is False, adds 'use-pygments-style' class which
     disables the custom QuantEcon code token styles and allows Pygments
     built-in styles (configured via pygments_style) to be used.
-    
-    Also ensures Pygments CSS is generated when using Pygments styles.
     """
     config_theme = app.config.html_theme_options
     qetheme_code_style = config_theme.get("qetheme_code_style", True)
@@ -338,11 +339,23 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
 
     # Set a context variable that can be used in templates
     context["use_pygments_style"] = not qetheme_code_style
+
+
+def setup_pygments_css(app, config):
+    """Ensure Pygments CSS is included when using Pygments styles.
     
-    # When using Pygments styles, ensure the CSS is generated
+    This runs during config-inited, before the build starts.
+    """
+    config_theme = config.html_theme_options
+    qetheme_code_style = config_theme.get("qetheme_code_style", True)
+    
+    # Convert string "false"/"true" to boolean if needed
+    if isinstance(qetheme_code_style, str):
+        qetheme_code_style = qetheme_code_style.lower() != "false"
+    
+    # When using Pygments styles, ensure the CSS is included
     if not qetheme_code_style:
-        # Force Sphinx to write pygments.css by setting the write flag
-        app.builder.add_css_file('pygments.css')
+        app.add_css_file('pygments.css')
 
 
 def _string_or_bool(var):
@@ -361,6 +374,7 @@ def setup(app):
     app.add_js_file("scripts/jquery.js")
     app.add_js_file("scripts/_sphinx_javascript_frameworks_compat.js")
 
+    app.connect("config-inited", setup_pygments_css)
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
     app.connect("html-page-context", hash_html_assets)
