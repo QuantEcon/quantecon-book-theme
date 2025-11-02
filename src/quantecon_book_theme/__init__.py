@@ -320,6 +320,24 @@ def hash_html_assets(app, pagename, templatename, context, doctree):
     hash_assets_for_files(assets, get_html_theme_path() / "static", context)
 
 
+def add_pygments_style_class(app, pagename, templatename, context, doctree):
+    """Add CSS class to root element if custom code style is disabled.
+    
+    When custom_code_style is False, adds 'use-pygments-style' class which
+    disables the custom QuantEcon code token styles and allows Pygments
+    built-in styles (configured via pygments_style) to be used.
+    """
+    config_theme = app.config.html_theme_options
+    custom_code_style = config_theme.get("custom_code_style", True)
+    
+    # Convert string "false"/"true" to boolean if needed
+    if isinstance(custom_code_style, str):
+        custom_code_style = custom_code_style.lower() != "false"
+    
+    # Set a context variable that can be used in templates
+    context["use_pygments_style"] = not custom_code_style
+
+
 def _string_or_bool(var):
     if isinstance(var, str):
         return var.lower() == "true"
@@ -339,6 +357,7 @@ def setup(app):
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
     app.connect("html-page-context", hash_html_assets)
+    app.connect("html-page-context", add_pygments_style_class)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)
