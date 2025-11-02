@@ -22,9 +22,10 @@ Always reference these instructions first and fallback to search or bash command
 - **Install theme**: `pip install -e .` - Development installation (~3-10 minutes, NEVER CANCEL. Set timeout to 15+ minutes)
 
 ### Testing and Quality Assurance
-- **Run tests**: `tox` or `pytest --durations=10 --cov=quantecon_book_theme --cov-report=xml --cov-report=term-missing` (~5-15 minutes, NEVER CANCEL. Set timeout to 30+ minutes)
+- **Run tests**: `tox` - ALWAYS use tox for running tests (~5-15 minutes, NEVER CANCEL. Set timeout to 30+ minutes)
+  - Tests run against Python 3.12 and 3.13 with Sphinx 7
+  - DO NOT use `pytest` directly - always use `tox` for proper environment isolation
 - **Pre-commit checks**: `pre-commit run --all-files` - All formatting and linting (~2-5 minutes, NEVER CANCEL. VALIDATED: flake8 and black work correctly)
-- **Python 3.13 environment**: Tests are configured for Python 3.13 but will work with 3.12+
 - **Linting**: `flake8 src/` - Python linting (few seconds, VALIDATED)
 - **Formatting**: `black --check src/` - Code formatting check (few seconds, VALIDATED)
 
@@ -74,8 +75,8 @@ src/quantecon_book_theme/
 4. Always test changes with `tox -e docs-update`
 
 ### Running Tests
-- **Full test suite**: `tox` (uses Python 3.13 environment if available)
-- **Direct pytest**: `pytest` (requires manually installing test dependencies)
+- **Full test suite**: `tox` - ALWAYS use tox (runs tests in Python 3.12 and 3.13 environments)
+- **NEVER use pytest directly** - tox provides proper environment isolation and multi-version testing
 - **Regression tests**: Tests compare generated HTML against golden files in `tests/test_build/`
 
 ### Code Quality Workflow
@@ -175,6 +176,7 @@ The following commands have been verified to work in this environment:
 - `npm run build` - Compiles assets successfully (2.5-3 seconds)
 - `pip install tox pre-commit flake8 black` - Basic tooling installation works
 - `pre-commit install` - Git hooks installation works
+- `tox` - Full test suite with Python 3.12 and 3.13 environments (ALWAYS use this for testing)
 - `flake8 src/` - Python linting works and finds issues as expected
 - `black --check src/` - Code formatting check works
 - Asset compilation produces expected files in `src/quantecon_book_theme/theme/quantecon_book_theme/static/`
