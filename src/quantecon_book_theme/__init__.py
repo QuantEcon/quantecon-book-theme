@@ -322,18 +322,18 @@ def hash_html_assets(app, pagename, templatename, context, doctree):
 
 def add_pygments_style_class(app, pagename, templatename, context, doctree):
     """Add CSS class to root element if QuantEcon theme code style is disabled.
-    
+
     When qetheme_code_style is False, adds 'use-pygments-style' class which
     disables the custom QuantEcon code token styles and allows Pygments
     built-in styles (configured via pygments_style) to be used.
     """
     config_theme = app.config.html_theme_options
     qetheme_code_style = config_theme.get("qetheme_code_style", True)
-    
+
     # Convert string "false"/"true" to boolean if needed
     if isinstance(qetheme_code_style, str):
         qetheme_code_style = qetheme_code_style.lower() != "false"
-    
+
     # Set a context variable that can be used in templates
     context["use_pygments_style"] = not qetheme_code_style
 
