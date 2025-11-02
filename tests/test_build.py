@@ -17,36 +17,36 @@ def test_add_pygments_style_class_unit():
     # Mock app object
     app = Mock()
     context = {}
-    
+
     # Test with default (no option set) - should use custom style
     app.config.html_theme_options = {}
     add_pygments_style_class(app, "page", "template", context, None)
     assert context["use_pygments_style"] is False
-    
+
     # Test with qetheme_code_style=True - should use custom style
     context = {}
     app.config.html_theme_options = {"qetheme_code_style": True}
     add_pygments_style_class(app, "page", "template", context, None)
     assert context["use_pygments_style"] is False
-    
+
     # Test with qetheme_code_style=False - should use Pygments style
     context = {}
     app.config.html_theme_options = {"qetheme_code_style": False}
     add_pygments_style_class(app, "page", "template", context, None)
     assert context["use_pygments_style"] is True
-    
+
     # Test with string "true" - should use custom style
     context = {}
     app.config.html_theme_options = {"qetheme_code_style": "true"}
     add_pygments_style_class(app, "page", "template", context, None)
     assert context["use_pygments_style"] is False
-    
+
     # Test with string "false" - should use Pygments style
     context = {}
     app.config.html_theme_options = {"qetheme_code_style": "false"}
     add_pygments_style_class(app, "page", "template", context, None)
     assert context["use_pygments_style"] is True
-    
+
     # Test with string "False" (capital F) - should use Pygments style
     context = {}
     app.config.html_theme_options = {"qetheme_code_style": "False"}
