@@ -253,7 +253,7 @@ def test_qetheme_code_style(sphinx_build):
     assert "use-pygments-style" not in body_tag.get("class", [])
     sphinx_build.clean()
 
-    # Test with qetheme_code_style disabled
+    # Test with qetheme_code_style disabled (boolean False)
     cmd = [
         "-D",
         "html_theme_options.qetheme_code_style=False",
@@ -265,7 +265,7 @@ def test_qetheme_code_style(sphinx_build):
     assert "use-pygments-style" in body_tag.get("class", [])
     sphinx_build.clean()
 
-    # Test with qetheme_code_style explicitly enabled
+    # Test with qetheme_code_style explicitly enabled (boolean True)
     cmd = [
         "-D",
         "html_theme_options.qetheme_code_style=True",
@@ -274,5 +274,29 @@ def test_qetheme_code_style(sphinx_build):
     index_html = sphinx_build.get("index.html")
     body_tag = index_html.find("body")
     # When enabled, use-pygments-style class should NOT be present
+    assert "use-pygments-style" not in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style as string "false"
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=false",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # String "false" should be treated as False
+    assert "use-pygments-style" in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style as string "true"
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=true",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # String "true" should be treated as True
     assert "use-pygments-style" not in body_tag.get("class", [])
     sphinx_build.clean()
