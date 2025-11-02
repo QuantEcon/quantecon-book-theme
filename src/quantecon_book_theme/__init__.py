@@ -339,6 +339,10 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
 
     # Set a context variable that can be used in templates
     context["use_pygments_style"] = not qetheme_code_style
+    
+    # Log for debugging
+    if not qetheme_code_style:
+        SPHINX_LOGGER.info(f"Page {pagename}: Setting use_pygments_style=True in context")
 
 
 def setup_pygments_css(app, config):
@@ -346,7 +350,8 @@ def setup_pygments_css(app, config):
     
     This runs during config-inited, before the build starts.
     """
-    config_theme = config.html_theme_options
+    # Access html_theme_options from config (it's a dict)
+    config_theme = getattr(config, 'html_theme_options', {})
     qetheme_code_style = config_theme.get("qetheme_code_style", True)
     
     # Convert string "false"/"true" to boolean if needed
@@ -355,6 +360,7 @@ def setup_pygments_css(app, config):
     
     # When using Pygments styles, ensure the CSS is included
     if not qetheme_code_style:
+        SPHINX_LOGGER.info(f"Adding pygments.css (qetheme_code_style={qetheme_code_style})")
         app.add_css_file('pygments.css')
 
 
