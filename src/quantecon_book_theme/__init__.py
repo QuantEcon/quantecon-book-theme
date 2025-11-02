@@ -345,13 +345,13 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
         SPHINX_LOGGER.info(f"Page {pagename}: Setting use_pygments_style=True in context")
 
 
-def setup_pygments_css(app, config):
+def setup_pygments_css(app):
     """Ensure Pygments CSS is included when using Pygments styles.
     
-    This runs during config-inited, before the build starts.
+    This runs during builder-inited, after config is fully loaded.
     """
-    # Access html_theme_options from config (it's a dict)
-    config_theme = getattr(config, 'html_theme_options', {})
+    # Access html_theme_options from app.config (it's a dict)
+    config_theme = getattr(app.config, 'html_theme_options', {})
     qetheme_code_style = config_theme.get("qetheme_code_style", True)
     
     # Convert string "false"/"true" to boolean if needed
@@ -380,9 +380,9 @@ def setup(app):
     app.add_js_file("scripts/jquery.js")
     app.add_js_file("scripts/_sphinx_javascript_frameworks_compat.js")
 
-    app.connect("config-inited", setup_pygments_css)
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
+    app.connect("builder-inited", setup_pygments_css)
     app.connect("html-page-context", hash_html_assets)
     app.connect("html-page-context", add_pygments_style_class)
 
