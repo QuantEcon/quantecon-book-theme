@@ -326,6 +326,8 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
     When qetheme_code_style is False, adds 'use-pygments-style' class which
     disables the custom QuantEcon code token styles and allows Pygments
     built-in styles (configured via pygments_style) to be used.
+    
+    Also ensures Pygments CSS is generated when using Pygments styles.
     """
     config_theme = app.config.html_theme_options
     qetheme_code_style = config_theme.get("qetheme_code_style", True)
@@ -336,6 +338,11 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
 
     # Set a context variable that can be used in templates
     context["use_pygments_style"] = not qetheme_code_style
+    
+    # When using Pygments styles, ensure the CSS is generated
+    if not qetheme_code_style:
+        # Force Sphinx to write pygments.css by setting the write flag
+        app.builder.add_css_file('pygments.css')
 
 
 def _string_or_bool(var):
