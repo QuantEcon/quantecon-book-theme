@@ -300,10 +300,16 @@ def hash_assets_for_files(assets: list, theme_static: Path, context):
                     f"Asset {asset_source_path} does not exist, not linking."
                 )
             # Find this asset in context, and update it to include the digest
-            if asset_sphinx_link in context[asset_type]:
-                hash = _gen_hash(asset_source_path)
-                ix = context[asset_type].index(asset_sphinx_link)
-                context[asset_type][ix] = asset_sphinx_link + "?digest=" + hash
+            # Use .filename attribute to avoid deprecation warnings in Sphinx 9+
+            for i, css_or_js in enumerate(context[asset_type]):
+                filename = getattr(css_or_js, "filename", None)
+                # Skip if filename attribute doesn't exist
+                if filename is None:
+                    continue
+                if filename == asset_sphinx_link:
+                    hash = _gen_hash(asset_source_path)
+                    context[asset_type][i] = asset_sphinx_link + "?digest=" + hash
+                    break
 
 
 def hash_html_assets(app, pagename, templatename, context, doctree):
@@ -318,6 +324,60 @@ def hash_html_assets(app, pagename, templatename, context, doctree):
     if app.config.html_theme == "quantecon_book_theme":
         assets.append("styles/quantecon-book-theme.css")
     hash_assets_for_files(assets, get_html_theme_path() / "static", context)
+
+
+def add_pygments_style_class(app, pagename, templatename, context, doctree):
+    """Add CSS class to root element if QuantEcon theme code style is disabled.
+
+    When qetheme_code_style is False, adds 'use-pygments-style' class which
+    disables the custom QuantEcon code token styles and allows Pygments
+    built-in styles (configured via pygments_style) to be used.
+    """
+    config_theme = app.config.html_theme_options
+    qetheme_code_style = config_theme.get("qetheme_code_style", True)
+
+    # Convert string "false"/"true" to boolean if needed
+    if isinstance(qetheme_code_style, str):
+        qetheme_code_style = qetheme_code_style.lower() != "false"
+
+    # Set a context variable that can be used in templates
+    context["use_pygments_style"] = not qetheme_code_style
+
+
+def setup_pygments_css(app):
+    """Ensure Pygments CSS is included when using Pygments styles.
+
+    This runs during builder-inited, after config is fully loaded.
+    We generate our own unscoped pygments CSS file instead of using Sphinx's scoped version.
+    """
+    from pygments.formatters import HtmlFormatter
+
+    # Access html_theme_options from app.config (it's a dict)
+    config_theme = getattr(app.config, "html_theme_options", {})
+    qetheme_code_style = config_theme.get("qetheme_code_style", True)
+
+    # Convert string "false"/"true" to boolean if needed
+    if isinstance(qetheme_code_style, str):
+        qetheme_code_style = qetheme_code_style.lower() != "false"
+
+    # When using Pygments styles, generate and include unscoped CSS
+    if not qetheme_code_style:
+        # Get the Pygments style name from config (default to 'default')
+        pygments_style = getattr(app.config, "pygments_style", None) or "default"
+
+        # Generate CSS without data-theme scoping
+        formatter = HtmlFormatter(style=pygments_style)
+        css_content = formatter.get_style_defs(".highlight")
+
+        # Write CSS file to _static directory with a different name
+        # This ensures it won't be overwritten by Sphinx or pydata-sphinx-theme
+        static_dir = Path(app.outdir) / "_static"
+        static_dir.mkdir(parents=True, exist_ok=True)
+        pygments_css_path = static_dir / "pygments-quantecon.css"
+        pygments_css_path.write_text(css_content)
+
+        # Add the CSS file to the page (instead of the default pygments.css)
+        app.add_css_file("pygments-quantecon.css")
 
 
 def _string_or_bool(var):
@@ -338,7 +398,9 @@ def setup(app):
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
+    app.connect("builder-inited", setup_pygments_css)
     app.connect("html-page-context", hash_html_assets)
+    app.connect("html-page-context", add_pygments_style_class)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)

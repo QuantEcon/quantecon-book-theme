@@ -8,16 +8,20 @@ See below for some more specific sections
 ```{contents}
 ```
 
-## `src/sphinx_book_theme/` - Theme source files
+## `src/quantecon_book_theme/` - Theme source files
 
 This folder contains all of the source files for this theme, and most changes to the theme are made somewhere inside this folder.
 
 `__init__.py`
 : The theme's Python module, which runs several configuration and set-up steps.
-  This module does things like setup `sphinx-book-theme` extension. A lot of features of which is inherited here.
+  This module sets up the `quantecon-book-theme` extension, inheriting features from `sphinx-book-theme`.
   It also inserts several variables into the Jinja template context that are then used in our HTML templates.
+  Key functions include:
+  - `setup_pygments_css()` - Generates Pygments CSS when custom code styling is disabled
+  - `add_pygments_style_class()` - Adds CSS class to enable/disable custom code highlighting
+  - `hash_assets_for_files()` - Adds cache-busting hashes to static assets
 
-### `/theme/sphinx_book_theme/` - HTML templates
+### `/theme/quantecon_book_theme/` - HTML templates
 
 This is the actual theme source that is packaged and distributed via PyPI.
 It contains HTML templates that make up the theme structure.
@@ -38,6 +42,13 @@ Contains JavaScript files for this theme. They are automatically compiled and in
 
 Contains SCSS files for this theme.
 These are compiled and bundled with the theme at build time.
+
+Key files:
+- `index.scss` - Main entry point that imports all other SCSS modules
+- `_syntax.scss` - Structural styles for code blocks (background, borders, ANSI colors)
+- `_code.scss` - Token-specific syntax highlighting colors (conditional on `qetheme_code_style`)
+
+The code highlighting styles use the `:where()` pseudo-class for low specificity, allowing Pygments styles to override when `qetheme_code_style` is disabled.
 
 ## `docs/` - Site documentation
 

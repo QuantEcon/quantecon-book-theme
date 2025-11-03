@@ -75,7 +75,7 @@
 {% block sidebarsourcelink %}{% endblock %}
 
 {% block body_tag %}
-<body{% if master_doc == pagename %} class="main-index"{% endif %}{% if theme_enable_rtl %} dir="rtl"{% endif %}>
+<body{% if master_doc == pagename %} class="main-index{% if use_pygments_style %} use-pygments-style{% endif %}"{% elif use_pygments_style %} class="use-pygments-style"{% endif %}{% if theme_enable_rtl %} dir="rtl"{% endif %}>
 {%- endblock %}
 {%- block content %}
 

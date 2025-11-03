@@ -12,6 +12,8 @@ interactive book. It has the following primary features:
   such as [the Edward Tufte CSS guide](https://edwardtufte.github.io/tufte-css/)
 * **[Visual classes designed for Jupyter Notebooks](notebooks)**. Cell inputs, outputs,
   and interactive functionality are all supported.
+* **[Configurable code syntax highlighting](configure.html#custom-code-syntax-highlighting)**.
+  Choose between custom QuantEcon styles or Pygments built-in themes.
 * **[Launch buttons for online interactivity](launch)**. For pages that are built with
   computational material, connect your site to an online BinderHub for interactive content.
 

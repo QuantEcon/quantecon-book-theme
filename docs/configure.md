@@ -176,3 +176,24 @@ html_theme_options = {
     ...
 }
 ```
+
+## Custom Code Syntax Highlighting
+
+By default, the theme uses custom QuantEcon syntax highlighting colors for code blocks. If you'd prefer to use Pygments' built-in syntax highlighting styles instead, you can disable the custom code styling:
+
+```python
+# conf.py
+
+# Set the Pygments style you want to use
+pygments_style = 'friendly'  # or 'monokai', 'github-dark', 'default', etc.
+
+html_theme_options = {
+    ...
+    "qetheme_code_style": False,
+    ...
+}
+```
+
+Available Pygments styles include: `default`, `friendly`, `monokai`, `github-dark`, `github-light`, `tango`, `vim`, and many others. See the [Pygments documentation](https://pygments.org/styles/) for a full list.
+
+When `qetheme_code_style` is `True` (the default), the custom QuantEcon code highlighting is used and the `pygments_style` setting is ignored. When set to `False`, the theme will respect your `pygments_style` configuration.

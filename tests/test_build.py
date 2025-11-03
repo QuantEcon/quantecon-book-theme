@@ -2,11 +2,133 @@ from bs4 import BeautifulSoup
 from pathlib import Path
 from subprocess import check_output
 from shutil import copytree, rmtree
+from unittest.mock import Mock, patch, MagicMock
 import pytest
+
+from quantecon_book_theme import add_pygments_style_class, setup_pygments_css
 
 
 path_tests = Path(__file__).parent.resolve()
 path_base = path_tests.joinpath("sites", "base")
+
+
+def test_add_pygments_style_class_unit():
+    """Unit test for add_pygments_style_class function to ensure coverage."""
+    # Mock app object
+    app = Mock()
+    context = {}
+
+    # Test with default (no option set) - should use custom style
+    app.config.html_theme_options = {}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is False
+
+    # Test with qetheme_code_style=True - should use custom style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": True}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is False
+
+    # Test with qetheme_code_style=False - should use Pygments style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": False}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is True
+
+    # Test with string "true" - should use custom style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": "true"}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is False
+
+    # Test with string "false" - should use Pygments style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": "false"}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is True
+
+    # Test with string "False" (capital F) - should use Pygments style
+    context = {}
+    app.config.html_theme_options = {"qetheme_code_style": "False"}
+    add_pygments_style_class(app, "page", "template", context, None)
+    assert context["use_pygments_style"] is True
+
+
+def test_setup_pygments_css_unit():
+    """Unit test for setup_pygments_css function to ensure coverage."""
+    # Mock app object
+    app = Mock()
+    app.outdir = "/tmp/test_output"
+
+    # Test with default (qetheme_code_style=True) - should NOT generate CSS
+    app.config.html_theme_options = {}
+    with patch("quantecon_book_theme.Path") as mock_path:
+        setup_pygments_css(app)
+        # Path should not be called when qetheme_code_style is True
+        mock_path.assert_not_called()
+        app.add_css_file.assert_not_called()
+
+    # Test with qetheme_code_style=False - should generate CSS
+    app.reset_mock()
+    app.config.html_theme_options = {"qetheme_code_style": False}
+    app.config.pygments_style = "monokai"
+
+    with patch("quantecon_book_theme.Path") as mock_path, patch(
+        "pygments.formatters.HtmlFormatter"
+    ) as mock_formatter:  # Setup mocks
+        mock_static_dir = MagicMock()
+        mock_css_path = MagicMock()
+        mock_path.return_value.__truediv__.return_value.__truediv__.return_value = (
+            mock_css_path
+        )
+        mock_path.return_value.__truediv__.return_value = mock_static_dir
+
+        mock_formatter_instance = MagicMock()
+        mock_formatter_instance.get_style_defs.return_value = "/* test css */"
+        mock_formatter.return_value = mock_formatter_instance
+
+        setup_pygments_css(app)
+
+        # Verify HtmlFormatter was called with correct style
+        mock_formatter.assert_called_once_with(style="monokai")
+        mock_formatter_instance.get_style_defs.assert_called_once_with(".highlight")
+
+        # Verify CSS file was added
+        app.add_css_file.assert_called_once_with("pygments-quantecon.css")
+
+    # Test with qetheme_code_style=False and no pygments_style (should default)
+    app.reset_mock()
+    app.config.html_theme_options = {"qetheme_code_style": False}
+    app.config.pygments_style = None
+
+    with patch("quantecon_book_theme.Path") as mock_path, patch(
+        "pygments.formatters.HtmlFormatter"
+    ) as mock_formatter:
+        mock_formatter_instance = MagicMock()
+        mock_formatter_instance.get_style_defs.return_value = "/* test css */"
+        mock_formatter.return_value = mock_formatter_instance
+
+        setup_pygments_css(app)
+
+        # Should default to "default" style
+        mock_formatter.assert_called_once_with(style="default")
+
+    # Test with string "false" - should generate CSS
+    app.reset_mock()
+    app.config.html_theme_options = {"qetheme_code_style": "false"}
+    app.config.pygments_style = "friendly"
+
+    with patch("quantecon_book_theme.Path") as mock_path, patch(
+        "pygments.formatters.HtmlFormatter"
+    ) as mock_formatter:
+        mock_formatter_instance = MagicMock()
+        mock_formatter_instance.get_style_defs.return_value = "/* test css */"
+        mock_formatter.return_value = mock_formatter_instance
+
+        setup_pygments_css(app)
+
+        mock_formatter.assert_called_once_with(style="friendly")
+        app.add_css_file.assert_called_once_with("pygments-quantecon.css")
 
 
 @pytest.fixture(scope="session")
@@ -239,3 +361,64 @@ def test_build_book(file_regression, sphinx_build):
 #     # Ensure that it works without error
 #     cmd = ["-b", "singlehtml"]
 #     check_output(sphinx_build.cmd_base + cmd, cwd=sphinx_build.path_book).decode("utf8") # noqa: E501
+
+
+def test_qetheme_code_style(sphinx_build):
+    """Test that qetheme_code_style option works correctly."""
+    sphinx_build.copy()
+
+    # Test default behavior - custom code style should be enabled
+    sphinx_build.build()
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # By default, use-pygments-style class should NOT be present
+    assert "use-pygments-style" not in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style disabled (boolean False)
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=False",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # When disabled, use-pygments-style class should be present
+    assert "use-pygments-style" in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style explicitly enabled (boolean True)
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=True",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # When enabled, use-pygments-style class should NOT be present
+    assert "use-pygments-style" not in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style as string "false"
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=false",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # String "false" should be treated as False
+    assert "use-pygments-style" in body_tag.get("class", [])
+    sphinx_build.clean()
+
+    # Test with qetheme_code_style as string "true"
+    cmd = [
+        "-D",
+        "html_theme_options.qetheme_code_style=true",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    body_tag = index_html.find("body")
+    # String "true" should be treated as True
+    assert "use-pygments-style" not in body_tag.get("class", [])
+    sphinx_build.clean()
