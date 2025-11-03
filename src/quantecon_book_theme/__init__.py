@@ -351,7 +351,6 @@ def setup_pygments_css(app):
     We generate our own unscoped pygments CSS file instead of using Sphinx's scoped version.
     """
     from pygments.formatters import HtmlFormatter
-    from pathlib import Path
 
     # Access html_theme_options from app.config (it's a dict)
     config_theme = getattr(app.config, "html_theme_options", {})
