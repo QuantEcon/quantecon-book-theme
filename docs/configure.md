@@ -197,3 +197,62 @@ html_theme_options = {
 Available Pygments styles include: `default`, `friendly`, `monokai`, `github-dark`, `github-light`, `tango`, `vim`, and many others. See the [Pygments documentation](https://pygments.org/styles/) for a full list.
 
 When `qetheme_code_style` is `True` (the default), the custom QuantEcon code highlighting is used and the `pygments_style` setting is ignored. When set to `False`, the theme will respect your `pygments_style` configuration.
+
+## Customizing Toggle Button Text
+
+The theme supports collapsible content via the `sphinx-togglebutton` extension, which provides two mechanisms for creating expandable sections:
+
+1. **Toggle directives** - Created with `` ```{toggle} `` syntax
+2. **Dropdown admonitions** - Created by adding `:class: dropdown` to admonitions
+
+### Customizing Toggle Directive Text
+
+To customize the button text for toggle directives, add the following to your Sphinx configuration:
+
+```python
+# conf.py
+
+# Customize toggle button text
+togglebutton_hint = "Show"
+togglebutton_hint_hide = "Hide"
+```
+
+For Jupyter Book projects, add to your `_config.yml`:
+
+```yaml
+# _config.yml
+
+sphinx:
+  config:
+    togglebutton_hint: "Show"
+    togglebutton_hint_hide: "Hide"
+```
+
+### Dropdown Admonitions
+
+The theme automatically customizes dropdown admonitions (those with `:class: dropdown`) to display "Show"/"Hide" instead of the default "Click to show"/"Click to hide". This styling is built into the theme and requires no additional configuration.
+
+**Example usage:**
+
+````markdown
+```{note}
+:class: dropdown
+
+This is a collapsible note that will show "Show" when collapsed and "Hide" when expanded.
+```
+
+```{toggle}
+This is a toggle directive that will use the configured button text.
+```
+````
+which renders:
+
+```{note}
+:class: dropdown
+
+This is a collapsible note that will show "Show" when collapsed and "Hide" when expanded.
+```
+
+```{toggle}
+This is a toggle directive that will use the configured button text.
+```

@@ -58,6 +58,10 @@ html_favicon = "_static/qe-logo.png"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 nb_execution_mode = "cache"
+
+# -- Togglebutton configuration ----------------------------------------------
+togglebutton_hint = "Show"
+togglebutton_hint_hide = "Hide"
 thebe_config = {
     "repository_url": "https://github.com/binder-examples/jupyter-stacks-datascience",
     "repository_branch": "master",
