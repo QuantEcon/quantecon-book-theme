@@ -119,6 +119,16 @@ body {
       color: #fff;
     }
 
+    // Color-based emphasis for dark mode
+    em {
+      color: #5eb3f6;  // Lighter blue for dark background
+    }
+
+    strong,
+    b {
+      color: #ff6b9d;  // Lighter magenta/pink for dark background
+    }
+
     .qe-toolbar__inner > ul > li > a,
     .qe-sidebar__nav ul > li > a {
       color: #fff;
@@ -367,9 +377,18 @@ h4 {
   color: #000;
 }
 
+// Replace italic emphasis with color-based emphasis
+em {
+  font-style: normal;
+  color: colors.$emphasis;
+  font-weight: 500;  // Slightly heavier for better readability
+}
+
 strong,
 b {
   font-weight: 700;
+  font-style: normal;
+  color: colors.$strong;
 }
 
 li {
