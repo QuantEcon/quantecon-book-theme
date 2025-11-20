@@ -377,16 +377,17 @@ h4 {
   color: #000;
 }
 
-// Emphasis styling - replace italics with color
+// Emphasis styling - replace italics with color and semi-bold weight
 em {
   font-style: normal;
+  font-weight: 550;
   color: colors.$emphasis;
 }
 
 // Strong/bold styling - semi-bold weight with color for definitions
 strong,
 b {
-  font-weight: 600;
+  font-weight: 550;
   color: colors.$definition;
 }
 
