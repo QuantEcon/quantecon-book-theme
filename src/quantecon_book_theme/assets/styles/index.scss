@@ -295,6 +295,13 @@ body {
     .cell_output .output.stderr {
       border: 0rem;
     }
+
+    // Fix excess spacing in streaming output (Issue #325)
+    // When multiple print statements generate consecutive stream outputs,
+    // remove the top margin to prevent large gaps between lines
+    .cell_output .output.stream + .output.stream {
+      margin-top: 0;
+    }
   }
 }
 
