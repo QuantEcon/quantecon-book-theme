@@ -426,28 +426,25 @@ def test_qetheme_code_style(sphinx_build):
 
 def test_streaming_output_spacing(sphinx_build):
     """Test that streaming output from multiple print statements has correct spacing.
-    
+
     This test verifies the fix for issue #325 where consecutive stream outputs
     should not have excessive spacing between them.
     """
     sphinx_build.copy()
     sphinx_build.build()
-    
+
     # Get the streaming output notebook page
     streaming_html = sphinx_build.get("section1/ntbk_streaming.html")
-    
+
     # Find all stream output divs
     stream_outputs = streaming_html.find_all("div", class_="output")
-    stream_divs = [
-        div for div in stream_outputs 
-        if "stream" in div.get("class", [])
-    ]
-    
+    stream_divs = [div for div in stream_outputs if "stream" in div.get("class", [])]
+
     # Should have stream outputs from the test notebook
     assert len(stream_divs) > 0, "Should have streaming output elements"
-    
+
     # The HTML should be built successfully with the notebook included
     # The actual spacing fix is in the CSS, so we verify the structure is correct
     assert streaming_html is not None
-    
+
     sphinx_build.clean()
