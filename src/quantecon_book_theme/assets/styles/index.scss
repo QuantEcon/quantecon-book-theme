@@ -119,6 +119,16 @@ body {
       color: #fff;
     }
 
+    // Lighter colors for emphasis and strong in dark mode
+    em {
+      color: #4caf50; // Lighter green for dark mode
+    }
+
+    strong,
+    b {
+      color: #ff8a80; // Lighter coral/red for dark mode
+    }
+
     .qe-toolbar__inner > ul > li > a,
     .qe-sidebar__nav ul > li > a {
       color: #fff;
@@ -367,9 +377,17 @@ h4 {
   color: #000;
 }
 
+// Emphasis styling - replace italics with color
+em {
+  font-style: normal;
+  color: colors.$emphasis;
+}
+
+// Strong/bold styling - keep bold and add color for definitions
 strong,
 b {
   font-weight: 700;
+  color: colors.$definition;
 }
 
 li {
