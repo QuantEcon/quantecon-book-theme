@@ -383,10 +383,10 @@ em {
   color: colors.$emphasis;
 }
 
-// Strong/bold styling - keep bold and add color for definitions
+// Strong/bold styling - semi-bold weight with color for definitions
 strong,
 b {
-  font-weight: 700;
+  font-weight: 600;
   color: colors.$definition;
 }
 
