@@ -304,6 +304,12 @@ body {
 // Using !important to override MyST-NB's default margin-top: 1em
 .cell_output .output.stream + .output.stream {
   margin-top: 0 !important;
+  
+  // Also remove margin from the .highlight div inside consecutive stream outputs
+  .highlight {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
 }
 
 .section,

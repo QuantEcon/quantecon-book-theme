@@ -440,11 +440,19 @@ def test_streaming_output_spacing(sphinx_build):
     stream_outputs = streaming_html.find_all("div", class_="output")
     stream_divs = [div for div in stream_outputs if "stream" in div.get("class", [])]
 
-    # Should have stream outputs from the test notebook
-    assert len(stream_divs) > 0, "Should have streaming output elements"
+    # Should have multiple stream outputs from the test notebook
+    # First cell has 3 stream outputs, second has 5 = 8 total
+    assert len(stream_divs) >= 8, f"Should have at least 8 streaming output elements, found {len(stream_divs)}"
 
-    # The HTML should be built successfully with the notebook included
-    # The actual spacing fix is in the CSS, so we verify the structure is correct
-    assert streaming_html is not None
+    # Verify we have consecutive streaming outputs (adjacent siblings)
+    # Find the cell_output container
+    cell_output = streaming_html.find("div", class_="cell_output")
+    assert cell_output is not None, "Should have cell_output container"
 
+    # Get all direct children that are stream outputs
+    children = [child for child in cell_output.children if child.name == "div" and "stream" in child.get("class", [])]
+    assert len(children) >= 2, "Should have at least 2 consecutive stream outputs as siblings"
+
+    # The actual spacing fix is in the CSS (.cell_output .output.stream + .output.stream)
+    # We verify the HTML structure supports the fix
     sphinx_build.clean()
