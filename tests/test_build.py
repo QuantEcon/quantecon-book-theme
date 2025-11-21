@@ -428,8 +428,7 @@ def test_streaming_output_spacing(sphinx_build):
     """Test that streaming output structure supports CSS spacing fix.
 
     This test verifies the fix for issue #325 where consecutive stream outputs
-    have CSS applied via .cell_output .output.stream + .output.stream selector
-    to remove excessive spacing.
+    have comprehensive CSS applied to remove excessive spacing.
     """
     sphinx_build.copy()
     sphinx_build.build()
@@ -442,17 +441,15 @@ def test_streaming_output_spacing(sphinx_build):
     stream_divs = [div for div in stream_outputs if "stream" in div.get("class", [])]
 
     # Should have multiple stream outputs from the test notebook
-    # First cell has 3 stream outputs, second has 5 = 8 total
     assert (
         len(stream_divs) >= 8
     ), f"Should have at least 8 streaming output elements, found {len(stream_divs)}"
 
     # Verify we have consecutive streaming outputs (adjacent siblings)
-    # Find all cell_output containers
     cell_outputs = streaming_html.find_all("div", class_="cell_output")
     assert len(cell_outputs) >= 2, "Should have at least 2 cells with outputs"
 
-    # At least one cell should have consecutive stream outputs
+    # At least one cell should have consecutive stream outputs for CSS to target
     found_consecutive = False
     for cell_output in cell_outputs:
         stream_children = [
@@ -468,6 +465,6 @@ def test_streaming_output_spacing(sphinx_build):
 
     assert (
         found_consecutive
-    ), "Should have at least one cell with consecutive stream outputs"
+    ), "Should have consecutive stream outputs for CSS fix to apply"
 
     sphinx_build.clean()
