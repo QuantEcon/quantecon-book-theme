@@ -309,6 +309,12 @@ body {
   .highlight {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+    
+    // Remove margin from the pre element inside .highlight
+    pre {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
   }
 }
 
