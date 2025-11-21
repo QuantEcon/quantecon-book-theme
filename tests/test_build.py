@@ -425,10 +425,11 @@ def test_qetheme_code_style(sphinx_build):
 
 
 def test_streaming_output_spacing(sphinx_build):
-    """Test that streaming output from multiple print statements has correct spacing.
+    """Test that streaming output structure supports CSS spacing fix.
 
     This test verifies the fix for issue #325 where consecutive stream outputs
-    should not have excessive spacing between them.
+    have CSS applied via .cell_output .output.stream + .output.stream selector
+    to remove excessive spacing.
     """
     sphinx_build.copy()
     sphinx_build.build()
@@ -447,20 +448,26 @@ def test_streaming_output_spacing(sphinx_build):
     ), f"Should have at least 8 streaming output elements, found {len(stream_divs)}"
 
     # Verify we have consecutive streaming outputs (adjacent siblings)
-    # Find the cell_output container
-    cell_output = streaming_html.find("div", class_="cell_output")
-    assert cell_output is not None, "Should have cell_output container"
+    # Find all cell_output containers
+    cell_outputs = streaming_html.find_all("div", class_="cell_output")
+    assert len(cell_outputs) >= 2, "Should have at least 2 cells with outputs"
 
-    # Get all direct children that are stream outputs
-    children = [
-        child
-        for child in cell_output.children
-        if child.name == "div" and "stream" in child.get("class", [])
-    ]
+    # At least one cell should have consecutive stream outputs
+    found_consecutive = False
+    for cell_output in cell_outputs:
+        stream_children = [
+            child
+            for child in cell_output.children
+            if child.name == "div"
+            and "output" in child.get("class", [])
+            and "stream" in child.get("class", [])
+        ]
+        if len(stream_children) >= 2:
+            found_consecutive = True
+            break
+
     assert (
-        len(children) >= 2
-    ), "Should have at least 2 consecutive stream outputs as siblings"
+        found_consecutive
+    ), "Should have at least one cell with consecutive stream outputs"
 
-    # The actual spacing fix is in the CSS (.cell_output .output.stream + .output.stream)
-    # We verify the HTML structure supports the fix
     sphinx_build.clean()

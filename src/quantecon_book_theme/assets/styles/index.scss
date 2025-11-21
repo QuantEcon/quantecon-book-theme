@@ -298,6 +298,12 @@ body {
   }
 }
 
+// Fix excess spacing in streaming output (Issue #325)
+// Remove margin between consecutive streaming outputs
+.cell_output .output.stream + .output.stream {
+  margin-top: 0 !important;
+}
+
 .section,
 .reference,
 .math {

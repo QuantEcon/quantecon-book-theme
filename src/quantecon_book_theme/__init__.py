@@ -7,7 +7,6 @@ from functools import lru_cache
 
 from docutils import nodes
 from sphinx.util import logging
-from sphinx.transforms.post_transforms import SphinxPostTransform
 from bs4 import BeautifulSoup as bs
 from sphinx.util.fileutil import copy_asset
 from sphinx.util.osutil import ensuredir
@@ -390,83 +389,12 @@ def _string_or_bool(var):
         return var is None
 
 
-class MergeStreamOutputs(SphinxPostTransform):
-    """Merge consecutive streaming outputs into single blocks.
-
-    This fixes issue #325 where MyST-NB creates separate container elements
-    for each line of streaming output, creating excessive spacing. By merging
-    consecutive stream outputs into a single element, we achieve natural
-    terminal-style continuous output without CSS workarounds.
-    """
-
-    default_priority = 500  # Run after other transforms
-
-    def run(self, **kwargs):
-        """Merge consecutive output.stream containers in the doctree."""
-        # Find all container nodes with 'cell_output' class
-        for cell_output in self.document.traverse(nodes.container):
-            if "cell_output" not in cell_output.get("classes", []):
-                continue
-
-            # Look for consecutive output.stream children
-            children = list(cell_output.children)
-            i = 0
-            while i < len(children):
-                node = children[i]
-
-                # Check if this is an output.stream container
-                if (
-                    isinstance(node, nodes.container)
-                    and "output" in node.get("classes", [])
-                    and "stream" in node.get("classes", [])
-                ):
-                    # Collect all consecutive stream outputs
-                    consecutive_streams = [node]
-                    j = i + 1
-                    while j < len(children):
-                        next_node = children[j]
-                        if (
-                            isinstance(next_node, nodes.container)
-                            and "output" in next_node.get("classes", [])
-                            and "stream" in next_node.get("classes", [])
-                        ):
-                            consecutive_streams.append(next_node)
-                            j += 1
-                        else:
-                            break
-
-                    # If we found multiple consecutive streams, merge them
-                    if len(consecutive_streams) > 1:
-                        # Keep the first stream container
-                        first_stream = consecutive_streams[0]
-
-                        # Merge content from subsequent streams into the first
-                        for stream in consecutive_streams[1:]:
-                            # Copy all children from subsequent streams
-                            for child in stream.children:
-                                first_stream.append(child.deepcopy())
-                            # Remove the subsequent stream from parent
-                            cell_output.remove(stream)
-
-                        # Update children list after modifications
-                        children = list(cell_output.children)
-                        # Continue from the merged position
-                        i = cell_output.index(first_stream) + 1
-                    else:
-                        i += 1
-                else:
-                    i += 1
-
-
 def setup(app):
     # Configuration for Juypter Book
     app.setup_extension("sphinx_book_theme")
     app.add_js_file("scripts/quantecon-book-theme.js")
     app.add_js_file("scripts/jquery.js")
     app.add_js_file("scripts/_sphinx_javascript_frameworks_compat.js")
-
-    # Register post-transform to merge consecutive streaming outputs
-    app.add_post_transform(MergeStreamOutputs)
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
