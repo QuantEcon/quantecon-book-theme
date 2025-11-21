@@ -304,14 +304,16 @@ body {
 // Using !important to override MyST-NB's default margin-top: 1em
 .cell_output .output.stream + .output.stream {
   margin-top: 0 !important;
+}
 
-  // Also remove margin from the .highlight div inside consecutive stream outputs
+// For all streaming output elements, minimize internal spacing
+.cell_output .output.stream {
   .highlight {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 
     // Remove margin and padding from the pre element inside .highlight
-    // Using shorthand 'margin' to override any shorthand declarations
+    // Using shorthand 'margin' to override any shorthand declarations from _syntax.scss
     pre {
       margin: 0 !important;
       padding-top: 0 !important;
