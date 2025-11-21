@@ -310,10 +310,12 @@ body {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 
-    // Remove margin from the pre element inside .highlight
+    // Remove margin and padding from the pre element inside .highlight
     // Using shorthand 'margin' to override any shorthand declarations
     pre {
       margin: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
     }
   }
 }
