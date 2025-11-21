@@ -80,9 +80,10 @@ src/quantecon_book_theme/
 - **Regression tests**: Tests compare generated HTML against golden files in `tests/test_build/`
 
 ### Code Quality Workflow
-- Always run `pre-commit run --all-files` before committing
+- **CRITICAL**: ALWAYS run `pre-commit run --all-files` before committing to GitHub
 - Pre-commit includes: black (formatting), flake8 (linting), YAML/JSON validation
 - CI will fail if pre-commit checks don't pass
+- If you make changes to Python or SCSS files, run pre-commit before `git commit`
 
 ## Troubleshooting
 
@@ -116,9 +117,12 @@ pre-commit install
 # Development workflow
 npm run build                    # Compile assets (2.5-3 seconds, VALIDATED)
 tox -e docs-live                # Live development server (5-10 minutes)
-pre-commit run --all-files      # Code quality checks (2-5 minutes, VALIDATED)
+pre-commit run --all-files      # Code quality checks (2-5 minutes, VALIDATED) - RUN BEFORE COMMITTING
 flake8 src/                     # Python linting (few seconds, VALIDATED)
 black --check src/              # Formatting check (few seconds, VALIDATED)
+
+# Before committing to GitHub
+pre-commit run --all-files      # CRITICAL: Always run before git commit
 
 # Testing and CI
 tox                             # Full test suite (5-15 minutes)
