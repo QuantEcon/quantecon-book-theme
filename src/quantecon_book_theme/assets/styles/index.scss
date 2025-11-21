@@ -299,9 +299,24 @@ body {
 }
 
 // Fix excess spacing in streaming output (Issue #325)
-// Remove margin between consecutive streaming outputs
+// Remove all spacing between consecutive streaming outputs
 .cell_output .output.stream + .output.stream {
   margin-top: 0 !important;
+}
+
+// Remove internal spacing from all streaming output elements
+.cell_output .output.stream {
+  .highlight {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+
+    // Remove margin and padding from pre elements
+    pre {
+      margin: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
 }
 
 .section,
