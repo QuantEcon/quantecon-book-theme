@@ -301,8 +301,9 @@ body {
 // Fix excess spacing in streaming output (Issue #325)
 // When multiple print statements generate consecutive stream outputs,
 // remove the top margin to prevent large gaps between lines
+// Using !important to override MyST-NB's default margin-top: 1em
 .cell_output .output.stream + .output.stream {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .section,
