@@ -422,3 +422,96 @@ def test_qetheme_code_style(sphinx_build):
     # String "true" should be treated as True
     assert "use-pygments-style" not in body_tag.get("class", [])
     sphinx_build.clean()
+
+
+def test_git_functions_unit():
+    """Unit tests for git helper functions."""
+    from quantecon_book_theme import (
+        get_git_last_modified,
+        get_git_changelog,
+        get_relative_time,
+    )
+    from datetime import datetime, timedelta
+
+    # Test get_relative_time
+    now = datetime.utcnow()
+
+    # Test "just now"
+    assert get_relative_time(now) == "just now"
+
+    # Test minutes ago
+    past = now - timedelta(minutes=5)
+    assert "5 minutes ago" in get_relative_time(past)
+
+    # Test hours ago
+    past = now - timedelta(hours=2)
+    assert "2 hours ago" in get_relative_time(past)
+
+    # Test days ago
+    past = now - timedelta(days=3)
+    assert "3 days ago" in get_relative_time(past)
+
+    # Test weeks ago
+    past = now - timedelta(weeks=2)
+    assert "2 weeks ago" in get_relative_time(past)
+
+    # Test months ago
+    past = now - timedelta(days=90)
+    assert "months ago" in get_relative_time(past)
+
+    # Test years ago
+    past = now - timedelta(days=400)
+    assert "year" in get_relative_time(past)
+
+    # Test get_git_last_modified with non-existent directory
+    result = get_git_last_modified("test.md", "/nonexistent/path")
+    assert result is None
+
+    # Test get_git_changelog with non-existent directory
+    result = get_git_changelog("test.md", "/nonexistent/path")
+    assert result == []
+
+    # Test get_git_last_modified with invalid file in valid repo
+    import os
+
+    current_dir = os.getcwd()
+    result = get_git_last_modified("nonexistent_file.md", current_dir)
+    # Should return None for non-existent file
+    assert result is None
+
+    # Test get_git_changelog with invalid file in valid repo
+    result = get_git_changelog("nonexistent_file.md", current_dir)
+    # Should return empty list for non-existent file
+    assert result == []
+
+
+def test_git_functions_with_real_file():
+    """Test git functions with a real file in the repository."""
+    from quantecon_book_theme import get_git_last_modified, get_git_changelog
+    import os
+    from datetime import datetime
+
+    # Use a file we know exists in the repo
+    current_dir = os.getcwd()
+    test_file = "README.md"
+
+    # Test get_git_last_modified
+    result = get_git_last_modified(test_file, current_dir)
+    # If we're in a git repo, should return a datetime
+    if result is not None:
+        assert isinstance(result, datetime)
+
+    # Test get_git_changelog
+    result = get_git_changelog(test_file, current_dir, max_entries=5)
+    # If we're in a git repo, should return a list
+    assert isinstance(result, list)
+    # Each entry should have the expected keys
+    for entry in result:
+        assert "hash" in entry
+        assert "author" in entry
+        assert "date" in entry
+        assert "message" in entry
+        assert "relative_time" in entry
+        assert isinstance(entry["date"], datetime)
+        assert isinstance(entry["hash"], str)
+        assert isinstance(entry["author"], str)
