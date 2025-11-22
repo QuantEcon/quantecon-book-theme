@@ -707,7 +707,7 @@ tt {
     }
 
     margin: 0 0 2rem 0;
-    padding: 0 0 1rem 0;
+    padding: 0 0 0 0;
 
     &-copy {
       display: flex;
@@ -755,16 +755,17 @@ tt {
     &-changed {
       margin: 0.5rem 0 0 0;
       padding: 0.25rem 0.5rem 0.75rem 0;
-      border-bottom: 5px solid colors.$primary;
       font-size: 0.85rem;
       font-family: inherit;
       color: colors.$body;
       background: transparent;
       border: none;
+      border-bottom: 5px solid colors.$primary;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
-      display: inline-block;
+      display: block;
+      width: 100%;
 
       &:hover {
         background: rgba(colors.$body, 0.05);
