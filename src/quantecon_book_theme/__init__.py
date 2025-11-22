@@ -440,6 +440,12 @@ def add_to_context(app, pagename, templatename, context, doctree):
         changelog = get_git_changelog(source_file, source_dir, max_changelog_entries)
         context["changelog_entries"] = changelog
         context["has_git_info"] = last_modified is not None and len(changelog) > 0
+
+        # Add repository URL and source file for GitHub links
+        repo_url = config_theme.get("repository_url", "")
+        if repo_url:
+            context["theme_repository_url"] = repo_url.rstrip("/")
+            context["theme_source_file"] = source_file
     else:
         context["last_modified_date"] = None
         context["changelog_entries"] = []

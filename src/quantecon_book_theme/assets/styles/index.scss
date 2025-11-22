@@ -814,6 +814,17 @@ tt {
         font-size: 0.9rem;
         font-weight: 600;
         color: colors.$body;
+
+        a {
+          font-size: 0.85rem;
+          font-weight: 400;
+          color: colors.$primary;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
 
       .changelog-list {
@@ -851,6 +862,12 @@ tt {
         color: rgba(colors.$body, 0.6);
         flex-shrink: 0;
         min-width: 4rem;
+        text-decoration: none;
+
+        &:hover {
+          color: colors.$primary;
+          text-decoration: underline;
+        }
 
         @media (max-width: breakpoints.$md) {
           min-width: auto;
