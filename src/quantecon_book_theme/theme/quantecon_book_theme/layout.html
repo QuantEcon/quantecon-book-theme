@@ -181,32 +181,30 @@ a:visited {
 
                     </div>
 
-                    <div class="qe-page__header-meta">
-                        <!-- Authors section -->
-                        {%- if theme_authors | length > 0 %}
-                            <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
-                                {% for author in theme_authors %}
-                                    {% if loop.last and theme_authors|length >= 2 %}
-                                        and <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
-                                    {% elif loop.first and theme_authors|length <= 2 %}
-                                        <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
-                                    {% else %}
-                                        <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>,
-                                    {% endif %}
-                                {% endfor %}
-                            </p>
-                        {%- else %}
-                            <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
-                        {%- endif %}
+                    <!-- Authors section -->
+                    {%- if theme_authors | length > 0 %}
+                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
+                            {% for author in theme_authors %}
+                                {% if loop.last and theme_authors|length >= 2 %}
+                                    and <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                {% elif loop.first and theme_authors|length <= 2 %}
+                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                {% else %}
+                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>,
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    {%- else %}
+                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
+                    {%- endif %}
 
-                        <!-- Last modified / Changelog dropdown -->
-                        {%- if has_git_info %}
-                            <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                                Changed: {{ last_modified_date }}
-                                <span class="changelog-icon">▼</span>
-                            </button>
-                        {%- endif %}
-                    </div>
+                    <!-- Last modified / Changelog dropdown -->
+                    {%- if has_git_info %}
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Changed: {{ last_modified_date }}
+                            <span class="changelog-icon">▼</span>
+                        </button>
+                    {%- endif %}
 
                     <!-- Changelog dropdown content -->
                     {%- if has_git_info and changelog_entries %}
