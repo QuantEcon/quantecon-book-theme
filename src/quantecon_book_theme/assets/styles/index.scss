@@ -706,7 +706,7 @@ tt {
       display: none;
     }
 
-    margin: 0 0 4rem 0;
+    margin: 0 0 2rem 0;
     padding: 0 0 1rem 0;
 
     &-copy {
@@ -753,17 +753,14 @@ tt {
     }
 
     &-changed {
-      margin: 0.5rem 0 1rem 0;
-      padding: 0.25rem 0.75rem 1rem 0.75rem;
+      margin: 0.5rem 0 0 0;
+      padding: 0.25rem 0.5rem 0.75rem 0;
       border-bottom: 5px solid colors.$primary;
       font-size: 0.85rem;
       font-family: inherit;
       color: colors.$body;
       background: transparent;
-      border-left: 1px solid rgba(colors.$body, 0.2);
-      border-right: 1px solid rgba(colors.$body, 0.2);
-      border-top: 1px solid rgba(colors.$body, 0.2);
-      border-radius: 4px 4px 0 0;
+      border: none;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
@@ -771,7 +768,6 @@ tt {
 
       &:hover {
         background: rgba(colors.$body, 0.05);
-        border-color: rgba(colors.$body, 0.3);
       }
 
       .changelog-icon {
@@ -792,11 +788,14 @@ tt {
     }
 
     &-changelog {
-      margin-top: 0.75rem;
+      margin-top: 0;
       padding: 0.75rem;
       background: rgba(colors.$body, 0.02);
-      border: 1px solid rgba(colors.$body, 0.1);
-      border-radius: 4px;
+      border-left: 1px solid rgba(colors.$body, 0.1);
+      border-right: 1px solid rgba(colors.$body, 0.1);
+      border-bottom: 1px solid rgba(colors.$body, 0.1);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
       max-height: 0;
       overflow: hidden;
       opacity: 0;
