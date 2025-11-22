@@ -179,26 +179,51 @@ a:visited {
 
                         <p class="qe-page__header-heading"><a href="{{ master_url }}">{{ docstitle | e }}</a></p>
 
-                        <p class="qe-page__header-subheading">{{ pagetitle | e }}</p>
-
                     </div>
-                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
-                    {%- if theme_authors | length > 0 %}
-                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
-                            {% for author in theme_authors %}
-                                {% if loop.last and theme_authors|length >= 2 %}
-                                    and <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
-                                {% elif loop.first and theme_authors|length <= 2 %}
-                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
-                                {% else %}
-                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>,
-                                {% endif %}
-                            {% endfor %}
-                        </p>
-                    {%- else %}
-                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
-                    {%- endif %}
 
+                    <div class="qe-page__header-meta">
+                        <!-- Authors section -->
+                        {%- if theme_authors | length > 0 %}
+                            <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
+                                {% for author in theme_authors %}
+                                    {% if loop.last and theme_authors|length >= 2 %}
+                                        and <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                    {% elif loop.first and theme_authors|length <= 2 %}
+                                        <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                    {% else %}
+                                        <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>,
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        {%- else %}
+                            <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
+                        {%- endif %}
+
+                        <!-- Last modified / Changelog dropdown -->
+                        {%- if has_git_info %}
+                            <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                                Changed: {{ last_modified_date }}
+                                <span class="changelog-icon">▼</span>
+                            </button>
+                        {%- endif %}
+                    </div>
+
+                    <!-- Changelog dropdown content -->
+                    {%- if has_git_info and changelog_entries %}
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog</h4>
+                        <ul class="changelog-list">
+                            {% for entry in changelog_entries %}
+                            <li class="changelog-entry">
+                                <span class="changelog-hash">{{ entry.hash }}</span>
+                                <span class="changelog-author">{{ entry.author }}</span>
+                                <span class="changelog-time">{{ entry.relative_time }}</span>
+                                <span class="changelog-message">{{ entry.message }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {%- endif %}
 
                 </div> <!-- .page__header -->
 
