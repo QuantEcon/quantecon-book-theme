@@ -64,56 +64,61 @@ def add_plugins_list(app):
 
 def get_git_last_modified(source_file, source_dir):
     """Get the last modified date for a source file from git.
-    
+
     Args:
         source_file: The source file path relative to source_dir
         source_dir: The Sphinx source directory
-        
+
     Returns:
         datetime object or None if git is not available
     """
     try:
         # Get the full path to the source file
         file_path = Path(source_dir) / source_file
-        
+
         # Check if git is available and we're in a git repo
         result = subprocess.run(
             ["git", "rev-parse", "--git-dir"],
             cwd=source_dir,
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=5,
         )
         if result.returncode != 0:
             return None
-            
+
         # Get the last commit date for this file
         result = subprocess.run(
             ["git", "log", "-1", "--format=%ct", "--follow", "--", str(file_path)],
             cwd=source_dir,
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=5,
         )
-        
+
         if result.returncode == 0 and result.stdout.strip():
             timestamp = int(result.stdout.strip())
             return datetime.utcfromtimestamp(timestamp)
-            
-    except (subprocess.TimeoutExpired, subprocess.SubprocessError, ValueError, FileNotFoundError):
+
+    except (
+        subprocess.TimeoutExpired,
+        subprocess.SubprocessError,
+        ValueError,
+        FileNotFoundError,
+    ):
         pass
-    
+
     return None
 
 
 def get_git_changelog(source_file, source_dir, max_entries=10):
     """Get the changelog for a source file from git.
-    
+
     Args:
         source_file: The source file path relative to source_dir
         source_dir: The Sphinx source directory
         max_entries: Maximum number of changelog entries to return
-        
+
     Returns:
         List of dicts with keys: hash, author, date, message, relative_time
         Empty list if git is not available
@@ -121,53 +126,68 @@ def get_git_changelog(source_file, source_dir, max_entries=10):
     try:
         # Get the full path to the source file
         file_path = Path(source_dir) / source_file
-        
+
         # Check if git is available and we're in a git repo
         result = subprocess.run(
             ["git", "rev-parse", "--git-dir"],
             cwd=source_dir,
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=5,
         )
         if result.returncode != 0:
             return []
-            
+
         # Get the changelog with format: hash|author|timestamp|subject
         result = subprocess.run(
-            ["git", "log", f"-{max_entries}", "--format=%h|%an|%ct|%s", "--follow", "--", str(file_path)],
+            [
+                "git",
+                "log",
+                f"-{max_entries}",
+                "--format=%h|%an|%ct|%s",
+                "--follow",
+                "--",
+                str(file_path),
+            ],
             cwd=source_dir,
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=5,
         )
-        
+
         if result.returncode != 0 or not result.stdout.strip():
             return []
-            
+
         changelog = []
-        for line in result.stdout.strip().split('\n'):
+        for line in result.stdout.strip().split("\n"):
             if not line:
                 continue
-            parts = line.split('|', 3)
+            parts = line.split("|", 3)
             if len(parts) == 4:
                 commit_hash, author, timestamp, message = parts
                 commit_time = datetime.utcfromtimestamp(int(timestamp))
                 relative_time = get_relative_time(commit_time)
-                
-                changelog.append({
-                    'hash': commit_hash,
-                    'author': author,
-                    'date': commit_time,
-                    'message': message,
-                    'relative_time': relative_time
-                })
-                
+
+                changelog.append(
+                    {
+                        "hash": commit_hash,
+                        "author": author,
+                        "date": commit_time,
+                        "message": message,
+                        "relative_time": relative_time,
+                    }
+                )
+
         return changelog
-        
-    except (subprocess.TimeoutExpired, subprocess.SubprocessError, ValueError, FileNotFoundError):
+
+    except (
+        subprocess.TimeoutExpired,
+        subprocess.SubprocessError,
+        ValueError,
+        FileNotFoundError,
+    ):
         pass
-    
+
     return []
 
 
@@ -175,9 +195,9 @@ def get_relative_time(past_date):
     """Convert a datetime to relative time string (e.g., '3 months ago')."""
     now = datetime.utcnow()
     diff = now - past_date
-    
+
     seconds = diff.total_seconds()
-    
+
     if seconds < 60:
         return "just now"
     elif seconds < 3600:
@@ -401,10 +421,10 @@ def add_to_context(app, pagename, templatename, context, doctree):
     context["github_sourcefolder"] = get_github_src_folder(app)
 
     # Add git information (last modified date and changelog)
-    if doctree and hasattr(app.env, 'doc2path'):
+    if doctree and hasattr(app.env, "doc2path"):
         source_file = app.env.doc2path(pagename, base=False)
         source_dir = app.srcdir
-        
+
         # Get last modified date
         last_modified = get_git_last_modified(source_file, source_dir)
         if last_modified:
@@ -414,7 +434,7 @@ def add_to_context(app, pagename, templatename, context, doctree):
             context["last_modified_iso"] = last_modified.isoformat()
         else:
             context["last_modified_date"] = None
-            
+
         # Get changelog entries
         max_changelog_entries = config_theme.get("changelog_max_entries", 10)
         changelog = get_git_changelog(source_file, source_dir, max_changelog_entries)
