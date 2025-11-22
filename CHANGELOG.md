@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2025-11-23
+
 ### Added
-- Git-based metadata integration for lecture pages (#328)
+- Git-based metadata integration for lecture pages (#328, #331)
   - Last modified timestamp displayed below authors
   - Interactive changelog dropdown showing last 10 commits (configurable)
   - Clickable commit hashes linking to GitHub commit pages
@@ -16,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Configuration options: `last_modified_date_format` and `changelog_max_entries`
 
 ### Changed
-- Improved lecture header layout (#328)
+- Improved lecture header layout (#328, #331)
   - Removed redundant title display from page headers
   - Increased lecture series heading font size by 44%
   - Increased author names font size by 20%
