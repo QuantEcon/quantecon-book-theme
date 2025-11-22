@@ -766,6 +766,7 @@ tt {
       white-space: nowrap;
       display: block;
       width: 100%;
+      text-align: left;
 
       &:hover {
         background: rgba(colors.$body, 0.05);
