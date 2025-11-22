@@ -446,10 +446,15 @@ def add_to_context(app, pagename, templatename, context, doctree):
         if repo_url:
             context["theme_repository_url"] = repo_url.rstrip("/")
             context["theme_source_file"] = source_file
+        else:
+            context["theme_repository_url"] = None
+            context["theme_source_file"] = None
     else:
         context["last_modified_date"] = None
         context["changelog_entries"] = []
         context["has_git_info"] = False
+        context["theme_repository_url"] = None
+        context["theme_source_file"] = None
 
     # Make sure the context values are bool
     blns = [
