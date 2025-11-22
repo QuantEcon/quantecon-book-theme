@@ -179,10 +179,9 @@ a:visited {
 
                         <p class="qe-page__header-heading"><a href="{{ master_url }}">{{ docstitle | e }}</a></p>
 
-                        <p class="qe-page__header-subheading">{{ pagetitle | e }}</p>
-
                     </div>
-                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+
+                    <!-- Authors section -->
                     {%- if theme_authors | length > 0 %}
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
                             {% for author in theme_authors %}
@@ -199,6 +198,34 @@ a:visited {
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
                     {%- endif %}
 
+                    <!-- Last modified / Changelog dropdown -->
+                    {%- if has_git_info %}
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: {{ last_modified_date }}
+                            <span class="changelog-icon">▼</span>
+                        </button>
+                    {%- endif %}
+
+                    <!-- Changelog dropdown content -->
+                    {%- if has_git_info and changelog_entries %}
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog {% if theme_repository_url and theme_source_file %}(<a href="{{ theme_repository_url }}/commits/main/{{ theme_source_file }}">full history</a>){% endif %}</h4>
+                        <ul class="changelog-list">
+                            {% for entry in changelog_entries %}
+                            <li class="changelog-entry">
+                                {% if theme_repository_url %}
+                                <a href="{{ theme_repository_url }}/commit/{{ entry.hash }}" class="changelog-hash">{{ entry.hash }}</a>
+                                {% else %}
+                                <span class="changelog-hash">{{ entry.hash }}</span>
+                                {% endif %}
+                                <span class="changelog-author">{{ entry.author }}</span>
+                                <span class="changelog-time">{{ entry.relative_time }}</span>
+                                <span class="changelog-message">{{ entry.message }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {%- endif %}
 
                 </div> <!-- .page__header -->
 

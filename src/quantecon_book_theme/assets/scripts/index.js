@@ -457,4 +457,42 @@ document.addEventListener("DOMContentLoaded", function () {
   tippy("[data-tippy-content]", {
     touch: false,
   });
+
+  /**
+   * Changelog dropdown toggle
+   */
+  (function () {
+    const toggleButton = document.getElementById("changelog-toggle");
+    const changelogContent = document.getElementById("changelog-content");
+
+    if (!toggleButton || !changelogContent) {
+      return;
+    }
+
+    toggleButton.addEventListener("click", function (e) {
+      e.preventDefault();
+      const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
+
+      if (isExpanded) {
+        // Collapse
+        toggleButton.setAttribute("aria-expanded", "false");
+        changelogContent.setAttribute("aria-hidden", "true");
+        changelogContent.classList.remove("expanded");
+      } else {
+        // Expand
+        toggleButton.setAttribute("aria-expanded", "true");
+        changelogContent.setAttribute("aria-hidden", "false");
+        changelogContent.classList.add("expanded");
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && toggleButton.getAttribute("aria-expanded") === "true") {
+        toggleButton.setAttribute("aria-expanded", "false");
+        changelogContent.setAttribute("aria-hidden", "true");
+        changelogContent.classList.remove("expanded");
+      }
+    });
+  })();
 });

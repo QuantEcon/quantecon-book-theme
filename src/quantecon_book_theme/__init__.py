@@ -4,6 +4,8 @@ from pathlib import Path
 import os
 import hashlib
 from functools import lru_cache
+import subprocess
+from datetime import datetime
 
 from docutils import nodes
 from sphinx.util import logging
@@ -58,6 +60,164 @@ def add_plugins_list(app):
             assetname = Path(asset).name
             copy_asset(app.confdir + "/" + asset, outdir)
             app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
+
+
+def get_git_last_modified(source_file, source_dir):
+    """Get the last modified date for a source file from git.
+
+    Args:
+        source_file: The source file path relative to source_dir
+        source_dir: The Sphinx source directory
+
+    Returns:
+        datetime object or None if git is not available
+    """
+    try:
+        # Get the full path to the source file
+        file_path = Path(source_dir) / source_file
+
+        # Check if git is available and we're in a git repo
+        result = subprocess.run(
+            ["git", "rev-parse", "--git-dir"],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode != 0:
+            return None
+
+        # Get the last commit date for this file
+        result = subprocess.run(
+            ["git", "log", "-1", "--format=%ct", "--follow", "--", str(file_path)],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+
+        if result.returncode == 0 and result.stdout.strip():
+            timestamp = int(result.stdout.strip())
+            return datetime.utcfromtimestamp(timestamp)
+
+    except (
+        subprocess.TimeoutExpired,
+        subprocess.SubprocessError,
+        ValueError,
+        FileNotFoundError,
+    ):
+        pass
+
+    return None
+
+
+def get_git_changelog(source_file, source_dir, max_entries=10):
+    """Get the changelog for a source file from git.
+
+    Args:
+        source_file: The source file path relative to source_dir
+        source_dir: The Sphinx source directory
+        max_entries: Maximum number of changelog entries to return
+
+    Returns:
+        List of dicts with keys: hash, author, date, message, relative_time
+        Empty list if git is not available
+    """
+    try:
+        # Get the full path to the source file
+        file_path = Path(source_dir) / source_file
+
+        # Check if git is available and we're in a git repo
+        result = subprocess.run(
+            ["git", "rev-parse", "--git-dir"],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode != 0:
+            return []
+
+        # Get the changelog with format: hash|author|timestamp|subject
+        result = subprocess.run(
+            [
+                "git",
+                "log",
+                f"-{max_entries}",
+                "--format=%h|%an|%ct|%s",
+                "--follow",
+                "--",
+                str(file_path),
+            ],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+
+        if result.returncode != 0 or not result.stdout.strip():
+            return []
+
+        changelog = []
+        for line in result.stdout.strip().split("\n"):
+            if not line:
+                continue
+            parts = line.split("|", 3)
+            if len(parts) == 4:
+                commit_hash, author, timestamp, message = parts
+                commit_time = datetime.utcfromtimestamp(int(timestamp))
+                relative_time = get_relative_time(commit_time)
+
+                changelog.append(
+                    {
+                        "hash": commit_hash,
+                        "author": author,
+                        "date": commit_time,
+                        "message": message,
+                        "relative_time": relative_time,
+                    }
+                )
+
+        return changelog
+
+    except (
+        subprocess.TimeoutExpired,
+        subprocess.SubprocessError,
+        ValueError,
+        FileNotFoundError,
+    ):
+        pass
+
+    return []
+
+
+def get_relative_time(past_date):
+    """Convert a datetime to relative time string (e.g., '3 months ago')."""
+    now = datetime.utcnow()
+    diff = now - past_date
+
+    seconds = diff.total_seconds()
+
+    if seconds < 60:
+        return "just now"
+    elif seconds < 3600:
+        minutes = int(seconds / 60)
+        return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
+    elif seconds < 86400:
+        hours = int(seconds / 3600)
+        return f"{hours} hour{'s' if hours != 1 else ''} ago"
+    elif seconds < 604800:
+        days = int(seconds / 86400)
+        return f"{days} day{'s' if days != 1 else ''} ago"
+    elif seconds < 2592000:
+        weeks = int(seconds / 604800)
+        return f"{weeks} week{'s' if weeks != 1 else ''} ago"
+    elif seconds < 31536000:
+        months = int(seconds / 2592000)
+        return f"{months} month{'s' if months != 1 else ''} ago"
+    else:
+        years = int(seconds / 31536000)
+        return f"{years} year{'s' if years != 1 else ''} ago"
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
@@ -259,6 +419,48 @@ def add_to_context(app, pagename, templatename, context, doctree):
     if "pdf_book_name" not in context:
         context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
     context["github_sourcefolder"] = get_github_src_folder(app)
+
+    # Add git information (last modified date and changelog)
+    if doctree and hasattr(app.env, "doc2path"):
+        source_file = app.env.doc2path(pagename, base=False)
+        source_dir = app.srcdir
+
+        # Get last modified date
+        last_modified = get_git_last_modified(source_file, source_dir)
+        if last_modified:
+            # Get date format from theme options, default to "%b %d, %Y"
+            date_format = config_theme.get("last_modified_date_format", "%b %d, %Y")
+            context["last_modified_date"] = last_modified.strftime(date_format)
+            context["last_modified_iso"] = last_modified.isoformat()
+        else:
+            context["last_modified_date"] = None
+
+        # Get changelog entries
+        max_changelog_entries = config_theme.get("changelog_max_entries", 10)
+        changelog = get_git_changelog(source_file, source_dir, max_changelog_entries)
+        context["changelog_entries"] = changelog
+        context["has_git_info"] = last_modified is not None and len(changelog) > 0
+
+        # Add repository URL and source file for GitHub links
+        repo_url = config_theme.get("repository_url", "")
+        if repo_url:
+            context["theme_repository_url"] = repo_url.rstrip("/")
+            # Construct full path including path_to_docs
+            path_to_docs = config_theme.get("path_to_docs", "")
+            if path_to_docs:
+                full_source_path = f"{path_to_docs}/{source_file}".replace("//", "/")
+            else:
+                full_source_path = source_file
+            context["theme_source_file"] = full_source_path
+        else:
+            context["theme_repository_url"] = None
+            context["theme_source_file"] = None
+    else:
+        context["last_modified_date"] = None
+        context["changelog_entries"] = []
+        context["has_git_info"] = False
+        context["theme_repository_url"] = None
+        context["theme_source_file"] = None
 
     # Make sure the context values are bool
     blns = [

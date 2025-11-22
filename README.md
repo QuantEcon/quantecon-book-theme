@@ -4,6 +4,7 @@ A Jupyter Book Theme for QuantEcon Book Style Projects
 ## Features
 
 - **Clean, professional design** optimized for technical and academic documentation
+- **Git-based metadata** - Automatic display of last modified dates and interactive changelog with commit history
 - **Jupyter Notebook support** with visual classes for cell inputs, outputs, and interactive functionality
 - **Configurable code syntax highlighting** - Choose between custom QuantEcon styles or Pygments built-in themes
 - **Launch buttons** for online interactivity via BinderHub
@@ -39,6 +40,10 @@ html_theme_options = {
     "use_repository_button": True,
     "use_issues_button": True,
     "use_edit_page_button": True,
+
+    # Git metadata (new in v0.12.0)
+    "last_modified_date_format": "%b %d, %Y",  # Date format for last modified
+    "changelog_max_entries": 10,  # Number of commits to show in changelog
 
     # Code highlighting (new in v0.10.0)
     "qetheme_code_style": True,  # False to use Pygments built-in styles

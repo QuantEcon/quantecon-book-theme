@@ -6,6 +6,8 @@
 This is a lightweight Sphinx theme designed to mimic the look-and-feel of an
 interactive book. It has the following primary features:
 
+* **[Git-based metadata](configure.html#git-based-metadata)**. Automatically display last
+  modified timestamps and interactive changelog with commit history for each page.
 * **[Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/)**
   for visual elements and functionality.
 * **[Flexible content layout](layout)** that is inspired by beautiful online books,

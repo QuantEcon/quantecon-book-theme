@@ -706,9 +706,8 @@ tt {
       display: none;
     }
 
-    border-bottom: 5px solid colors.$primary;
-    margin: 0 0 4rem 0;
-    padding: 0 0 1rem 0;
+    margin: 0 0 2rem 0;
+    padding: 0 0 0 0;
 
     &-copy {
       display: flex;
@@ -723,6 +722,7 @@ tt {
       margin: 0 1rem 0 0;
       font-weight: 700;
       flex-shrink: 0;
+      font-size: 1.44em;
 
       a {
         color: colors.$body;
@@ -744,11 +744,168 @@ tt {
     }
 
     &-authors {
-      margin: 0.25rem 0 0 0;
-      font-size: 0.9rem;
+      margin: 0.5rem 0 0 0;
+      font-size: 1.08rem;
 
       @media (max-width: breakpoints.$md) {
         font-size: 0.8rem;
+      }
+    }
+
+    &-changed {
+      margin: 0.5rem 0 0 0;
+      padding: 0.25rem 0.5rem 0.75rem 0;
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: colors.$body;
+      background: transparent;
+      border: none;
+      border-bottom: 5px solid colors.$primary;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: block;
+      width: 100%;
+      text-align: left;
+
+      &:hover {
+        background: rgba(colors.$body, 0.05);
+      }
+
+      .changelog-icon {
+        display: inline-block;
+        margin-left: 0.35rem;
+        font-size: 0.7em;
+        transition: transform 0.2s ease;
+      }
+
+      &[aria-expanded="true"] .changelog-icon {
+        transform: rotate(180deg);
+      }
+
+      @media (max-width: breakpoints.$md) {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+      }
+    }
+
+    &-changelog {
+      margin-top: 0;
+      padding: 0.75rem;
+      background: rgba(colors.$body, 0.02);
+      border-left: 1px solid rgba(colors.$body, 0.1);
+      border-right: 1px solid rgba(colors.$body, 0.1);
+      border-bottom: 1px solid rgba(colors.$body, 0.1);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+
+      &.expanded {
+        max-height: 600px;
+        opacity: 1;
+        overflow-y: auto;
+      }
+
+      h4 {
+        margin: 0 0 0.5rem 0;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: colors.$body;
+
+        a {
+          font-size: 0.85rem;
+          font-weight: 400;
+          color: colors.$primary;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .changelog-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .changelog-entry {
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.35rem 0;
+        font-size: 0.765rem;
+        line-height: 1.3;
+        border-bottom: 1px solid rgba(colors.$body, 0.08);
+
+        &:last-child {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        &:first-child {
+          padding-top: 0;
+        }
+
+        @media (max-width: breakpoints.$md) {
+          flex-wrap: wrap;
+          gap: 0.4rem;
+          font-size: 0.7rem;
+        }
+      }
+
+      .changelog-hash {
+        font-family: monospace;
+        color: rgba(colors.$body, 0.6);
+        flex-shrink: 0;
+        min-width: 4rem;
+        text-decoration: none;
+
+        &:hover {
+          color: colors.$primary;
+          text-decoration: underline;
+        }
+
+        @media (max-width: breakpoints.$md) {
+          min-width: auto;
+        }
+      }
+
+      .changelog-author {
+        color: colors.$body;
+        font-weight: 500;
+        flex-shrink: 0;
+        min-width: 7rem;
+
+        @media (max-width: breakpoints.$md) {
+          min-width: auto;
+        }
+      }
+
+      .changelog-time {
+        color: rgba(colors.$body, 0.6);
+        flex-shrink: 0;
+        min-width: 6rem;
+
+        @media (max-width: breakpoints.$md) {
+          min-width: auto;
+        }
+      }
+
+      .changelog-message {
+        color: colors.$body;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @media (max-width: breakpoints.$md) {
+          width: 100%;
+          flex-basis: 100%;
+        }
       }
     }
   }
