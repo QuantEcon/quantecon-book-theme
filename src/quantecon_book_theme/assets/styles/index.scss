@@ -706,7 +706,6 @@ tt {
       display: none;
     }
 
-    border-bottom: 5px solid colors.$primary;
     margin: 0 0 4rem 0;
     padding: 0 0 1rem 0;
 
@@ -723,7 +722,7 @@ tt {
       margin: 0 1rem 0 0;
       font-weight: 700;
       flex-shrink: 0;
-      font-size: 1.2em;
+      font-size: 1.44em;
 
       a {
         color: colors.$body;
@@ -746,7 +745,7 @@ tt {
 
     &-authors {
       margin: 0.5rem 0 0 0;
-      font-size: 0.9rem;
+      font-size: 1.08rem;
 
       @media (max-width: breakpoints.$md) {
         font-size: 0.8rem;
@@ -754,14 +753,17 @@ tt {
     }
 
     &-changed {
-      margin: 0.5rem 0 0 0;
-      padding: 0.25rem 0.75rem;
+      margin: 0.5rem 0 1rem 0;
+      padding: 0.25rem 0.75rem 1rem 0.75rem;
+      border-bottom: 5px solid colors.$primary;
       font-size: 0.85rem;
       font-family: inherit;
       color: colors.$body;
       background: transparent;
-      border: 1px solid rgba(colors.$body, 0.2);
-      border-radius: 4px;
+      border-left: 1px solid rgba(colors.$body, 0.2);
+      border-right: 1px solid rgba(colors.$body, 0.2);
+      border-top: 1px solid rgba(colors.$body, 0.2);
+      border-radius: 4px 4px 0 0;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
@@ -821,9 +823,9 @@ tt {
 
       .changelog-entry {
         display: flex;
-        gap: 0.75rem;
+        gap: 0.5rem;
         padding: 0.35rem 0;
-        font-size: 0.85rem;
+        font-size: 0.765rem;
         line-height: 1.3;
         border-bottom: 1px solid rgba(colors.$body, 0.08);
 
@@ -838,8 +840,8 @@ tt {
 
         @media (max-width: breakpoints.$md) {
           flex-wrap: wrap;
-          gap: 0.5rem;
-          font-size: 0.8rem;
+          gap: 0.4rem;
+          font-size: 0.7rem;
         }
       }
 
@@ -847,7 +849,7 @@ tt {
         font-family: monospace;
         color: rgba(colors.$body, 0.6);
         flex-shrink: 0;
-        min-width: 4.5rem;
+        min-width: 4rem;
 
         @media (max-width: breakpoints.$md) {
           min-width: auto;
@@ -858,7 +860,7 @@ tt {
         color: colors.$body;
         font-weight: 500;
         flex-shrink: 0;
-        min-width: 8rem;
+        min-width: 7rem;
 
         @media (max-width: breakpoints.$md) {
           min-width: auto;
@@ -868,7 +870,7 @@ tt {
       .changelog-time {
         color: rgba(colors.$body, 0.6);
         flex-shrink: 0;
-        min-width: 7rem;
+        min-width: 6rem;
 
         @media (max-width: breakpoints.$md) {
           min-width: auto;
