@@ -445,7 +445,13 @@ def add_to_context(app, pagename, templatename, context, doctree):
         repo_url = config_theme.get("repository_url", "")
         if repo_url:
             context["theme_repository_url"] = repo_url.rstrip("/")
-            context["theme_source_file"] = source_file
+            # Construct full path including path_to_docs
+            path_to_docs = config_theme.get("path_to_docs", "")
+            if path_to_docs:
+                full_source_path = f"{path_to_docs}/{source_file}".replace("//", "/")
+            else:
+                full_source_path = source_file
+            context["theme_source_file"] = full_source_path
         else:
             context["theme_repository_url"] = None
             context["theme_source_file"] = None
