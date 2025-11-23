@@ -519,9 +519,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const toggleButton = document.createElement("button");
       toggleButton.className = "stderr-toggle-button";
       toggleButton.setAttribute("aria-expanded", "false");
-      toggleButton.setAttribute("aria-label", "Show warnings");
+      toggleButton.setAttribute("aria-label", "Show code warnings");
       toggleButton.innerHTML =
-        '<span class="stderr-icon">⚠</span> <span class="stderr-label">Warnings</span> <span class="stderr-chevron">▶</span>';
+        '<span class="stderr-icon">⚠</span> <span class="stderr-label">Code warnings</span> <span class="stderr-chevron">▶</span>';
 
       // Create content container
       const contentContainer = document.createElement("div");
@@ -549,13 +549,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isExpanded) {
           // Collapse
           toggleButton.setAttribute("aria-expanded", "false");
-          toggleButton.setAttribute("aria-label", "Show warnings");
+          toggleButton.setAttribute("aria-label", "Show code warnings");
           contentContainer.setAttribute("aria-hidden", "true");
           contentContainer.classList.remove("expanded");
         } else {
           // Expand
           toggleButton.setAttribute("aria-expanded", "true");
-          toggleButton.setAttribute("aria-label", "Hide warnings");
+          toggleButton.setAttribute("aria-label", "Hide code warnings");
           contentContainer.setAttribute("aria-hidden", "false");
           contentContainer.classList.add("expanded");
         }
