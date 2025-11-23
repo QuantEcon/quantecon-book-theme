@@ -130,8 +130,8 @@ UserWarning: This is a warning
             <li><strong>Test Case 3:</strong> Should show "⚠ Warnings" button (only stderr)</li>
         </ul>
         <p class="test-description">
-            <strong>Key insight:</strong> When <code>merge_streams=True</code>, myst-nb combines stdout and stderr into a single <code>.output.stream</code> element. 
-            Our feature only targets <code>.output.stderr</code> elements, so merged streams will display normally. 
+            <strong>Key insight:</strong> When <code>merge_streams=True</code>, myst-nb combines stdout and stderr into a single <code>.output.stream</code> element.
+            Our feature only targets <code>.output.stderr</code> elements, so merged streams will display normally.
             This is the correct behavior because:
         </p>
         <ul>
@@ -143,15 +143,15 @@ UserWarning: This is a warning
 
     <!-- Load jQuery (required by theme's JavaScript) -->
     <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/jquery.js"></script>
-    
+
     <!-- Load theme JavaScript -->
     <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/quantecon-book-theme.js"></script>
-    
+
     <script>
         // Log when page is ready
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOMContentLoaded fired - testing merge_streams behavior');
-            
+
             // Check if warnings were processed
             const stderrWrappers = document.querySelectorAll('.stderr-collapsible-wrapper');
             console.log('Found ' + stderrWrappers.length + ' stderr warning(s) processed');

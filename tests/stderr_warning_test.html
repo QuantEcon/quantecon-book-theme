@@ -39,7 +39,7 @@
 <body>
     <h1>Stderr Warning Feature Test</h1>
     <p class="test-description">This page tests the new collapsible stderr warning feature. Cells with stderr output should show a "⚠ Warnings" button that can be clicked to expand/collapse the warning messages.</p>
-    
+
     <div class="test-section">
         <h2>Test Case 1: Cell with stderr output (should show collapsible warnings)</h2>
         <div class="cell docutils container">
@@ -126,15 +126,15 @@ W1123 10:15:26.783637   23767 cuda_executor.cc:1802] GPU interconnect informatio
 
     <!-- Load jQuery (required by theme's JavaScript) -->
     <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/jquery.js"></script>
-    
+
     <!-- Load theme JavaScript -->
     <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/quantecon-book-theme.js"></script>
-    
+
     <script>
         // Log when page is ready
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOMContentLoaded fired - stderr warning feature should now be active');
-            
+
             // Check if warnings were processed
             const stderrWrappers = document.querySelectorAll('.stderr-collapsible-wrapper');
             console.log('Found ' + stderrWrappers.length + ' stderr warning(s) processed');
