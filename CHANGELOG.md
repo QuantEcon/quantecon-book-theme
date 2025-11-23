@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Collapsible stderr warnings feature
+  - Automatically detects and wraps stderr output in notebook cells with a collapsible interface
+  - Displays a compact "⚠ Warnings" button for cleaner presentation
+  - Improves readability when code produces verbose warnings from upstream packages
+  - Includes dark theme support and accessibility features
+
 ## [0.12.0] - 2025-11-23
 
 ### Added

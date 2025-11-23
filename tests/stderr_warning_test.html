@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stderr Warning Feature Test</title>
+    <link rel="stylesheet" href="../src/quantecon_book_theme/theme/quantecon_book_theme/static/styles/quantecon-book-theme.css">
+    <style>
+        body {
+            font-family: "Source Sans Pro", sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fafafa;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .test-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+        .test-section h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: #333;
+        }
+        .test-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Stderr Warning Feature Test</h1>
+    <p class="test-description">This page tests the new collapsible stderr warning feature. Cells with stderr output should show a "⚠ Warnings" button that can be clicked to expand/collapse the warning messages.</p>
+    
+    <div class="test-section">
+        <h2>Test Case 1: Cell with stderr output (should show collapsible warnings)</h2>
+        <div class="cell docutils container">
+            <div class="cell_input docutils container">
+                <div class="highlight-ipython3 notranslate">
+                    <div class="highlight">
+                        <pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_js_with_sep_model</span><span class="p">()</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P_cumsum</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">model</span>
+<span class="n">v_u_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">v_e_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">v_u</span><span class="p">,</span> <span class="n">v_e</span><span class="p">,</span> <span class="n">w_bar_first</span> <span class="o">=</span> <span class="n">solve_model_first_pass</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v_u_init</span><span class="p">,</span> <span class="n">v_e_init</span><span class="p">)</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="cell_output docutils container">
+                <div class="output stderr highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>W1123 10:15:26.780179   23830 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+W1123 10:15:26.783637   23767 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn't support extracting fabric info or NVLink is not used by the device.
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 2: Cell without stderr output (should display normally)</h2>
+        <p class="test-description">This cell has no stderr, so it should render normally without a warning button.</p>
+        <div class="cell docutils container">
+            <div class="cell_input docutils container">
+                <div class="highlight-ipython3 notranslate">
+                    <div class="highlight">
+                        <pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Hello, World!"</span><span class="p">)</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="cell_output docutils container">
+                <div class="output stream highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>Hello, World!
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 3: Multiple stderr outputs in one cell</h2>
+        <div class="cell docutils container">
+            <div class="cell_input docutils container">
+                <div class="highlight-ipython3 notranslate">
+                    <div class="highlight">
+                        <pre><span></span><span class="n">run_complex_calculation</span><span class="p">()</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="cell_output docutils container">
+                <div class="output stderr highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>WARNING: Deprecated function call detected
+</pre>
+                    </div>
+                </div>
+                <div class="output stderr highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>WARNING: Configuration file not found, using defaults
+</pre>
+                    </div>
+                </div>
+                <div class="output stream highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>Calculation completed successfully
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load jQuery (required by theme's JavaScript) -->
+    <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/jquery.js"></script>
+    
+    <!-- Load theme JavaScript -->
+    <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/quantecon-book-theme.js"></script>
+    
+    <script>
+        // Log when page is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded fired - stderr warning feature should now be active');
+            
+            // Check if warnings were processed
+            const stderrWrappers = document.querySelectorAll('.stderr-collapsible-wrapper');
+            console.log('Found ' + stderrWrappers.length + ' stderr warning(s) processed');
+        });
+    </script>
+</body>
+</html>
