@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stderr with Merged Streams Test</title>
+    <link rel="stylesheet" href="../src/quantecon_book_theme/theme/quantecon_book_theme/static/styles/quantecon-book-theme.css">
+    <style>
+        body {
+            font-family: "Source Sans Pro", sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fafafa;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .test-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+        .test-section h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+            color: #333;
+        }
+        .test-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Stderr with merge_streams Test</h1>
+    <p class="test-description">This page tests how the stderr warning feature handles the <code>merge_streams</code> option in myst-nb.</p>
+
+    <div class="test-section">
+        <h2>Test Case 1: merge_streams=False (default) - Separate stderr class</h2>
+        <p class="test-description">When merge_streams is False, stderr gets its own <code>.output.stderr</code> element. Our feature SHOULD collapse this.</p>
+        <div class="cell docutils container">
+            <div class="cell_input docutils container">
+                <div class="highlight-ipython3 notranslate">
+                    <div class="highlight">
+                        <pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Normal output"</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"This is a warning"</span><span class="p">)</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="cell_output docutils container">
+                <div class="output stream highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>Normal output
+</pre>
+                    </div>
+                </div>
+                <div class="output stderr highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>UserWarning: This is a warning
+  warnings.warn("This is a warning")
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 2: merge_streams=True - Combined in .output.stream</h2>
+        <p class="test-description">When merge_streams is True, myst-nb combines stdout and stderr into a single <code>.output.stream</code> element. Our feature should NOT collapse this since there's no <code>.output.stderr</code> class.</p>
+        <div class="cell docutils container">
+            <div class="cell_input docutils container">
+                <div class="highlight-ipython3 notranslate">
+                    <div class="highlight">
+                        <pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Normal output"</span><span class="p">)</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"This is a warning"</span><span class="p">)</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="cell_output docutils container">
+                <!-- When merge_streams=True, both stdout and stderr are in .output.stream -->
+                <div class="output stream highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>Normal output
+UserWarning: This is a warning
+  warnings.warn("This is a warning")
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 3: Only stderr with merge_streams=True</h2>
+        <p class="test-description">Even when merge_streams is True, if a cell ONLY produces stderr (no stdout), it should still use <code>.output.stderr</code> class and our feature SHOULD collapse it.</p>
+        <div class="cell docutils container">
+            <div class="cell_input docutils container">
+                <div class="highlight-ipython3 notranslate">
+                    <div class="highlight">
+                        <pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"Only a warning, no stdout"</span><span class="p">)</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="cell_output docutils container">
+                <div class="output stderr highlight-myst-ansi notranslate">
+                    <div class="highlight">
+                        <pre><span></span>UserWarning: Only a warning, no stdout
+  warnings.warn("Only a warning, no stdout")
+</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Expected Behavior Summary</h2>
+        <ul>
+            <li><strong>Test Case 1:</strong> Should show "⚠ Warnings" button (stderr is separate)</li>
+            <li><strong>Test Case 2:</strong> Should display normally without button (merged streams)</li>
+            <li><strong>Test Case 3:</strong> Should show "⚠ Warnings" button (only stderr)</li>
+        </ul>
+        <p class="test-description">
+            <strong>Key insight:</strong> When <code>merge_streams=True</code>, myst-nb combines stdout and stderr into a single <code>.output.stream</code> element.
+            Our feature only targets <code>.output.stderr</code> elements, so merged streams will display normally.
+            This is the correct behavior because:
+        </p>
+        <ul>
+            <li>Merged streams indicate the user WANTS stdout and stderr together</li>
+            <li>We shouldn't collapse output that contains both normal output and warnings</li>
+            <li>Only pure stderr warnings should be collapsible</li>
+        </ul>
+    </div>
+
+    <!-- Load jQuery (required by theme's JavaScript) -->
+    <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/jquery.js"></script>
+
+    <!-- Load theme JavaScript -->
+    <script src="../src/quantecon_book_theme/theme/quantecon_book_theme/static/scripts/quantecon-book-theme.js"></script>
+
+    <script>
+        // Log when page is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded fired - testing merge_streams behavior');
+
+            // Check if warnings were processed
+            const stderrWrappers = document.querySelectorAll('.stderr-collapsible-wrapper');
+            console.log('Found ' + stderrWrappers.length + ' stderr warning(s) processed');
+            console.log('Expected: 2 (Test Case 1 and Test Case 3)');
+        });
+    </script>
+</body>
+</html>

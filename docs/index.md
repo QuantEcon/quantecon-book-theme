@@ -8,6 +8,8 @@ interactive book. It has the following primary features:
 
 * **[Git-based metadata](configure.html#git-based-metadata)**. Automatically display last
   modified timestamps and interactive changelog with commit history for each page.
+* **[Collapsible stderr warnings](features/stderr_warnings.html)**. Automatically wrap verbose
+  warnings in notebook cells with an expandable interface for cleaner presentation.
 * **[Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/)**
   for visual elements and functionality.
 * **[Flexible content layout](layout)** that is inspired by beautiful online books,
@@ -49,6 +51,7 @@ theme. See the pages to the left for information about what you can configure wi
 configure
 Controlling page elements <layout>
 notebooks
+features/stderr_warnings
 launch
 contributing/index
 GitHub repository <https://github.com/quantecon/quantecon-book-theme>
