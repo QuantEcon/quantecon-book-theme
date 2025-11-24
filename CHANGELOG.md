@@ -10,9 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Collapsible stderr warnings feature
   - Automatically detects and wraps stderr output in notebook cells with a collapsible interface
-  - Displays a compact "⚠ Warnings" button for cleaner presentation
+  - Displays a compact "⚠ Code warnings" button for cleaner presentation
   - Improves readability when code produces verbose warnings from upstream packages
-  - Includes dark theme support and accessibility features
+  - Includes dark theme support and accessibility features (ARIA labels)
+  - Works seamlessly with myst-nb's `merge_streams` configuration option
 
 ## [0.12.0] - 2025-11-23
 

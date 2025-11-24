@@ -10,7 +10,7 @@ When a notebook cell produces stderr output (typically warnings), the theme auto
 
 1. Detects the stderr output in the cell
 2. Wraps it in a collapsible interface
-3. Displays a compact "⚠ Warnings" button
+3. Displays a compact "⚠ Code warnings" button
 4. Allows readers to expand/collapse the warnings as needed
 
 ## Example
@@ -31,7 +31,7 @@ W1123 10:15:26.783637   23767 cuda_executor.cc:1802] GPU interconnect informatio
 model = create_js_with_sep_model()
 ...
 
-[⚠ Warnings ▶]  (click to expand)
+[⚠ Code warnings ▶]  (click to expand)
 ```
 
 ## Benefits

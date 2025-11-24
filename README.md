@@ -5,6 +5,7 @@ A Jupyter Book Theme for QuantEcon Book Style Projects
 
 - **Clean, professional design** optimized for technical and academic documentation
 - **Git-based metadata** - Automatic display of last modified dates and interactive changelog with commit history
+- **Collapsible stderr warnings** - Automatically wraps verbose warnings in notebook cells with an expandable interface
 - **Jupyter Notebook support** with visual classes for cell inputs, outputs, and interactive functionality
 - **Configurable code syntax highlighting** - Choose between custom QuantEcon styles or Pygments built-in themes
 - **Launch buttons** for online interactivity via BinderHub
