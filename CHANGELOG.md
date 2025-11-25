@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.2] - 2025-11-25
+
+### Fixed
+- Updated Jupyter Book links to avoid redirects (#337)
+  - Footer "Powered by Jupyter Book" link now points directly to jupyterbook.org/v1/
+  - Eliminates redirect warnings in lecture linkcheckers
+
 ## [0.13.1] - 2025-11-25
 
 ### Fixed
