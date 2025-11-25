@@ -67,6 +67,21 @@ html_theme_options = {
 }
 ```
 
+### Separate Notebook Repository
+
+If your notebooks live in a separate repository from your documentation (e.g., a flat
+notebook repository), you can configure this using:
+
+```python
+html_theme_options = {
+    ...
+    "nb_repository_url": "https://github.com/{your-notebook-repo-url}",
+    "nb_branch": "{notebook-repo-branch}",
+    "nb_path_to_notebooks": "",  # empty for flat repos, or "notebooks/" if in a subfolder
+    ...
+}
+```
+
 ## Live code cells with Thebe
 
 [Thebe](http://thebe.readthedocs.org/) converts your static code blocks into

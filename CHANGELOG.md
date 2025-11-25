@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.1] - 2025-11-25
+
+### Fixed
+- Colab launch button now correctly generates URLs for flat notebook repositories (#336)
+  - Added `nb_path_to_notebooks` configuration option to specify notebook path independently from `path_to_docs`
+  - Defaults to empty string for flat repositories, fixing incorrect URL generation
+
 ## [0.13.0] - 2024-11-24
 
 ### Added

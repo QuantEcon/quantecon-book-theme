@@ -515,3 +515,59 @@ def test_git_functions_with_real_file():
         assert isinstance(entry["date"], datetime)
         assert isinstance(entry["hash"], str)
         assert isinstance(entry["author"], str)
+
+
+def test_add_hub_urls_nb_path_to_notebooks():
+    """Unit test for add_hub_urls to verify nb_path_to_notebooks config."""
+    from quantecon_book_theme.launch import add_hub_urls
+
+    # Mock app object
+    app = Mock()
+    app.env.doc2path.return_value = "/path/to/notebook.ipynb"
+    app.env.metadata = {"test_page": {"kernelspec": {"name": "python3"}}}
+
+    # Test with flat notebook repository (default empty nb_path_to_notebooks)
+    context = {}
+    app.config = {
+        "html_theme_options": {
+            "nb_repository_url": "https://github.com/TestOrg/test-notebooks",
+            "nb_branch": "main",
+            "path_to_docs": "lectures",  # This should NOT affect notebook URLs
+            # nb_path_to_notebooks defaults to empty
+            "launch_buttons": {
+                "colab_url": "https://colab.research.google.com",
+            },
+        }
+    }
+
+    add_hub_urls(app, "test_page", "template", context, Mock())
+
+    # Verify colab URL does NOT include path_to_docs
+    assert "colab_url" in context
+    assert "lectures/" not in context["colab_url"]
+    assert "test_page.ipynb" in context["colab_url"]
+    expected_url = "https://colab.research.google.com/github/TestOrg/test-notebooks/blob/main/test_page.ipynb"
+    assert context["colab_url"] == expected_url
+
+    # Test with nb_path_to_notebooks set to a subfolder
+    context = {}
+    app.config = {
+        "html_theme_options": {
+            "nb_repository_url": "https://github.com/TestOrg/test-notebooks",
+            "nb_branch": "main",
+            "path_to_docs": "docs",
+            "nb_path_to_notebooks": "notebooks",  # Notebooks in subfolder
+            "launch_buttons": {
+                "colab_url": "https://colab.research.google.com",
+            },
+        }
+    }
+
+    add_hub_urls(app, "test_page", "template", context, Mock())
+
+    # Verify colab URL includes nb_path_to_notebooks
+    assert "colab_url" in context
+    assert "notebooks/" in context["colab_url"]
+    assert "docs/" not in context["colab_url"]
+    expected_url = "https://colab.research.google.com/github/TestOrg/test-notebooks/blob/main/notebooks/test_page.ipynb"
+    assert context["colab_url"] == expected_url
