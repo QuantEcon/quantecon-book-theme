@@ -3,7 +3,7 @@
 ## Overview
 This document provides a step-by-step implementation plan for the technical improvements identified in TECHNICAL_REVIEW.md. Each task includes specific commands and expected outcomes.
 
-**Branch:** `technical-review-nov2025`  
+**Branch:** `technical-review-nov2025`
 **Date:** November 25, 2025
 
 ---
@@ -11,7 +11,7 @@ This document provides a step-by-step implementation plan for the technical impr
 ## Phase 1: Critical Updates (Week 1) 🔴
 
 ### Task 1.1: Update Node.js Dependencies
-**Time estimate:** 2-3 hours  
+**Time estimate:** 2-3 hours
 **Risk:** Medium (requires testing)
 
 ```bash
@@ -49,7 +49,7 @@ git commit -m "Update npm dependencies to latest versions"
 ---
 
 ### Task 1.2: Bundle External CDN Dependencies
-**Time estimate:** 3-4 hours  
+**Time estimate:** 3-4 hours
 **Risk:** Medium
 
 ```bash
@@ -94,7 +94,7 @@ window.feather = feather;
 ---
 
 ### Task 1.3: Update Python Dependencies
-**Time estimate:** 1 hour  
+**Time estimate:** 1 hour
 **Risk:** Low
 
 Update `pyproject.toml`:
@@ -122,7 +122,7 @@ dependencies = [
 ---
 
 ### Task 1.4: Security Audit & Fixes
-**Time estimate:** 1 hour  
+**Time estimate:** 1 hour
 **Risk:** Low
 
 ```bash
@@ -152,7 +152,7 @@ git commit -m "Fix security vulnerabilities"
 ---
 
 ### Task 1.5: Add Linting Configuration
-**Time estimate:** 2-3 hours  
+**Time estimate:** 2-3 hours
 **Risk:** Low
 
 ```bash
@@ -229,17 +229,17 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
       - id: check-json
-  
+
   - repo: https://github.com/psf/black
     rev: 23.12.1
     hooks:
       - id: black
-  
+
   - repo: https://github.com/PyCQA/flake8
     rev: 7.0.0
     hooks:
       - id: flake8
-  
+
   - repo: local
     hooks:
       - id: eslint
@@ -248,7 +248,7 @@ repos:
         language: node
         types: [javascript]
         files: \.(js)$
-      
+
       - id: prettier
         name: prettier
         entry: npx prettier --check
@@ -266,7 +266,7 @@ repos:
 ---
 
 ### Task 1.6: Quick Code Cleanup
-**Time estimate:** 2-3 hours  
+**Time estimate:** 2-3 hours
 **Risk:** Low
 
 **Remove console polyfill** from `src/quantecon_book_theme/assets/scripts/index.js`:
@@ -280,7 +280,7 @@ repos:
 {
   loader: "sass-loader",
   options: {
-    sassOptions: { 
+    sassOptions: {
       outputStyle: "compressed"  // Changed from "expanded"
     },
   },
@@ -303,7 +303,7 @@ repos:
 ## Phase 2: Code Organization (Week 2-3) 🟡
 
 ### Task 2.1: Refactor SCSS Structure
-**Time estimate:** 8-10 hours  
+**Time estimate:** 8-10 hours
 **Risk:** Medium-High (visual testing required)
 
 **Step 1: Create new directory structure**
@@ -413,7 +413,7 @@ npm run build
 ---
 
 ### Task 2.2: Modularize JavaScript
-**Time estimate:** 6-8 hours  
+**Time estimate:** 6-8 hours
 **Risk:** Medium
 
 **Step 1: Create module structure**
@@ -459,7 +459,7 @@ export const storage = {
       return defaultValue;
     }
   },
-  
+
   set(key, value) {
     try {
       localStorage.setItem(key, value);
@@ -469,7 +469,7 @@ export const storage = {
       return false;
     }
   },
-  
+
   getInt(key, defaultValue = 0) {
     return parseInt(this.get(key, defaultValue), 10);
   },
@@ -517,7 +517,7 @@ window.feather = feather;
 onReady(() => {
   // Replace feather icon placeholders
   feather.replace();
-  
+
   // Initialize features
   initThemeSwitcher();
   initSidebar();
@@ -539,7 +539,7 @@ onReady(() => {
 ---
 
 ### Task 2.3: Template Refactoring
-**Time estimate:** 4-5 hours  
+**Time estimate:** 4-5 hours
 **Risk:** Medium
 
 **Step 1: Create includes directory**
@@ -568,17 +568,17 @@ Create these include files:
 {# Main content block #}
 {%- block content %}
   {% include "includes/toolbar.html" %}
-  
+
   <div class="qe-wrapper">
     <div class="qe-main">
       {% include "includes/sidebar.html" %}
-      
+
       <div class="qe-page">
         {# Page content #}
       </div>
     </div>
   </div>
-  
+
   {% include "includes/modals/settings-modal.html" %}
   {% include "includes/modals/download-modal.html" %}
 {%- endblock %}
@@ -595,7 +595,7 @@ Create these include files:
 ## Phase 3: Performance Optimization (Week 4) ⚡
 
 ### Task 3.1: Webpack Optimization
-**Time estimate:** 3-4 hours  
+**Time estimate:** 3-4 hours
 **Risk:** Low
 
 Update `webpack.config.js`:
@@ -606,19 +606,19 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
   mode: "production",
   devtool: "source-map",
-  
+
   entry: {
     "quantecon-book-theme": [
       "./src/quantecon_book_theme/assets/scripts/index.js",
     ],
   },
-  
+
   output: {
     filename: "scripts/[name].js",
     path: staticPath,
     clean: true, // Clean output directory
   },
-  
+
   optimization: {
     minimizer: [
       new TerserPlugin({
@@ -641,14 +641,14 @@ module.exports = {
       },
     },
   },
-  
+
   cache: {
     type: 'filesystem',
     buildDependencies: {
       config: [__filename],
     },
   },
-  
+
   // ... rest of config
 };
 ```
@@ -666,7 +666,7 @@ npm install terser-webpack-plugin --save-dev
 ---
 
 ### Task 3.2: Font Loading Optimization
-**Time estimate:** 2 hours  
+**Time estimate:** 2 hours
 **Risk:** Low
 
 **Replace** `@import` in SCSS with `<link>` in template head:
@@ -677,10 +677,10 @@ In `layout.html`:
   <!-- Preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
+
   <!-- Load fonts with display=swap for better performance -->
   <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,700;1,400&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-  
+
   {{ super() }}
 {% endblock %}
 ```
@@ -701,7 +701,7 @@ Remove from `index.scss`:
 ## Phase 4: Testing & Documentation (Week 5) 📝
 
 ### Task 4.1: Add JavaScript Tests
-**Time estimate:** 8-10 hours  
+**Time estimate:** 8-10 hours
 **Risk:** Low
 
 ```bash
@@ -728,7 +728,7 @@ npm install --save-dev vitest @vitest/ui jsdom
 ---
 
 ### Task 4.2: Add Documentation Files
-**Time estimate:** 4-6 hours  
+**Time estimate:** 4-6 hours
 **Risk:** None
 
 Create these files:

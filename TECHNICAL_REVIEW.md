@@ -1,6 +1,6 @@
 # QuantEcon Book Theme - Technical Review
-**Date:** November 25, 2025  
-**Branch:** `technical-review-nov2025`  
+**Date:** November 25, 2025
+**Branch:** `technical-review-nov2025`
 **Goal:** Modernize build system, improve maintainability, optimize performance while preserving theme appearance
 
 ---
@@ -605,7 +605,7 @@ Regular Expression Denial of Service (ReDoS)
 → Fix available via `npm audit fix`
 
 nanoid  <3.3.8
-Severity: MODERATE  
+Severity: MODERATE
 Predictable results in nanoid generation
 → Fix available via `npm audit fix`
 ```

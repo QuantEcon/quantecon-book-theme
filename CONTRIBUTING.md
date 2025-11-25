@@ -172,7 +172,7 @@ function exampleFunction(param1, param2) {
   &__element {
     property: value;
   }
-  
+
   &--modifier {
     property: value;
   }
