@@ -1,0 +1,165 @@
+/*
+-----------------------------------
+TOOLBAR STYLES
+Top navigation bar
+-----------------------------------
+*/
+
+@use "colors";
+@use "breakpoints";
+
+.qe-toolbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  padding: 0 1rem;
+  z-index: 2;
+  background-color: #efefef;
+  border-bottom: 1px solid #ccc;
+
+  &__inner {
+    margin: 0 auto 0 auto;
+    height: 50px;
+    line-height: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+
+      > li {
+        margin: 0 10px;
+        padding: 0;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        opacity: 0.8;
+
+        &:hover,
+        &.btn-active {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+
+        a {
+          color: colors.$body;
+        }
+
+        path {
+          fill: inherit;
+          stroke: inherit;
+        }
+
+        &.btn__plus {
+          opacity: 0.5;
+
+          .font-plus & {
+            opacity: 1;
+            transform: scale(1.1);
+          }
+        }
+
+        &.btn__minus {
+          opacity: 0.5;
+
+          .font-minus & {
+            opacity: 1;
+            transform: scale(1.1);
+          }
+        }
+
+        &.btn__contrast {
+          opacity: 0.5;
+          margin-right: 2rem;
+        }
+
+        &.btn__fullscreen {
+          opacity: 0.5;
+        }
+
+        &.btn__search {
+          display: flex;
+          align-items: center;
+
+          input {
+            height: auto;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            margin: 0 -28px 0 0;
+            line-height: 1;
+            font-size: 0.9rem;
+            padding: 0.3rem 0.5rem;
+            outline: 0;
+            width: 0;
+            visibility: hidden;
+            transition: width 0.3s;
+
+            &.search-open {
+              width: 350px;
+              visibility: visible;
+            }
+
+            &:focus {
+              border-color: #999;
+            }
+
+            &::-webkit-search-decoration,
+            &::-webkit-search-cancel-button,
+            &::-webkit-search-results-button,
+            &::-webkit-search-results-decoration {
+              -webkit-appearance: none;
+            }
+          }
+
+          svg {
+            position: relative;
+            background-color: transparent;
+            z-index: 999;
+            top: -1px;
+            left: -4px;
+          }
+
+          &:hover {
+            transform: none;
+
+            input {
+              border-color: colors.$body;
+            }
+          }
+        }
+
+        &.btn__qelogo {
+          a {
+            display: block;
+            overflow: hidden;
+            height: 30px;
+            width: 105px;
+            background: url(https://assets.quantecon.org/img/menubar/qemb-logo.png)
+              no-repeat left top;
+            background-size: 105px 30px;
+          }
+        }
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+
+        @media (max-width: breakpoints.$sm) {
+          &.btn__plus,
+          &.btn__minus,
+          &.btn__fullscreen,
+          &.btn__search {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
