@@ -1,7 +1,7 @@
 # Technical Review Summary
 
-**Branch:** `technical-review-2024`  
-**Date:** November 24, 2025  
+**Branch:** `technical-review-nov2025`  
+**Date:** November 25, 2025  
 **Status:** ✅ Review Complete, Documentation Created
 
 ---
@@ -55,23 +55,35 @@ Already added to the repository:
 
 ## Key Findings
 
-### 🔴 Critical Issues
+### 🔴 Critical Issues (Security/Stability)
 
-1. **Outdated Dependencies**
+1. **Security Vulnerabilities VERIFIED**
+   - `cross-spawn`: HIGH severity ReDoS vulnerability
+   - `nanoid`: MODERATE severity predictable generation
+   - Fix: Run `npm audit fix`
+
+2. **Node.js 16 is END OF LIFE**
+   - `pyproject.toml` specifies `node-version = "16.13.2"`
+   - Node 16 EOL was September 2023
+   - Must update to Node 18 or 20 LTS
+
+3. **Outdated Dependencies**
    - `sass-loader`: 6 major versions behind (10 → 16)
    - `css-loader`: 1 major version behind (6 → 7)
    - `css-minimizer-webpack-plugin`: 3 major versions behind (4 → 7)
-   - Multiple other packages need updates
+   - `flake8` in optional deps: locked to ancient version `<3.8.0` (current is 7.x)
 
-2. **External CDN Dependencies**
+4. **Unused Dependency**
+   - `click` is listed in dependencies but NOT used anywhere (verified)
+
+5. **External CDN Dependencies**
    - Popper.js, Tippy.js, and Feather Icons loaded from CDNs
-   - Single points of failure
-   - No Subresource Integrity (SRI) hashes
+   - No Subresource Integrity (SRI) hashes (security risk)
    - Should be bundled locally
 
-3. **Large Monolithic Files**
-   - `index.scss`: 2039 lines (should be split into ~20 smaller files)
-   - `index.js`: 566 lines in one function (should be modularized)
+6. **Large Monolithic Files**
+   - `index.scss`: 2038 lines (should be split into ~20 smaller files)
+   - `index.js`: 565 lines in one function (should be modularized)
 
 ### ⚠️ Medium Priority Issues
 
@@ -98,6 +110,7 @@ Already added to the repository:
 - Reasonable bundle sizes (CSS: 59KB, JS: 8.9KB)
 - Good use of semantic HTML
 - ARIA attributes on interactive elements
+- `package-lock.json` is properly tracked in git
 - Extends PyData theme cleanly
 
 ---
@@ -216,7 +229,7 @@ Follow `IMPLEMENTATION_PLAN.md` step by step:
 ```bash
 # Start with Phase 1
 cd /Users/mmcky/work/quantecon/quantecon-book-theme
-git checkout technical-review-2024
+git checkout technical-review-nov2025
 
 # Follow tasks in IMPLEMENTATION_PLAN.md
 # Each task has specific commands and testing checklists
@@ -335,7 +348,7 @@ Refer to:
 
 ## Files Created
 
-All files are now in the `technical-review-2024` branch:
+All files are now in the `technical-review-nov2025` branch:
 
 ```
 quantecon-book-theme/

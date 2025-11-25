@@ -1,6 +1,6 @@
 # Quick Reference - Technical Review
 
-**Branch:** `technical-review-2024`  
+**Branch:** `technical-review-nov2025`  
 **Purpose:** Modernize theme while preserving visual design  
 **Documents:** 4 comprehensive guides created
 
@@ -22,21 +22,31 @@
 1. **Dependencies 2-6 major versions behind** (security & performance risk)
 2. **External CDN dependencies** (reliability risk)
 3. **2039-line SCSS file** (maintainability nightmare)
-4. **566-line JavaScript in one function** (hard to test/maintain)
-5. **No JavaScript tests** (regression risk)
+## 🔴 Top Critical Issues (Verified)
+
+1. **Security vulnerabilities** (1 HIGH, 1 MODERATE) - run `npm audit fix`
+2. **Node.js 16 is EOL** - update `node-version` in pyproject.toml to 18+
+3. **Dependencies 2-6 major versions behind** (security & performance risk)
+4. **External CDN dependencies without SRI** (security risk)
+5. **2,038-line SCSS file** (maintainability nightmare)
+6. **565-line JavaScript in one function** (hard to test/maintain)
+7. **`click` dependency unused** (can remove)
+8. **`flake8` version locked to 3.7.x** (current is 7.x)
 
 ---
 
 ## ✅ Quick Start
 
-### Option 1: Just Review (5 minutes)
+### Option 1: IMMEDIATE Security Fix (5 minutes)
 
 ```bash
-# Read the summary
-cat REVIEW_SUMMARY.md
+cd /Users/mmcky/work/quantecon/quantecon-book-theme
 
-# Check key findings in technical review
-cat TECHNICAL_REVIEW.md | grep "Issues:"
+# Fix known security vulnerabilities
+npm audit fix
+
+# Verify
+npm audit
 ```
 
 ### Option 2: Start Phase 1 (This Week)
@@ -225,7 +235,7 @@ The review is successful when:
 ## 📁 Files in This Branch
 
 ```
-technical-review-2024 branch:
+technical-review-nov2025 branch:
 ├── REVIEW_SUMMARY.md       ← Executive overview (you are here)
 ├── QUICK_REFERENCE.md      ← This file
 ├── TECHNICAL_REVIEW.md     ← Detailed analysis (800+ lines)

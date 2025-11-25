@@ -1,6 +1,6 @@
 # QuantEcon Book Theme - Technical Review
-**Date:** November 24, 2025  
-**Branch:** `technical-review-2024`  
+**Date:** November 25, 2025  
+**Branch:** `technical-review-nov2025`  
 **Goal:** Modernize build system, improve maintainability, optimize performance while preserving theme appearance
 
 ---
@@ -27,7 +27,14 @@ This theme is built on solid foundations but has several opportunities for moder
 
 ### 1.1 Node.js Dependencies - NEEDS UPDATE
 
-**Current Status:**
+**CRITICAL: Node.js Version Mismatch**
+```toml
+# In pyproject.toml [tool.sphinx-theme-builder]
+node-version = "16.13.2"  # ⚠️ Node 16 is END OF LIFE (Sept 2023)
+```
+This conflicts with our `.nvmrc` which specifies 18.18.0. The sphinx-theme-builder uses this version for production builds.
+
+**Current npm Dependencies:**
 ```json
 {
   "css-loader": "^6.8.1",           // Latest: 7.1.2 (major update)
@@ -44,15 +51,15 @@ This theme is built on solid foundations but has several opportunities for moder
 ```
 
 **Issues:**
+- 🔴 **Node.js 16 is EOL** - should update to Node 18 or 20 LTS
 - ⚠️ Multiple packages have major version updates available
-- ⚠️ Package version ranges (`^`) allow auto-updates but installed versions are pinned old
 - ⚠️ `sass-loader` is 6 major versions behind (security/performance concern)
 
 **Recommendations:**
-1. Update all packages to latest compatible versions
-2. Test thoroughly after updates (especially sass-loader 10→16 and css-loader 6→7)
-3. Consider using exact versions or lockfile for reproducible builds
-4. Add `package-lock.json` to version control (currently gitignored?)
+1. **CRITICAL:** Update `node-version` in pyproject.toml to `"18.18.0"` or `"20.x"`
+2. Update all packages to latest compatible versions
+3. Test thoroughly after updates (especially sass-loader 10→16 and css-loader 6→7)
+4. ✅ `package-lock.json` is already tracked in version control (verified)
 
 ### 1.2 Python Dependencies - REVIEW NEEDED
 
@@ -78,7 +85,7 @@ dependencies = [
 **Recommendations:**
 1. **CRITICAL:** Migrate from `libsass` to `dart-sass` (Node.js sass package handles this)
 2. Add version constraints to prevent breaking changes
-3. Review if `click` is actually used in the codebase
+3. **VERIFIED:** `click` is NOT used anywhere in the codebase - can be removed from dependencies
 4. Document minimum versions for all dependencies
 
 ### 1.3 External CDN Dependencies - RELIABILITY CONCERN
@@ -506,6 +513,17 @@ document.addEventListener("DOMContentLoaded", function () {
 - ⚠️ No CSS linting
 - ⚠️ No dependency vulnerability scanning
 
+**Additional Issue - Outdated `code_style` Dependencies:**
+```toml
+# In pyproject.toml [project.optional-dependencies]
+code_style = [
+    "flake8<3.8.0,>=3.7.0",  # ⚠️ VERY outdated - current is 7.x
+    "black",
+    "pre-commit"
+]
+```
+The flake8 constraint (`<3.8.0,>=3.7.0`) is from 2019-2020. Current version is 7.x.
+
 **Recommendations:**
 1. **Add ESLint** with recommended config:
    ```json
@@ -576,22 +594,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 ### 7.1 Dependency Security
 
+**VERIFIED VULNERABILITIES (as of November 2025):**
+
+```
+# npm audit report
+
+cross-spawn  7.0.0 - 7.0.4
+Severity: HIGH
+Regular Expression Denial of Service (ReDoS)
+→ Fix available via `npm audit fix`
+
+nanoid  <3.3.8
+Severity: MODERATE  
+Predictable results in nanoid generation
+→ Fix available via `npm audit fix`
+```
+
 **Issues:**
-- ⚠️ Outdated dependencies may have known vulnerabilities
-- ⚠️ No automated security scanning
+- 🔴 **2 known vulnerabilities** (1 high, 1 moderate) - VERIFIED
+- ⚠️ No automated security scanning in CI/CD
 - ⚠️ CDN scripts without SRI (Subresource Integrity)
 
 **Recommendations:**
-1. **Run npm audit** and fix all high/critical vulnerabilities
-2. **Add npm audit to CI/CD** pipeline
-3. **Add Snyk or Dependabot** for ongoing monitoring
+1. **IMMEDIATE:** Run `npm audit fix` to resolve known vulnerabilities
+2. **Add npm audit to CI/CD** pipeline (fail build on high/critical)
+3. **Add Dependabot** for ongoing monitoring (GitHub native feature)
 4. **Add SRI hashes** to all external scripts:
    ```html
    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"
            integrity="sha384-..."
            crossorigin="anonymous"></script>
    ```
-5. **Review Python dependencies** with `safety check`
+5. **Review Python dependencies** with `pip-audit` or `safety check`
 
 ### 7.2 Code Security
 
