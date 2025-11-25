@@ -3,9 +3,6 @@ Tests for the modular SCSS and JavaScript structure.
 Verifies that all module files exist and are properly organized.
 """
 
-import pytest
-from pathlib import Path
-
 
 class TestSCSSModuleStructure:
     """Test that all SCSS modules exist and are properly structured."""
@@ -76,9 +73,9 @@ class TestSCSSModuleStructure:
                 content = module_path.read_text()
                 # Should use @use for colors, not @import
                 if "colors." in content or "colors.$" in content:
-                    assert '@use "colors"' in content, (
-                        f"{module} should use @use for colors module"
-                    )
+                    assert (
+                        '@use "colors"' in content
+                    ), f"{module} should use @use for colors module"
 
 
 class TestJavaScriptModuleStructure:
@@ -118,9 +115,7 @@ class TestJavaScriptModuleStructure:
         ]
 
         for module in expected_imports:
-            assert (
-                module in index_content
-            ), f"index.js missing import for {module}"
+            assert module in index_content, f"index.js missing import for {module}"
 
     def test_js_modules_export_functions(self, scripts_dir):
         """Verify JavaScript modules export their functions."""
@@ -168,9 +163,9 @@ class TestLayoutTemplate:
         ]
 
         for url in expected_preconnects:
-            assert f'<link rel="preconnect" href="{url}"' in layout_content, (
-                f"Missing preconnect hint for {url}"
-            )
+            assert (
+                f'<link rel="preconnect" href="{url}"' in layout_content
+            ), f"Missing preconnect hint for {url}"
 
     def test_sri_hashes_present(self, theme_dir):
         """Verify SRI hashes are present on CDN scripts."""
