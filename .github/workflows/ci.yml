@@ -1,5 +1,7 @@
 name: Build Example Project [using jupyter-book]
-on: [push]
+on:
+  push:
+  pull_request:
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -46,7 +48,9 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
       - name: Run Visual Regression Tests
+        id: visual-tests
         run: npm run test:visual
+        continue-on-error: true
         env:
           SITE_PATH: lecture-python-programming.myst/_build/html
       - name: Upload Playwright Report
@@ -58,11 +62,21 @@ jobs:
           retention-days: 30
       - name: Upload Test Results (on failure)
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: steps.visual-tests.outcome == 'failure'
         with:
           name: visual-test-diff
           path: test-results/
           retention-days: 30
+      - name: Post Visual Test Results to PR
+        uses: daun/playwright-report-summary@v3
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          report-file: playwright-report/results.json
+          comment-title: '🎭 Visual Regression Test Results'
+      - name: Fail if Visual Tests Failed
+        if: steps.visual-tests.outcome == 'failure'
+        run: exit 1
 
       - name: Preview Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0

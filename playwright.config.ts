@@ -12,7 +12,13 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [["html", { open: "never" }], ["list"]],
+  reporter: process.env.CI
+    ? [
+        ["html", { open: "never" }],
+        ["json", { outputFile: "playwright-report/results.json" }],
+        ["list"],
+      ]
+    : [["html", { open: "never" }], ["list"]],
 
   // Shared settings for all projects
   use: {
