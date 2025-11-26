@@ -122,7 +122,17 @@ Baseline images are stored in different directories depending on the platform:
 
 This separation allows local testing on macOS without interfering with CI baselines, since screenshot rendering differs between operating systems.
 
+### Updating Baselines After Intentional Changes
+
 When the theme styling intentionally changes:
-1. Update CI baselines by running tests in CI with `--update-snapshots`
-2. Download the updated snapshots from CI artifacts
-3. Commit the new baselines to `tests/visual/__snapshots__/`
+
+1. **For CI baselines:**
+   - Push changes and let CI run
+   - Download `visual-test-diff` artifact with new screenshots
+   - Extract and copy to `tests/visual/__snapshots__/`
+   - Commit and push
+
+2. **For local baselines:**
+   ```bash
+   tox -e visual-update
+   ```
