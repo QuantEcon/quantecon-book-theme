@@ -143,3 +143,6 @@ node_modules
 # Playwright
 playwright-report/
 test-results/
+
+# Visual test lecture site (cloned by tox -e visual)
+lecture-python-programming.myst/
