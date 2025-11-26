@@ -2,9 +2,12 @@
     "name": "quantecon_book_theme",
     "repository": "https://github.com/QuantEcon/quantecon-book-theme",
     "scripts": {
-        "build": "webpack"
+        "build": "webpack",
+        "test:visual": "playwright test",
+        "test:visual:update": "playwright test --update-snapshots"
     },
     "devDependencies": {
+        "@playwright/test": "^1.49.0",
         "css-loader": "^6.8.1",
         "css-minimizer-webpack-plugin": "^4.2.2",
         "dedent": "^0.7.0",
