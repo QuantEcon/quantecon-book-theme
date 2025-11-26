@@ -50,9 +50,10 @@ export default defineConfig({
 
   // Use platform-specific snapshot directories via SNAPSHOT_DIR env var
   // CI (ubuntu) uses default, tox on macOS sets SNAPSHOT_DIR=macos
+  // Include project name to separate desktop/mobile snapshots
   snapshotPathTemplate: process.env.SNAPSHOT_DIR
-    ? `{testDir}/{testFileDir}/${process.env.SNAPSHOT_DIR}/{arg}{ext}`
-    : "{testDir}/{testFileDir}/__snapshots__/{arg}{ext}",
+    ? `{testDir}/{testFileDir}/${process.env.SNAPSHOT_DIR}/{projectName}/{arg}{ext}`
+    : "{testDir}/{testFileDir}/__snapshots__/{projectName}/{arg}{ext}",
 
   // Web server to serve the built lecture site
   // Path varies: CI uses _build/html, tox uses lectures/_build/html
