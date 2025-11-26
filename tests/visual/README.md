@@ -75,10 +75,20 @@ Visual tests run automatically on every push via GitHub Actions:
 4. Reports pass/fail status
 
 ### Reviewing Failures
-1. Download the `visual-test-results` artifact from the failed workflow
-2. Open `playwright-report/index.html` to see visual diffs
+1. Download the `playwright-report` artifact from the failed workflow
+2. Open `index.html` to see visual diffs
 3. If changes are intentional, update baselines with `npm run test:visual:update`
 
 ## Baseline Snapshots
 
-Baseline images are stored in `tests/visual/theme.spec.ts-snapshots/` and should be committed to the repository. When the theme styling intentionally changes, baselines should be updated and committed as part of the PR.
+Baseline images are stored in different directories depending on the platform:
+
+- **CI (ubuntu)**: `tests/visual/__snapshots__/` - committed to repository
+- **Local (macOS via tox)**: `tests/visual/macos/` - gitignored
+
+This separation allows local testing on macOS without interfering with CI baselines, since screenshot rendering differs between operating systems.
+
+When the theme styling intentionally changes:
+1. Update CI baselines by running tests in CI with `--update-snapshots`
+2. Download the updated snapshots from CI artifacts
+3. Commit the new baselines to `tests/visual/__snapshots__/`

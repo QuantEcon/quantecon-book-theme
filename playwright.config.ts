@@ -48,9 +48,16 @@ export default defineConfig({
     },
   },
 
+  // Use platform-specific snapshot directories via SNAPSHOT_DIR env var
+  // CI (ubuntu) uses default, tox on macOS sets SNAPSHOT_DIR=macos
+  snapshotPathTemplate: process.env.SNAPSHOT_DIR
+    ? `{testDir}/{testFileDir}/${process.env.SNAPSHOT_DIR}/{arg}{ext}`
+    : "{testDir}/{testFileDir}/__snapshots__/{arg}{ext}",
+
   // Web server to serve the built lecture site
+  // Path varies: CI uses _build/html, tox uses lectures/_build/html
   webServer: {
-    command: "python -m http.server 8000 --directory lecture-python-programming.myst/_build/html",
+    command: `python -m http.server 8000 --directory ${process.env.SITE_PATH || "lecture-python-programming.myst/lectures/_build/html"}`,
     url: "http://localhost:8000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

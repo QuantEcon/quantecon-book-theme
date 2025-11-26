@@ -47,15 +47,21 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Run Visual Regression Tests
         run: npm run test:visual
-        continue-on-error: true
-      - name: Upload Visual Test Results
+        env:
+          SITE_PATH: lecture-python-programming.myst/_build/html
+      - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: visual-test-results
-          path: |
-            playwright-report/
-            test-results/
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+      - name: Upload Test Results (on failure)
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-test-diff
+          path: test-results/
           retention-days: 30
 
       - name: Preview Deploy to Netlify
