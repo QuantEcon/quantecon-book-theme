@@ -68,16 +68,50 @@ If you prefer to run tests manually:
 
 ## CI Integration
 
-Visual tests run automatically on every push via GitHub Actions:
+Visual tests run automatically on every push and pull request via GitHub Actions:
 1. Builds lecture site with current theme
 2. Runs Playwright tests against the build
 3. Uploads test results as artifacts
-4. Reports pass/fail status
+4. Posts a summary comment on PRs
+5. Reports pass/fail status
+
+### Platform-Specific Snapshots
+
+Due to font rendering differences between macOS and Linux (ubuntu), snapshots are stored separately:
+
+- `tests/visual/__snapshots__/` - **Ubuntu/CI baselines** (committed to repo)
+- `tests/visual/macos/` - **macOS local baselines** (gitignored)
+
+### First-Time CI Setup
+
+To create the initial ubuntu baselines for CI:
+
+1. Push your branch to GitHub
+2. CI will fail (no baselines exist yet)
+3. Download the `visual-test-diff` artifact
+4. Extract and copy snapshots to `tests/visual/__snapshots__/`
+5. Commit and push the snapshots
+
+Or run this workflow:
+```bash
+# After CI runs and fails, download and extract artifact, then:
+mkdir -p tests/visual/__snapshots__
+cp -r /path/to/extracted/artifact/* tests/visual/__snapshots__/
+git add tests/visual/__snapshots__
+git commit -m "Add ubuntu visual regression baselines"
+git push
+```
 
 ### Reviewing Failures
+
+**On PRs:** Check the "🎭 Visual Regression Test Results" comment for a summary.
+
+**For detailed analysis:**
 1. Download the `playwright-report` artifact from the failed workflow
 2. Open `index.html` to see visual diffs
-3. If changes are intentional, update baselines with `npm run test:visual:update`
+3. If changes are intentional, update baselines:
+   - For CI: Download new snapshots from `visual-test-diff` artifact and commit
+   - For local: Run `tox -e visual-update`
 
 ## Baseline Snapshots
 
