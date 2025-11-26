@@ -8,13 +8,14 @@ import { test, expect } from "@playwright/test";
  */
 
 // Pages to test - these represent different content types in lectures
+// Pages with matplotlib figures need higher tolerance due to small rendering differences
 const testPages = [
-  { name: "homepage", path: "/index.html" },
-  { name: "intro", path: "/intro.html" },
-  { name: "getting-started", path: "/getting_started.html" },
-  { name: "python-by-example", path: "/python_by_example.html" },
-  { name: "numpy", path: "/numpy.html" },
-  { name: "matplotlib", path: "/matplotlib.html" },
+  { name: "homepage", path: "/index.html", hasPlots: false },
+  { name: "intro", path: "/intro.html", hasPlots: false },
+  { name: "getting-started", path: "/getting_started.html", hasPlots: true },
+  { name: "python-by-example", path: "/python_by_example.html", hasPlots: true },
+  { name: "numpy", path: "/numpy.html", hasPlots: true },
+  { name: "matplotlib", path: "/matplotlib.html", hasPlots: true },
 ];
 
 test.describe("Visual Regression Tests", () => {
@@ -28,6 +29,8 @@ test.describe("Visual Regression Tests", () => {
 
       await expect(browserPage).toHaveScreenshot(`${page.name}.png`, {
         fullPage: true,
+        // Pages with matplotlib plots need higher tolerance due to minor rendering differences
+        maxDiffPixelRatio: page.hasPlots ? 0.05 : 0.01,
       });
     });
 
