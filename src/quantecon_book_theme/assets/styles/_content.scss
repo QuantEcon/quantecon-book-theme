@@ -1,0 +1,321 @@
+/*
+-----------------------------------
+CONTENT STYLES
+Tables, figures, cells, code blocks
+-----------------------------------
+*/
+
+@use "colors";
+@use "breakpoints";
+
+/* Custom content styles */
+.qe-page__content {
+  table {
+    max-width: 100%;
+    border-collapse: collapse;
+    border: 0;
+    background-color: transparent;
+
+    tbody tr:nth-child(odd) {
+      background-color: #f7f7f7;
+    }
+
+    td,
+    th {
+      padding: 0.25rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+      border: 0;
+
+      > p {
+        margin: 0;
+      }
+    }
+
+    th {
+      font-weight: bold;
+    }
+
+    thead {
+      tr th {
+        text-align: left !important;
+      }
+
+      th,
+      td {
+        vertical-align: bottom;
+        border: 0;
+        border-top: 0;
+        border-bottom: 1px solid #e1e1e1;
+      }
+    }
+  }
+
+  a.copybtn {
+    top: 0.4em;
+    opacity: 0.2;
+  }
+
+  /* Content TOC */
+  #contents {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  #contents + ul {
+    list-style: none;
+    padding: 0 !important;
+    border: 1px solid #ddd !important;
+    border-width: 0 0 0 1px !important;
+    margin: 0 0 0 20px !important;
+  }
+
+  #contents + ul > li {
+    margin: 0;
+  }
+
+  #contents + ul > li > a {
+    display: none;
+  }
+
+  #contents + ul > li > ul {
+    list-style: disc;
+  }
+
+  #contents + ul > li > ul > li {
+    margin: 0;
+  }
+
+  .anchor-link {
+    visibility: hidden;
+    text-decoration: none;
+    color: #555;
+    margin-left: 6px;
+    padding: 0 4px 0 4px;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.8em;
+  }
+
+  .anchor-link:hover {
+    color: #555;
+    text-decoration: none;
+  }
+
+  *:hover > .anchor-link {
+    visibility: visible;
+  }
+
+  // Code blocks should have a margin, but code *cells* get margin from a parent
+  div.highlight {
+    background: none;
+    margin-bottom: 1em;
+  }
+
+  div.cell div.highlight {
+    margin-bottom: 0em;
+  }
+
+  .cell .input,
+  .cell .output {
+    position: relative;
+  }
+
+  .cell .output .prompt,
+  .cell .input .prompt {
+    visibility: hidden;
+    position: absolute;
+    top: 0rem;
+    left: -55px;
+    width: 45px;
+  }
+
+  .cell .input .prompt:before {
+    content: "In";
+    color: #303f9f;
+    top: 0.25rem;
+  }
+
+  .headerlink {
+    visibility: hidden;
+    text-decoration: none;
+    color: #555;
+    margin-left: 6px;
+    padding: 0 4px 0 4px;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.8rem;
+  }
+
+  .headerlink:hover {
+    color: #555;
+  }
+
+  *:hover > .headerlink {
+    visibility: visible;
+  }
+
+  .rendered_html img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .output_png img {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .math {
+    color: #333;
+  }
+
+  a .math {
+    color: #0072bc;
+  }
+
+  div.math {
+    margin: 2rem 0;
+  }
+
+  .MathJax {
+    color: #333;
+  }
+
+  a .MathJax {
+    color: #0072bc;
+  }
+
+  .figure {
+    display: block;
+    text-align: center;
+
+    &.align-left {
+      text-align: left;
+    }
+
+    &.align-right {
+      text-align: right;
+    }
+
+    p.caption {
+      span.caption-number {
+        font-style: normal;
+        font-weight: 700;
+      }
+    }
+  }
+
+  figcaption {
+    span.caption-number {
+      font-style: normal;
+      font-weight: 700;
+    }
+  }
+
+  div[class^="cell tag_collapse"] {
+    .collapse-toggle-bar {
+      display: block;
+      border: 1px solid #ddd;
+      border-width: 0px 1px 1px 1px;
+      padding: 0.5rem 25px;
+      outline: 0;
+      position: relative;
+      text-align: center;
+      cursor: pointer;
+      background-color: #f9f9f9;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        text-decoration: none;
+        background: #f0f0f0;
+      }
+
+      .collapse-indicator {
+        color: #0072bc;
+        font-size: 0.9rem;
+        font-weight: bold;
+        user-select: none;
+      }
+    }
+
+    .highlight {
+      overflow: hidden;
+      margin-bottom: 0;
+
+      &:after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+        background: url(/_static/img/code-block-fade.png) repeat-x bottom left;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &.expanded {
+      .highlight {
+        height: auto;
+
+        &:after {
+          content: none;
+        }
+      }
+    }
+  }
+
+  .cell_output {
+    table {
+      table-layout: auto;
+    }
+
+    img {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+// Cell-specific controls
+div.cell {
+  &.container,
+  .container {
+    width: 100% !important;
+  }
+
+  div.cell_output {
+    padding-right: 0;
+  }
+
+  &.tag_output_scroll,
+  &.tag_scroll-output {
+    div.cell_output {
+      max-height: 24em;
+      overflow-y: auto;
+    }
+  }
+
+  &.tag_scroll-input {
+    div.cell_input {
+      max-height: 24em;
+      overflow-y: auto;
+    }
+  }
+}
+
+.toctree-wrapper {
+  .caption-text {
+    font-weight: normal;
+    font-family: "PT Serif", serif;
+    font-size: 1.2rem;
+  }
+}
