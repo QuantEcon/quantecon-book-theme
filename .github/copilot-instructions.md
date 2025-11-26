@@ -91,6 +91,9 @@ src/quantecon_book_theme/
 - **Solution**: Document as "fails due to network limitations" in instructions
 - **Alternative**: Try `pip install --timeout=120` for longer timeout
 
+### GitHub CLI (gh) Issues
+- **Output Capture**: Always write gh output to `/tmp` file for reliable capture: `gh pr view 123 2>&1 | tee /tmp/gh_output.txt`
+
 ### Missing Python 3.13
 - **Symptom**: `tox` skips environments with "could not find python interpreter"
 - **Solution**: Tests will work with Python 3.12+ even if configured for 3.13

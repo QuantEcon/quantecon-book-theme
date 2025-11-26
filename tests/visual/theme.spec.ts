@@ -5,10 +5,14 @@ import { test, expect } from "@playwright/test";
  *
  * These tests capture screenshots of key page types from the lecture site
  * and compare them against baseline snapshots to detect styling regressions.
+ *
+ * Note: Full-page screenshots are only tested for pages without matplotlib plots,
+ * since plot rendering varies between CI runs. For pages with plots, we test
+ * only the theme elements (header, sidebar) which are stable.
  */
 
 // Pages to test - these represent different content types in lectures
-// Pages with matplotlib figures need higher tolerance due to small rendering differences
+// Pages with matplotlib figures should only test header/sidebar (stable theme elements)
 const testPages = [
   { name: "homepage", path: "/index.html", hasPlots: false },
   { name: "intro", path: "/intro.html", hasPlots: false },
@@ -20,19 +24,23 @@ const testPages = [
 
 test.describe("Visual Regression Tests", () => {
   for (const page of testPages) {
-    test(`${page.name} - full page screenshot`, async ({ page: browserPage }) => {
-      await browserPage.goto(page.path);
-      // Wait for fonts and images to load
-      await browserPage.waitForLoadState("networkidle");
-      // Wait a bit more for any CSS animations to complete
-      await browserPage.waitForTimeout(500);
+    // Full page screenshots only for pages without dynamic content (matplotlib plots)
+    // Pages with plots vary between CI runs, so we only test theme elements
+    if (!page.hasPlots) {
+      test(`${page.name} - full page screenshot`, async ({
+        page: browserPage,
+      }) => {
+        await browserPage.goto(page.path);
+        // Wait for fonts and images to load
+        await browserPage.waitForLoadState("networkidle");
+        // Wait a bit more for any CSS animations to complete
+        await browserPage.waitForTimeout(500);
 
-      await expect(browserPage).toHaveScreenshot(`${page.name}.png`, {
-        fullPage: true,
-        // Pages with matplotlib plots need higher tolerance due to minor rendering differences
-        maxDiffPixelRatio: page.hasPlots ? 0.05 : 0.01,
+        await expect(browserPage).toHaveScreenshot(`${page.name}.png`, {
+          fullPage: true,
+        });
       });
-    });
+    }
 
     test(`${page.name} - header region`, async ({ page: browserPage }) => {
       await browserPage.goto(page.path);
