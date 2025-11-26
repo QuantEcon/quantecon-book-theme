@@ -139,3 +139,7 @@ dmypy.json
 .nodeenv/
 node_modules/
 node_modules
+
+# Playwright
+playwright-report/
+test-results/

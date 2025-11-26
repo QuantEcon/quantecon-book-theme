@@ -34,6 +34,30 @@ jobs:
         run: |
           cd lecture-python-programming.myst
           jb build lectures --path-output ./
+
+      # Visual Regression Testing
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Install Playwright
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Run Visual Regression Tests
+        run: npm run test:visual
+        continue-on-error: true
+      - name: Upload Visual Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-test-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
+
       - name: Preview Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
         with:
