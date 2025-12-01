@@ -88,11 +88,21 @@ To create the initial ubuntu baselines for CI:
 
 1. Push your branch to GitHub
 2. CI will fail (no baselines exist yet)
+3. Comment `/update-new-snapshots` on the PR to trigger automatic snapshot generation
+4. The workflow will commit the new baselines to your PR branch
+
+**Note:** The `/update-new-snapshots` command only works after the workflow file exists on the `main` branch. For PRs that add this workflow, you'll need to use the manual method below.
+
+#### Manual Method (Alternative)
+
+If the `/update-new-snapshots` workflow isn't available yet:
+
+1. Push your branch to GitHub
+2. CI will fail (no baselines exist yet)
 3. Download the `visual-test-diff` artifact
 4. Extract and copy snapshots to `tests/visual/__snapshots__/`
 5. Commit and push the snapshots
 
-Or run this workflow:
 ```bash
 # After CI runs and fails, download and extract artifact, then:
 mkdir -p tests/visual/__snapshots__
@@ -126,13 +136,18 @@ This separation allows local testing on macOS without interfering with CI baseli
 
 When the theme styling intentionally changes:
 
-1. **For CI baselines:**
+1. **For new tests (CI baselines):**
+   - Comment `/update-new-snapshots` on the PR
+   - The workflow will generate and commit only the missing snapshots
+   - This is safe - it won't overwrite existing baselines
+
+2. **For existing tests that need updating:**
    - Push changes and let CI run
    - Download `visual-test-diff` artifact with new screenshots
    - Extract and copy to `tests/visual/__snapshots__/`
    - Commit and push
 
-2. **For local baselines:**
+3. **For local baselines:**
    ```bash
    tox -e visual-update
    ```
