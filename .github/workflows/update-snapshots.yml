@@ -1,0 +1,110 @@
+name: Update Visual Snapshots
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  update-snapshots:
+    # Only run on PR comments with the trigger phrase
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/update-snapshots')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Get PR branch
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('ref', pr.data.head.ref);
+            core.setOutput('sha', pr.data.head.sha);
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.pr.outputs.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch lecture-python-programming.myst
+        shell: bash -l {0}
+        run: |
+          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming.myst
+
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.13"
+          environment-file: lecture-python-programming.myst/environment.yml
+          activate-environment: lecture-python-programming
+
+      - name: Install quantecon-book-theme
+        shell: bash -l {0}
+        run: |
+          python -m pip install .
+
+      - name: Build HTML
+        shell: bash -l {0}
+        run: |
+          cd lecture-python-programming.myst
+          jb build lectures --path-output ./
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Playwright
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Update Snapshots
+        run: npm run test:visual:update
+        env:
+          SITE_PATH: lecture-python-programming.myst/_build/html
+
+      - name: Commit and Push Updated Snapshots
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add tests/visual/__snapshots__/
+          if git diff --staged --quiet; then
+            echo "No snapshot changes to commit"
+          else
+            git commit -m "UPDATE: Visual regression snapshots [skip ci]"
+            git push
+          fi
+
+      - name: Add reaction to comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket'
+            });
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '✅ Visual snapshots have been updated and committed to this PR.'
+            });
