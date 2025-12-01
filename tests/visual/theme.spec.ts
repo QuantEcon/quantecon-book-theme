@@ -91,7 +91,10 @@ test.describe("Theme Features", () => {
     }
   });
 
-  test("f-string interpolation styling", async ({ page }) => {
+  test("f-string interpolation styling", async ({ page, browserName }, testInfo) => {
+    // Skip on mobile - viewport too narrow to meaningfully test f-string styling
+    test.skip(testInfo.project.name === "mobile-chrome", "F-string test only relevant on desktop");
+
     // Test that f-string placeholders render without italics
     // Uses names.html which contains: print(f'the identity of local x is {id(x)}')
     await page.goto("/names.html");
