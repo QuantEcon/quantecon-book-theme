@@ -71,7 +71,7 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: Update Snapshots
-        run: npm run test:visual:update
+        run: npx playwright test --update-snapshots=missing
         env:
           SITE_PATH: lecture-python-programming.myst/_build/html
 
