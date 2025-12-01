@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2025-12-01
+
+### Added
+- Visual regression testing with Playwright (#339)
+  - Automated screenshot comparison for theme styling
+  - Tests for code blocks, dark mode, math equations, headers, sidebars
+  - Desktop and mobile viewport coverage
+  - CI integration with GitHub Actions
+- New `/update-new-snapshots` PR comment command (#340)
+  - Automatically generates baseline snapshots for new visual tests
+  - Only creates missing snapshots (won't overwrite existing baselines)
+  - Documents workflow in tests/visual/README.md
+
+### Fixed
+- Removed italic formatting from f-string interpolation tokens (#324, #329)
+  - F-string placeholders like `{variable}` now render in consistent monospace
+  - Improves code readability by matching terminal/REPL output style
+
 ## [0.13.2] - 2025-11-25
 
 ### Fixed
