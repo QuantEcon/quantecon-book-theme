@@ -91,6 +91,19 @@ test.describe("Theme Features", () => {
     }
   });
 
+  test("f-string interpolation styling", async ({ page }) => {
+    // Test that f-string placeholders render without italics
+    // Uses names.html which contains: print(f'the identity of local x is {id(x)}')
+    await page.goto("/names.html");
+    await page.waitForLoadState("networkidle");
+
+    // Find a code block containing .si (String.Interpol) tokens
+    const fstringBlock = page.locator(".highlight:has(.si)").first();
+    if (await fstringBlock.isVisible()) {
+      await expect(fstringBlock).toHaveScreenshot("fstring-interpolation.png");
+    }
+  });
+
   test("math equation rendering", async ({ page }) => {
     await page.goto("/numpy.html");
     await page.waitForLoadState("networkidle");
