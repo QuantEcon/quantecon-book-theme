@@ -228,7 +228,7 @@ Main page structure and components
       }
 
       h4 {
-        margin: 0 0 0.5rem 0;
+        margin: 0 0 0.75rem 0;
         font-size: 0.9rem;
         font-weight: 600;
         color: colors.$body;
@@ -254,7 +254,8 @@ Main page structure and components
       .changelog-entry {
         display: flex;
         gap: 0.5rem;
-        padding: 0.35rem 0;
+        /* Issue #342: Equal top/bottom padding for changelog rows */
+        padding: 0.5rem 0;
         font-size: 0.765rem;
         line-height: 1.3;
         border-bottom: 1px solid rgba(colors.$body, 0.08);

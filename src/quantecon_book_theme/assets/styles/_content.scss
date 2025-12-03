@@ -282,6 +282,14 @@ Tables, figures, cells, code blocks
       margin-left: auto;
       margin-right: auto;
     }
+
+    /* Issue #342: Fix rounded corners on output cell gray background
+     * Add overflow:hidden and border-radius to ensure background respects container corners */
+    .output.text_plain,
+    .output.stream {
+      overflow: hidden;
+      border-radius: 2px;
+    }
   }
 }
 

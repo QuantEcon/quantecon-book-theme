@@ -55,6 +55,15 @@ body.dark-theme {
     display: block;
   }
 
+  /* Issue #342: Invert main logo when no dark logo is provided
+   * Uses filter inversion when dark-logo-img is not present/visible */
+  .logo-img:only-child,
+  .qe-sidebar__nav .logo img:only-child {
+    display: block;
+    filter: invert(100%) hue-rotate(-180deg);
+    -webkit-filter: invert(100%) hue-rotate(-180deg);
+  }
+
   .highlight {
     background: #111 !important;
     .n,

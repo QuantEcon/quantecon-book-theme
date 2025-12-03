@@ -31,6 +31,8 @@ Top navigation bar
       margin: 0;
       display: flex;
       align-items: center;
+      /* Issue #342: Allow toolbar icons to wrap at narrow widths */
+      flex-wrap: wrap;
 
       > li {
         margin: 0 10px;
@@ -38,6 +40,8 @@ Top navigation bar
         cursor: pointer;
         transition: all 0.2s ease-in-out;
         opacity: 0.8;
+        /* Issue #342: Prevent icons from shrinking */
+        flex-shrink: 0;
 
         &:hover,
         &.btn-active {
@@ -158,6 +162,11 @@ Top navigation bar
           &.btn__search {
             display: none;
           }
+        }
+
+        /* Issue #342: Reduce margins at medium breakpoint to fit all icons */
+        @media (max-width: breakpoints.$md) {
+          margin: 0 5px;
         }
       }
     }
