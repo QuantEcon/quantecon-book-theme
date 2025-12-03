@@ -83,7 +83,7 @@ html_theme_options = {
 }
 ```
 
-By default, the edit button will point to the `master` branch, but if you'd like
+By default, the edit button will point to the `main` branch, but if you'd like
 to change this, use the following configuration:
 
 ```python

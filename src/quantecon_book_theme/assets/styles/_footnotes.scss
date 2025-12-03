@@ -1,0 +1,73 @@
+/*
+-----------------------------------
+FOOTNOTES AND CITATIONS
+Footnotes, bibliography styles
+-----------------------------------
+*/
+
+// Footnotes and Citations
+span.brackets,
+a.brackets {
+  &:before {
+    content: "[";
+  }
+
+  &:after {
+    content: "]";
+  }
+}
+
+.footnote-reference,
+a.bibtex.internal {
+  font-size: 1em;
+}
+
+// See: https://docutils.sourceforge.io/docs/user/rst/quickref.html#definition-lists
+// TODO the field list should be a different format,
+// but be wary of issues like https://github.com/pandas-dev/pydata-sphinx-theme/issues/193
+dl.simple,
+dl.field-list {
+  & dd {
+    margin-left: 1.5em;
+  }
+
+  & dd:not(:last-child) {
+    margin-bottom: 0px;
+
+    p:last-child {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+dl.glossary {
+  dd {
+    margin-left: 1.5em;
+  }
+}
+
+dl.footnote {
+  span.fn-backref {
+    font-size: 1em;
+    padding-left: 0.1em;
+  }
+
+  dd {
+    font-size: 0.9em;
+    margin-left: 3em;
+  }
+}
+
+dl.citation {
+  margin-left: 3em;
+}
+
+dl.footnote {
+  dt.label {
+    float: left;
+  }
+
+  dd p {
+    padding-left: 1.5em;
+  }
+}

@@ -1,0 +1,211 @@
+/*
+-----------------------------------
+DARK THEME STYLES
+Dark mode overrides
+-----------------------------------
+*/
+
+@use "colors";
+
+body.dark-theme {
+  background: #222;
+  color: #fff;
+
+  a,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p {
+    color: #fff;
+  }
+
+  // Lighter colors for emphasis and strong in dark mode
+  em {
+    color: #66bb6a; // Lighter green for dark mode
+  }
+
+  strong,
+  b {
+    color: #cd853f; // Lighter brown for dark mode
+  }
+
+  .qe-toolbar__inner > ul > li > a,
+  .qe-sidebar__nav ul > li > a {
+    color: #fff;
+  }
+
+  cite,
+  code,
+  tt {
+    background-color: transparent;
+  }
+
+  .maths,
+  .math {
+    color: #fff !important;
+  }
+
+  .logo-img {
+    display: none;
+  }
+
+  .dark-logo-img {
+    display: block;
+  }
+
+  /* Issue #342: Invert main logo when no dark logo is provided
+   * Uses filter inversion when dark-logo-img is not present/visible */
+  .logo-img:only-child,
+  .qe-sidebar__nav .logo img:only-child {
+    display: block;
+    filter: invert(100%) hue-rotate(-180deg);
+    -webkit-filter: invert(100%) hue-rotate(-180deg);
+  }
+
+  .highlight {
+    background: #111 !important;
+    .n,
+    .p {
+      color: #fff;
+    }
+  }
+
+  svg {
+    g {
+      fill: #fff !important;
+      stroke: #fff !important;
+    }
+  }
+
+  .qe-toolbar,
+  .drawer,
+  .qe-sidebar,
+  .drawer .inner {
+    background: #444;
+  }
+
+  .btn__search {
+    input {
+      background-color: #333;
+      color: #fff;
+
+      &:focus {
+        border-color: #fff;
+      }
+    }
+  }
+
+  .qe-page__content {
+    .MathJax {
+      color: #fff !important;
+    }
+    .image-reference img,
+    figure img,
+    .cell_output img {
+      filter: invert(100%) hue-rotate(-180deg) !important;
+      -ms-filter: invert(100%) !important;
+      -webkit-filter: invert(100%) hue-rotate(-180deg) !important;
+    }
+  }
+
+  .toc-entry {
+    a.nav-link {
+      color: rgb(166, 166, 166);
+    }
+  }
+
+  .reference.external,
+  .reference.internal {
+    font-weight: 800;
+  }
+
+  nav.contents {
+    background-color: #333;
+  }
+
+  div.admonition,
+  .admonition {
+    background-color: #333;
+    box-shadow: none !important;
+  }
+
+  pre {
+    background-color: #333;
+    color: #fff;
+  }
+
+  aside.sidebar {
+    background-color: #333;
+  }
+
+  button.toggle-button.toggle-button-hidden::before {
+    color: #fff;
+  }
+
+  aside.topic,
+  div.topic,
+  div.topic.contents,
+  nav.contents {
+    background-color: #333;
+    box-shadow: none !important;
+  }
+
+  blockquote,
+  blockquote p {
+    color: #fff;
+  }
+
+  table tbody .row-even p {
+    color: #333;
+  }
+
+  div.cell details.below-input > summary,
+  div.cell div.cell_input,
+  div.cell details.above-input > summary {
+    background-color: #333;
+  }
+
+  .tippy-box {
+    background-color: #333;
+  }
+
+  .bd-search-container ul.search li div.context,
+  .bd-search-container ul.search li p.context {
+    color: #fff;
+  }
+
+  .qe-toolbar__inner > ul > li.btn__search input {
+    background-color: #333;
+    color: #fff;
+  }
+
+  tbody tr:nth-child(even) {
+    color: white;
+  }
+
+  thead tr th {
+    color: white;
+  }
+
+  .highlight .nn {
+    color: white;
+  }
+
+  mjx-math mjx-mstyle {
+    color: white !important;
+  }
+
+  #settingsModal {
+    span {
+      color: white;
+    }
+  }
+
+  .cell_output .output.text_plain,
+  .cell_output .output.stream,
+  .cell_output .output.stderr {
+    border: 0rem;
+  }
+}
