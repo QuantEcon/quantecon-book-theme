@@ -571,3 +571,60 @@ def test_add_hub_urls_nb_path_to_notebooks():
     assert "docs/" not in context["colab_url"]
     expected_url = "https://colab.research.google.com/github/TestOrg/test-notebooks/blob/main/notebooks/test_page.ipynb"
     assert context["colab_url"] == expected_url
+
+
+def test_add_hub_urls_path_to_docs_stripping():
+    """Test that path_to_docs is stripped from pagename for notebook URLs."""
+    from quantecon_book_theme.launch import add_hub_urls
+
+    # Mock app object
+    app = Mock()
+    app.env.doc2path.return_value = "/path/to/notebook.ipynb"
+    app.env.metadata = {"lectures/jax_intro": {"kernelspec": {"name": "python3"}}}
+
+    # Test with path_to_docs set and pagename including that prefix
+    context = {}
+    app.config = {
+        "html_theme_options": {
+            "nb_repository_url": "https://github.com/QuantEcon/lecture-jax.notebooks",
+            "nb_branch": "main",
+            "path_to_docs": "lectures",  # Source docs are in lectures/ directory
+            # nb_path_to_notebooks not set (flat notebook repo)
+            "launch_buttons": {
+                "colab_url": "https://colab.research.google.com",
+            },
+        }
+    }
+
+    # pagename includes "lectures/" prefix because that's where source files are
+    add_hub_urls(app, "lectures/jax_intro", "template", context, Mock())
+
+    # Verify colab URL does NOT include lectures/ since notebook repo is flat
+    assert "colab_url" in context
+    assert "lectures/" not in context["colab_url"]
+    expected_url = "https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/jax_intro.ipynb"
+    assert context["colab_url"] == expected_url
+
+    # Test with path_to_docs and nb_path_to_notebooks both set
+    context = {}
+    app.config = {
+        "html_theme_options": {
+            "nb_repository_url": "https://github.com/TestOrg/test-notebooks",
+            "nb_branch": "main",
+            "path_to_docs": "docs",  # Source docs are in docs/ directory
+            "nb_path_to_notebooks": "notebooks",  # Notebooks in notebooks/ subdirectory
+            "launch_buttons": {
+                "colab_url": "https://colab.research.google.com",
+            },
+        }
+    }
+
+    app.env.metadata = {"docs/example": {"kernelspec": {"name": "python3"}}}
+    add_hub_urls(app, "docs/example", "template", context, Mock())
+
+    # Verify URL strips docs/ but adds notebooks/
+    assert "colab_url" in context
+    assert "docs/" not in context["colab_url"]
+    assert "notebooks/" in context["colab_url"]
+    expected_url = "https://colab.research.google.com/github/TestOrg/test-notebooks/blob/main/notebooks/example.ipynb"
+    assert context["colab_url"] == expected_url
