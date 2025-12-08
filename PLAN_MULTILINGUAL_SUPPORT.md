@@ -1,7 +1,7 @@
 # Multilingual Support Plan for QuantEcon Lecture Sites
 
-**Date:** December 2024  
-**Status:** Planning  
+**Date:** December 2024
+**Status:** Planning
 **Author:** QuantEcon Team
 
 ## Overview
@@ -140,7 +140,7 @@ The **Subdomain Pattern → Cloudflare Proxy** path is recommended because Phase
 Phase 1: Subdomain Pattern              Phase 2: Add Cloudflare Proxy
 ────────────────────────────────        ────────────────────────────────
 
-fa.python-programming.org ──────┐       
+fa.python-programming.org ──────┐
                                 │       Cloudflare Worker routes:
 python-programming.org ─────────┼──▶      /    → python-programming.org
                                 │         /fa/ → fa.python-programming.org
@@ -459,7 +459,7 @@ addEventListener('fetch', event => {
 async function handleRequest(request) {
   const url = new URL(request.url);
   const path = url.pathname;
-  
+
   // Find matching route
   for (const [prefix, origin] of Object.entries(ROUTES)) {
     if (prefix !== '/' && path.startsWith(prefix)) {
@@ -472,7 +472,7 @@ async function handleRequest(request) {
       });
     }
   }
-  
+
   // Default to English
   return fetch(ROUTES['/'] + path + url.search);
 }
@@ -523,7 +523,7 @@ sphinx:
 {# Language Switcher Component #}
 {% if theme_languages %}
 <div class="language-switcher dropdown">
-  <button class="btn btn-sm dropdown-toggle" type="button" 
+  <button class="btn btn-sm dropdown-toggle" type="button"
           id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
     🌐 {{ theme_current_language_name }}
   </button>
@@ -564,10 +564,10 @@ Add alternate language links to `<head>` for SEO:
 {# In layout.html <head> section #}
 {% if theme_languages %}
 {% for lang in theme_languages %}
-<link rel="alternate" hreflang="{{ lang.code }}" 
+<link rel="alternate" hreflang="{{ lang.code }}"
       href="{{ lang.url }}{{ pagename }}.html" />
 {% endfor %}
-<link rel="alternate" hreflang="x-default" 
+<link rel="alternate" hreflang="x-default"
       href="{{ theme_languages[0].url }}{{ pagename }}.html" />
 {% endif %}
 ```
