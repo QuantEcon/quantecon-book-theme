@@ -5,7 +5,7 @@ import os
 import hashlib
 from functools import lru_cache
 import subprocess
-from datetime import datetime
+from datetime import datetime, timezone
 
 from docutils import nodes
 from sphinx.util import logging
@@ -98,7 +98,7 @@ def get_git_last_modified(source_file, source_dir):
 
         if result.returncode == 0 and result.stdout.strip():
             timestamp = int(result.stdout.strip())
-            return datetime.utcfromtimestamp(timestamp)
+            return datetime.fromtimestamp(timestamp, tz=timezone.utc)
 
     except (
         subprocess.TimeoutExpired,
@@ -165,7 +165,7 @@ def get_git_changelog(source_file, source_dir, max_entries=10):
             parts = line.split("|", 3)
             if len(parts) == 4:
                 commit_hash, author, timestamp, message = parts
-                commit_time = datetime.utcfromtimestamp(int(timestamp))
+                commit_time = datetime.fromtimestamp(int(timestamp), tz=timezone.utc)
                 relative_time = get_relative_time(commit_time)
 
                 changelog.append(
@@ -193,7 +193,10 @@ def get_git_changelog(source_file, source_dir, max_entries=10):
 
 def get_relative_time(past_date):
     """Convert a datetime to relative time string (e.g., '3 months ago')."""
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
+    # Ensure past_date is timezone-aware for comparison
+    if past_date.tzinfo is None:
+        past_date = past_date.replace(tzinfo=timezone.utc)
     diff = now - past_date
 
     seconds = diff.total_seconds()

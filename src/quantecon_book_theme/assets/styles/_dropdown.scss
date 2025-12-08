@@ -8,6 +8,13 @@
  * (togglebutton_hint and togglebutton_hint_hide in conf.py), not CSS.
  *********************************************/
 
+/* Issue #342: Fix toggle button arrow shifting when activated
+ * Apply consistent min-width and inline-flex display to prevent layout shift */
+button.toggle-button {
+  display: inline-flex;
+  min-width: 5em;
+}
+
 /* Change "Click to show" to "Show" for all dropdown admonition buttons */
 div.exercise.dropdown button.toggle-button::before,
 div.solution.dropdown button.toggle-button::before,

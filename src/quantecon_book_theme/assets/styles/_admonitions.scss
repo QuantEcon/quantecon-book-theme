@@ -1,0 +1,23 @@
+/*
+-----------------------------------
+ADMONITION STYLES
+Warning, note, tip boxes
+-----------------------------------
+*/
+
+div.admonition,
+.admonition {
+  font-size: 0.9rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem 0.5rem 1rem;
+  page-break-inside: avoid;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1), 0 0 0.05rem rgba(0, 0, 0, 0.1);
+
+  > .admonition-title {
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0.25rem 2rem;
+    font-weight: 700;
+    background-color: #0072bc26;
+  }
+}

@@ -1,0 +1,109 @@
+/*
+-----------------------------------
+MODAL STYLES
+Popups, dialogs, settings
+-----------------------------------
+*/
+
+@use "colors";
+
+#downloadPDFModal {
+  ul {
+    padding: 0.5em;
+    list-style-type: none;
+  }
+
+  p {
+    margin: 0rem;
+    color: #0072bc;
+
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}
+
+#settingsModal {
+  text-align: left;
+  padding: 1rem 1rem;
+
+  .modal-title {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+  }
+
+  .modal-desc {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .modal-subtitle {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .modal-servers {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      padding: 0.5rem 1rem;
+      border: 2px solid #ddd;
+      font-size: 0.8rem;
+      margin: 0.5rem 0;
+      display: flex;
+      cursor: pointer;
+
+      &.active {
+        border-color: #1665ad;
+        background: rgba(22, 101, 173, 0.15);
+
+        i {
+          color: #1665ad;
+        }
+      }
+
+      .label {
+        flex-shrink: 0;
+        min-width: 50px;
+      }
+
+      select {
+        width: 100%;
+        outline: none;
+      }
+
+      input {
+        width: 100%;
+        outline: none;
+      }
+
+      i {
+        margin: 0 0 0 1rem;
+        font-size: 1.2rem;
+        color: #ddd;
+      }
+    }
+  }
+
+  .launch {
+    margin: 0;
+
+    a {
+      display: block;
+      text-decoration: none;
+      font-weight: normal;
+      background: colors.$primary;
+      color: #fff;
+      padding: 0.25rem 0.5rem;
+      border-radius: 2px;
+      text-align: center;
+
+      &:hover {
+        background: colors.$body;
+      }
+    }
+  }
+}

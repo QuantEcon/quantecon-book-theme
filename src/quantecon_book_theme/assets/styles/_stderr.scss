@@ -1,0 +1,116 @@
+/*
+-----------------------------------
+STDERR STYLES
+Collapsible stderr warning display
+-----------------------------------
+*/
+
+@use "colors";
+
+// Collapsible stderr warnings
+.stderr-collapsible-wrapper {
+  margin: 0.5rem 0;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  background-color: transparent;
+  overflow: hidden;
+
+  .stderr-toggle-button {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #856404;
+    transition: background-color 0.2s ease;
+    text-align: left;
+
+    &:hover {
+      background-color: #fff9e6;
+    }
+
+    &:focus {
+      outline: 2px solid #ffc107;
+      outline-offset: -2px;
+    }
+
+    .stderr-icon {
+      font-size: 1.1rem;
+      color: #ffc107;
+    }
+
+    .stderr-label {
+      flex: 1;
+    }
+
+    .stderr-chevron {
+      font-size: 0.7rem;
+      transition: transform 0.2s ease;
+    }
+
+    &[aria-expanded="true"] .stderr-chevron {
+      transform: rotate(90deg);
+    }
+  }
+
+  .stderr-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+
+    &.expanded {
+      max-height: 1000px; // Large enough for most warnings
+      overflow: auto;
+    }
+
+    .output.stderr {
+      margin: 0;
+      border-top: 1px solid #ffc107;
+      background-color: #fff;
+
+      .highlight {
+        margin: 0;
+        border: none;
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+// Dark theme support for stderr warnings
+body.dark-theme {
+  .stderr-collapsible-wrapper {
+    background-color: transparent;
+    border-color: #ffc107;
+
+    .stderr-toggle-button {
+      background-color: transparent;
+      color: #ffc107;
+
+      &:hover {
+        background-color: #2a2400;
+      }
+
+      .stderr-icon {
+        color: #ffc107;
+      }
+    }
+
+    .stderr-content {
+      .output.stderr {
+        background-color: #2a2000;
+        border-color: #ffc107;
+
+        .highlight {
+          background-color: #2a2000;
+        }
+      }
+    }
+  }
+}

@@ -431,10 +431,10 @@ def test_git_functions_unit():
         get_git_changelog,
         get_relative_time,
     )
-    from datetime import datetime, timedelta
+    from datetime import datetime, timedelta, timezone
 
     # Test get_relative_time
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
 
     # Test "just now"
     assert get_relative_time(now) == "just now"
