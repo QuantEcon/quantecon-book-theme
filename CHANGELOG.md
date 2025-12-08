@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2025-12-08
+
+### Changed
+- **Major refactoring and modernization** (#335)
+  - Updated Node.js from 16.13.2 (EOL) to 18.18.0 LTS
+  - Modularized SCSS: Split 2038-line monolithic stylesheet into 11 focused modules
+  - Modularized JavaScript: Organized 565 lines into 8 feature-specific modules
+  - Updated npm dependencies: sass (1.94.2), sass-loader (16.0.6), css-loader (7.1.2), webpack (5.103.0), and more
+  - Updated Python dependencies: Added version constraints for pyyaml, docutils, beautifulsoup4
+  - Updated flake8 constraint from <3.8.0 to >=7.0.0
+  - Removed unused `click` dependency
+
+### Added
+- Performance optimizations (#335)
+  - Preconnect hints for CDN resources (unpkg.com, cdn.jsdelivr.net, fonts.googleapis.com)
+  - Reduces connection time by 100-300ms per CDN
+- Security improvements (#335)
+  - Fixed 2 npm vulnerabilities (cross-spawn HIGH severity, nanoid MODERATE severity)
+  - Added SRI (Subresource Integrity) hashes to all CDN-loaded scripts
+- Testing improvements (#335)
+  - New test infrastructure with conftest.py and shared fixtures
+  - Added test_module_structure.py with 10 new tests (13→23 total tests)
+  - Validates SCSS module structure, JavaScript module exports, layout template configuration
+- Documentation improvements (#335)
+  - Comprehensive CONTRIBUTING.md with development guide
+  - New testing guide at docs/contributing/testing.md
+  - AI-assisted development guide at .github/copilot-instructions.md
+  - Added .editorconfig for consistent code formatting
+  - Added .nvmrc for Node.js version pinning
+
+### Fixed
+- Deprecation warnings (#335)
+  - Fixed deprecated `datetime.utcnow()` → `datetime.now(timezone.utc)`
+  - Fixed deprecated `datetime.utcfromtimestamp()` → `datetime.fromtimestamp(..., tz=timezone.utc)`
+  - All 19 deprecation warnings resolved
+- Removed obsolete console polyfill for IE8/9 (#335)
+  - Reduces JavaScript bundle size from 8.91 KiB to 8.73 KiB
+
 ## [0.14.0] - 2025-12-01
 
 ### Added
@@ -115,7 +153,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.14.0...v0.15.0
+[0.14.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.13.2...v0.14.0
+[0.13.2]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.13.1...v0.13.2
+[0.13.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.13.0...v0.13.1
+[0.13.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.12.0...v0.13.0
+[0.12.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.10.1...v0.11.0
 [0.10.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.9.3...v0.10.0
