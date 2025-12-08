@@ -196,3 +196,64 @@ These commands may fail with ReadTimeoutError in sandboxed environments:
 2. If pip commands fail with network timeouts, document as "fails due to network limitations"
 3. Use `--timeout=120` flag with pip for better reliability
 4. Focus on webpack builds and basic linting which work reliably
+
+## Release Process
+
+When creating a new release, follow this checklist in order:
+
+### 1. Pre-Release Validation
+- **Run pre-commit checks**: `pre-commit run --all-files`
+  - Fix any trailing whitespace, formatting, or linting issues
+  - Commit any fixes before proceeding
+- **Run full test suite**: `tox`
+  - Ensure all tests pass in Python 3.12 and 3.13 environments
+  - Fix any test failures before proceeding
+- **Build documentation**: `tox -e docs-update`
+  - Verify documentation builds without errors
+  - Check that any new features are documented
+
+### 2. Version Updates
+Update version numbers in these locations:
+- **`src/quantecon_book_theme/__init__.py`**: Update `__version__ = "X.Y.Z"`
+- **`CHANGELOG.md`**: Move unreleased changes to new version section with today's date
+  - Use format: `## [X.Y.Z] - YYYY-MM-DD`
+  - Organize changes under: Changed, Added, Fixed, Deprecated, Removed, Security
+  - Add comparison links at bottom: `[X.Y.Z]: https://github.com/QuantEcon/quantecon-book-theme/compare/vPREV...vX.Y.Z`
+
+### 3. Version Number Guidelines (Semantic Versioning)
+- **Major (X.0.0)**: Breaking changes, incompatible API changes
+- **Minor (0.X.0)**: New features, significant refactoring, non-breaking changes
+- **Patch (0.0.X)**: Bug fixes, documentation updates, minor tweaks
+
+### 4. Commit and Tag
+```bash
+# Commit version updates
+git add src/quantecon_book_theme/__init__.py CHANGELOG.md
+git commit -m "Release version X.Y.Z"
+
+# Create annotated tag
+git tag -a vX.Y.Z -m "Version X.Y.Z - Brief description"
+
+# Push commit and tag
+git push && git push origin vX.Y.Z
+```
+
+### 5. Create GitHub Release
+```bash
+gh release create vX.Y.Z \
+  --title "vX.Y.Z - Release Title" \
+  --notes "Release notes from CHANGELOG.md"
+```
+
+**IMPORTANT**: Creating the GitHub release triggers the PyPI publish workflow automatically.
+
+### 6. Verify PyPI Publication
+- Check GitHub Actions for successful PyPI publish workflow
+- Verify package appears on PyPI: https://pypi.org/project/quantecon-book-theme/
+- Test installation: `pip install quantecon-book-theme==X.Y.Z`
+
+### Common Release Issues
+- **Pre-commit failures**: Always run `pre-commit run --all-files` before creating release
+- **Wrong version in `__init__.py`**: PyPI will reject if version already exists
+- **Missing CHANGELOG entry**: Document all changes before release
+- **Test failures**: Fix all test failures before proceeding with release
