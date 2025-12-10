@@ -38,7 +38,6 @@ Main page structure and components
     right: calc(-200px - 3rem);
     top: 0;
     margin: 0;
-    height: 100%;
     width: 200px;
 
     @media (max-width: 1350px) {
@@ -46,8 +45,6 @@ Main page structure and components
     }
 
     .inner {
-      height: 100%;
-
       &.sticky {
         position: sticky;
         top: 7rem;
