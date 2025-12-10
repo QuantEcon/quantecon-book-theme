@@ -4,6 +4,8 @@ from pathlib import Path
 import os
 import hashlib
 from functools import lru_cache
+import subprocess
+from datetime import datetime, timezone
 
 from docutils import nodes
 from sphinx.util import logging
@@ -13,7 +15,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.9.2"
+__version__ = "0.15.1"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -58,6 +60,167 @@ def add_plugins_list(app):
             assetname = Path(asset).name
             copy_asset(app.confdir + "/" + asset, outdir)
             app.config.html_theme_options["plugins_list"][i] = "plugins/" + assetname
+
+
+def get_git_last_modified(source_file, source_dir):
+    """Get the last modified date for a source file from git.
+
+    Args:
+        source_file: The source file path relative to source_dir
+        source_dir: The Sphinx source directory
+
+    Returns:
+        datetime object or None if git is not available
+    """
+    try:
+        # Get the full path to the source file
+        file_path = Path(source_dir) / source_file
+
+        # Check if git is available and we're in a git repo
+        result = subprocess.run(
+            ["git", "rev-parse", "--git-dir"],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode != 0:
+            return None
+
+        # Get the last commit date for this file
+        result = subprocess.run(
+            ["git", "log", "-1", "--format=%ct", "--follow", "--", str(file_path)],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+
+        if result.returncode == 0 and result.stdout.strip():
+            timestamp = int(result.stdout.strip())
+            return datetime.fromtimestamp(timestamp, tz=timezone.utc)
+
+    except (
+        subprocess.TimeoutExpired,
+        subprocess.SubprocessError,
+        ValueError,
+        FileNotFoundError,
+    ):
+        pass
+
+    return None
+
+
+def get_git_changelog(source_file, source_dir, max_entries=10):
+    """Get the changelog for a source file from git.
+
+    Args:
+        source_file: The source file path relative to source_dir
+        source_dir: The Sphinx source directory
+        max_entries: Maximum number of changelog entries to return
+
+    Returns:
+        List of dicts with keys: hash, author, date, message, relative_time
+        Empty list if git is not available
+    """
+    try:
+        # Get the full path to the source file
+        file_path = Path(source_dir) / source_file
+
+        # Check if git is available and we're in a git repo
+        result = subprocess.run(
+            ["git", "rev-parse", "--git-dir"],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if result.returncode != 0:
+            return []
+
+        # Get the changelog with format: hash|author|timestamp|subject
+        result = subprocess.run(
+            [
+                "git",
+                "log",
+                f"-{max_entries}",
+                "--format=%h|%an|%ct|%s",
+                "--follow",
+                "--",
+                str(file_path),
+            ],
+            cwd=source_dir,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+
+        if result.returncode != 0 or not result.stdout.strip():
+            return []
+
+        changelog = []
+        for line in result.stdout.strip().split("\n"):
+            if not line:
+                continue
+            parts = line.split("|", 3)
+            if len(parts) == 4:
+                commit_hash, author, timestamp, message = parts
+                commit_time = datetime.fromtimestamp(int(timestamp), tz=timezone.utc)
+                relative_time = get_relative_time(commit_time)
+
+                changelog.append(
+                    {
+                        "hash": commit_hash,
+                        "author": author,
+                        "date": commit_time,
+                        "message": message,
+                        "relative_time": relative_time,
+                    }
+                )
+
+        return changelog
+
+    except (
+        subprocess.TimeoutExpired,
+        subprocess.SubprocessError,
+        ValueError,
+        FileNotFoundError,
+    ):
+        pass
+
+    return []
+
+
+def get_relative_time(past_date):
+    """Convert a datetime to relative time string (e.g., '3 months ago')."""
+    now = datetime.now(timezone.utc)
+    # Ensure past_date is timezone-aware for comparison
+    if past_date.tzinfo is None:
+        past_date = past_date.replace(tzinfo=timezone.utc)
+    diff = now - past_date
+
+    seconds = diff.total_seconds()
+
+    if seconds < 60:
+        return "just now"
+    elif seconds < 3600:
+        minutes = int(seconds / 60)
+        return f"{minutes} minute{'s' if minutes != 1 else ''} ago"
+    elif seconds < 86400:
+        hours = int(seconds / 3600)
+        return f"{hours} hour{'s' if hours != 1 else ''} ago"
+    elif seconds < 604800:
+        days = int(seconds / 86400)
+        return f"{days} day{'s' if days != 1 else ''} ago"
+    elif seconds < 2592000:
+        weeks = int(seconds / 604800)
+        return f"{weeks} week{'s' if weeks != 1 else ''} ago"
+    elif seconds < 31536000:
+        months = int(seconds / 2592000)
+        return f"{months} month{'s' if months != 1 else ''} ago"
+    else:
+        years = int(seconds / 31536000)
+        return f"{years} year{'s' if years != 1 else ''} ago"
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
@@ -260,6 +423,48 @@ def add_to_context(app, pagename, templatename, context, doctree):
         context["pdf_book_name"] = app.config.latex_documents[0][1].replace(".tex", "")
     context["github_sourcefolder"] = get_github_src_folder(app)
 
+    # Add git information (last modified date and changelog)
+    if doctree and hasattr(app.env, "doc2path"):
+        source_file = app.env.doc2path(pagename, base=False)
+        source_dir = app.srcdir
+
+        # Get last modified date
+        last_modified = get_git_last_modified(source_file, source_dir)
+        if last_modified:
+            # Get date format from theme options, default to "%b %d, %Y"
+            date_format = config_theme.get("last_modified_date_format", "%b %d, %Y")
+            context["last_modified_date"] = last_modified.strftime(date_format)
+            context["last_modified_iso"] = last_modified.isoformat()
+        else:
+            context["last_modified_date"] = None
+
+        # Get changelog entries
+        max_changelog_entries = config_theme.get("changelog_max_entries", 10)
+        changelog = get_git_changelog(source_file, source_dir, max_changelog_entries)
+        context["changelog_entries"] = changelog
+        context["has_git_info"] = last_modified is not None and len(changelog) > 0
+
+        # Add repository URL and source file for GitHub links
+        repo_url = config_theme.get("repository_url", "")
+        if repo_url:
+            context["theme_repository_url"] = repo_url.rstrip("/")
+            # Construct full path including path_to_docs
+            path_to_docs = config_theme.get("path_to_docs", "")
+            if path_to_docs:
+                full_source_path = f"{path_to_docs}/{source_file}".replace("//", "/")
+            else:
+                full_source_path = source_file
+            context["theme_source_file"] = full_source_path
+        else:
+            context["theme_repository_url"] = None
+            context["theme_source_file"] = None
+    else:
+        context["last_modified_date"] = None
+        context["changelog_entries"] = []
+        context["has_git_info"] = False
+        context["theme_repository_url"] = None
+        context["theme_source_file"] = None
+
     # Make sure the context values are bool
     blns = [
         "theme_use_edit_page_button",
@@ -300,10 +505,16 @@ def hash_assets_for_files(assets: list, theme_static: Path, context):
                     f"Asset {asset_source_path} does not exist, not linking."
                 )
             # Find this asset in context, and update it to include the digest
-            if asset_sphinx_link in context[asset_type]:
-                hash = _gen_hash(asset_source_path)
-                ix = context[asset_type].index(asset_sphinx_link)
-                context[asset_type][ix] = asset_sphinx_link + "?digest=" + hash
+            # Use .filename attribute to avoid deprecation warnings in Sphinx 9+
+            for i, css_or_js in enumerate(context[asset_type]):
+                filename = getattr(css_or_js, "filename", None)
+                # Skip if filename attribute doesn't exist
+                if filename is None:
+                    continue
+                if filename == asset_sphinx_link:
+                    hash = _gen_hash(asset_source_path)
+                    context[asset_type][i] = asset_sphinx_link + "?digest=" + hash
+                    break
 
 
 def hash_html_assets(app, pagename, templatename, context, doctree):
@@ -318,6 +529,60 @@ def hash_html_assets(app, pagename, templatename, context, doctree):
     if app.config.html_theme == "quantecon_book_theme":
         assets.append("styles/quantecon-book-theme.css")
     hash_assets_for_files(assets, get_html_theme_path() / "static", context)
+
+
+def add_pygments_style_class(app, pagename, templatename, context, doctree):
+    """Add CSS class to root element if QuantEcon theme code style is disabled.
+
+    When qetheme_code_style is False, adds 'use-pygments-style' class which
+    disables the custom QuantEcon code token styles and allows Pygments
+    built-in styles (configured via pygments_style) to be used.
+    """
+    config_theme = app.config.html_theme_options
+    qetheme_code_style = config_theme.get("qetheme_code_style", True)
+
+    # Convert string "false"/"true" to boolean if needed
+    if isinstance(qetheme_code_style, str):
+        qetheme_code_style = qetheme_code_style.lower() != "false"
+
+    # Set a context variable that can be used in templates
+    context["use_pygments_style"] = not qetheme_code_style
+
+
+def setup_pygments_css(app):
+    """Ensure Pygments CSS is included when using Pygments styles.
+
+    This runs during builder-inited, after config is fully loaded.
+    We generate our own unscoped pygments CSS file instead of using Sphinx's scoped version.
+    """
+    from pygments.formatters import HtmlFormatter
+
+    # Access html_theme_options from app.config (it's a dict)
+    config_theme = getattr(app.config, "html_theme_options", {})
+    qetheme_code_style = config_theme.get("qetheme_code_style", True)
+
+    # Convert string "false"/"true" to boolean if needed
+    if isinstance(qetheme_code_style, str):
+        qetheme_code_style = qetheme_code_style.lower() != "false"
+
+    # When using Pygments styles, generate and include unscoped CSS
+    if not qetheme_code_style:
+        # Get the Pygments style name from config (default to 'default')
+        pygments_style = getattr(app.config, "pygments_style", None) or "default"
+
+        # Generate CSS without data-theme scoping
+        formatter = HtmlFormatter(style=pygments_style)
+        css_content = formatter.get_style_defs(".highlight")
+
+        # Write CSS file to _static directory with a different name
+        # This ensures it won't be overwritten by Sphinx or pydata-sphinx-theme
+        static_dir = Path(app.outdir) / "_static"
+        static_dir.mkdir(parents=True, exist_ok=True)
+        pygments_css_path = static_dir / "pygments-quantecon.css"
+        pygments_css_path.write_text(css_content)
+
+        # Add the CSS file to the page (instead of the default pygments.css)
+        app.add_css_file("pygments-quantecon.css")
 
 
 def _string_or_bool(var):
@@ -338,7 +603,9 @@ def setup(app):
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
+    app.connect("builder-inited", setup_pygments_css)
     app.connect("html-page-context", hash_html_assets)
+    app.connect("html-page-context", add_pygments_style_class)
 
     app.add_html_theme("quantecon_book_theme", get_html_theme_path())
     app.connect("html-page-context", add_to_context)

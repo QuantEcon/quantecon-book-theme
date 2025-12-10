@@ -22,9 +22,10 @@ Always reference these instructions first and fallback to search or bash command
 - **Install theme**: `pip install -e .` - Development installation (~3-10 minutes, NEVER CANCEL. Set timeout to 15+ minutes)
 
 ### Testing and Quality Assurance
-- **Run tests**: `tox` or `pytest --durations=10 --cov=quantecon_book_theme --cov-report=xml --cov-report=term-missing` (~5-15 minutes, NEVER CANCEL. Set timeout to 30+ minutes)
+- **Run tests**: `tox` - ALWAYS use tox for running tests (~5-15 minutes, NEVER CANCEL. Set timeout to 30+ minutes)
+  - Tests run against Python 3.12 and 3.13 with Sphinx 7
+  - DO NOT use `pytest` directly - always use `tox` for proper environment isolation
 - **Pre-commit checks**: `pre-commit run --all-files` - All formatting and linting (~2-5 minutes, NEVER CANCEL. VALIDATED: flake8 and black work correctly)
-- **Python 3.13 environment**: Tests are configured for Python 3.13 but will work with 3.12+
 - **Linting**: `flake8 src/` - Python linting (few seconds, VALIDATED)
 - **Formatting**: `black --check src/` - Code formatting check (few seconds, VALIDATED)
 
@@ -74,8 +75,8 @@ src/quantecon_book_theme/
 4. Always test changes with `tox -e docs-update`
 
 ### Running Tests
-- **Full test suite**: `tox` (uses Python 3.13 environment if available)
-- **Direct pytest**: `pytest` (requires manually installing test dependencies)
+- **Full test suite**: `tox` - ALWAYS use tox (runs tests in Python 3.12 and 3.13 environments)
+- **NEVER use pytest directly** - tox provides proper environment isolation and multi-version testing
 - **Regression tests**: Tests compare generated HTML against golden files in `tests/test_build/`
 
 ### Code Quality Workflow
@@ -89,6 +90,9 @@ src/quantecon_book_theme/
 - **Symptom**: ReadTimeoutError during pip install
 - **Solution**: Document as "fails due to network limitations" in instructions
 - **Alternative**: Try `pip install --timeout=120` for longer timeout
+
+### GitHub CLI (gh) Issues
+- **Output Capture**: Always write gh output to `/tmp` file for reliable capture: `gh pr view 123 2>&1 | tee /tmp/gh_output.txt`
 
 ### Missing Python 3.13
 - **Symptom**: `tox` skips environments with "could not find python interpreter"
@@ -175,6 +179,7 @@ The following commands have been verified to work in this environment:
 - `npm run build` - Compiles assets successfully (2.5-3 seconds)
 - `pip install tox pre-commit flake8 black` - Basic tooling installation works
 - `pre-commit install` - Git hooks installation works
+- `tox` - Full test suite with Python 3.12 and 3.13 environments (ALWAYS use this for testing)
 - `flake8 src/` - Python linting works and finds issues as expected
 - `black --check src/` - Code formatting check works
 - Asset compilation produces expected files in `src/quantecon_book_theme/theme/quantecon_book_theme/static/`
@@ -191,3 +196,64 @@ These commands may fail with ReadTimeoutError in sandboxed environments:
 2. If pip commands fail with network timeouts, document as "fails due to network limitations"
 3. Use `--timeout=120` flag with pip for better reliability
 4. Focus on webpack builds and basic linting which work reliably
+
+## Release Process
+
+When creating a new release, follow this checklist in order:
+
+### 1. Pre-Release Validation
+- **Run pre-commit checks**: `pre-commit run --all-files`
+  - Fix any trailing whitespace, formatting, or linting issues
+  - Commit any fixes before proceeding
+- **Run full test suite**: `tox`
+  - Ensure all tests pass in Python 3.12 and 3.13 environments
+  - Fix any test failures before proceeding
+- **Build documentation**: `tox -e docs-update`
+  - Verify documentation builds without errors
+  - Check that any new features are documented
+
+### 2. Version Updates
+Update version numbers in these locations:
+- **`src/quantecon_book_theme/__init__.py`**: Update `__version__ = "X.Y.Z"`
+- **`CHANGELOG.md`**: Move unreleased changes to new version section with today's date
+  - Use format: `## [X.Y.Z] - YYYY-MM-DD`
+  - Organize changes under: Changed, Added, Fixed, Deprecated, Removed, Security
+  - Add comparison links at bottom: `[X.Y.Z]: https://github.com/QuantEcon/quantecon-book-theme/compare/vPREV...vX.Y.Z`
+
+### 3. Version Number Guidelines (Semantic Versioning)
+- **Major (X.0.0)**: Breaking changes, incompatible API changes
+- **Minor (0.X.0)**: New features, significant refactoring, non-breaking changes
+- **Patch (0.0.X)**: Bug fixes, documentation updates, minor tweaks
+
+### 4. Commit and Tag
+```bash
+# Commit version updates
+git add src/quantecon_book_theme/__init__.py CHANGELOG.md
+git commit -m "Release version X.Y.Z"
+
+# Create annotated tag
+git tag -a vX.Y.Z -m "Version X.Y.Z - Brief description"
+
+# Push commit and tag
+git push && git push origin vX.Y.Z
+```
+
+### 5. Create GitHub Release
+```bash
+gh release create vX.Y.Z \
+  --title "vX.Y.Z - Release Title" \
+  --notes "Release notes from CHANGELOG.md"
+```
+
+**IMPORTANT**: Creating the GitHub release triggers the PyPI publish workflow automatically.
+
+### 6. Verify PyPI Publication
+- Check GitHub Actions for successful PyPI publish workflow
+- Verify package appears on PyPI: https://pypi.org/project/quantecon-book-theme/
+- Test installation: `pip install quantecon-book-theme==X.Y.Z`
+
+### Common Release Issues
+- **Pre-commit failures**: Always run `pre-commit run --all-files` before creating release
+- **Wrong version in `__init__.py`**: PyPI will reject if version already exists
+- **Missing CHANGELOG entry**: Document all changes before release
+- **Test failures**: Fix all test failures before proceeding with release

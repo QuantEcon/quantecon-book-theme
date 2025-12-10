@@ -1,0 +1,213 @@
+/*
+-----------------------------------
+BASE STYLES
+Typography, HTML elements, basic resets
+-----------------------------------
+*/
+
+@use "colors";
+@use "breakpoints";
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 1rem;
+
+  &.font-plus {
+    font-size: 1.2rem;
+  }
+
+  &.font-minus {
+    font-size: 0.9rem;
+  }
+
+  @media (min-width: breakpoints.$md) {
+    font-size: 16px;
+
+    &.font-plus {
+      font-size: calc(16px * 1.2);
+    }
+
+    &.font-minus {
+      font-size: calc(16px * 0.9);
+    }
+  }
+
+  @media (min-width: breakpoints.$lg) {
+    font-size: 18px;
+
+    &.font-plus {
+      font-size: calc(18px * 1.2);
+    }
+
+    &.font-minus {
+      font-size: calc(18px * 0.9);
+    }
+  }
+
+  @media (min-width: breakpoints.$xl) {
+    font-size: 18px;
+
+    &.font-plus {
+      font-size: calc(18px * 1.2);
+    }
+
+    &.font-minus {
+      font-size: calc(18px * 0.9);
+    }
+  }
+}
+
+.show-for-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+  padding-top: 0px;
+  color: #444;
+  font-family: "Source Sans Pro", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  img {
+    max-width: 100%;
+  }
+
+  .logo-img {
+    display: block;
+  }
+
+  .dark-logo-img {
+    display: none;
+  }
+}
+
+.section,
+.reference,
+.math {
+  scroll-margin-top: 60px;
+}
+
+p {
+  margin-bottom: revert;
+  margin-top: revert;
+  font-size: revert;
+  color: revert;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: normal;
+  font-family: "PT Serif", serif;
+  color: #444;
+}
+
+h1 {
+  font-size: 2em;
+  color: #333;
+  font-weight: 900;
+  margin: 0 0 1rem 0;
+
+  p {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+  }
+}
+
+h2 {
+  font-size: 1.7rem;
+  font-weight: 900;
+}
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+h4 {
+  font-size: 1.2rem;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 900;
+  color: #000;
+}
+
+// Emphasis styling - replace italics with color and semi-bold weight
+em {
+  font-style: normal;
+  font-weight: 550;
+  color: colors.$emphasis;
+}
+
+// Strong/bold styling - semi-bold weight with color for definitions
+strong,
+b {
+  font-weight: 550;
+  color: colors.$definition;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+a {
+  color: #0072bc;
+  text-decoration: none;
+  transition: all 0.15s linear;
+  overflow-wrap: break-word;
+}
+
+a:hover {
+  color: #004979;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #004979;
+}
+
+pre {
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+cite,
+code,
+tt {
+  font-family: "Source Code Pro", monospace;
+  letter-spacing: 0.01rem;
+  background-color: #efefef;
+  font-style: normal;
+  border: 1px dotted #cccccc;
+  border-radius: 2px;
+  padding: 0 2px;
+  font-size: 0.9rem;
+  overflow-wrap: break-word;
+}
+
+blockquote {
+  padding: 0.5rem 2rem;
+  margin: 1rem 0;
+  border-left: 5px solid #1665ad;
+
+  p {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+  }
+}

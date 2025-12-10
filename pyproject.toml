@@ -3,7 +3,7 @@ requires = ["sphinx-theme-builder >= 0.2.0a7"]
 build-backend = "sphinx_theme_builder"
 
 [tool.sphinx-theme-builder]
-node-version = "16.13.2"
+node-version = "18.18.0"
 theme-name = "quantecon_book_theme"
 additional-compiled-static-assets = [
   "locales/"
@@ -20,15 +20,14 @@ description = "A clean book theme for scientific explanations and documentation 
 dynamic = ["version"]
 readme = "README.md"
 
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
-  "pyyaml",
+  "pyyaml>=6.0",
   "sphinx>=7,<9",
-  "docutils",
-  "click",
+  "docutils>=0.20",
   "libsass~=0.23.0",
   "sphinx_book_theme~=1.1.4",
-  "beautifulsoup4",
+  "beautifulsoup4>=4.12",
 ]
 
 license = { file = "LICENSE" }
@@ -48,7 +47,7 @@ classifiers = [
 
 [project.optional-dependencies]
 code_style = [
-    "flake8<3.8.0,>=3.7.0",
+    "flake8>=7.0.0",
     "black",
     "pre-commit"
 ]

@@ -6,14 +6,25 @@
 This is a lightweight Sphinx theme designed to mimic the look-and-feel of an
 interactive book. It has the following primary features:
 
+* **[Git-based metadata](configure.html#git-based-metadata)**. Automatically display last
+  modified timestamps and interactive changelog with commit history for each page.
+* **[Collapsible stderr warnings](features/stderr_warnings.html)**. Automatically wrap verbose
+  warnings in notebook cells with an expandable interface for cleaner presentation.
 * **[Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/)**
   for visual elements and functionality.
 * **[Flexible content layout](layout)** that is inspired by beautiful online books,
   such as [the Edward Tufte CSS guide](https://edwardtufte.github.io/tufte-css/)
 * **[Visual classes designed for Jupyter Notebooks](notebooks)**. Cell inputs, outputs,
   and interactive functionality are all supported.
+* **[Configurable code syntax highlighting](configure.html#custom-code-syntax-highlighting)**.
+  Choose between custom QuantEcon styles or Pygments built-in themes.
 * **[Launch buttons for online interactivity](launch)**. For pages that are built with
   computational material, connect your site to an online BinderHub for interactive content.
+
+## Requirements
+
+- **Python 3.12** or newer
+- **Sphinx 7.0** or newer
 
 ## Get started
 
@@ -25,13 +36,11 @@ pip install quantecon-book-theme
 
 then, activate the theme in your Sphinx configuration (`conf.py`):
 
-```
-...
+```python
 html_theme = "quantecon_book_theme"
-...
 ```
 
-This will activate the Sphinx Book Theme for your documentation. Note that you may
+This will activate the Quantecon Book Theme for your documentation. Note that you may
 need to change your `html_theme_options` configuration depending on your previous
 theme. See the pages to the left for information about what you can configure with
 `quantecon-book-theme`.
@@ -45,6 +54,7 @@ theme. See the pages to the left for information about what you can configure wi
 configure
 Controlling page elements <layout>
 notebooks
+features/stderr_warnings
 launch
 contributing/index
 GitHub repository <https://github.com/quantecon/quantecon-book-theme>

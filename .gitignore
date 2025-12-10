@@ -139,3 +139,13 @@ dmypy.json
 .nodeenv/
 node_modules/
 node_modules
+
+# Playwright
+playwright-report/
+test-results/
+
+# Visual test lecture site (cloned by tox -e visual)
+lecture-python-programming.myst/
+
+# macOS visual test snapshots (tox uses macos/ dir, CI uses __snapshots__/)
+tests/visual/macos/

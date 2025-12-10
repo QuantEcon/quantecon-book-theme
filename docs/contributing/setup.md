@@ -3,48 +3,49 @@
 The following instructions will help you set up a basic development environment so that you can begin experimenting with changes.
 This covers the basics, and see the other sections of the Contributing Guide for more details.
 
+## Prerequisites
+
+This project requires both **Python** and **Node.js** for full functionality:
+
+- **Python 3.12 or newer** - For the Sphinx theme and testing
+- **Node.js 18.18.0 or newer** - For compiling SCSS/JS assets with webpack
+
 ## Set up your development environment
 
 First we'll install the necessary tools that you can use to begin making changes.
 Follow these steps:
 
-1. Get the source code of this project using git:
+1. **Get the source code** using git:
 
    ```bash
-   git clone https://github.com/executablebooks/quantecon-book-theme
+   git clone https://github.com/QuantEcon/quantecon-book-theme
    cd quantecon-book-theme
    ```
 
-2. Ensure you have Python 3.7 or newer!
-3. Install `tox`.
-   `tox` is a tool for managing virtual environments for test suites or common jobs that are run with a repository.
-   It ensures that your environment is consistent each time you build the docs or run tests.
+2. **Install Python tools** (`tox` and `pre-commit`):
 
    ```console
-   $ pip install tox
+   $ pip install tox pre-commit
    ```
-4. Install `pre-commit`.
-   We use [pre-commit](https://pre-commit.com) to ensure that the code meets certain standards any time a commit is made.
+
+3. **Install Node.js dependencies**:
 
    ```console
-   $ pip install pre-commit
+   $ npm install
    ```
 
-   Next, [follow the `pre-commit` installation instructions](https://pre-commit.com/#install).
+   This installs webpack and other build tools needed for asset compilation.
 
-   Finally, install the local dependencies for pre-commit.
-   Run the following command in the same folder as the repository:
+4. **Install pre-commit hooks**:
 
    ```console
    $ pre-commit install
    ```
 
+   This ensures code meets quality standards on every commit.
+
    :::{margin}
-   You can also run pre-commit via `tox`:
-   ```console
-   $ tox -e py38-pre-commit -- --all
-   ```
-   or manually run all `pre-commit` jobs for this repository:
+   You can manually run all `pre-commit` jobs:
 
    ```console
    $ pre-commit run --all-files
@@ -71,18 +72,24 @@ Now that you've previewed the documentation, try making changes to this theme's 
 This is an easy way to preview the effect that your changes will make.
 
 First, **make your changes in `src/quantecon_book_theme/assets/`**.
-This folder contains all of the SCSS and Javascript that are used in this site.
-For example, edit one of the `scss` files to add or modify a rule.
+This folder contains all of the SCSS and JavaScript that are used in this site.
 
-Next, **compile the changes**.
-Run the following command:
+- **SCSS files** are in `assets/styles/` - organized into modular partials
+- **JavaScript files** are in `assets/scripts/` - organized into feature modules
+
+For example, edit one of the `.scss` files to add or modify a style rule.
+
+Next, **compile the changes** using webpack:
 
 ```console
-$ tox -e compile
+$ npm run build
 ```
 
-This uses the [Sphinx Theme Builder](https://sphinx-theme-builder.readthedocs.io/) to compile our SCSS/JS files and bundle them with our theme at `src/quantecon_book_theme/theme/quantecon_book_theme/static`.
-These compiled assets are **not included** in our git repository, but they **are included** in distributions of the theme.
+This compiles SCSS to CSS and bundles JavaScript modules. The output goes to `src/quantecon_book_theme/theme/quantecon_book_theme/static/`.
+
+:::{note}
+You can also use `tox -e compile` which runs the [Sphinx Theme Builder](https://sphinx-theme-builder.readthedocs.io/), but `npm run build` is faster for quick iterations during development.
+:::
 
 Finally, **re-build the documentation** to preview your changes:
 
@@ -116,17 +123,22 @@ With this, you can modify the theme in an editor, and see how those modification
 
 Once you've made a change to the theme, you should confirm that the tests still pass, and potentially add or modify a test for your changes.
 
-To run the test suite with the default `tox` environment, simply run this command:
+To run the test suite, use `tox`:
 
 ```console
 $ tox
 ```
 
-This will run `pytest` against all of the files in `tests/` and display the result.
-You can pass arguments to the `pytest` command like so:
+This will run `pytest` against all of the files in `tests/` and display the result. Tests run against Python 3.12 and 3.13.
+
+You can pass arguments to `pytest` like so:
 
 ```console
 $ tox -- -k test_match
 ```
 
 Anything passed after `--` will be passed directly to `pytest`.
+
+:::{tip}
+See the [Testing Guide](testing.md) for detailed information about test fixtures, what each test validates, and how to write new tests.
+:::

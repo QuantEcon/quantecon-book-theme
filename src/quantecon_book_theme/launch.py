@@ -71,11 +71,19 @@ def add_hub_urls(
         #     extension = ".ipynb"
         extension = ".ipynb"  # since we have nb_repo url
 
-        # Construct a path to the file relative to the repository root
-        book_relpath = config_theme.get("path_to_docs", "").strip("/")
-        if book_relpath != "":
-            book_relpath += "/"
-        path_rel_repo = f"{book_relpath}{pagename}{extension}"
+        # Construct a path to the file relative to the notebook repository root
+        # Use nb_path_to_notebooks for notebook repo path (defaults to empty for flat repos)
+        nb_relpath = config_theme.get("nb_path_to_notebooks", "").strip("/")
+        if nb_relpath != "":
+            nb_relpath += "/"
+
+        # Strip path_to_docs from pagename since notebook repo structure may differ
+        path_to_docs = config_theme.get("path_to_docs", "").strip("/")
+        notebook_pagename = pagename
+        if path_to_docs and pagename.startswith(path_to_docs + "/"):
+            notebook_pagename = pagename[len(path_to_docs) + 1 :]
+
+        path_rel_repo = f"{nb_relpath}{notebook_pagename}{extension}"
 
         branch = _get_branch(config_theme)
         # Now build infrastructure-specific links

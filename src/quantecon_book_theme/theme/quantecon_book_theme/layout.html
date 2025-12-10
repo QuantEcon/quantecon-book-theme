@@ -1,9 +1,16 @@
 {%- extends "pydata_sphinx_theme/layout.html" %}
 
 {% block css %}
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    {# Preconnect to CDNs for faster resource loading #}
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    {# External libraries with SRI for security #}
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     {% if mathjax_version == 3 %}
         <script>
             MathJax = {
@@ -75,7 +82,7 @@
 {% block sidebarsourcelink %}{% endblock %}
 
 {% block body_tag %}
-<body{% if master_doc == pagename %} class="main-index"{% endif %}{% if theme_enable_rtl %} dir="rtl"{% endif %}>
+<body{% if master_doc == pagename %} class="main-index{% if use_pygments_style %} use-pygments-style{% endif %}"{% elif use_pygments_style %} class="use-pygments-style"{% endif %}{% if theme_enable_rtl %} dir="rtl"{% endif %}>
 {%- endblock %}
 {%- block content %}
 
@@ -154,7 +161,7 @@ a:visited {
                                 {% endif %}
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -183,10 +190,9 @@ a:visited {
 
                         <p class="qe-page__header-heading"><a href="{{ master_url }}">{{ docstitle | e }}</a></p>
 
-                        <p class="qe-page__header-subheading">{{ pagetitle | e }}</p>
-
                     </div>
-                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+
+                    <!-- Authors section -->
                     {%- if theme_authors | length > 0 %}
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
                             {% for author in theme_authors %}
@@ -203,6 +209,34 @@ a:visited {
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
                     {%- endif %}
 
+                    <!-- Last modified / Changelog dropdown -->
+                    {%- if has_git_info %}
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: {{ last_modified_date }}
+                            <span class="changelog-icon">▼</span>
+                        </button>
+                    {%- endif %}
+
+                    <!-- Changelog dropdown content -->
+                    {%- if has_git_info and changelog_entries %}
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog {% if theme_repository_url and theme_source_file %}(<a href="{{ theme_repository_url }}/commits/main/{{ theme_source_file }}">full history</a>){% endif %}</h4>
+                        <ul class="changelog-list">
+                            {% for entry in changelog_entries %}
+                            <li class="changelog-entry">
+                                {% if theme_repository_url %}
+                                <a href="{{ theme_repository_url }}/commit/{{ entry.hash }}" class="changelog-hash">{{ entry.hash }}</a>
+                                {% else %}
+                                <span class="changelog-hash">{{ entry.hash }}</span>
+                                {% endif %}
+                                <span class="changelog-author">{{ entry.author }}</span>
+                                <span class="changelog-time">{{ entry.relative_time }}</span>
+                                <span class="changelog-message">{{ entry.message }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {%- endif %}
 
                 </div> <!-- .page__header -->
 

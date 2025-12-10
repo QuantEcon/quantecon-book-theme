@@ -1,0 +1,157 @@
+/*
+-----------------------------------
+SIDEBAR STYLES
+Left navigation sidebar
+-----------------------------------
+*/
+
+@use "colors";
+@use "breakpoints";
+
+.qe-sidebar {
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  background-color: #efefef;
+  padding: 2rem;
+  margin: 0;
+  border-right: 1px solid #ccc;
+  width: 250px;
+  transform: translate3d(0px, 0px, 0px);
+  visibility: visible;
+  transition: all 0.2s ease 0s;
+  height: 100vh;
+  overflow-y: scroll;
+  position: fixed;
+  padding-top: 5rem;
+
+  @media (max-width: 1340px) {
+    box-shadow: 10px 10px 5px 9999px rgba(255, 255, 255, 0.8);
+    width: 300px;
+  }
+
+  @media (min-width: 1439px) {
+    width: 300px;
+  }
+
+  @media (min-width: 1600px) {
+    width: 350px;
+  }
+
+  &.inactive {
+    transform: translate3d(-100%, 0px, 0px);
+    visibility: visible;
+    box-shadow: none;
+  }
+
+  &__header {
+    margin: 0 0 1rem 0;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  &__nav {
+    font-size: 0.9rem;
+
+    ul {
+      list-style: none;
+      display: block;
+      margin: 0;
+      padding: 0;
+
+      ul {
+        padding-left: 1rem;
+      }
+
+      li {
+        margin: 0.25rem 0;
+        padding: 0;
+
+        a {
+          color: colors.$body;
+          opacity: 0.8;
+
+          &.active {
+            color: colors.$primary;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    /* tableofcontents directive caption option */
+    .caption-text {
+      font-weight: normal;
+      font-family: "PT Serif", serif;
+    }
+
+    .caption {
+      margin-top: 1rem;
+    }
+  }
+
+  &__footer {
+    text-align: center;
+    margin: 2rem 0 0 0;
+  }
+}
+
+.bd-sidebar .nav {
+  li > a {
+    padding: 0px;
+    font-size: 0.9rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  label {
+    display: none;
+  }
+}
+
+.bd-search {
+  background-color: #eff1f2;
+  border-bottom: 0;
+  margin: 0 -2rem 0 -2rem;
+  padding: 2rem;
+  width: calc(100% + 4rem);
+  position: relative;
+
+  .form-control {
+    display: block;
+    height: 2.75rem;
+    border: solid 1px rgba(210, 215, 217, 0.75);
+    background: #ffffff;
+    border-radius: 0.3rem;
+    width: 100%;
+  }
+
+  svg {
+    transform: scaleX(-1);
+    color: #7f888f;
+    cursor: default;
+    display: block;
+    height: 2.75rem;
+    opacity: 0.325;
+    position: absolute;
+    right: 2.75rem;
+    text-align: center;
+    top: 2rem;
+  }
+
+  .search-button__kbd-shortcut {
+    right: 3em;
+  }
+
+  i.fa-solid.fa-magnifying-glass {
+    left: 3rem;
+    bottom: 50px;
+  }
+}
+
+#search-results {
+  margin-top: 2rem;
+}

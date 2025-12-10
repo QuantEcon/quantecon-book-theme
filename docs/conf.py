@@ -58,6 +58,10 @@ html_favicon = "_static/qe-logo.png"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 nb_execution_mode = "cache"
+
+# -- Togglebutton configuration ----------------------------------------------
+togglebutton_hint = "Show"
+togglebutton_hint_hide = "Hide"
 thebe_config = {
     "repository_url": "https://github.com/binder-examples/jupyter-stacks-datascience",
     "repository_branch": "master",
@@ -83,6 +87,12 @@ html_theme_options = {
     # "single_page": True
     # "extra_footer": "<a href='https://google.com'>Test</a>",
     # "extra_navbar": "<a href='https://google.com'>Test</a>",
+    # Uncomment to test Pygments built-in styles:
+    # "qetheme_code_style": False,
 }
+
+# Uncomment to test different Pygments styles:
+# pygments_style = "monokai"
+
 bibtex_bibfiles = ["references.bib"]
 bibtex_reference_style = "author_year"
