@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.1] - 2025-12-11
+
+### Fixed
+- **Notebook launch URLs with `path_to_docs`** (#345)
+  - Fixed bug where `path_to_docs` prefix was incorrectly included in notebook URLs
+  - When docs are in a subdirectory (e.g., `lectures/`) but notebooks are in a flat repo structure, launch buttons (Colab, JupyterHub, Binder) now generate correct URLs
+  - Added comprehensive test coverage including backward compatibility tests
+- **Visual regression test stability** (#350)
+  - Fixed flaky MathJax visual regression test by using `maxDiffPixels` instead of `maxDiffPixelRatio`
+  - Handles minor rendering variations across different environments
+
+### Changed
+- **Dependency updates** (Dependabot)
+  - Bump actions/github-script from 7 to 8 (#348)
+  - Bump actions/upload-artifact from 4 to 5 (#347)
+  - Bump actions/setup-node from 4 to 6 (#346)
+
 ## [0.15.0] - 2025-12-08
 
 ### Changed
@@ -153,7 +170,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.1...HEAD
+[0.15.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.13.2...v0.14.0
 [0.13.2]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.13.1...v0.13.2
