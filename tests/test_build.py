@@ -628,3 +628,27 @@ def test_add_hub_urls_path_to_docs_stripping():
     assert "notebooks/" in context["colab_url"]
     expected_url = "https://colab.research.google.com/github/TestOrg/test-notebooks/blob/main/notebooks/example.ipynb"
     assert context["colab_url"] == expected_url
+
+    # Test backward compatibility: pagename doesn't start with path_to_docs prefix
+    # This ensures existing configurations without the prefix in pagename still work
+    context = {}
+    app.config = {
+        "html_theme_options": {
+            "nb_repository_url": "https://github.com/QuantEcon/lecture-python-intro.notebooks",
+            "nb_branch": "main",
+            "path_to_docs": "lectures",  # path_to_docs is set but...
+            # nb_path_to_notebooks not set (flat notebook repo)
+            "launch_buttons": {
+                "colab_url": "https://colab.research.google.com",
+            },
+        }
+    }
+
+    # pagename does NOT include "lectures/" prefix (typical when building from within lectures/)
+    app.env.metadata = {"intro": {"kernelspec": {"name": "python3"}}}
+    add_hub_urls(app, "intro", "template", context, Mock())
+
+    # Verify URL is unchanged - pagename used as-is since it doesn't match prefix
+    assert "colab_url" in context
+    expected_url = "https://colab.research.google.com/github/QuantEcon/lecture-python-intro.notebooks/blob/main/intro.ipynb"
+    assert context["colab_url"] == expected_url
