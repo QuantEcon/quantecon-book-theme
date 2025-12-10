@@ -76,7 +76,14 @@ def add_hub_urls(
         nb_relpath = config_theme.get("nb_path_to_notebooks", "").strip("/")
         if nb_relpath != "":
             nb_relpath += "/"
-        path_rel_repo = f"{nb_relpath}{pagename}{extension}"
+
+        # Strip path_to_docs from pagename since notebook repo structure may differ
+        path_to_docs = config_theme.get("path_to_docs", "").strip("/")
+        notebook_pagename = pagename
+        if path_to_docs and pagename.startswith(path_to_docs + "/"):
+            notebook_pagename = pagename[len(path_to_docs) + 1 :]
+
+        path_rel_repo = f"{nb_relpath}{notebook_pagename}{extension}"
 
         branch = _get_branch(config_theme)
         # Now build infrastructure-specific links
