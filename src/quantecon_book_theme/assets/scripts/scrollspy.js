@@ -1,6 +1,6 @@
 /**
  * ScrollSpy Module
- * 
+ *
  * Tracks scroll position and highlights the active section in the TOC.
  * Based on: https://github.com/r3plica/Scrollspy
  */
