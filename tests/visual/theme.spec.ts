@@ -115,10 +115,11 @@ test.describe("Theme Features", () => {
 
     const mathBlock = page.locator(".MathJax").first();
     if (await mathBlock.isVisible()) {
-      // MathJax rendering can vary slightly between runs due to font loading
-      // and rendering differences, so use a more lenient threshold
+      // MathJax rendering can vary in size and appearance between runs due to
+      // font loading, rendering engine differences, and timing. Use maxDiffPixels
+      // to allow for size variations while still catching major regressions.
       await expect(mathBlock).toHaveScreenshot("math-equation.png", {
-        maxDiffPixelRatio: 0.2,
+        maxDiffPixels: 200,
       });
     }
   });
