@@ -81,6 +81,7 @@ jobs:
         run: exit 1
 
       - name: Preview Deploy to Netlify
+        if: always() && github.event_name == 'pull_request'
         uses: nwtgck/actions-netlify@v3.0
         with:
           publish-dir: 'lecture-python-programming.myst/_build/html/'

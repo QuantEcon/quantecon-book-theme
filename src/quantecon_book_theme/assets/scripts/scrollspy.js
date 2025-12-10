@@ -9,25 +9,20 @@
  * Initialize ScrollSpy for the table of contents
  */
 export function initScrollSpy() {
+  // Check if jQuery is available and sticky TOC exists
+  if (!window.jQuery) {
+    return;
+  }
+
   const tocContainer = document.querySelector(".sticky #bd-toc-nav ul");
   if (!tocContainer) {
     return; // Only activate if sticky TOC is enabled
   }
 
-  // Use jQuery scrollspy plugin
-  if (window.jQuery) {
-    jQuery(tocContainer).scrollspy({
-      activeClass: "active",
-      offset: 100,
-    });
-  }
-}
-
-/**
- * ScrollSpy jQuery Plugin
- * Minified version from https://github.com/r3plica/Scrollspy
- */
-!(function ($, window, document, undefined) {
+  // Define the scrollspy jQuery plugin if not already defined
+  if (!jQuery.fn.scrollspy) {
+    // ScrollSpy jQuery Plugin - Minified version from https://github.com/r3plica/Scrollspy
+    (function ($, window, document, undefined) {
   $.fn.extend({
     scrollspy: function (options) {
       var defaults = {
@@ -137,4 +132,12 @@ export function initScrollSpy() {
       });
     },
   });
-})(jQuery, window, document);
+    })(jQuery, window, document);
+  }
+
+  // Initialize scrollspy on the TOC container
+  jQuery(tocContainer).scrollspy({
+    activeClass: "active",
+    offset: 100,
+  });
+}
