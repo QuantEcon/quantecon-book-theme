@@ -101,8 +101,9 @@ Main page structure and components
       }
     }
 
-    // Sticky mode: auto-expand/collapse subsections
-    &.sticky &-nav {
+    // Auto-expand mode: collapse/expand subsections based on scroll position
+    // Only applies when data-autoexpand="true" is set on the sticky container
+    .inner.sticky[data-autoexpand="true"] &-nav {
       // Hide nested subsections by default
       ul ul {
         display: none;

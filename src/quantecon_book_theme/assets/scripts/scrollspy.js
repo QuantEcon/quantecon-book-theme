@@ -11,10 +11,18 @@
  */
 export function initScrollSpy() {
   // Only initialize if sticky TOC is enabled
-  const stickyToc = document.querySelector(".inner.sticky #bd-toc-nav");
+  const stickyContainer = document.querySelector(".inner.sticky");
+  if (!stickyContainer) {
+    return;
+  }
+
+  const stickyToc = stickyContainer.querySelector("#bd-toc-nav");
   if (!stickyToc) {
     return;
   }
+
+  // Check if autoexpand is enabled via data attribute
+  const autoExpandEnabled = stickyContainer.dataset.autoexpand === "true";
 
   const tocLinks = stickyToc.querySelectorAll("a");
   if (tocLinks.length === 0) {
@@ -116,46 +124,53 @@ export function initScrollSpy() {
       activeSection = sections[sections.length - 1];
     }
 
-    // First, clear all active and expanded classes
+    // First, clear all active classes
     sections.forEach((section) => {
       section.listItem.classList.remove("active");
       section.link.classList.remove("active");
     });
 
-    const allListItems = stickyToc.querySelectorAll("li");
-    allListItems.forEach((li) => {
-      li.classList.remove("expanded");
-    });
+    // Clear expanded classes only if autoexpand is enabled
+    if (autoExpandEnabled) {
+      const allListItems = stickyToc.querySelectorAll("li");
+      allListItems.forEach((li) => {
+        li.classList.remove("expanded");
+      });
+    }
 
     // Now set active class on current section
     if (activeSection) {
       activeSection.listItem.classList.add("active");
       activeSection.link.classList.add("active");
 
-      // Expand the top-level parent and ALL its descendants with children
-      // This keeps the entire section tree visible while within that section
-      if (activeSection.topLevelItem) {
-        activeSection.topLevelItem.classList.add("expanded");
+      // Only do auto-expand logic if the feature is enabled
+      if (autoExpandEnabled) {
+        // Expand the top-level parent and ALL its descendants with children
+        // This keeps the entire section tree visible while within that section
+        if (activeSection.topLevelItem) {
+          activeSection.topLevelItem.classList.add("expanded");
 
-        // Expand all li elements within this top-level section that have nested ul
-        const allNestedItems = activeSection.topLevelItem.querySelectorAll("li");
-        allNestedItems.forEach((li) => {
-          // Check if this li has a direct child ul (has subsections)
-          if (li.querySelector(":scope > ul")) {
-            li.classList.add("expanded");
-          }
-        });
-      }
-
-      // Also expand ancestors up to the top-level (in case of deeply nested)
-      let parent = activeSection.listItem.parentElement;
-      while (parent) {
-        if (parent.tagName === "LI") {
-          parent.classList.add("expanded");
+          // Expand all li elements within this top-level section that have nested ul
+          const allNestedItems =
+            activeSection.topLevelItem.querySelectorAll("li");
+          allNestedItems.forEach((li) => {
+            // Check if this li has a direct child ul (has subsections)
+            if (li.querySelector(":scope > ul")) {
+              li.classList.add("expanded");
+            }
+          });
         }
-        parent = parent.parentElement;
-        if (parent && parent.id === "bd-toc-nav") {
-          break;
+
+        // Also expand ancestors up to the top-level (in case of deeply nested)
+        let parent = activeSection.listItem.parentElement;
+        while (parent) {
+          if (parent.tagName === "LI") {
+            parent.classList.add("expanded");
+          }
+          parent = parent.parentElement;
+          if (parent && parent.id === "bd-toc-nav") {
+            break;
+          }
         }
       }
     }
