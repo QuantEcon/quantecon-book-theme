@@ -39,6 +39,8 @@ Main page structure and components
     top: 0;
     margin: 0;
     width: 200px;
+    // Set min-height to allow content to grow but still enable sticky positioning
+    min-height: 100vh;
 
     @media (max-width: 1350px) {
       display: none;
@@ -48,6 +50,8 @@ Main page structure and components
       &.sticky {
         position: sticky;
         top: 7rem;
+        max-height: calc(100vh - 8rem);
+        overflow-y: auto;
       }
     }
 
