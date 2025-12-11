@@ -89,39 +89,42 @@ export function initScrollSpy() {
       activeSection = sections[sections.length - 1];
     }
 
-    // Update active classes
+    // First, clear all active and expanded classes
     sections.forEach((section) => {
       const listItem = section.link.parentElement;
-      if (section === activeSection) {
-        listItem.classList.add("active");
-        section.link.classList.add("active");
-
-        // Expand parent sections to show this item
-        let parent = listItem.parentElement;
-        while (parent) {
-          if (parent.tagName === "LI") {
-            parent.classList.add("expanded");
-          }
-          parent = parent.parentElement;
-          // Stop at the nav element
-          if (parent && parent.id === "bd-toc-nav") {
-            break;
-          }
-        }
-      } else {
-        listItem.classList.remove("active");
-        section.link.classList.remove("active");
-      }
+      listItem.classList.remove("active");
+      section.link.classList.remove("active");
     });
 
-    // Clean up expanded class from items that don't have active descendants
     const allListItems = stickyToc.querySelectorAll("li");
     allListItems.forEach((li) => {
-      // If this item doesn't contain the active item, remove expanded class
-      if (!li.querySelector(".active") && !li.classList.contains("active")) {
-        li.classList.remove("expanded");
-      }
+      li.classList.remove("expanded");
     });
+
+    // Now set active class on current section and expand all ancestors
+    if (activeSection) {
+      const listItem = activeSection.link.parentElement;
+      listItem.classList.add("active");
+      activeSection.link.classList.add("active");
+
+      // Expand all ancestor li elements
+      let parent = listItem.parentElement;
+      while (parent) {
+        if (parent.tagName === "LI") {
+          parent.classList.add("expanded");
+        }
+        parent = parent.parentElement;
+        if (parent && parent.id === "bd-toc-nav") {
+          break;
+        }
+      }
+
+      // Also expand the active item itself if it has children
+      // This keeps subsections visible when we're on a parent heading
+      if (listItem.querySelector("ul")) {
+        listItem.classList.add("expanded");
+      }
+    }
   }
 
   // Throttle scroll events for better performance
