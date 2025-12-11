@@ -148,26 +148,27 @@ export function initScrollSpy() {
         // Strategy: Expand all ancestors of the active item so it's visible,
         // AND expand the active item itself if it has children (to show its subsections)
 
-        // 1. Expand all ancestors from the active item up to the root
-        let current = activeSection.listItem;
-        while (current) {
-          if (current.tagName === "LI") {
-            // If this li has a nested ul, mark it as expanded
-            if (current.querySelector(":scope > ul")) {
-              current.classList.add("expanded");
-            }
-          }
-          // Move up to parent
-          current = current.parentElement;
-          if (current) {
-            current = current.closest("li");
-          }
-        }
-
-        // 2. Also expand the active item itself if it has children
+        // 1. First, expand the active item itself if it has children
         // This ensures when you're on "4.2 Function Basics", you see 4.2.1, 4.2.2, etc.
         if (activeSection.listItem.querySelector(":scope > ul")) {
           activeSection.listItem.classList.add("expanded");
+        }
+
+        // 2. Expand all ancestors from the active item up to the root
+        // Start from the parent of the active item's li
+        let parentUl = activeSection.listItem.parentElement;
+        while (parentUl) {
+          // parentUl is a <ul>, find its parent <li>
+          let parentLi = parentUl.parentElement;
+          if (parentLi && parentLi.tagName === "LI") {
+            // This li contains a ul (which contains our active item), so expand it
+            parentLi.classList.add("expanded");
+            // Move up to the next level
+            parentUl = parentLi.parentElement;
+          } else {
+            // We've reached the top (nav element or similar)
+            break;
+          }
         }
       }
     }
