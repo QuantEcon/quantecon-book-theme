@@ -13,16 +13,20 @@ export function initScrollSpy() {
   // Only initialize if sticky TOC is enabled
   const stickyContainer = document.querySelector(".inner.sticky");
   if (!stickyContainer) {
+    console.log("ScrollSpy: No sticky container found");
     return;
   }
 
   const stickyToc = stickyContainer.querySelector("#bd-toc-nav");
   if (!stickyToc) {
+    console.log("ScrollSpy: No TOC nav found");
     return;
   }
 
   // Check if autoexpand is enabled via data attribute
   const autoExpandEnabled = stickyContainer.dataset.autoexpand === "true";
+  console.log("ScrollSpy initialized, autoExpandEnabled:", autoExpandEnabled);
+  console.log("data-autoexpand attribute:", stickyContainer.dataset.autoexpand);
 
   const tocLinks = stickyToc.querySelectorAll("a");
   if (tocLinks.length === 0) {
