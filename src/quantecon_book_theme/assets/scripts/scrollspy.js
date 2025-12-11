@@ -37,9 +37,19 @@ export function initScrollSpy() {
       if (targetElement) {
         const listItem = link.parentElement;
         // Find which top-level item this link belongs to
-        let topLevelParent = listItem;
-        while (topLevelParent && !topLevelItems.includes(topLevelParent)) {
-          topLevelParent = topLevelParent.parentElement?.closest("li");
+        // Traverse up through ancestors to find a top-level item
+        let topLevelParent = null;
+        let current = listItem;
+        while (current) {
+          if (topLevelItems.includes(current)) {
+            topLevelParent = current;
+            break;
+          }
+          // Move to parent li
+          current = current.parentElement;
+          if (current) {
+            current = current.closest("li");
+          }
         }
 
         sections.push({
@@ -128,10 +138,12 @@ export function initScrollSpy() {
         activeSection.topLevelItem.classList.add("expanded");
 
         // Expand all li elements within this top-level section that have nested ul
-        const nestedItemsWithChildren =
-          activeSection.topLevelItem.querySelectorAll("li:has(ul)");
-        nestedItemsWithChildren.forEach((li) => {
-          li.classList.add("expanded");
+        const allNestedItems = activeSection.topLevelItem.querySelectorAll("li");
+        allNestedItems.forEach((li) => {
+          // Check if this li has a direct child ul (has subsections)
+          if (li.querySelector(":scope > ul")) {
+            li.classList.add("expanded");
+          }
         });
       }
 
