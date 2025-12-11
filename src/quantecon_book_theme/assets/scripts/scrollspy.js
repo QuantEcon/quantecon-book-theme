@@ -95,9 +95,31 @@ export function initScrollSpy() {
       if (section === activeSection) {
         listItem.classList.add("active");
         section.link.classList.add("active");
+
+        // Expand parent sections to show this item
+        let parent = listItem.parentElement;
+        while (parent) {
+          if (parent.tagName === "LI") {
+            parent.classList.add("expanded");
+          }
+          parent = parent.parentElement;
+          // Stop at the nav element
+          if (parent && parent.id === "bd-toc-nav") {
+            break;
+          }
+        }
       } else {
         listItem.classList.remove("active");
         section.link.classList.remove("active");
+      }
+    });
+
+    // Clean up expanded class from items that don't have active descendants
+    const allListItems = stickyToc.querySelectorAll("li");
+    allListItems.forEach((li) => {
+      // If this item doesn't contain the active item, remove expanded class
+      if (!li.querySelector(".active") && !li.classList.contains("active")) {
+        li.classList.remove("expanded");
       }
     });
   }

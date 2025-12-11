@@ -101,6 +101,32 @@ Main page structure and components
       }
     }
 
+    // Sticky mode: auto-expand/collapse subsections
+    &.sticky &-nav {
+      // Hide nested subsections by default
+      ul ul {
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.2s ease;
+        opacity: 0;
+      }
+
+      // Show subsections when parent li has expanded class
+      li.expanded > ul {
+        display: block;
+        max-height: 500px;
+        opacity: 1;
+      }
+
+      // Also show when directly active
+      li.active > ul {
+        display: block;
+        max-height: 500px;
+        opacity: 1;
+      }
+    }
+
     // Discrete "Back to top" button for sticky mode
     .back-to-top-btn {
       display: none;
