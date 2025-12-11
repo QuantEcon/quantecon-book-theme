@@ -177,7 +177,12 @@ a:visited {
                                     {{ prev_title or prev.title }}</a></p>
                             {%- endif %}
                             {% endmacro %}
+                            {% if theme_sticky_contents is defined and theme_sticky_contents is sameas true %}
+                            {# Back to top is handled by JavaScript in sticky mode #}
+                            <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                            {% else %}
                             <p><a href="#top"><strong>Back to top</strong></a></p>
+                            {% endif %}
                         </div>
 
                     </div>

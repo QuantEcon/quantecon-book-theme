@@ -7,6 +7,7 @@ Main page structure and components
 
 @use "colors";
 @use "breakpoints";
+@use "sass:color";
 
 .qe-wrapper {
   margin: 0 0 0 0;
@@ -97,6 +98,38 @@ Main page structure and components
             opacity: 1;
           }
         }
+      }
+    }
+
+    // Discrete "Back to top" button for sticky mode
+    .back-to-top-btn {
+      display: none;
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 1rem;
+      background-color: colors.$primary;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(10px);
+
+      &:hover {
+        background-color: color.adjust(colors.$primary, $lightness: -10%);
+        color: white;
+        text-decoration: none;
+      }
+
+      &.visible {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
       }
 
       .logo {

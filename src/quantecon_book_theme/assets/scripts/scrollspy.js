@@ -46,6 +46,11 @@ export function initScrollSpy() {
   // Offset from top of viewport to consider a section "active"
   const OFFSET = 120;
 
+  // Get the back-to-top button if it exists
+  const backToTopBtn = document.querySelector(".back-to-top-btn");
+  // Scroll threshold before showing the back-to-top button
+  const BACK_TO_TOP_THRESHOLD = 300;
+
   /**
    * Update active state based on current scroll position
    */
@@ -53,6 +58,15 @@ export function initScrollSpy() {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const viewportHeight = window.innerHeight;
     let activeSection = null;
+
+    // Show/hide back-to-top button based on scroll position
+    if (backToTopBtn) {
+      if (scrollTop > BACK_TO_TOP_THRESHOLD) {
+        backToTopBtn.classList.add("visible");
+      } else {
+        backToTopBtn.classList.remove("visible");
+      }
+    }
 
     // Find the section that is currently in view
     // We iterate through sections and find the last one whose top is above the threshold
