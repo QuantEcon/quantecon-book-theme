@@ -45,8 +45,18 @@ Main page structure and components
       display: none;
     }
 
-    .inner {
+    // Non-sticky default: inner fills container height
+    .inner:not(.sticky) {
       height: 100%;
+    }
+
+    // Sticky mode: fixed position TOC that stays in viewport
+    .inner.sticky {
+      position: fixed;
+      top: 7rem;
+      width: 200px;
+      max-height: calc(100vh - 8rem);
+      overflow-y: auto;
     }
 
     &-header {
@@ -78,6 +88,13 @@ Main page structure and components
               color: colors.$primary;
               opacity: 1;
             }
+          }
+
+          // Active section highlighting for sticky TOC
+          &.active > a {
+            font-weight: bold;
+            color: colors.$primary;
+            opacity: 1;
           }
         }
       }
