@@ -13,20 +13,16 @@ export function initScrollSpy() {
   // Only initialize if sticky TOC is enabled
   const stickyContainer = document.querySelector(".inner.sticky");
   if (!stickyContainer) {
-    console.log("ScrollSpy: No sticky container found");
     return;
   }
 
   const stickyToc = stickyContainer.querySelector("#bd-toc-nav");
   if (!stickyToc) {
-    console.log("ScrollSpy: No TOC nav found");
     return;
   }
 
   // Check if autoexpand is enabled via data attribute
   const autoExpandEnabled = stickyContainer.dataset.autoexpand === "true";
-  console.log("ScrollSpy initialized, autoExpandEnabled:", autoExpandEnabled);
-  console.log("data-autoexpand attribute:", stickyContainer.dataset.autoexpand);
 
   const tocLinks = stickyToc.querySelectorAll("a");
   if (tocLinks.length === 0) {
@@ -152,34 +148,25 @@ export function initScrollSpy() {
         // Strategy: Expand all ancestors of the active item so it's visible,
         // AND expand the active item itself if it has children (to show its subsections)
 
-        // Debug logging
-        console.log("Active section:", activeSection.id);
-        console.log("Active listItem:", activeSection.listItem);
-
         // 1. First, expand the active item itself if it has children
         // This ensures when you're on "4.2 Function Basics", you see 4.2.1, 4.2.2, etc.
         if (activeSection.listItem.querySelector(":scope > ul")) {
           activeSection.listItem.classList.add("expanded");
-          console.log("Expanded active item (has children)");
         }
 
         // 2. Expand all ancestors from the active item up to the root
         // Start from the parent of the active item's li
         let parentUl = activeSection.listItem.parentElement;
-        console.log("Starting parent traversal from:", parentUl);
         while (parentUl) {
           // parentUl is a <ul>, find its parent <li>
           let parentLi = parentUl.parentElement;
-          console.log("parentLi:", parentLi, "tagName:", parentLi?.tagName);
           if (parentLi && parentLi.tagName === "LI") {
             // This li contains a ul (which contains our active item), so expand it
             parentLi.classList.add("expanded");
-            console.log("Expanded parent li:", parentLi);
             // Move up to the next level
             parentUl = parentLi.parentElement;
           } else {
             // We've reached the top (nav element or similar)
-            console.log("Reached top, breaking");
             break;
           }
         }

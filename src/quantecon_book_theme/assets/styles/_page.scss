@@ -128,6 +128,15 @@ Main page structure and components
       }
     }
 
+    // No auto-expand mode: only show top-level section names
+    // Subsections are permanently hidden, active section is highlighted with bold
+    .inner.sticky[data-autoexpand="false"] &-nav {
+      // Hide all nested subsections permanently
+      ul ul {
+        display: none;
+      }
+    }
+
     // Discrete "Back to top" button for sticky mode
     .back-to-top-btn {
       display: none;
