@@ -145,32 +145,29 @@ export function initScrollSpy() {
 
       // Only do auto-expand logic if the feature is enabled
       if (autoExpandEnabled) {
-        // Expand the top-level parent and ALL its descendants with children
-        // This keeps the entire section tree visible while within that section
-        if (activeSection.topLevelItem) {
-          activeSection.topLevelItem.classList.add("expanded");
+        // Strategy: Expand all ancestors of the active item so it's visible,
+        // AND expand the active item itself if it has children (to show its subsections)
 
-          // Expand all li elements within this top-level section that have nested ul
-          const allNestedItems =
-            activeSection.topLevelItem.querySelectorAll("li");
-          allNestedItems.forEach((li) => {
-            // Check if this li has a direct child ul (has subsections)
-            if (li.querySelector(":scope > ul")) {
-              li.classList.add("expanded");
+        // 1. Expand all ancestors from the active item up to the root
+        let current = activeSection.listItem;
+        while (current) {
+          if (current.tagName === "LI") {
+            // If this li has a nested ul, mark it as expanded
+            if (current.querySelector(":scope > ul")) {
+              current.classList.add("expanded");
             }
-          });
+          }
+          // Move up to parent
+          current = current.parentElement;
+          if (current) {
+            current = current.closest("li");
+          }
         }
 
-        // Also expand ancestors up to the top-level (in case of deeply nested)
-        let parent = activeSection.listItem.parentElement;
-        while (parent) {
-          if (parent.tagName === "LI") {
-            parent.classList.add("expanded");
-          }
-          parent = parent.parentElement;
-          if (parent && parent.id === "bd-toc-nav") {
-            break;
-          }
+        // 2. Also expand the active item itself if it has children
+        // This ensures when you're on "4.2 Function Basics", you see 4.2.1, 4.2.2, etc.
+        if (activeSection.listItem.querySelector(":scope > ul")) {
+          activeSection.listItem.classList.add("expanded");
         }
       }
     }
