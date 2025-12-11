@@ -131,8 +131,8 @@ a:visited {
 
                 <div class="qe-page__toc">
 
-                    {% if theme_sticky_contents is defined and theme_sticky_contents is sameas true %}
-                    <div class="inner sticky" data-autoexpand="{% if theme_contents_autoexpand is defined and theme_contents_autoexpand is sameas true %}true{% else %}false{% endif %}">
+                    {% if theme_sticky_contents is defined and (theme_sticky_contents is sameas true or theme_sticky_contents == "True" or theme_sticky_contents == "true") %}
+                    <div class="inner sticky" data-autoexpand="{% if theme_contents_autoexpand is defined and (theme_contents_autoexpand is sameas true or theme_contents_autoexpand == 'True' or theme_contents_autoexpand == 'true') %}true{% else %}false{% endif %}">
                     {%- else %}
                     <div class="inner">
                     {%- endif %}
@@ -177,7 +177,7 @@ a:visited {
                                     {{ prev_title or prev.title }}</a></p>
                             {%- endif %}
                             {% endmacro %}
-                            {% if theme_sticky_contents is defined and theme_sticky_contents is sameas true %}
+                            {% if theme_sticky_contents is defined and (theme_sticky_contents is sameas true or theme_sticky_contents == "True" or theme_sticky_contents == "true") %}
                             {# Back to top is handled by JavaScript in sticky mode #}
                             <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
                             {% else %}
