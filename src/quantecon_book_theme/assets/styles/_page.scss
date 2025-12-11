@@ -108,21 +108,19 @@ Main page structure and components
       bottom: 2rem;
       right: 2rem;
       padding: 0.5rem 1rem;
-      background-color: colors.$primary;
-      color: white;
+      background-color: transparent;
+      color: colors.$primary;
       text-decoration: none;
       border-radius: 4px;
       font-size: 0.85rem;
       font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
       z-index: 100;
       opacity: 0;
       transform: translateY(10px);
 
       &:hover {
-        background-color: color.adjust(colors.$primary, $lightness: -10%);
-        color: white;
+        color: color.adjust(colors.$primary, $lightness: -15%);
         text-decoration: none;
       }
 
