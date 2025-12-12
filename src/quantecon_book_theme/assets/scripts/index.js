@@ -17,6 +17,7 @@ import { initCollapsibleCode, initTableContainers } from "./code-blocks.js";
 import { initPopups, initLauncherSettings } from "./popups.js";
 import { initPageHeader, initChangelog } from "./page-header.js";
 import { initStderrWarnings } from "./stderr-warnings.js";
+import { initScrollSpy } from "./scrollspy.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   // Load feather icon set
@@ -46,4 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize stderr warnings
   initStderrWarnings();
+
+  // Initialize sticky TOC scroll tracking
+  initScrollSpy();
 });
