@@ -178,14 +178,17 @@ a:visited {
                             {%- endif %}
                             {% endmacro %}
                             {% if theme_sticky_contents is defined and (theme_sticky_contents is sameas true or theme_sticky_contents == "True" or theme_sticky_contents == "true") %}
-                            {# Back to top is handled by JavaScript in sticky mode #}
-                            <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                            {# Back to top button is placed outside inner container and handled by JavaScript #}
                             {% else %}
                             <p><a href="#top"><strong>Back to top</strong></a></p>
                             {% endif %}
                         </div>
 
                     </div>
+
+                    {% if theme_sticky_contents is defined and (theme_sticky_contents is sameas true or theme_sticky_contents == "True" or theme_sticky_contents == "true") %}
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    {% endif %}
 
                 </div>
 

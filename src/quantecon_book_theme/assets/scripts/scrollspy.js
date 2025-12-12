@@ -140,8 +140,18 @@ export function initScrollSpy() {
 
     // Now set active class on current section
     if (activeSection) {
-      activeSection.listItem.classList.add("active");
-      activeSection.link.classList.add("active");
+      // When autoexpand is disabled, highlight the top-level parent instead
+      // This keeps the visible section highlighted even when scrolling through subsections
+      if (!autoExpandEnabled && activeSection.topLevelItem) {
+        const topLevelLink = activeSection.topLevelItem.querySelector(":scope > a");
+        activeSection.topLevelItem.classList.add("active");
+        if (topLevelLink) {
+          topLevelLink.classList.add("active");
+        }
+      } else {
+        activeSection.listItem.classList.add("active");
+        activeSection.link.classList.add("active");
+      }
 
       // Only do auto-expand logic if the feature is enabled
       if (autoExpandEnabled) {
