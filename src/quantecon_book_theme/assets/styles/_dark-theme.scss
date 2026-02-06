@@ -23,12 +23,12 @@ body.dark-theme {
 
   // Lighter colors for emphasis and strong in dark mode
   em {
-    color: #66bb6a; // Lighter green for dark mode
+    color: var(--qe-emphasis-color, #66bb6a); // Lighter green for dark mode
   }
 
   strong,
   b {
-    color: #cd853f; // Lighter brown for dark mode
+    color: var(--qe-definition-color, #cd853f); // Lighter brown for dark mode
   }
 
   .qe-toolbar__inner > ul > li > a,

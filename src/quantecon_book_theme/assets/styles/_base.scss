@@ -151,14 +151,14 @@ h4 {
 em {
   font-style: normal;
   font-weight: 550;
-  color: colors.$emphasis;
+  color: var(--qe-emphasis-color, colors.$emphasis);
 }
 
 // Strong/bold styling - semi-bold weight with color for definitions
 strong,
 b {
   font-weight: 550;
-  color: colors.$definition;
+  color: var(--qe-definition-color, colors.$definition);
 }
 
 li {

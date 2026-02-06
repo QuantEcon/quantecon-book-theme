@@ -323,3 +323,44 @@ This is a collapsible note that will show "Show" when collapsed and "Hide" when 
 ```{toggle}
 This is a toggle directive that will use the configured button text.
 ```
+
+## Customizing Emphasis and Definition Colors
+
+The theme applies custom colors to emphasis (italic) and bold/strong text. By default:
+
+- **Emphasis** (`em`): Green (`#2d9f42`) in light mode, lighter green (`#66bb6a`) in dark mode
+- **Bold/Strong** (`strong`, `b`): Brown (`#8b4513`) in light mode, lighter brown (`#cd853f`) in dark mode
+
+You can override these colors using `html_theme_options`:
+
+```python
+html_theme_options = {
+    ...
+    "emphasis_color": "#1a73e8",
+    "emphasis_color_dark": "#8ab4f8",
+    "definition_color": "#d93025",
+    "definition_color_dark": "#f28b82",
+    ...
+}
+```
+
+For Jupyter Book projects, add to your `_config.yml`:
+
+```yaml
+sphinx:
+  config:
+    html_theme_options:
+      emphasis_color: "#1a73e8"
+      emphasis_color_dark: "#8ab4f8"
+      definition_color: "#d93025"
+      definition_color_dark: "#f28b82"
+```
+
+| Option | Description | Default |
+|---|---|---|
+| `emphasis_color` | Color for `em` tags in light mode | `#2d9f42` (green) |
+| `emphasis_color_dark` | Color for `em` tags in dark mode | `#66bb6a` (light green) |
+| `definition_color` | Color for `strong`/`b` tags in light mode | `#8b4513` (brown) |
+| `definition_color_dark` | Color for `strong`/`b` tags in dark mode | `#cd853f` (peru) |
+
+Any option left empty will use the theme's built-in default color.
