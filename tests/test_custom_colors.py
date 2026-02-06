@@ -7,9 +7,12 @@ Verifies that:
 - CSS custom properties appear in compiled CSS output
 - Layout template injects custom color styles when options are set
 - Definition color targets dl dt elements and falls back to strong color
+- Color values are validated against safe CSS patterns
 """
 
 from pathlib import Path
+
+from quantecon_book_theme import _CSS_COLOR_RE
 
 
 # Paths
@@ -261,3 +264,63 @@ class TestCustomColorLayoutTemplate:
         """Layout template should set --qe-definition-color for dark mode."""
         content = self._read_layout()
         assert "--qe-definition-color: {{ theme_definition_color_dark }}" in content
+
+
+class TestColorValueValidation:
+    """Test that CSS color values are validated against safe patterns."""
+
+    def test_hex_3_digit(self):
+        """#RGB hex colors should be accepted."""
+        assert _CSS_COLOR_RE.match("#f00")
+
+    def test_hex_6_digit(self):
+        """#RRGGBB hex colors should be accepted."""
+        assert _CSS_COLOR_RE.match("#ff0000")
+
+    def test_hex_8_digit(self):
+        """#RRGGBBAA hex colors should be accepted."""
+        assert _CSS_COLOR_RE.match("#ff000080")
+
+    def test_named_color(self):
+        """Named CSS colors should be accepted."""
+        assert _CSS_COLOR_RE.match("red")
+
+    def test_named_color_camelcase(self):
+        """CamelCase named CSS colors should be accepted."""
+        assert _CSS_COLOR_RE.match("DarkSlateGray")
+
+    def test_rgb_function(self):
+        """rgb() function should be accepted."""
+        assert _CSS_COLOR_RE.match("rgb(255, 0, 0)")
+
+    def test_rgba_function(self):
+        """rgba() function should be accepted."""
+        assert _CSS_COLOR_RE.match("rgba(255, 0, 0, 0.5)")
+
+    def test_hsl_function(self):
+        """hsl() function should be accepted."""
+        assert _CSS_COLOR_RE.match("hsl(0, 100%, 50%)")
+
+    def test_hsla_function(self):
+        """hsla() function should be accepted."""
+        assert _CSS_COLOR_RE.match("hsla(0, 100%, 50%, 0.5)")
+
+    def test_rejects_css_injection(self):
+        """CSS injection attempts should be rejected."""
+        assert not _CSS_COLOR_RE.match("red; } body { display: none; } /*")
+
+    def test_rejects_semicolon(self):
+        """Values with semicolons should be rejected."""
+        assert not _CSS_COLOR_RE.match("#ff0000; color: red")
+
+    def test_rejects_braces(self):
+        """Values with braces should be rejected."""
+        assert not _CSS_COLOR_RE.match("red } .evil { color: blue")
+
+    def test_rejects_url(self):
+        """url() values should be rejected."""
+        assert not _CSS_COLOR_RE.match("url(evil.com)")
+
+    def test_rejects_expression(self):
+        """expression() values should be rejected."""
+        assert not _CSS_COLOR_RE.match("expression(alert(1))")

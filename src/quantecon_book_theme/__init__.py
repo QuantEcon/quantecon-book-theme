@@ -3,6 +3,7 @@
 from pathlib import Path
 import os
 import hashlib
+import re
 from functools import lru_cache
 import subprocess
 from datetime import datetime, timezone
@@ -594,6 +595,48 @@ def _string_or_bool(var):
         return var is None
 
 
+# Valid CSS color pattern: hex (#RGB, #RRGGBB, #RRGGBBAA), named colors,
+# rgb/rgba/hsl/hsla functions, or CSS keywords
+_CSS_COLOR_RE = re.compile(
+    r"^("
+    r"#[0-9a-fA-F]{3,8}"
+    r"|[a-zA-Z]+"
+    r"|rgba?\([^)]+\)"
+    r"|hsla?\([^)]+\)"
+    r"|var\(--[a-zA-Z0-9-]+\)"
+    r")$"
+)
+
+_COLOR_OPTIONS = [
+    "emphasis_color",
+    "emphasis_color_dark",
+    "strong_color",
+    "strong_color_dark",
+    "definition_color",
+    "definition_color_dark",
+]
+
+
+def validate_color_options(app):
+    """Validate that color theme options contain safe CSS color values.
+
+    Prevents CSS injection by ensuring color values match a known-safe pattern
+    (hex colors, named colors, rgb/hsl functions). Invalid values are replaced
+    with empty strings and a warning is logged.
+    """
+    theme_options = app.config.html_theme_options
+    for option in _COLOR_OPTIONS:
+        value = theme_options.get(option, "")
+        if value and not _CSS_COLOR_RE.match(value.strip()):
+            SPHINX_LOGGER.warning(
+                "Ignoring invalid CSS color value for %s: %r. "
+                "Use hex (#RRGGBB), named colors, or rgb()/hsl() functions.",
+                option,
+                value,
+            )
+            theme_options[option] = ""
+
+
 def setup(app):
     # Configuration for Juypter Book
     app.setup_extension("sphinx_book_theme")
@@ -603,6 +646,7 @@ def setup(app):
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
+    app.connect("builder-inited", validate_color_options)
     app.connect("builder-inited", setup_pygments_css)
     app.connect("html-page-context", hash_html_assets)
     app.connect("html-page-context", add_pygments_style_class)

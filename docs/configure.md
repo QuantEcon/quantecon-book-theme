@@ -373,3 +373,10 @@ sphinx:
 Any option left empty will use the theme's built-in default color. The `definition_color`
 options target Sphinx definition lists, glossary terms, and field lists specifically,
 while `strong_color` applies to all inline bold/strong text.
+
+```{note}
+Color values are validated at build time against safe CSS color patterns
+(hex codes, named colors, `rgb()`/`hsl()` functions). Invalid values are
+ignored and a warning is logged. Only use trusted color values from your
+own configuration files.
+```
