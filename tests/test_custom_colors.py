@@ -1,11 +1,12 @@
 """
-Tests for customizable emphasis and strong/bold text colors.
+Tests for customizable emphasis, strong/bold, and definition text colors.
 
 Verifies that:
 - Theme options are registered in theme.conf
 - CSS custom properties are used in SCSS source files
 - CSS custom properties appear in compiled CSS output
 - Layout template injects custom color styles when options are set
+- Definition color targets dl dt elements and falls back to strong color
 """
 
 from pathlib import Path
@@ -39,6 +40,16 @@ class TestCustomColorThemeOptions:
         content = (THEME_DIR / "theme.conf").read_text()
         assert "strong_color_dark =" in content
 
+    def test_definition_color_option_exists(self):
+        """theme.conf should define definition_color option."""
+        content = (THEME_DIR / "theme.conf").read_text()
+        assert "definition_color =" in content
+
+    def test_definition_color_dark_option_exists(self):
+        """theme.conf should define definition_color_dark option."""
+        content = (THEME_DIR / "theme.conf").read_text()
+        assert "definition_color_dark =" in content
+
     def test_options_default_to_empty(self):
         """All color options should default to empty (use CSS fallback)."""
         content = (THEME_DIR / "theme.conf").read_text()
@@ -47,6 +58,8 @@ class TestCustomColorThemeOptions:
             "emphasis_color_dark",
             "strong_color",
             "strong_color_dark",
+            "definition_color",
+            "definition_color_dark",
         ]:
             # Each option should appear as "option_name =" with no value
             # Use a targeted check to avoid matching substrings
@@ -103,6 +116,37 @@ class TestCustomColorCSSVariables:
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
         assert "var(--qe-strong-color, #cd853f)" in content
 
+    def test_base_scss_uses_definition_variable(self):
+        """_base.scss should use --qe-definition-color for dl dt elements."""
+        content = (ASSETS_DIR / "styles" / "_base.scss").read_text()
+        assert "var(--qe-definition-color" in content
+
+    def test_base_scss_definition_falls_back_to_strong(self):
+        """_base.scss definition color should fall back to strong color."""
+        content = (ASSETS_DIR / "styles" / "_base.scss").read_text()
+        assert (
+            "var(--qe-definition-color, var(--qe-strong-color, colors.$definition))"
+            in content
+        )
+
+    def test_base_scss_targets_definition_list_terms(self):
+        """_base.scss should target dl.simple dt, dl.glossary dt."""
+        content = (ASSETS_DIR / "styles" / "_base.scss").read_text()
+        assert "dl.simple dt" in content
+        assert "dl.glossary dt" in content
+
+    def test_dark_theme_uses_definition_variable(self):
+        """_dark-theme.scss should use --qe-definition-color."""
+        content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
+        assert "var(--qe-definition-color" in content
+
+    def test_dark_theme_definition_falls_back_to_strong(self):
+        """_dark-theme.scss definition color should fall back to strong."""
+        content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
+        assert (
+            "var(--qe-definition-color, var(--qe-strong-color, #cd853f))" in content
+        )
+
 
 class TestCustomColorCompiledCSS:
     """Test that compiled CSS contains custom properties."""
@@ -130,6 +174,18 @@ class TestCustomColorCompiledCSS:
         css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
         content = css_path.read_text()
         assert "var(--qe-strong-color" in content
+
+    def test_compiled_css_has_definition_variable(self):
+        """Compiled CSS should contain --qe-definition-color variable."""
+        css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
+        content = css_path.read_text()
+        assert "--qe-definition-color" in content
+
+    def test_compiled_css_definition_uses_variable(self):
+        """Compiled CSS dl dt rule should use var(--qe-definition-color)."""
+        css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
+        content = css_path.read_text()
+        assert "var(--qe-definition-color" in content
 
 
 class TestCustomColorLayoutTemplate:
@@ -187,3 +243,25 @@ class TestCustomColorLayoutTemplate:
         """Layout template should target :root for light mode colors."""
         content = self._read_layout()
         assert ":root" in content
+
+    def test_template_checks_definition_color(self):
+        """Layout template should conditionally check theme_definition_color."""
+        content = self._read_layout()
+        assert "theme_definition_color" in content
+
+    def test_template_checks_definition_color_dark(self):
+        """Layout template should check theme_definition_color_dark."""
+        content = self._read_layout()
+        assert "theme_definition_color_dark" in content
+
+    def test_template_sets_definition_css_variable(self):
+        """Layout template should set --qe-definition-color CSS variable."""
+        content = self._read_layout()
+        assert "--qe-definition-color: {{ theme_definition_color }}" in content
+
+    def test_template_sets_dark_definition_css_variable(self):
+        """Layout template should set --qe-definition-color for dark mode."""
+        content = self._read_layout()
+        assert (
+            "--qe-definition-color: {{ theme_definition_color_dark }}" in content
+        )

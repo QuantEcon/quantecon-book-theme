@@ -161,6 +161,13 @@ b {
   color: var(--qe-strong-color, colors.$definition);
 }
 
+// Definition list term styling - inherits from strong color by default
+dl.simple dt,
+dl.glossary dt,
+dl.field-list dt {
+  color: var(--qe-definition-color, var(--qe-strong-color, colors.$definition));
+}
+
 li {
   margin: 0.5rem 0;
 }

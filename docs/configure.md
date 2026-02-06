@@ -326,10 +326,11 @@ This is a toggle directive that will use the configured button text.
 
 ## Customizing Emphasis and Definition Colors
 
-The theme applies custom colors to emphasis (italic) and bold/strong text. By default:
+The theme applies custom colors to emphasis (italic), bold/strong, and definition list terms. By default:
 
 - **Emphasis** (`em`): Green (`#2d9f42`) in light mode, lighter green (`#66bb6a`) in dark mode
 - **Bold/Strong** (`strong`, `b`): Brown (`#8b4513`) in light mode, lighter brown (`#cd853f`) in dark mode
+- **Definitions** (`dl dt`): Inherits from bold/strong color by default
 
 You can override these colors using `html_theme_options`:
 
@@ -340,6 +341,8 @@ html_theme_options = {
     "emphasis_color_dark": "#8ab4f8",
     "strong_color": "#d93025",
     "strong_color_dark": "#f28b82",
+    "definition_color": "#6a1b9a",
+    "definition_color_dark": "#ce93d8",
     ...
 }
 ```
@@ -354,6 +357,8 @@ sphinx:
       emphasis_color_dark: "#8ab4f8"
       strong_color: "#d93025"
       strong_color_dark: "#f28b82"
+      definition_color: "#6a1b9a"
+      definition_color_dark: "#ce93d8"
 ```
 
 | Option | Description | Default |
@@ -362,5 +367,9 @@ sphinx:
 | `emphasis_color_dark` | Color for `em` tags in dark mode | `#66bb6a` (light green) |
 | `strong_color` | Color for `strong`/`b` tags in light mode | `#8b4513` (brown) |
 | `strong_color_dark` | Color for `strong`/`b` tags in dark mode | `#cd853f` (peru) |
+| `definition_color` | Color for definition list terms (`dl dt`) in light mode | Inherits from `strong_color` |
+| `definition_color_dark` | Color for definition list terms (`dl dt`) in dark mode | Inherits from `strong_color_dark` |
 
-Any option left empty will use the theme's built-in default color.
+Any option left empty will use the theme's built-in default color. The `definition_color`
+options target Sphinx definition lists, glossary terms, and field lists specifically,
+while `strong_color` applies to all inline bold/strong text.

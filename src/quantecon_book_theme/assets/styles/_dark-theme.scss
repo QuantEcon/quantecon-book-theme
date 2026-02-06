@@ -31,6 +31,12 @@ body.dark-theme {
     color: var(--qe-strong-color, #cd853f); // Lighter brown for dark mode
   }
 
+  dl.simple dt,
+  dl.glossary dt,
+  dl.field-list dt {
+    color: var(--qe-definition-color, var(--qe-strong-color, #cd853f));
+  }
+
   .qe-toolbar__inner > ul > li > a,
   .qe-sidebar__nav ul > li > a {
     color: #fff;
