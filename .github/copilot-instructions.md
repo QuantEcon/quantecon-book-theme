@@ -92,6 +92,13 @@ src/quantecon_book_theme/
 - **Alternative**: Try `pip install --timeout=120` for longer timeout
 
 ### GitHub CLI (gh) Issues
+- **Shell Escaping**: zsh has many issues with shell escaping, heredocs, and multiline strings. **ALWAYS** use the `create_file` tool to write content to a temporary file first, then pass it to `gh` with the `--body-file` flag. **NEVER** pass multiline body content directly via `--body` in the terminal.
+  - Example workflow for updating a PR description:
+    1. Use `create_file` to write the body to `/tmp/pr_body.md`
+    2. Run: `gh pr edit 123 --body-file /tmp/pr_body.md`
+  - Example workflow for creating a release:
+    1. Use `create_file` to write release notes to `/tmp/release_notes.md`
+    2. Run: `gh release create vX.Y.Z --title "Title" --notes-file /tmp/release_notes.md`
 - **Output Capture**: Always write gh output to `/tmp` file for reliable capture: `gh pr view 123 2>&1 | tee /tmp/gh_output.txt`
 
 ### Missing Python 3.13
@@ -240,12 +247,14 @@ git push && git push origin vX.Y.Z
 
 ### 5. Create GitHub Release
 ```bash
+# Write release notes to a temp file first (use create_file tool)
+# Then create the release using --notes-file
 gh release create vX.Y.Z \
   --title "vX.Y.Z - Release Title" \
-  --notes "Release notes from CHANGELOG.md"
+  --notes-file /tmp/release_notes.md
 ```
 
-**IMPORTANT**: Creating the GitHub release triggers the PyPI publish workflow automatically.
+**IMPORTANT**: Always use `--notes-file` with a temp file instead of `--notes` to avoid zsh shell escaping issues. Creating the GitHub release triggers the PyPI publish workflow automatically.
 
 ### 6. Verify PyPI Publication
 - Check GitHub Actions for successful PyPI publish workflow

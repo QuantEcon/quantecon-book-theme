@@ -143,9 +143,7 @@ class TestCustomColorCSSVariables:
     def test_dark_theme_definition_falls_back_to_strong(self):
         """_dark-theme.scss definition color should fall back to strong."""
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
-        assert (
-            "var(--qe-definition-color, var(--qe-strong-color, #cd853f))" in content
-        )
+        assert "var(--qe-definition-color, var(--qe-strong-color, #cd853f))" in content
 
 
 class TestCustomColorCompiledCSS:
@@ -262,6 +260,4 @@ class TestCustomColorLayoutTemplate:
     def test_template_sets_dark_definition_css_variable(self):
         """Layout template should set --qe-definition-color for dark mode."""
         content = self._read_layout()
-        assert (
-            "--qe-definition-color: {{ theme_definition_color_dark }}" in content
-        )
+        assert "--qe-definition-color: {{ theme_definition_color_dark }}" in content
