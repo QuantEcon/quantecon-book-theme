@@ -151,14 +151,21 @@ h4 {
 em {
   font-style: normal;
   font-weight: 550;
-  color: colors.$emphasis;
+  color: var(--qe-emphasis-color, colors.$emphasis);
 }
 
-// Strong/bold styling - semi-bold weight with color for definitions
+// Strong/bold styling - semi-bold weight with color
 strong,
 b {
   font-weight: 550;
-  color: colors.$definition;
+  color: var(--qe-strong-color, colors.$definition);
+}
+
+// Definition list term styling - inherits from strong color by default
+dl.simple dt,
+dl.glossary dt,
+dl.field-list dt {
+  color: var(--qe-definition-color, var(--qe-strong-color, colors.$definition));
 }
 
 li {
