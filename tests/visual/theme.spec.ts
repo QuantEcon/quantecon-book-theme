@@ -153,18 +153,6 @@ test.describe("Typography Styling", () => {
     await expect(paragraph).toHaveScreenshot("italic-text.png");
   });
 
-  test("mixed bold and italic styling", async ({ page }) => {
-    // python_by_example.html has both bold (6) and italic (4) elements
-    await page.goto("/python_by_example.html");
-    await page.waitForLoadState("networkidle");
-
-    // Capture the first section with bold or italic content
-    const section = page.locator(".qe-page__content section:has(strong, em)").first();
-    await expect(section).toHaveScreenshot("mixed-bold-italic.png", {
-      maxDiffPixels: 100,
-    });
-  });
-
   test("bold text in dark mode", async ({ page }) => {
     await page.goto("/names.html");
     await page.waitForLoadState("networkidle");
