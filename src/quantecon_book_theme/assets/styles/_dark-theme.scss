@@ -28,7 +28,7 @@ body.dark-theme {
 
   strong,
   b {
-    color: var(--qe-definition-color, #cd853f); // Lighter brown for dark mode
+    color: var(--qe-strong-color, #cd853f); // Lighter brown for dark mode
   }
 
   .qe-toolbar__inner > ul > li > a,

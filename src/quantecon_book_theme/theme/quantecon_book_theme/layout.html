@@ -121,24 +121,24 @@ a:visited {
 </style>
 {%- endif %}
 
-<!-- Custom emphasis and definition colors -->
-{%- if theme_emphasis_color or theme_definition_color %}
+<!-- Custom emphasis and strong/bold colors -->
+{%- if theme_emphasis_color or theme_strong_color %}
 <style>
 :root {
   {%- if theme_emphasis_color %}
   --qe-emphasis-color: {{ theme_emphasis_color }};
   {%- endif %}
-  {%- if theme_definition_color %}
-  --qe-definition-color: {{ theme_definition_color }};
+  {%- if theme_strong_color %}
+  --qe-strong-color: {{ theme_strong_color }};
   {%- endif %}
 }
-{%- if theme_emphasis_color_dark or theme_definition_color_dark %}
+{%- if theme_emphasis_color_dark or theme_strong_color_dark %}
 body.dark-theme {
   {%- if theme_emphasis_color_dark %}
   --qe-emphasis-color: {{ theme_emphasis_color_dark }};
   {%- endif %}
-  {%- if theme_definition_color_dark %}
-  --qe-definition-color: {{ theme_definition_color_dark }};
+  {%- if theme_strong_color_dark %}
+  --qe-strong-color: {{ theme_strong_color_dark }};
   {%- endif %}
 }
 {%- endif %}

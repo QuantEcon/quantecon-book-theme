@@ -338,8 +338,8 @@ html_theme_options = {
     ...
     "emphasis_color": "#1a73e8",
     "emphasis_color_dark": "#8ab4f8",
-    "definition_color": "#d93025",
-    "definition_color_dark": "#f28b82",
+    "strong_color": "#d93025",
+    "strong_color_dark": "#f28b82",
     ...
 }
 ```
@@ -352,15 +352,15 @@ sphinx:
     html_theme_options:
       emphasis_color: "#1a73e8"
       emphasis_color_dark: "#8ab4f8"
-      definition_color: "#d93025"
-      definition_color_dark: "#f28b82"
+      strong_color: "#d93025"
+      strong_color_dark: "#f28b82"
 ```
 
 | Option | Description | Default |
 |---|---|---|
 | `emphasis_color` | Color for `em` tags in light mode | `#2d9f42` (green) |
 | `emphasis_color_dark` | Color for `em` tags in dark mode | `#66bb6a` (light green) |
-| `definition_color` | Color for `strong`/`b` tags in light mode | `#8b4513` (brown) |
-| `definition_color_dark` | Color for `strong`/`b` tags in dark mode | `#cd853f` (peru) |
+| `strong_color` | Color for `strong`/`b` tags in light mode | `#8b4513` (brown) |
+| `strong_color_dark` | Color for `strong`/`b` tags in dark mode | `#cd853f` (peru) |
 
 Any option left empty will use the theme's built-in default color.

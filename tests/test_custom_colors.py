@@ -1,5 +1,5 @@
 """
-Tests for customizable emphasis and definition text colors.
+Tests for customizable emphasis and strong/bold text colors.
 
 Verifies that:
 - Theme options are registered in theme.conf
@@ -29,15 +29,15 @@ class TestCustomColorThemeOptions:
         content = (THEME_DIR / "theme.conf").read_text()
         assert "emphasis_color_dark =" in content
 
-    def test_definition_color_option_exists(self):
-        """theme.conf should define definition_color option."""
+    def test_strong_color_option_exists(self):
+        """theme.conf should define strong_color option."""
         content = (THEME_DIR / "theme.conf").read_text()
-        assert "definition_color =" in content
+        assert "strong_color =" in content
 
-    def test_definition_color_dark_option_exists(self):
-        """theme.conf should define definition_color_dark option."""
+    def test_strong_color_dark_option_exists(self):
+        """theme.conf should define strong_color_dark option."""
         content = (THEME_DIR / "theme.conf").read_text()
-        assert "definition_color_dark =" in content
+        assert "strong_color_dark =" in content
 
     def test_options_default_to_empty(self):
         """All color options should default to empty (use CSS fallback)."""
@@ -45,8 +45,8 @@ class TestCustomColorThemeOptions:
         for option in [
             "emphasis_color",
             "emphasis_color_dark",
-            "definition_color",
-            "definition_color_dark",
+            "strong_color",
+            "strong_color_dark",
         ]:
             # Each option should appear as "option_name =" with no value
             # Use a targeted check to avoid matching substrings
@@ -55,53 +55,53 @@ class TestCustomColorThemeOptions:
                 line for line in lines if line.strip().startswith(f"{option} =")
             ]
             assert len(matching) == 1, f"Expected exactly one '{option}' option"
-            assert matching[0].strip() == f"{option} =", (
-                f"'{option}' should default to empty string"
-            )
+            assert (
+                matching[0].strip() == f"{option} ="
+            ), f"'{option}' should default to empty string"
 
 
 class TestCustomColorCSSVariables:
-    """Test that SCSS uses CSS custom properties for emphasis/definition."""
+    """Test that SCSS uses CSS custom properties for emphasis/strong."""
 
     def test_base_scss_uses_emphasis_variable(self):
         """_base.scss should use --qe-emphasis-color CSS variable for em."""
         content = (ASSETS_DIR / "styles" / "_base.scss").read_text()
         assert "var(--qe-emphasis-color" in content
 
-    def test_base_scss_uses_definition_variable(self):
-        """_base.scss should use --qe-definition-color CSS variable for strong."""
+    def test_base_scss_uses_strong_variable(self):
+        """_base.scss should use --qe-strong-color CSS variable for strong."""
         content = (ASSETS_DIR / "styles" / "_base.scss").read_text()
-        assert "var(--qe-definition-color" in content
+        assert "var(--qe-strong-color" in content
 
     def test_base_scss_has_emphasis_fallback(self):
         """_base.scss should have SCSS fallback value for emphasis color."""
         content = (ASSETS_DIR / "styles" / "_base.scss").read_text()
         assert "var(--qe-emphasis-color, colors.$emphasis)" in content
 
-    def test_base_scss_has_definition_fallback(self):
-        """_base.scss should have SCSS fallback value for definition color."""
+    def test_base_scss_has_strong_fallback(self):
+        """_base.scss should have SCSS fallback value for strong color."""
         content = (ASSETS_DIR / "styles" / "_base.scss").read_text()
-        assert "var(--qe-definition-color, colors.$definition)" in content
+        assert "var(--qe-strong-color, colors.$definition)" in content
 
     def test_dark_theme_uses_emphasis_variable(self):
         """_dark-theme.scss should use --qe-emphasis-color CSS variable."""
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
         assert "var(--qe-emphasis-color" in content
 
-    def test_dark_theme_uses_definition_variable(self):
-        """_dark-theme.scss should use --qe-definition-color CSS variable."""
+    def test_dark_theme_uses_strong_variable(self):
+        """_dark-theme.scss should use --qe-strong-color CSS variable."""
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
-        assert "var(--qe-definition-color" in content
+        assert "var(--qe-strong-color" in content
 
     def test_dark_theme_has_emphasis_fallback(self):
         """_dark-theme.scss should have fallback for emphasis in dark mode."""
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
         assert "var(--qe-emphasis-color, #66bb6a)" in content
 
-    def test_dark_theme_has_definition_fallback(self):
-        """_dark-theme.scss should have fallback for definition in dark mode."""
+    def test_dark_theme_has_strong_fallback(self):
+        """_dark-theme.scss should have fallback for strong in dark mode."""
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
-        assert "var(--qe-definition-color, #cd853f)" in content
+        assert "var(--qe-strong-color, #cd853f)" in content
 
 
 class TestCustomColorCompiledCSS:
@@ -113,11 +113,11 @@ class TestCustomColorCompiledCSS:
         content = css_path.read_text()
         assert "--qe-emphasis-color" in content
 
-    def test_compiled_css_has_definition_variable(self):
-        """Compiled CSS should contain --qe-definition-color variable."""
+    def test_compiled_css_has_strong_variable(self):
+        """Compiled CSS should contain --qe-strong-color variable."""
         css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
         content = css_path.read_text()
-        assert "--qe-definition-color" in content
+        assert "--qe-strong-color" in content
 
     def test_compiled_css_em_uses_variable(self):
         """Compiled CSS em rule should use var(--qe-emphasis-color)."""
@@ -126,10 +126,10 @@ class TestCustomColorCompiledCSS:
         assert "var(--qe-emphasis-color" in content
 
     def test_compiled_css_strong_uses_variable(self):
-        """Compiled CSS strong rule should use var(--qe-definition-color)."""
+        """Compiled CSS strong rule should use var(--qe-strong-color)."""
         css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
         content = css_path.read_text()
-        assert "var(--qe-definition-color" in content
+        assert "var(--qe-strong-color" in content
 
 
 class TestCustomColorLayoutTemplate:
@@ -143,40 +143,40 @@ class TestCustomColorLayoutTemplate:
         content = self._read_layout()
         assert "theme_emphasis_color" in content
 
-    def test_template_checks_definition_color(self):
-        """Layout template should conditionally check theme_definition_color."""
+    def test_template_checks_strong_color(self):
+        """Layout template should conditionally check theme_strong_color."""
         content = self._read_layout()
-        assert "theme_definition_color" in content
+        assert "theme_strong_color" in content
 
     def test_template_checks_emphasis_color_dark(self):
         """Layout template should conditionally check theme_emphasis_color_dark."""
         content = self._read_layout()
         assert "theme_emphasis_color_dark" in content
 
-    def test_template_checks_definition_color_dark(self):
-        """Layout template should conditionally check theme_definition_color_dark."""
+    def test_template_checks_strong_color_dark(self):
+        """Layout template should conditionally check theme_strong_color_dark."""
         content = self._read_layout()
-        assert "theme_definition_color_dark" in content
+        assert "theme_strong_color_dark" in content
 
     def test_template_sets_emphasis_css_variable(self):
         """Layout template should set --qe-emphasis-color CSS variable."""
         content = self._read_layout()
         assert "--qe-emphasis-color: {{ theme_emphasis_color }}" in content
 
-    def test_template_sets_definition_css_variable(self):
-        """Layout template should set --qe-definition-color CSS variable."""
+    def test_template_sets_strong_css_variable(self):
+        """Layout template should set --qe-strong-color CSS variable."""
         content = self._read_layout()
-        assert "--qe-definition-color: {{ theme_definition_color }}" in content
+        assert "--qe-strong-color: {{ theme_strong_color }}" in content
 
     def test_template_sets_dark_emphasis_css_variable(self):
         """Layout template should set --qe-emphasis-color for dark mode."""
         content = self._read_layout()
         assert "--qe-emphasis-color: {{ theme_emphasis_color_dark }}" in content
 
-    def test_template_sets_dark_definition_css_variable(self):
-        """Layout template should set --qe-definition-color for dark mode."""
+    def test_template_sets_dark_strong_css_variable(self):
+        """Layout template should set --qe-strong-color for dark mode."""
         content = self._read_layout()
-        assert "--qe-definition-color: {{ theme_definition_color_dark }}" in content
+        assert "--qe-strong-color: {{ theme_strong_color_dark }}" in content
 
     def test_template_dark_mode_uses_body_dark_theme(self):
         """Layout template should target body.dark-theme for dark colors."""
