@@ -110,14 +110,17 @@ test.describe("Theme Features", () => {
   test("math equation rendering", async ({ page }) => {
     await page.goto("/numpy.html");
     await page.waitForLoadState("networkidle");
-    // Wait for MathJax to render
-    await page.waitForTimeout(1000);
 
-    // Capture a paragraph containing inline math rather than the MathJax element
-    // directly. MathJax rendering dimensions vary slightly between environments
-    // (font loading, rendering engine, timing) causing size-mismatch rejections
-    // on tiny elements. A paragraph-level capture provides a stable container
-    // where small MathJax variations are absorbed by maxDiffPixels.
+    // Wait for MathJax 3 to fully complete typesetting rather than using a
+    // fixed timeout. MathJax.startup.promise resolves when all math on the
+    // page has been rendered. This prevents flaky failures caused by
+    // screenshots taken before MathJax finishes layout.
+    await page.waitForFunction(() => {
+      return (window as any).MathJax?.startup?.promise?.then(() => true) ?? false;
+    }, { timeout: 10000 });
+    // Extra settle time for fonts and final layout
+    await page.waitForTimeout(500);
+
     const mathParagraph = page.locator("p:has(.MathJax)").first();
     if (await mathParagraph.isVisible()) {
       await expect(mathParagraph).toHaveScreenshot("math-equation.png", {
