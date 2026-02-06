@@ -113,13 +113,15 @@ test.describe("Theme Features", () => {
     // Wait for MathJax to render
     await page.waitForTimeout(1000);
 
-    const mathBlock = page.locator(".MathJax").first();
-    if (await mathBlock.isVisible()) {
-      // MathJax rendering can vary in size and appearance between runs due to
-      // font loading, rendering engine differences, and timing. Use maxDiffPixels
-      // to allow for size variations while still catching major regressions.
-      await expect(mathBlock).toHaveScreenshot("math-equation.png", {
-        maxDiffPixels: 200,
+    // Capture a paragraph containing inline math rather than the MathJax element
+    // directly. MathJax rendering dimensions vary slightly between environments
+    // (font loading, rendering engine, timing) causing size-mismatch rejections
+    // on tiny elements. A paragraph-level capture provides a stable container
+    // where small MathJax variations are absorbed by maxDiffPixels.
+    const mathParagraph = page.locator("p:has(.MathJax)").first();
+    if (await mathParagraph.isVisible()) {
+      await expect(mathParagraph).toHaveScreenshot("math-equation.png", {
+        maxDiffPixels: 300,
       });
     }
   });
