@@ -11,8 +11,9 @@ Verifies that:
 """
 
 from pathlib import Path
+from unittest.mock import MagicMock
 
-from quantecon_book_theme import _CSS_COLOR_RE
+from quantecon_book_theme import _CSS_COLOR_RE, validate_color_options
 
 
 # Paths
@@ -324,3 +325,55 @@ class TestColorValueValidation:
     def test_rejects_expression(self):
         """expression() values should be rejected."""
         assert not _CSS_COLOR_RE.match("expression(alert(1))")
+
+
+class TestValidateColorOptionsFunction:
+    """Test the validate_color_options function with a mock Sphinx app."""
+
+    def _make_app(self, **theme_options):
+        """Create a mock Sphinx app with given theme options."""
+        app = MagicMock()
+        app.config.html_theme_options = dict(theme_options)
+        return app
+
+    def test_valid_hex_color_preserved(self):
+        """Valid hex color values should be preserved."""
+        app = self._make_app(emphasis_color="#ff0000")
+        validate_color_options(app)
+        assert app.config.html_theme_options["emphasis_color"] == "#ff0000"
+
+    def test_valid_named_color_preserved(self):
+        """Valid named color values should be preserved."""
+        app = self._make_app(strong_color="red")
+        validate_color_options(app)
+        assert app.config.html_theme_options["strong_color"] == "red"
+
+    def test_invalid_value_cleared(self):
+        """Invalid color values should be replaced with empty string."""
+        app = self._make_app(emphasis_color="red; } body { display: none; } /*")
+        validate_color_options(app)
+        assert app.config.html_theme_options["emphasis_color"] == ""
+
+    def test_empty_value_unchanged(self):
+        """Empty values should remain empty (no error)."""
+        app = self._make_app(emphasis_color="")
+        validate_color_options(app)
+        assert app.config.html_theme_options["emphasis_color"] == ""
+
+    def test_missing_option_no_error(self):
+        """Missing options should not cause errors."""
+        app = self._make_app()
+        validate_color_options(app)
+        # Should complete without error
+
+    def test_multiple_options_validated(self):
+        """All color options should be validated independently."""
+        app = self._make_app(
+            emphasis_color="#00ff00",
+            strong_color="invalid; injection",
+            definition_color="blue",
+        )
+        validate_color_options(app)
+        assert app.config.html_theme_options["emphasis_color"] == "#00ff00"
+        assert app.config.html_theme_options["strong_color"] == ""
+        assert app.config.html_theme_options["definition_color"] == "blue"
