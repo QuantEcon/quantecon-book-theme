@@ -71,6 +71,10 @@ jobs:
           npx playwright install --with-deps chromium
 
       - name: Update Snapshots
+        # continue-on-error because --update-snapshots=missing writes new
+        # baseline files but still reports them as test failures (exit code 1).
+        # The commit step below will pick up the newly written snapshots.
+        continue-on-error: true
         run: npx playwright test --update-snapshots=missing
         env:
           SITE_PATH: lecture-python-programming.myst/_build/html
