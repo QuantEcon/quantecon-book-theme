@@ -57,6 +57,7 @@ Main page structure and components
       top: 7rem;
       width: 200px;
       max-height: calc(100vh - 8rem);
+      overflow-x: hidden;  // Prevent horizontal scrollbar on long TOC entries
       overflow-y: hidden;  // Clip content at bottom, no scrollbar
     }
 
