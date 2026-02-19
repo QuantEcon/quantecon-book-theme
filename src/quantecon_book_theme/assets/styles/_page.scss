@@ -98,21 +98,19 @@ Main page structure and components
             opacity: 1;
           }
 
-          // Copy-link button: hidden by default, shown on hover
-          .toc-copy-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: none;
-            border: none;
+          // Copy-link icon: inline inside the <a>, hidden by default
+          a .toc-copy-link {
+            display: inline;
             cursor: pointer;
             color: colors.$body;
             opacity: 0;
-            padding: 0 0 0 4px;
-            margin: 0;
+            margin-left: 4px;
             vertical-align: middle;
             transition: opacity 0.15s ease, color 0.15s ease;
-            line-height: 1;
+
+            svg {
+              vertical-align: -1px;
+            }
 
             &:hover {
               color: colors.$primary;
@@ -125,8 +123,8 @@ Main page structure and components
             }
           }
 
-          // Show copy button when hovering the list item
-          &:hover .toc-copy-link {
+          // Show copy icon when hovering the list item
+          &:hover a .toc-copy-link {
             opacity: 0.6;
 
             &:hover {
