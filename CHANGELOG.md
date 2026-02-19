@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking Changes
+- **Removed individual color options** — the following `html_theme_options` have been removed:
+  `emphasis_color`, `emphasis_color_dark`, `strong_color`, `strong_color_dark`, `definition_color`, `definition_color_dark`.
+  These are replaced by the new `color_scheme` option (see Changed below). Projects using the old options should migrate to either the built-in `seoul256` scheme or a `custom_color_scheme.css` file.
+
 ### Changed
 - **Text color scheme system** — replaces individual color options with scheme-based approach
   - New `color_scheme` theme option (`seoul256` default, `none` to disable)
   - Seoul256-inspired palette: dark teal (`#005f5f`) for emphasis, dark amber (`#875f00`) for strong (light mode); medium-light teal (`#5fafaf`) and light amber-gold (`#d7af5f`) for dark mode
-  - Removed six individual `html_theme_options` (`emphasis_color`, `emphasis_color_dark`, `strong_color`, `strong_color_dark`, `definition_color`, `definition_color_dark`)
   - Custom override via `custom_color_scheme.css` in project `_static/` (auto-detected)
   - New `_color-schemes.scss` module for built-in scheme definitions
 
