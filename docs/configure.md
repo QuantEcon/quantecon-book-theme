@@ -198,6 +198,64 @@ Available Pygments styles include: `default`, `friendly`, `monokai`, `github-dar
 
 When `qetheme_code_style` is `True` (the default), the custom QuantEcon code highlighting is used and the `pygments_style` setting is ignored. When set to `False`, the theme will respect your `pygments_style` configuration.
 
+## Sticky Table of Contents
+
+The theme supports a sticky right-hand-side table of contents (TOC) that remains visible as you scroll through the page. This feature includes scroll spy functionality to highlight the currently visible section, and optional auto-expansion of subsections.
+
+### Enabling Sticky TOC
+
+To enable the sticky table of contents:
+
+```python
+html_theme_options = {
+    ...
+    "sticky_contents": True,
+    ...
+}
+```
+
+For Jupyter Book projects, add to your `_config.yml`:
+
+```yaml
+sphinx:
+  config:
+    html_theme_options:
+      sticky_contents: true
+```
+
+### Features
+
+When enabled, the sticky TOC provides:
+
+- **Fixed positioning**: The TOC stays visible as you scroll
+- **Active section highlighting**: The currently visible section is highlighted in the TOC
+- **Copy section link**: Hover over any TOC entry to reveal a copy icon — click it to copy the full URL with anchor to your clipboard for easy sharing
+- **Back to top button**: A discrete "Back to top" button appears after scrolling down 300px
+- **Auto-expand subsections**: Subsections automatically expand to show the current hierarchy
+
+### Auto-Expand Subsections
+
+By default, subsections in the TOC automatically expand as you scroll to show the current section hierarchy. This makes it easier to navigate deeply nested content.
+
+To disable auto-expansion while keeping the sticky TOC:
+
+```python
+html_theme_options = {
+    ...
+    "sticky_contents": True,
+    "contents_autoexpand": False,
+    ...
+}
+```
+
+When `contents_autoexpand` is `True` (the default when sticky TOC is enabled), the TOC will:
+- Highlight the active section with bold text (scroll tracking)
+- Expand parent sections to show the active item
+- Expand the active item itself to show its subsections
+- Collapse unrelated sections to reduce visual clutter
+
+When set to `False`, only top-level section names are displayed with bold highlighting to indicate which section the reader is currently in. This provides a cleaner, more compact TOC view while still tracking scroll position.
+
 ## Git-Based Metadata
 
 The theme automatically displays git-based metadata for each page, including the last modified timestamp and an interactive changelog dropdown. This feature requires:

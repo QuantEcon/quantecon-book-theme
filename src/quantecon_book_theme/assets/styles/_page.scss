@@ -7,6 +7,7 @@ Main page structure and components
 
 @use "colors";
 @use "breakpoints";
+@use "sass:color";
 
 .qe-wrapper {
   margin: 0 0 0 0;
@@ -45,8 +46,18 @@ Main page structure and components
       display: none;
     }
 
-    .inner {
+    // Non-sticky default: inner fills container height
+    .inner:not(.sticky) {
       height: 100%;
+    }
+
+    // Sticky mode: fixed position TOC that stays in viewport
+    .inner.sticky {
+      position: fixed;
+      top: 7rem;
+      width: 200px;
+      max-height: calc(100vh - 8rem);
+      overflow-y: hidden;  // Clip content at bottom, no scrollbar
     }
 
     &-header {
@@ -79,18 +90,127 @@ Main page structure and components
               opacity: 1;
             }
           }
+
+          // Active section highlighting for sticky TOC
+          &.active > a {
+            font-weight: bold;
+            color: colors.$primary;
+            opacity: 1;
+          }
+
+          // Copy-link icon: zero-width inline element that can't cause wrapping
+          a .toc-copy-link {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            cursor: pointer;
+            color: colors.$body;
+            opacity: 0;
+            vertical-align: middle;
+            transition: opacity 0.15s ease, color 0.15s ease;
+
+            svg {
+              display: block;
+              margin-left: 4px;
+            }
+
+            &:hover {
+              color: colors.$primary;
+            }
+
+            // "Copied!" state feedback
+            &.copied {
+              color: colors.$primary;
+              opacity: 1;
+            }
+          }
+
+          // Show copy icon when hovering the list item
+          &:hover a .toc-copy-link {
+            opacity: 0.6;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
         }
       }
+    }
 
-      .logo {
-        img {
-          max-width: 150px;
-        }
+    // Auto-expand mode: collapse/expand subsections based on scroll position
+    // Only applies when data-autoexpand="true" is set on the sticky container
+    .inner.sticky[data-autoexpand="true"] &-nav {
+      // Hide nested subsections by default
+      ul ul {
+        display: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out, opacity 0.2s ease;
+        opacity: 0;
       }
 
-      .powered {
-        font-size: 0.8rem;
+      // Show subsections when parent li has expanded class
+      li.expanded > ul {
+        display: block;
+        max-height: 500px;
+        opacity: 1;
       }
+
+      // Also show when directly active
+      li.active > ul {
+        display: block;
+        max-height: 500px;
+        opacity: 1;
+      }
+    }
+
+    // No auto-expand mode: only show top-level section names
+    // Subsections are permanently hidden, active section is highlighted with bold
+    .inner.sticky[data-autoexpand="false"] &-nav {
+      // Hide all nested subsections permanently
+      ul ul {
+        display: none;
+      }
+    }
+
+    // Discrete "Back to top" button for sticky mode
+    .back-to-top-btn {
+      display: none;
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 1rem;
+      background-color: transparent;
+      color: colors.$primary;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(10px);
+
+      &:hover {
+        color: color.adjust(colors.$primary, $lightness: -15%);
+        text-decoration: none;
+      }
+
+      &.visible {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      img {
+        max-width: 150px;
+      }
+    }
+
+    .powered {
+      font-size: 0.8rem;
     }
 
     &-footer {

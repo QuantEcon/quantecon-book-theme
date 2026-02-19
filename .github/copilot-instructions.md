@@ -4,6 +4,26 @@ QuantEcon Book Theme is a Sphinx theme specifically designed for Jupyter Book pr
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
+## ⚠️ CORE RULES - READ FIRST
+
+These rules MUST be followed in every session:
+
+1. **GitHub CLI (gh) Output**: ALWAYS write `gh` command output to a `/tmp` file for reliable capture:
+   ```bash
+   gh run list 2>&1 | tee /tmp/gh_output.txt
+   gh pr view 123 2>&1 | tee /tmp/gh_output.txt
+   ```
+
+2. **NEVER Cancel Long-Running Commands**: Many commands take 5-15+ minutes. Set appropriate timeouts:
+   - `npm install` - ~50 seconds
+   - `tox` - 5-15 minutes (set timeout to 30+ minutes)
+   - `tox -e docs-update` - 5-15 minutes (set timeout to 30+ minutes)
+   - `pip install -e .` - 3-10 minutes (set timeout to 15+ minutes)
+
+3. **Always Use tox for Tests**: DO NOT use `pytest` directly - always use `tox` for proper environment isolation
+
+4. **Asset Compilation**: Run `npm run build` after any changes to files in `src/quantecon_book_theme/assets/`
+
 ## Working Effectively
 
 ### Bootstrap and Environment Setup

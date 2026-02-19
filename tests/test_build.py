@@ -424,6 +424,71 @@ def test_qetheme_code_style(sphinx_build):
     sphinx_build.clean()
 
 
+def test_sticky_toc(sphinx_build):
+    """Test that sticky_contents and contents_autoexpand options work correctly."""
+    sphinx_build.copy()
+
+    # Test default behavior - sticky TOC should be disabled
+    sphinx_build.build()
+    index_html = sphinx_build.get("index.html")
+    toc_inner = index_html.find("div", class_="inner")
+    # By default, sticky class should NOT be present
+    assert toc_inner is None or "sticky" not in toc_inner.get("class", [])
+    sphinx_build.clean()
+
+    # Test with sticky_contents enabled
+    cmd = [
+        "-D",
+        "html_theme_options.sticky_contents=True",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    toc_inner = index_html.find("div", class_="inner")
+    # When enabled, sticky class should be present
+    assert toc_inner is not None
+    assert "sticky" in toc_inner.get("class", [])
+    # Default contents_autoexpand should be True
+    assert toc_inner.get("data-autoexpand") == "true"
+    # Back to top button should be present
+    back_to_top = index_html.find("a", class_="back-to-top-btn")
+    assert back_to_top is not None
+    sphinx_build.clean()
+
+    # Test with sticky_contents enabled and contents_autoexpand disabled
+    cmd = [
+        "-D",
+        "html_theme_options.sticky_contents=True",
+        "-D",
+        "html_theme_options.contents_autoexpand=False",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    toc_inner = index_html.find("div", class_="inner")
+    # Sticky class should be present
+    assert toc_inner is not None
+    assert "sticky" in toc_inner.get("class", [])
+    # contents_autoexpand should be false
+    assert toc_inner.get("data-autoexpand") == "false"
+    sphinx_build.clean()
+
+    # Test with string values (theme.conf passes strings)
+    cmd = [
+        "-D",
+        "html_theme_options.sticky_contents=true",
+        "-D",
+        "html_theme_options.contents_autoexpand=false",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    toc_inner = index_html.find("div", class_="inner")
+    # String "true" should enable sticky
+    assert toc_inner is not None
+    assert "sticky" in toc_inner.get("class", [])
+    # String "false" should disable autoexpand
+    assert toc_inner.get("data-autoexpand") == "false"
+    sphinx_build.clean()
+
+
 def test_git_functions_unit():
     """Unit tests for git helper functions."""
     from quantecon_book_theme import (
