@@ -3,6 +3,9 @@ $secondary: #d8655e;
 $body: #444444;
 $body-light: #888888;
 
-// Typography emphasis colors
-$emphasis: #2d9f42;      // Medium green for emphasis (em tags) - lighter to distinguish from code syntax
-$definition: #8b4513;    // Brown for definitions (strong tags)
+// Text color scheme: Seoul256-inspired
+// Light mode
+$emphasis: #005f5f;        // Seoul256 #23 - dark teal for emphasis (em tags)
+$emphasis-dark: #5fafaf;   // Seoul256 #73 - medium-light teal for dark mode
+$definition: #875f00;      // Seoul256 #94 - dark amber for strong/definitions
+$definition-dark: #d7af5f; // Seoul256 #179 - light amber-gold for dark mode

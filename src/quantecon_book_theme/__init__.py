@@ -3,7 +3,6 @@
 from pathlib import Path
 import os
 import hashlib
-import re
 from functools import lru_cache
 import subprocess
 from datetime import datetime, timezone
@@ -554,7 +553,8 @@ def setup_pygments_css(app):
     """Ensure Pygments CSS is included when using Pygments styles.
 
     This runs during builder-inited, after config is fully loaded.
-    We generate our own unscoped pygments CSS file instead of using Sphinx's scoped version.
+    We generate our own unscoped pygments CSS file instead of using
+    Sphinx's scoped version.
     """
     from pygments.formatters import HtmlFormatter
 
@@ -595,46 +595,44 @@ def _string_or_bool(var):
         return var is None
 
 
-# Valid CSS color pattern: hex (#RGB, #RRGGBB, #RRGGBBAA), named colors,
-# rgb/rgba/hsl/hsla functions, or CSS keywords
-_CSS_COLOR_RE = re.compile(
-    r"^("
-    r"#[0-9a-fA-F]{3,8}"
-    r"|[a-zA-Z]+"
-    r"|rgba?\([^)]+\)"
-    r"|hsla?\([^)]+\)"
-    r"|var\(--[a-zA-Z0-9-]+\)"
-    r")$"
-)
-
-_COLOR_OPTIONS = [
-    "emphasis_color",
-    "emphasis_color_dark",
-    "strong_color",
-    "strong_color_dark",
-    "definition_color",
-    "definition_color_dark",
-]
+# Built-in text color schemes
+_VALID_COLOR_SCHEMES = ["seoul256", "none"]
 
 
-def validate_color_options(app):
-    """Validate that color theme options contain safe CSS color values.
+def validate_color_scheme(app):
+    """Validate the color_scheme theme option.
 
-    Prevents CSS injection by ensuring color values match a known-safe pattern
-    (hex colors, named colors, rgb/hsl functions). Invalid values are replaced
-    with empty strings and a warning is logged.
+    Ensures the selected scheme is a known built-in scheme name. Invalid values
+    fall back to the default 'seoul256' scheme with a warning.
+
+    Also checks for a custom_color_scheme.css in the project's _static
+    directories and automatically includes it if found.
     """
     theme_options = app.config.html_theme_options
-    for option in _COLOR_OPTIONS:
-        value = theme_options.get(option, "")
-        if value and not _CSS_COLOR_RE.match(value.strip()):
-            SPHINX_LOGGER.warning(
-                "Ignoring invalid CSS color value for %s: %r. "
-                "Use hex (#RRGGBB), named colors, or rgb()/hsl() functions.",
-                option,
-                value,
-            )
-            theme_options[option] = ""
+    scheme = theme_options.get("color_scheme", "seoul256").strip().lower()
+
+    if scheme not in _VALID_COLOR_SCHEMES:
+        SPHINX_LOGGER.warning(
+            "Unknown color_scheme %r. Valid schemes: %s. Falling back to 'seoul256'.",
+            scheme,
+            ", ".join(_VALID_COLOR_SCHEMES),
+        )
+        theme_options["color_scheme"] = "seoul256"
+    else:
+        theme_options["color_scheme"] = scheme
+
+    # Auto-detect custom_color_scheme.css in _static directories
+    static_paths = getattr(app.config, "html_static_path", [])
+    confdir = Path(app.confdir) if app.confdir else None
+    for static_path in static_paths:
+        if confdir:
+            full_path = confdir / static_path / "custom_color_scheme.css"
+            if full_path.is_file():
+                app.add_css_file("custom_color_scheme.css")
+                SPHINX_LOGGER.info(
+                    "Loading custom text color scheme from %s", full_path
+                )
+                break
 
 
 def setup(app):
@@ -646,7 +644,7 @@ def setup(app):
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
-    app.connect("builder-inited", validate_color_options)
+    app.connect("builder-inited", validate_color_scheme)
     app.connect("builder-inited", setup_pygments_css)
     app.connect("html-page-context", hash_html_assets)
     app.connect("html-page-context", add_pygments_style_class)
