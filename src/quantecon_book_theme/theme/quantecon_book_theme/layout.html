@@ -90,7 +90,7 @@
 <script>
 (function() {
   try {
-    if (localStorage.setContrast == 1) {
+    if (localStorage.setContrast === '1') {
       document.body.classList.add('dark-theme');
     }
   } catch(e) {}
@@ -121,10 +121,8 @@ body.dark-theme a:visited {
     color: #a08fff;
 }
 
-.main-index {
-  #qe-page-author-links {
+.main-index #qe-page-author-links {
     border-bottom: 5px solid #313131;
-  }
 }
 
 body.dark-theme .main-index #qe-page-author-links {
@@ -147,10 +145,8 @@ body.dark-theme .qe-page__footer {
     border-top-color: #3a3a5c;
 }
 
-.toctree-wrapper {
-    .caption-text {
-        color: #111111
-    }
+.toctree-wrapper .caption-text {
+    color: #111111;
 }
 
 body.dark-theme .toctree-wrapper .caption-text {

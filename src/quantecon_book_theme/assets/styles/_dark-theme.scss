@@ -237,11 +237,6 @@ body.dark-theme {
     border-color: #3a3a5c !important;
   }
 
-  :where(&:not(.use-pygments-style)) .highlight {
-    border-color: #3a3a5c;
-    background: #1e1e32;
-  }
-
   .highlight-none .highlight {
     background: transparent !important;
     border: 0 !important;
@@ -382,8 +377,11 @@ body.dark-theme {
     }
   }
 
-  // Inline SVG icons adapt to text color
-  svg g {
+  // Inline SVG icons adapt to text color (scoped to UI icons, not charts/plots)
+  .qe-toolbar svg g,
+  .qe-sidebar svg g,
+  .topbar-main svg g,
+  nav svg g {
     fill: currentColor !important;
     stroke: currentColor !important;
   }
