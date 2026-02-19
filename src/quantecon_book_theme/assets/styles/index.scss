@@ -28,6 +28,7 @@ All @forward rules must be at the top before any other rules.
 // Component modules - organized by functionality
 @forward "base";
 @forward "dark-theme";
+@forward "color-schemes";
 @forward "toolbar";
 @forward "sidebar";
 @forward "page";

@@ -324,25 +324,27 @@ This is a collapsible note that will show "Show" when collapsed and "Hide" when 
 This is a toggle directive that will use the configured button text.
 ```
 
-## Customizing Emphasis and Definition Colors
+## Text Color Scheme
 
-The theme applies custom colors to emphasis (italic), bold/strong, and definition list terms. By default:
+The theme applies colors to emphasis (italic), bold/strong, and definition list terms
+using a built-in color scheme system inspired by [Seoul256](https://github.com/junegunn/seoul256.vim).
 
-- **Emphasis** (`em`): Green (`#2d9f42`) in light mode, lighter green (`#66bb6a`) in dark mode
-- **Bold/Strong** (`strong`, `b`): Brown (`#8b4513`) in light mode, lighter brown (`#cd853f`) in dark mode
-- **Definitions** (`dl dt`): Inherits from bold/strong color by default
+### Built-in Schemes
 
-You can override these colors using `html_theme_options`:
+| Scheme | Description |
+|---|---|
+| `seoul256` (default) | Dark teal (`#005f5f`) for emphasis, dark amber (`#875f00`) for strong — with matching light variants for dark mode |
+| `gruvbox` | Earthy aqua (`#427b58`) for emphasis, warm orange (`#af3a03`) for strong — with light variants for dark mode |
+| `none` | Restores standard typography — italic for `em`, bold for `strong`, no color |
+
+### Selecting a Scheme
+
+In `conf.py`:
 
 ```python
 html_theme_options = {
     ...
-    "emphasis_color": "#1a73e8",
-    "emphasis_color_dark": "#8ab4f8",
-    "strong_color": "#d93025",
-    "strong_color_dark": "#f28b82",
-    "definition_color": "#6a1b9a",
-    "definition_color_dark": "#ce93d8",
+    "color_scheme": "seoul256",  # or "gruvbox" or "none"
     ...
 }
 ```
@@ -353,30 +355,71 @@ For Jupyter Book projects, add to your `_config.yml`:
 sphinx:
   config:
     html_theme_options:
-      emphasis_color: "#1a73e8"
-      emphasis_color_dark: "#8ab4f8"
-      strong_color: "#d93025"
-      strong_color_dark: "#f28b82"
-      definition_color: "#6a1b9a"
-      definition_color_dark: "#ce93d8"
+      color_scheme: "seoul256"
 ```
 
-| Option | Description | Default |
-|---|---|---|
-| `emphasis_color` | Color for `em` tags in light mode | `#2d9f42` (green) |
-| `emphasis_color_dark` | Color for `em` tags in dark mode | `#66bb6a` (light green) |
-| `strong_color` | Color for `strong`/`b` tags in light mode | `#8b4513` (brown) |
-| `strong_color_dark` | Color for `strong`/`b` tags in dark mode | `#cd853f` (peru) |
-| `definition_color` | Color for definition list terms (`dl dt`) in light mode | Inherits from `strong_color` |
-| `definition_color_dark` | Color for definition list terms (`dl dt`) in dark mode | Inherits from `strong_color_dark` |
+### Seoul256 Scheme Colors
 
-Any option left empty will use the theme's built-in default color. The `definition_color`
-options target Sphinx definition lists, glossary terms, and field lists specifically,
-while `strong_color` applies to all inline bold/strong text.
+| Element | Light Mode | Dark Mode |
+|---|---|---|
+| **Emphasis** (`em`) | `#005f5f` dark teal | `#5fafaf` medium-light teal |
+| **Bold/Strong** (`strong`, `b`) | `#875f00` dark amber | `#d7af5f` light amber-gold |
+| **Definitions** (`dl dt`) | Inherits from bold/strong | Inherits from bold/strong |
+
+```css
+/* Seoul256 — Light Mode */
+em       { color: #005f5f; }  /* dark teal */
+strong   { color: #875f00; }  /* dark amber */
+dl dt    { color: #875f00; }  /* inherits from strong */
+
+/* Seoul256 — Dark Mode */
+em       { color: #5fafaf; }  /* medium-light teal */
+strong   { color: #d7af5f; }  /* light amber-gold */
+dl dt    { color: #d7af5f; }  /* inherits from strong */
+```
+
+### Gruvbox Scheme Colors
+
+| Element | Light Mode | Dark Mode |
+|---|---|---|
+| **Emphasis** (`em`) | `#427b58` earthy aqua | `#8ec07c` light aqua |
+| **Bold/Strong** (`strong`, `b`) | `#af3a03` warm orange | `#fe8019` bright orange |
+| **Definitions** (`dl dt`) | Inherits from bold/strong | Inherits from bold/strong |
+
+```css
+/* Gruvbox — Light Mode */
+em       { color: #427b58; }  /* earthy aqua */
+strong   { color: #af3a03; }  /* warm orange */
+dl dt    { color: #af3a03; }  /* inherits from strong */
+
+/* Gruvbox — Dark Mode */
+em       { color: #8ec07c; }  /* light aqua */
+strong   { color: #fe8019; }  /* bright orange */
+dl dt    { color: #fe8019; }  /* inherits from strong */
+```
+
+### Custom Color Scheme
+
+To define your own text colors, place a `custom_color_scheme.css` file
+in your project's `_static/` directory. The theme will automatically detect and
+include it. Define any combination of these CSS custom properties:
+
+```css
+/* _static/custom_color_scheme.css */
+:root {
+  --qe-emphasis-color: #005f5f;
+  --qe-strong-color: #875f00;
+  --qe-definition-color: #875f00;
+}
+body.dark-theme {
+  --qe-emphasis-color: #5fafaf;
+  --qe-strong-color: #d7af5f;
+  --qe-definition-color: #d7af5f;
+}
+```
 
 ```{note}
-Color values are validated at build time against safe CSS color patterns
-(hex codes, named colors, `rgb()`/`hsl()` functions). Invalid values are
-ignored and a warning is logged. Only use trusted color values from your
-own configuration files.
+The `color_scheme` option is validated at build time. Invalid scheme names
+fall back to `seoul256` with a warning. When using a `custom_color_scheme.css`
+file, the base scheme still applies — your CSS overrides take precedence.
 ```

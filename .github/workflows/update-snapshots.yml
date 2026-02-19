@@ -84,7 +84,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No snapshot changes to commit"
           else
-            git commit -m "UPDATE: Visual regression snapshots (new) [skip ci]"
+            git commit -m "UPDATE: Visual regression snapshots (new)"
             git push
           fi
 
@@ -200,7 +200,7 @@ jobs:
             echo "No snapshot changes to commit"
           else
             CHANGED=$(git diff --staged --name-only | wc -l)
-            git commit -m "UPDATE: Regenerate all visual snapshots ($CHANGED files) [skip ci]"
+            git commit -m "UPDATE: Regenerate all visual snapshots ($CHANGED files)"
             git push
           fi
 
@@ -219,11 +219,11 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
               body: '✅ All visual snapshots have been regenerated and committed to this PR.\n\n' +
-                    'A `snapshot-update-diff` artifact has been uploaded with the before/after comparison. ' +
-                    'Download it from the workflow run to review the visual changes.'
+                    `📦 [Download snapshot-update-diff artifact](${runUrl}#artifacts) to review before/after images.`
             });

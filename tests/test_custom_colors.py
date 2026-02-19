@@ -1,19 +1,20 @@
 """
-Tests for customizable emphasis, strong/bold, and definition text colors.
+Tests for the text color scheme system.
 
 Verifies that:
-- Theme options are registered in theme.conf
-- CSS custom properties are used in SCSS source files
+- A single color_scheme option is registered in theme.conf
+- Seoul256-inspired CSS custom properties are used in SCSS source files
 - CSS custom properties appear in compiled CSS output
-- Layout template injects custom color styles when options are set
-- Definition color targets dl dt elements and falls back to strong color
-- Color values are validated against safe CSS patterns
+- Layout template handles scheme-based class injection
+- The "none" scheme is defined in _color-schemes.scss
+- The color scheme is validated against known schemes
+- Custom color scheme CSS is auto-detected from _static/
 """
 
 from pathlib import Path
 from unittest.mock import MagicMock
 
-from quantecon_book_theme import _CSS_COLOR_RE, validate_color_options
+from quantecon_book_theme import _VALID_COLOR_SCHEMES, validate_color_scheme
 
 
 # Paths
@@ -21,43 +22,26 @@ THEME_DIR = Path("src/quantecon_book_theme/theme/quantecon_book_theme")
 ASSETS_DIR = Path("src/quantecon_book_theme/assets")
 
 
-class TestCustomColorThemeOptions:
-    """Test that color customization options are registered in theme.conf."""
+class TestColorSchemeThemeOption:
+    """Test that the color_scheme option is registered in theme.conf."""
 
-    def test_emphasis_color_option_exists(self):
-        """theme.conf should define emphasis_color option."""
+    def test_color_scheme_option_exists(self):
+        """theme.conf should define a color_scheme option."""
         content = (THEME_DIR / "theme.conf").read_text()
-        assert "emphasis_color =" in content
+        assert "color_scheme =" in content
 
-    def test_emphasis_color_dark_option_exists(self):
-        """theme.conf should define emphasis_color_dark option."""
+    def test_color_scheme_defaults_to_seoul256(self):
+        """color_scheme should default to 'seoul256'."""
         content = (THEME_DIR / "theme.conf").read_text()
-        assert "emphasis_color_dark =" in content
+        lines = content.splitlines()
+        matching = [line for line in lines if line.strip().startswith("color_scheme =")]
+        assert len(matching) == 1
+        assert matching[0].strip() == "color_scheme = seoul256"
 
-    def test_strong_color_option_exists(self):
-        """theme.conf should define strong_color option."""
+    def test_old_individual_color_options_removed(self):
+        """Individual color options (emphasis_color, etc.) should not exist."""
         content = (THEME_DIR / "theme.conf").read_text()
-        assert "strong_color =" in content
-
-    def test_strong_color_dark_option_exists(self):
-        """theme.conf should define strong_color_dark option."""
-        content = (THEME_DIR / "theme.conf").read_text()
-        assert "strong_color_dark =" in content
-
-    def test_definition_color_option_exists(self):
-        """theme.conf should define definition_color option."""
-        content = (THEME_DIR / "theme.conf").read_text()
-        assert "definition_color =" in content
-
-    def test_definition_color_dark_option_exists(self):
-        """theme.conf should define definition_color_dark option."""
-        content = (THEME_DIR / "theme.conf").read_text()
-        assert "definition_color_dark =" in content
-
-    def test_options_default_to_empty(self):
-        """All color options should default to empty (use CSS fallback)."""
-        content = (THEME_DIR / "theme.conf").read_text()
-        for option in [
+        for old_option in [
             "emphasis_color",
             "emphasis_color_dark",
             "strong_color",
@@ -65,19 +49,69 @@ class TestCustomColorThemeOptions:
             "definition_color",
             "definition_color_dark",
         ]:
-            # Each option should appear as "option_name =" with no value
-            # Use a targeted check to avoid matching substrings
             lines = content.splitlines()
             matching = [
-                line for line in lines if line.strip().startswith(f"{option} =")
+                line for line in lines if line.strip().startswith(f"{old_option} =")
             ]
-            assert len(matching) == 1, f"Expected exactly one '{option}' option"
             assert (
-                matching[0].strip() == f"{option} ="
-            ), f"'{option}' should default to empty string"
+                len(matching) == 0
+            ), f"Old option '{old_option}' should be removed from theme.conf"
 
 
-class TestCustomColorCSSVariables:
+class TestSeoul256ColorScheme:
+    """Test that Seoul256-inspired colors are used in SCSS source files."""
+
+    def test_colors_scss_defines_emphasis(self):
+        """_colors.scss should define $emphasis with Seoul256 teal."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$emphasis: #005f5f" in content
+
+    def test_colors_scss_defines_emphasis_dark(self):
+        """_colors.scss should define $emphasis-dark for dark mode."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$emphasis-dark: #5fafaf" in content
+
+    def test_colors_scss_defines_definition(self):
+        """_colors.scss should define $definition with Seoul256 amber."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$definition: #875f00" in content
+
+    def test_colors_scss_defines_definition_dark(self):
+        """_colors.scss should define $definition-dark for dark mode."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$definition-dark: #d7af5f" in content
+
+
+class TestGruvboxColorScheme:
+    """Test that Gruvbox colors are defined in SCSS source files."""
+
+    def test_colors_scss_defines_gruvbox_emphasis(self):
+        """_colors.scss should define $gruvbox-emphasis."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-emphasis: #427b58" in content
+
+    def test_colors_scss_defines_gruvbox_emphasis_dark(self):
+        """_colors.scss should define $gruvbox-emphasis-dark."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-emphasis-dark: #8ec07c" in content
+
+    def test_colors_scss_defines_gruvbox_definition(self):
+        """_colors.scss should define $gruvbox-definition."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-definition: #af3a03" in content
+
+    def test_colors_scss_defines_gruvbox_definition_dark(self):
+        """_colors.scss should define $gruvbox-definition-dark."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-definition-dark: #fe8019" in content
+
+    def test_color_schemes_scss_has_gruvbox(self):
+        """_color-schemes.scss should define a gruvbox scheme."""
+        content = (ASSETS_DIR / "styles" / "_color-schemes.scss").read_text()
+        assert "color-scheme-gruvbox" in content
+
+
+class TestColorSchemeCSSVariables:
     """Test that SCSS uses CSS custom properties for emphasis/strong."""
 
     def test_base_scss_uses_emphasis_variable(self):
@@ -110,15 +144,15 @@ class TestCustomColorCSSVariables:
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
         assert "var(--qe-strong-color" in content
 
-    def test_dark_theme_has_emphasis_fallback(self):
-        """_dark-theme.scss should have fallback for emphasis in dark mode."""
+    def test_dark_theme_has_emphasis_dark_fallback(self):
+        """_dark-theme.scss should fall back to $emphasis-dark."""
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
-        assert "var(--qe-emphasis-color, #66bb6a)" in content
+        assert "colors.$emphasis-dark" in content
 
-    def test_dark_theme_has_strong_fallback(self):
-        """_dark-theme.scss should have fallback for strong in dark mode."""
+    def test_dark_theme_has_definition_dark_fallback(self):
+        """_dark-theme.scss should fall back to $definition-dark."""
         content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
-        assert "var(--qe-strong-color, #cd853f)" in content
+        assert "colors.$definition-dark" in content
 
     def test_base_scss_uses_definition_variable(self):
         """_base.scss should use --qe-definition-color for dl dt elements."""
@@ -139,18 +173,32 @@ class TestCustomColorCSSVariables:
         assert "dl.simple dt" in content
         assert "dl.glossary dt" in content
 
-    def test_dark_theme_uses_definition_variable(self):
-        """_dark-theme.scss should use --qe-definition-color."""
-        content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
-        assert "var(--qe-definition-color" in content
 
-    def test_dark_theme_definition_falls_back_to_strong(self):
-        """_dark-theme.scss definition color should fall back to strong."""
-        content = (ASSETS_DIR / "styles" / "_dark-theme.scss").read_text()
-        assert "var(--qe-definition-color, var(--qe-strong-color, #cd853f))" in content
+class TestNoneColorScheme:
+    """Test that the 'none' scheme resets markup colors to inherit."""
+
+    def test_color_schemes_scss_exists(self):
+        """_color-schemes.scss should exist."""
+        assert (ASSETS_DIR / "styles" / "_color-schemes.scss").is_file()
+
+    def test_none_scheme_resets_em(self):
+        """'none' scheme should reset em color to inherit."""
+        content = (ASSETS_DIR / "styles" / "_color-schemes.scss").read_text()
+        assert "color-scheme-none" in content
+        assert "inherit" in content
+
+    def test_none_scheme_resets_strong(self):
+        """'none' scheme should reset strong color to inherit."""
+        content = (ASSETS_DIR / "styles" / "_color-schemes.scss").read_text()
+        assert "strong" in content
+
+    def test_color_schemes_imported(self):
+        """index.scss should import _color-schemes."""
+        content = (ASSETS_DIR / "styles" / "index.scss").read_text()
+        assert '"color-schemes"' in content
 
 
-class TestCustomColorCompiledCSS:
+class TestCompiledCSS:
     """Test that compiled CSS contains custom properties."""
 
     def test_compiled_css_has_emphasis_variable(self):
@@ -165,215 +213,122 @@ class TestCustomColorCompiledCSS:
         content = css_path.read_text()
         assert "--qe-strong-color" in content
 
-    def test_compiled_css_em_uses_variable(self):
-        """Compiled CSS em rule should use var(--qe-emphasis-color)."""
-        css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
-        content = css_path.read_text()
-        assert "var(--qe-emphasis-color" in content
-
-    def test_compiled_css_strong_uses_variable(self):
-        """Compiled CSS strong rule should use var(--qe-strong-color)."""
-        css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
-        content = css_path.read_text()
-        assert "var(--qe-strong-color" in content
-
     def test_compiled_css_has_definition_variable(self):
         """Compiled CSS should contain --qe-definition-color variable."""
         css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
         content = css_path.read_text()
         assert "--qe-definition-color" in content
 
-    def test_compiled_css_definition_uses_variable(self):
-        """Compiled CSS dl dt rule should use var(--qe-definition-color)."""
+    def test_compiled_css_has_none_scheme(self):
+        """Compiled CSS should contain the color-scheme-none class."""
         css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
         content = css_path.read_text()
-        assert "var(--qe-definition-color" in content
+        assert "color-scheme-none" in content
+
+    def test_compiled_css_has_gruvbox_scheme(self):
+        """Compiled CSS should contain the color-scheme-gruvbox class."""
+        css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
+        content = css_path.read_text()
+        assert "color-scheme-gruvbox" in content
 
 
-class TestCustomColorLayoutTemplate:
-    """Test that layout.html injects custom color styles."""
+class TestLayoutTemplateScheme:
+    """Test that layout.html handles color scheme correctly."""
 
     def _read_layout(self):
         return (THEME_DIR / "layout.html").read_text()
 
-    def test_template_checks_emphasis_color(self):
-        """Layout template should conditionally check theme_emphasis_color."""
+    def test_template_checks_color_scheme(self):
+        """Layout template should reference theme_color_scheme."""
         content = self._read_layout()
-        assert "theme_emphasis_color" in content
+        assert "theme_color_scheme" in content
 
-    def test_template_checks_strong_color(self):
-        """Layout template should conditionally check theme_strong_color."""
+    def test_template_handles_none_scheme(self):
+        """Layout template should add color-scheme-none class for 'none'."""
         content = self._read_layout()
-        assert "theme_strong_color" in content
+        assert "color-scheme-none" in content
 
-    def test_template_checks_emphasis_color_dark(self):
-        """Layout template should conditionally check theme_emphasis_color_dark."""
+    def test_template_handles_gruvbox_scheme(self):
+        """Layout template should add color-scheme-gruvbox class for 'gruvbox'."""
         content = self._read_layout()
-        assert "theme_emphasis_color_dark" in content
+        assert "color-scheme-gruvbox" in content
 
-    def test_template_checks_strong_color_dark(self):
-        """Layout template should conditionally check theme_strong_color_dark."""
+    def test_template_no_individual_color_injection(self):
+        """Layout template should NOT inject individual color variables."""
         content = self._read_layout()
-        assert "theme_strong_color_dark" in content
-
-    def test_template_sets_emphasis_css_variable(self):
-        """Layout template should set --qe-emphasis-color CSS variable."""
-        content = self._read_layout()
-        assert "--qe-emphasis-color: {{ theme_emphasis_color }}" in content
-
-    def test_template_sets_strong_css_variable(self):
-        """Layout template should set --qe-strong-color CSS variable."""
-        content = self._read_layout()
-        assert "--qe-strong-color: {{ theme_strong_color }}" in content
-
-    def test_template_sets_dark_emphasis_css_variable(self):
-        """Layout template should set --qe-emphasis-color for dark mode."""
-        content = self._read_layout()
-        assert "--qe-emphasis-color: {{ theme_emphasis_color_dark }}" in content
-
-    def test_template_sets_dark_strong_css_variable(self):
-        """Layout template should set --qe-strong-color for dark mode."""
-        content = self._read_layout()
-        assert "--qe-strong-color: {{ theme_strong_color_dark }}" in content
-
-    def test_template_dark_mode_uses_body_dark_theme(self):
-        """Layout template should target body.dark-theme for dark colors."""
-        content = self._read_layout()
-        assert "body.dark-theme" in content
-
-    def test_template_light_mode_uses_root(self):
-        """Layout template should target :root for light mode colors."""
-        content = self._read_layout()
-        assert ":root" in content
-
-    def test_template_checks_definition_color(self):
-        """Layout template should conditionally check theme_definition_color."""
-        content = self._read_layout()
-        assert "theme_definition_color" in content
-
-    def test_template_checks_definition_color_dark(self):
-        """Layout template should check theme_definition_color_dark."""
-        content = self._read_layout()
-        assert "theme_definition_color_dark" in content
-
-    def test_template_sets_definition_css_variable(self):
-        """Layout template should set --qe-definition-color CSS variable."""
-        content = self._read_layout()
-        assert "--qe-definition-color: {{ theme_definition_color }}" in content
-
-    def test_template_sets_dark_definition_css_variable(self):
-        """Layout template should set --qe-definition-color for dark mode."""
-        content = self._read_layout()
-        assert "--qe-definition-color: {{ theme_definition_color_dark }}" in content
+        assert "theme_emphasis_color" not in content
+        assert "theme_strong_color" not in content
+        assert "theme_definition_color" not in content
 
 
-class TestColorValueValidation:
-    """Test that CSS color values are validated against safe patterns."""
+class TestValidColorSchemes:
+    """Test the valid color scheme list."""
 
-    def test_hex_3_digit(self):
-        """#RGB hex colors should be accepted."""
-        assert _CSS_COLOR_RE.match("#f00")
+    def test_seoul256_is_valid(self):
+        """'seoul256' should be a valid color scheme."""
+        assert "seoul256" in _VALID_COLOR_SCHEMES
 
-    def test_hex_6_digit(self):
-        """#RRGGBB hex colors should be accepted."""
-        assert _CSS_COLOR_RE.match("#ff0000")
+    def test_gruvbox_is_valid(self):
+        """'gruvbox' should be a valid color scheme."""
+        assert "gruvbox" in _VALID_COLOR_SCHEMES
 
-    def test_hex_8_digit(self):
-        """#RRGGBBAA hex colors should be accepted."""
-        assert _CSS_COLOR_RE.match("#ff000080")
-
-    def test_named_color(self):
-        """Named CSS colors should be accepted."""
-        assert _CSS_COLOR_RE.match("red")
-
-    def test_named_color_camelcase(self):
-        """CamelCase named CSS colors should be accepted."""
-        assert _CSS_COLOR_RE.match("DarkSlateGray")
-
-    def test_rgb_function(self):
-        """rgb() function should be accepted."""
-        assert _CSS_COLOR_RE.match("rgb(255, 0, 0)")
-
-    def test_rgba_function(self):
-        """rgba() function should be accepted."""
-        assert _CSS_COLOR_RE.match("rgba(255, 0, 0, 0.5)")
-
-    def test_hsl_function(self):
-        """hsl() function should be accepted."""
-        assert _CSS_COLOR_RE.match("hsl(0, 100%, 50%)")
-
-    def test_hsla_function(self):
-        """hsla() function should be accepted."""
-        assert _CSS_COLOR_RE.match("hsla(0, 100%, 50%, 0.5)")
-
-    def test_rejects_css_injection(self):
-        """CSS injection attempts should be rejected."""
-        assert not _CSS_COLOR_RE.match("red; } body { display: none; } /*")
-
-    def test_rejects_semicolon(self):
-        """Values with semicolons should be rejected."""
-        assert not _CSS_COLOR_RE.match("#ff0000; color: red")
-
-    def test_rejects_braces(self):
-        """Values with braces should be rejected."""
-        assert not _CSS_COLOR_RE.match("red } .evil { color: blue")
-
-    def test_rejects_url(self):
-        """url() values should be rejected."""
-        assert not _CSS_COLOR_RE.match("url(evil.com)")
-
-    def test_rejects_expression(self):
-        """expression() values should be rejected."""
-        assert not _CSS_COLOR_RE.match("expression(alert(1))")
+    def test_none_is_valid(self):
+        """'none' should be a valid color scheme."""
+        assert "none" in _VALID_COLOR_SCHEMES
 
 
-class TestValidateColorOptionsFunction:
-    """Test the validate_color_options function with a mock Sphinx app."""
+class TestValidateColorSchemeFunction:
+    """Test the validate_color_scheme function with a mock Sphinx app."""
 
-    def _make_app(self, **theme_options):
+    def _make_app(self, color_scheme=None, static_paths=None):
         """Create a mock Sphinx app with given theme options."""
         app = MagicMock()
-        app.config.html_theme_options = dict(theme_options)
+        theme_options = {}
+        if color_scheme is not None:
+            theme_options["color_scheme"] = color_scheme
+        app.config.html_theme_options = theme_options
+        app.config.html_static_path = static_paths or []
+        app.confdir = "/fake/confdir"
         return app
 
-    def test_valid_hex_color_preserved(self):
-        """Valid hex color values should be preserved."""
-        app = self._make_app(emphasis_color="#ff0000")
-        validate_color_options(app)
-        assert app.config.html_theme_options["emphasis_color"] == "#ff0000"
-
-    def test_valid_named_color_preserved(self):
-        """Valid named color values should be preserved."""
-        app = self._make_app(strong_color="red")
-        validate_color_options(app)
-        assert app.config.html_theme_options["strong_color"] == "red"
-
-    def test_invalid_value_cleared(self):
-        """Invalid color values should be replaced with empty string."""
-        app = self._make_app(emphasis_color="red; } body { display: none; } /*")
-        validate_color_options(app)
-        assert app.config.html_theme_options["emphasis_color"] == ""
-
-    def test_empty_value_unchanged(self):
-        """Empty values should remain empty (no error)."""
-        app = self._make_app(emphasis_color="")
-        validate_color_options(app)
-        assert app.config.html_theme_options["emphasis_color"] == ""
-
-    def test_missing_option_no_error(self):
-        """Missing options should not cause errors."""
+    def test_default_scheme_is_seoul256(self):
+        """Default color_scheme should be 'seoul256'."""
         app = self._make_app()
-        validate_color_options(app)
-        # Should complete without error
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "seoul256"
 
-    def test_multiple_options_validated(self):
-        """All color options should be validated independently."""
-        app = self._make_app(
-            emphasis_color="#00ff00",
-            strong_color="invalid; injection",
-            definition_color="blue",
-        )
-        validate_color_options(app)
-        assert app.config.html_theme_options["emphasis_color"] == "#00ff00"
-        assert app.config.html_theme_options["strong_color"] == ""
-        assert app.config.html_theme_options["definition_color"] == "blue"
+    def test_valid_seoul256_preserved(self):
+        """Valid 'seoul256' scheme should be preserved."""
+        app = self._make_app(color_scheme="seoul256")
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "seoul256"
+
+    def test_valid_none_preserved(self):
+        """Valid 'none' scheme should be preserved."""
+        app = self._make_app(color_scheme="none")
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "none"
+
+    def test_valid_gruvbox_preserved(self):
+        """Valid 'gruvbox' scheme should be preserved."""
+        app = self._make_app(color_scheme="gruvbox")
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "gruvbox"
+
+    def test_invalid_scheme_falls_back(self):
+        """Invalid scheme should fall back to 'seoul256' with warning."""
+        app = self._make_app(color_scheme="nonexistent")
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "seoul256"
+
+    def test_case_insensitive(self):
+        """Scheme names should be case-insensitive."""
+        app = self._make_app(color_scheme="Seoul256")
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "seoul256"
+
+    def test_whitespace_trimmed(self):
+        """Whitespace should be trimmed from scheme name."""
+        app = self._make_app(color_scheme="  none  ")
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "none"

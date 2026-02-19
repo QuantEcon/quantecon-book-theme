@@ -13,6 +13,7 @@ class TestSCSSModuleStructure:
         "_base.scss",
         "_breakpoints.scss",
         "_code.scss",
+        "_color-schemes.scss",
         "_colors.scss",
         "_content.scss",
         "_dark-theme.scss",
@@ -47,6 +48,7 @@ class TestSCSSModuleStructure:
         expected_forwards = [
             "base",
             "dark-theme",
+            "color-schemes",
             "toolbar",
             "sidebar",
             "page",

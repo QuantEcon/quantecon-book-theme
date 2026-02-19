@@ -1,0 +1,75 @@
+/*
+-----------------------------------
+TEXT COLOR SCHEMES
+Built-in color scheme definitions for emphasis, strong, and definition markup.
+
+Available schemes:
+  - seoul256 (default): Seoul256-inspired teal & amber palette
+  - gruvbox: Warm earthy aqua & orange palette
+  - none: Restores standard typography (italic for em, bold for strong, no color)
+
+Custom override: Place a custom_color_scheme.css in your project's _static/
+directory defining --qe-emphasis-color, --qe-strong-color, --qe-definition-color
+on :root and body.dark-theme.
+-----------------------------------
+*/
+
+// "gruvbox" scheme - warm earthy aqua & orange palette
+@use "colors";
+
+body.color-scheme-gruvbox {
+  em {
+    color: var(--qe-emphasis-color, colors.$gruvbox-emphasis);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  strong,
+  b {
+    color: var(--qe-strong-color, colors.$gruvbox-definition);
+  }
+
+  dl.simple dt,
+  dl.glossary dt,
+  dl.field-list dt {
+    color: var(--qe-definition-color, var(--qe-strong-color, colors.$gruvbox-definition));
+  }
+
+  &.dark-theme {
+    em {
+      color: var(--qe-emphasis-color, colors.$gruvbox-emphasis-dark);
+    }
+
+    strong,
+    b {
+      color: var(--qe-strong-color, colors.$gruvbox-definition-dark);
+    }
+
+    dl.simple dt,
+    dl.glossary dt,
+    dl.field-list dt {
+      color: var(--qe-definition-color, var(--qe-strong-color, colors.$gruvbox-definition-dark));
+    }
+  }
+}
+
+// "none" scheme - restores standard HTML typography (no colored markup)
+body.color-scheme-none {
+  em {
+    font-style: italic;
+    font-weight: normal;
+    color: inherit;
+  }
+
+  strong,
+  b {
+    font-weight: bold;
+    color: inherit;
+  }
+
+  dl.simple dt,
+  dl.glossary dt,
+  dl.field-list dt {
+    color: inherit;
+  }
+}
