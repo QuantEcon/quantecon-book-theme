@@ -154,6 +154,14 @@ em {
   color: var(--qe-emphasis-color, colors.$emphasis);
 }
 
+// Reset emphasis styling inside citation reference links
+// Prevents "et al." in references from inheriting emphasis color
+a.reference em {
+  font-style: normal;
+  font-weight: inherit;
+  color: inherit;
+}
+
 // Strong/bold styling - semi-bold weight with color
 strong,
 b {
