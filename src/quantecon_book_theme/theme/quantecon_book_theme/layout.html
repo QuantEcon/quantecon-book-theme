@@ -86,6 +86,17 @@
 {%- endblock %}
 {%- block content %}
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast == 1) {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 {%- if not theme_quantecon_project %}
 <style>
@@ -99,24 +110,51 @@ a:visited {
   color: #111111;
 }
 
+/* Dark mode overrides for non-QuantEcon project link colors */
+body.dark-theme a {
+    color: #6cb6ff;
+}
+body.dark-theme a:hover {
+    color: #91cdff;
+}
+body.dark-theme a:visited {
+    color: #a08fff;
+}
+
 .main-index {
   #qe-page-author-links {
     border-bottom: 5px solid #313131;
   }
 }
 
+body.dark-theme .main-index #qe-page-author-links {
+    border-bottom-color: #3a3a5c;
+}
+
 .qe-page__header {
   border-bottom: 5px solid #313131;
+}
+
+body.dark-theme .qe-page__header {
+    border-bottom-color: #3a3a5c;
 }
 
 .qe-page__footer {
     border-top: 5px solid #313131;
 }
 
+body.dark-theme .qe-page__footer {
+    border-top-color: #3a3a5c;
+}
+
 .toctree-wrapper {
     .caption-text {
         color: #111111
     }
+}
+
+body.dark-theme .toctree-wrapper .caption-text {
+    color: #d4d4e4;
 }
 </style>
 {%- endif %}

@@ -1,27 +1,74 @@
 /*
 -----------------------------------
 DARK THEME STYLES
-Dark mode overrides
+Modern dark mode overrides using a consistent color palette.
+Palette:
+  --qe-dark-bg:          #1a1a2e   Deep navy-charcoal background
+  --qe-dark-surface:     #252540   Elevated surface (cards, sidebars)
+  --qe-dark-surface-alt: #2d2d4a   Alternate surface (toolbar, inputs)
+  --qe-dark-border:      #3a3a5c   Subtle borders
+  --qe-dark-text:        #d4d4e4   Primary text (soft white)
+  --qe-dark-text-muted:  #9898b0   Secondary/muted text
+  --qe-dark-link:        #6cb6ff   Links (GitHub-style blue)
+  --qe-dark-link-hover:  #91cdff   Link hover
+  --qe-dark-code-bg:     #1e1e32   Code block background
+  --qe-dark-accent:      #0072bc   Theme primary accent (carried from light)
 -----------------------------------
 */
 
 @use "colors";
 
 body.dark-theme {
-  background: #222;
-  color: #fff;
+  // =========================================
+  // BASE: Body, text, headings
+  // =========================================
+  background-color: #1a1a2e;
+  color: #d4d4e4;
 
-  a,
   h1,
   h2,
   h3,
   h4,
-  h5,
-  p {
-    color: #fff;
+  h5 {
+    color: #e8e8f0;
   }
 
-  // Seoul256-inspired text colors for dark mode
+  h1 {
+    color: #f0f0f8;
+  }
+
+  p {
+    color: #d4d4e4;
+  }
+
+  // =========================================
+  // LINKS: Distinguishable, accessible
+  // =========================================
+  a {
+    color: #6cb6ff;
+
+    &:hover {
+      color: #91cdff;
+    }
+
+    &:visited {
+      color: #a08fff;
+    }
+  }
+
+  .reference.external,
+  .reference.internal {
+    color: #6cb6ff;
+    font-weight: 600;
+
+    &:hover {
+      color: #91cdff;
+    }
+  }
+
+  // =========================================
+  // EMPHASIS / STRONG / DEFINITION COLORS
+  // =========================================
   em {
     color: var(--qe-emphasis-color, colors.$emphasis-dark);
   }
@@ -37,22 +84,136 @@ body.dark-theme {
     color: var(--qe-definition-color, var(--qe-strong-color, colors.$definition-dark));
   }
 
-  .qe-toolbar__inner > ul > li > a,
-  .qe-sidebar__nav ul > li > a {
-    color: #fff;
-  }
-
+  // =========================================
+  // INLINE CODE
+  // =========================================
   cite,
   code,
   tt {
-    background-color: transparent;
+    background-color: #252540;
+    border-color: #3a3a5c;
+    color: #e0b0ff;
   }
 
-  .maths,
-  .math {
-    color: #fff !important;
+  // =========================================
+  // TOOLBAR
+  // =========================================
+  .qe-toolbar {
+    background-color: #252540;
+    border-bottom-color: #3a3a5c;
   }
 
+  .qe-toolbar__inner > ul > li > a {
+    color: #d4d4e4;
+  }
+
+  .qe-toolbar__inner > ul > li.btn__search input {
+    background-color: #1e1e32;
+    color: #d4d4e4;
+    border-color: #3a3a5c;
+
+    &:focus {
+      border-color: #6cb6ff;
+    }
+  }
+
+  .qe-toolbar__inner > ul > li.btn__qelogo a {
+    filter: brightness(0) invert(1) opacity(0.85);
+  }
+
+  .btn__search input {
+    background-color: #1e1e32;
+    color: #d4d4e4;
+
+    &:focus {
+      border-color: #6cb6ff;
+    }
+  }
+
+  // =========================================
+  // LEFT SIDEBAR
+  // =========================================
+  .qe-sidebar {
+    background-color: #252540;
+    border-right-color: #3a3a5c;
+
+    @media (max-width: 1340px) {
+      box-shadow: 10px 10px 5px 9999px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .qe-sidebar__nav ul > li > a {
+    color: #b8b8d0;
+
+    &.active {
+      color: #6cb6ff;
+    }
+  }
+
+  .drawer,
+  .drawer .inner {
+    background-color: #252540;
+  }
+
+  // Sidebar search area
+  .bd-search {
+    background-color: #1e1e32;
+
+    .form-control {
+      background: #252540;
+      border-color: #3a3a5c;
+      color: #d4d4e4;
+    }
+
+    svg {
+      color: #9898b0;
+    }
+  }
+
+  // =========================================
+  // RIGHT TOC ("On this page")
+  // =========================================
+  .qe-page__toc {
+    &-nav {
+      ul li a {
+        color: #9898b0;
+
+        &.active {
+          color: #6cb6ff;
+        }
+      }
+
+      ul li.active > a {
+        color: #6cb6ff;
+      }
+
+      // Copy-link icon
+      ul li a .toc-copy-link {
+        color: #9898b0;
+
+        &:hover {
+          color: #6cb6ff;
+        }
+      }
+    }
+  }
+
+  .toc-entry a.nav-link {
+    color: #9898b0;
+  }
+
+  // Back to top button
+  .back-to-top-btn {
+    color: #6cb6ff;
+
+    &:hover {
+      color: #91cdff;
+    }
+  }
+
+  // =========================================
+  // LOGO HANDLING
+  // =========================================
   .logo-img {
     display: none;
   }
@@ -61,8 +222,6 @@ body.dark-theme {
     display: block;
   }
 
-  /* Issue #342: Invert main logo when no dark logo is provided
-   * Uses filter inversion when dark-logo-img is not present/visible */
   .logo-img:only-child,
   .qe-sidebar__nav .logo img:only-child {
     display: block;
@@ -70,148 +229,427 @@ body.dark-theme {
     -webkit-filter: invert(100%) hue-rotate(-180deg);
   }
 
+  // =========================================
+  // CODE BLOCKS & SYNTAX HIGHLIGHTING
+  // =========================================
   .highlight {
-    background: #111 !important;
-    .n,
-    .p {
-      color: #fff;
+    background: #1e1e32 !important;
+    border-color: #3a3a5c !important;
+  }
+
+  :where(&:not(.use-pygments-style)) .highlight {
+    border-color: #3a3a5c;
+    background: #1e1e32;
+  }
+
+  .highlight-none .highlight {
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  pre {
+    background-color: #1e1e32;
+    color: #d4d4e4;
+  }
+
+  // =========================================
+  // TABLES
+  // =========================================
+  .qe-page__content table {
+    tbody tr:nth-child(odd) {
+      background-color: #252540;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: transparent;
+    }
+
+    td,
+    th {
+      color: #d4d4e4;
+    }
+
+    td > p,
+    th > p {
+      color: #d4d4e4;
+    }
+
+    thead th,
+    thead td {
+      border-bottom-color: #3a3a5c;
+      color: #e8e8f0;
     }
   }
 
-  svg {
-    g {
-      fill: #fff !important;
-      stroke: #fff !important;
+  // =========================================
+  // ADMONITIONS
+  // =========================================
+  div.admonition,
+  .admonition {
+    background-color: #252540;
+    box-shadow: none;
+    border: 1px solid #3a3a5c;
+
+    > .admonition-title {
+      background-color: rgba(108, 182, 255, 0.1);
     }
   }
 
-  .qe-toolbar,
-  .drawer,
-  .qe-sidebar,
-  .drawer .inner {
-    background: #444;
+  // Type-specific admonition accent colors
+  .admonition.warning,
+  .admonition.caution,
+  .admonition.attention {
+    border-color: #d4a017;
+
+    > .admonition-title {
+      background-color: rgba(212, 160, 23, 0.12);
+    }
   }
 
-  .btn__search {
-    input {
-      background-color: #333;
-      color: #fff;
+  .admonition.danger,
+  .admonition.error {
+    border-color: #e06060;
 
-      &:focus {
-        border-color: #fff;
+    > .admonition-title {
+      background-color: rgba(224, 96, 96, 0.12);
+    }
+  }
+
+  .admonition.tip,
+  .admonition.hint {
+    border-color: #50b880;
+
+    > .admonition-title {
+      background-color: rgba(80, 184, 128, 0.12);
+    }
+  }
+
+  .admonition.important {
+    border-color: #6cb6ff;
+
+    > .admonition-title {
+      background-color: rgba(108, 182, 255, 0.12);
+    }
+  }
+
+  // =========================================
+  // BLOCKQUOTES
+  // =========================================
+  blockquote {
+    border-left-color: #6cb6ff;
+    color: #d4d4e4;
+
+    p {
+      color: #d4d4e4;
+    }
+  }
+
+  // =========================================
+  // MATH (MathJax / KaTeX)
+  // =========================================
+  .maths,
+  .math {
+    color: #d4d4e4 !important;
+  }
+
+  .qe-page__content .MathJax {
+    color: #d4d4e4 !important;
+  }
+
+  .qe-page__content a .MathJax,
+  .qe-page__content a .math {
+    color: #6cb6ff !important;
+  }
+
+  mjx-math mjx-mstyle {
+    color: #d4d4e4 !important;
+  }
+
+  // =========================================
+  // IMAGES: Subtle brightness reduction instead of aggressive inversion
+  // Only invert SVG line art; leave photos/plots natural
+  // =========================================
+  .qe-page__content {
+    .image-reference img,
+    figure img,
+    .cell_output img {
+      opacity: 0.88;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 1;
       }
     }
   }
 
-  .qe-page__content {
-    .MathJax {
-      color: #fff !important;
-    }
-    .image-reference img,
-    figure img,
-    .cell_output img {
-      filter: invert(100%) hue-rotate(-180deg) !important;
-      -ms-filter: invert(100%) !important;
-      -webkit-filter: invert(100%) hue-rotate(-180deg) !important;
-    }
+  // Inline SVG icons adapt to text color
+  svg g {
+    fill: currentColor !important;
+    stroke: currentColor !important;
   }
 
-  .toc-entry {
-    a.nav-link {
-      color: rgb(166, 166, 166);
-    }
-  }
-
-  .reference.external,
-  .reference.internal {
-    font-weight: 800;
-  }
-
-  nav.contents {
-    background-color: #333;
-  }
-
-  div.admonition,
-  .admonition {
-    background-color: #333;
-    box-shadow: none !important;
-  }
-
-  pre {
-    background-color: #333;
-    color: #fff;
-  }
-
-  aside.sidebar {
-    background-color: #333;
-  }
-
-  button.toggle-button.toggle-button-hidden::before {
-    color: #fff;
-  }
-
-  aside.topic,
-  div.topic,
-  div.topic.contents,
-  nav.contents {
-    background-color: #333;
-    box-shadow: none !important;
-  }
-
-  blockquote,
-  blockquote p {
-    color: #fff;
-  }
-
-  table tbody .row-even p {
-    color: #333;
+  // =========================================
+  // CELLS (Jupyter notebook)
+  // =========================================
+  div.cell div.cell_input {
+    background-color: #1e1e32;
+    border-left-color: #6cb6ff;
   }
 
   div.cell details.below-input > summary,
-  div.cell div.cell_input,
   div.cell details.above-input > summary {
-    background-color: #333;
-  }
-
-  .tippy-box {
-    background-color: #333;
-  }
-
-  .bd-search-container ul.search li div.context,
-  .bd-search-container ul.search li p.context {
-    color: #fff;
-  }
-
-  .qe-toolbar__inner > ul > li.btn__search input {
-    background-color: #333;
-    color: #fff;
-  }
-
-  tbody tr:nth-child(even) {
-    color: white;
-  }
-
-  thead tr th {
-    color: white;
-  }
-
-  .highlight .nn {
-    color: white;
-  }
-
-  mjx-math mjx-mstyle {
-    color: white !important;
-  }
-
-  #settingsModal {
-    span {
-      color: white;
-    }
+    background-color: #252540;
   }
 
   .cell_output .output.text_plain,
   .cell_output .output.stream,
   .cell_output .output.stderr {
-    border: 0rem;
+    border: 0;
+  }
+
+  .cell .input .prompt:before {
+    color: #6cb6ff;
+  }
+
+  // Copy button
+  .qe-page__content a.copybtn {
+    color: #9898b0;
+
+    &:hover {
+      color: #d4d4e4;
+    }
+  }
+
+  // =========================================
+  // TOPICS, CONTENTS NAV, SIDEBAR PANELS
+  // =========================================
+  aside.topic,
+  div.topic,
+  div.topic.contents,
+  nav.contents {
+    background-color: #252540;
+    border-color: #3a3a5c;
+    box-shadow: none;
+  }
+
+  aside.sidebar {
+    background-color: #252540;
+  }
+
+  // =========================================
+  // COLLAPSE / TOGGLE BARS
+  // =========================================
+  div[class^="cell tag_collapse"] .collapse-toggle-bar {
+    background-color: #252540;
+    border-color: #3a3a5c;
+
+    &:hover {
+      background-color: #2d2d4a;
+    }
+
+    .collapse-indicator {
+      color: #6cb6ff;
+    }
+  }
+
+  button.toggle-button.toggle-button-hidden::before {
+    color: #d4d4e4;
+  }
+
+  // =========================================
+  // CONTENT TOC (in-page)
+  // =========================================
+  .qe-page__content #contents + ul {
+    border-color: #3a3a5c !important;
+  }
+
+  // =========================================
+  // ANCHOR / HEADER LINKS
+  // =========================================
+  .qe-page__content .anchor-link,
+  .qe-page__content .headerlink {
+    color: #9898b0;
+
+    &:hover {
+      color: #6cb6ff;
+    }
+  }
+
+  // =========================================
+  // TIPPY TOOLTIPS
+  // =========================================
+  .tippy-box {
+    background-color: #2d2d4a;
+    color: #d4d4e4;
+    border: 1px solid #3a3a5c;
+  }
+
+  .tippy-box .tippy-arrow {
+    color: #2d2d4a;
+  }
+
+  // =========================================
+  // MODALS
+  // =========================================
+  #downloadPDFModal {
+    background-color: #252540;
+    color: #d4d4e4;
+
+    p {
+      color: #6cb6ff;
+    }
+  }
+
+  #settingsModal {
+    background-color: #252540;
+    color: #d4d4e4;
+
+    span {
+      color: #d4d4e4;
+    }
+
+    .modal-desc {
+      color: #9898b0;
+    }
+
+    .modal-subtitle {
+      border-bottom-color: #3a3a5c;
+    }
+
+    .modal-servers li {
+      border-color: #3a3a5c;
+      color: #d4d4e4;
+
+      &.active {
+        border-color: #6cb6ff;
+        background: rgba(108, 182, 255, 0.1);
+
+        i {
+          color: #6cb6ff;
+        }
+      }
+
+      i {
+        color: #3a3a5c;
+      }
+
+      select,
+      input {
+        background-color: #1e1e32;
+        color: #d4d4e4;
+        border: 1px solid #3a3a5c;
+      }
+    }
+
+    .launch a {
+      background: #0072bc;
+      color: #fff;
+
+      &:hover {
+        background: #005a96;
+      }
+    }
+  }
+
+  // =========================================
+  // SEARCH RESULTS
+  // =========================================
+  .bd-search-container ul.search li div.context,
+  .bd-search-container ul.search li p.context {
+    color: #d4d4e4;
+  }
+
+  // =========================================
+  // HOMEPAGE / QUANTECON DEFAULTS
+  // =========================================
+  .web-version a {
+    color: #d4d4e4;
+    border-color: #3a3a5c;
+
+    &:hover {
+      background: #2d2d4a;
+      border-color: #6cb6ff;
+      color: #e8e8f0;
+
+      p {
+        color: #b8b8d0;
+      }
+    }
+
+    .thumb {
+      color: #d4d4e4;
+    }
+
+    p {
+      color: #9898b0;
+    }
+  }
+
+  .home-alternatives li a {
+    color: #d4d4e4;
+    border-color: #3a3a5c;
+
+    &:hover {
+      background: #2d2d4a;
+      border-color: #6cb6ff;
+      color: #e8e8f0;
+
+      svg {
+        color: #e8e8f0;
+      }
+
+      p {
+        color: #b8b8d0;
+      }
+    }
+
+    svg {
+      color: #d4d4e4;
+    }
+
+    h3 {
+      color: #e8e8f0;
+    }
+
+    p {
+      color: #9898b0;
+    }
+  }
+
+  // =========================================
+  // AUTODOC / API DOCUMENTATION
+  // =========================================
+  dl.py {
+    dt {
+      background-color: #252540;
+      border-color: #3a3a5c;
+    }
+  }
+
+  .viewcode-link {
+    color: #50b880;
+  }
+
+  // =========================================
+  // DROPDOWN TOGGLE BUTTONS
+  // =========================================
+  details.toggle-details {
+    border-color: #3a3a5c;
+
+    summary {
+      background-color: #252540;
+      color: #d4d4e4;
+    }
+  }
+
+  // =========================================
+  // FOOTNOTES
+  // =========================================
+  .footnote-reference {
+    color: #6cb6ff;
+  }
+
+  dl.footnote dt {
+    color: #d4d4e4;
   }
 }
