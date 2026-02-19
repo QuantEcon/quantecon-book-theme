@@ -15,7 +15,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.15.1"
+__version__ = "0.16.0"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -553,7 +553,8 @@ def setup_pygments_css(app):
     """Ensure Pygments CSS is included when using Pygments styles.
 
     This runs during builder-inited, after config is fully loaded.
-    We generate our own unscoped pygments CSS file instead of using Sphinx's scoped version.
+    We generate our own unscoped pygments CSS file instead of using
+    Sphinx's scoped version.
     """
     from pygments.formatters import HtmlFormatter
 
@@ -594,6 +595,46 @@ def _string_or_bool(var):
         return var is None
 
 
+# Built-in text color schemes
+_VALID_COLOR_SCHEMES = ["seoul256", "gruvbox", "none"]
+
+
+def validate_color_scheme(app):
+    """Validate the color_scheme theme option.
+
+    Ensures the selected scheme is a known built-in scheme name. Invalid values
+    fall back to the default 'seoul256' scheme with a warning.
+
+    Also checks for a custom_color_scheme.css in the project's _static
+    directories and automatically includes it if found.
+    """
+    theme_options = app.config.html_theme_options
+    scheme = theme_options.get("color_scheme", "seoul256").strip().lower()
+
+    if scheme not in _VALID_COLOR_SCHEMES:
+        SPHINX_LOGGER.warning(
+            "Unknown color_scheme %r. Valid schemes: %s. Falling back to 'seoul256'.",
+            scheme,
+            ", ".join(_VALID_COLOR_SCHEMES),
+        )
+        theme_options["color_scheme"] = "seoul256"
+    else:
+        theme_options["color_scheme"] = scheme
+
+    # Auto-detect custom_color_scheme.css in _static directories
+    static_paths = getattr(app.config, "html_static_path", [])
+    confdir = Path(app.confdir) if app.confdir else None
+    for static_path in static_paths:
+        if confdir:
+            full_path = confdir / static_path / "custom_color_scheme.css"
+            if full_path.is_file():
+                app.add_css_file("custom_color_scheme.css")
+                SPHINX_LOGGER.info(
+                    "Loading custom text color scheme from %s", full_path
+                )
+                break
+
+
 def setup(app):
     # Configuration for Juypter Book
     app.setup_extension("sphinx_book_theme")
@@ -603,6 +644,7 @@ def setup(app):
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
+    app.connect("builder-inited", validate_color_scheme)
     app.connect("builder-inited", setup_pygments_css)
     app.connect("html-page-context", hash_html_assets)
     app.connect("html-page-context", add_pygments_style_class)

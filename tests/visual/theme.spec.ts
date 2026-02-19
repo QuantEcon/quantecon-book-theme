@@ -110,16 +110,21 @@ test.describe("Theme Features", () => {
   test("math equation rendering", async ({ page }) => {
     await page.goto("/numpy.html");
     await page.waitForLoadState("networkidle");
-    // Wait for MathJax to render
-    await page.waitForTimeout(1000);
 
-    const mathBlock = page.locator(".MathJax").first();
-    if (await mathBlock.isVisible()) {
-      // MathJax rendering can vary in size and appearance between runs due to
-      // font loading, rendering engine differences, and timing. Use maxDiffPixels
-      // to allow for size variations while still catching major regressions.
-      await expect(mathBlock).toHaveScreenshot("math-equation.png", {
-        maxDiffPixels: 200,
+    // Wait for MathJax 3 to fully complete typesetting rather than using a
+    // fixed timeout. MathJax.startup.promise resolves when all math on the
+    // page has been rendered. This prevents flaky failures caused by
+    // screenshots taken before MathJax finishes layout.
+    await page.waitForFunction(() => {
+      return (window as any).MathJax?.startup?.promise?.then(() => true) ?? false;
+    }, { timeout: 10000 });
+    // Extra settle time for fonts and final layout
+    await page.waitForTimeout(500);
+
+    const mathParagraph = page.locator("p:has(.MathJax)").first();
+    if (await mathParagraph.isVisible()) {
+      await expect(mathParagraph).toHaveScreenshot("math-equation.png", {
+        maxDiffPixels: 300,
       });
     }
   });
@@ -131,4 +136,56 @@ test.describe("Theme Features", () => {
     const toolbar = page.locator(".qe-toolbar");
     await expect(toolbar).toHaveScreenshot("toolbar.png");
   });
+});
+
+test.describe("Typography Styling", () => {
+  test("bold text styling", async ({ page }) => {
+    // names.html has rich bold content (7 <strong> elements)
+    await page.goto("/names.html");
+    await page.waitForLoadState("networkidle");
+
+    // Capture a paragraph containing bold text for context
+    const paragraph = page.locator(".qe-page__content p:has(strong)").first();
+    await expect(paragraph).toHaveScreenshot("bold-text.png");
+  });
+
+  test("italic text styling", async ({ page }) => {
+    // numpy.html has rich italic content (15 <em> elements)
+    await page.goto("/numpy.html");
+    await page.waitForLoadState("networkidle");
+
+    const paragraph = page.locator(".qe-page__content p:has(em)").first();
+    await expect(paragraph).toHaveScreenshot("italic-text.png");
+  });
+
+  test("bold text in dark mode", async ({ page }) => {
+    await page.goto("/names.html");
+    await page.waitForLoadState("networkidle");
+
+    // Toggle dark mode
+    const contrastBtn = page.locator(".btn__contrast");
+    await contrastBtn.click();
+    await page.waitForTimeout(300);
+
+    const paragraph = page.locator(".qe-page__content p:has(strong)").first();
+    await expect(paragraph).toHaveScreenshot("bold-text-dark.png");
+  });
+
+  test("italic text in dark mode", async ({ page }) => {
+    await page.goto("/numpy.html");
+    await page.waitForLoadState("networkidle");
+
+    // Toggle dark mode
+    const contrastBtn = page.locator(".btn__contrast");
+    await contrastBtn.click();
+    await page.waitForTimeout(300);
+
+    const paragraph = page.locator(".qe-page__content p:has(em)").first();
+    await expect(paragraph).toHaveScreenshot("italic-text-dark.png");
+  });
+
+  // Note: Definition list (<dl>) visual tests are not included because the
+  // lecture-python-programming.myst site does not currently contain definition
+  // lists, glossaries, or field-lists. When a page with <dl> content is added,
+  // a corresponding visual test should be created here.
 });

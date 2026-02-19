@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking Changes
+- **Removed individual color options** — the following `html_theme_options` have been removed:
+  `emphasis_color`, `emphasis_color_dark`, `strong_color`, `strong_color_dark`, `definition_color`, `definition_color_dark`.
+  These are replaced by the new `color_scheme` option (see Changed below). Projects using the old options should migrate to either the built-in `seoul256` scheme or a `custom_color_scheme.css` file.
+
+### Changed
+- **Text color scheme system** — replaces individual color options with scheme-based approach
+  - New `color_scheme` theme option (`seoul256` default, `gruvbox`, `none` to disable)
+  - Seoul256-inspired palette: dark teal (`#005f5f`) for emphasis, dark amber (`#875f00`) for strong (light mode); medium-light teal (`#5fafaf`) and light amber-gold (`#d7af5f`) for dark mode
+  - Gruvbox palette: earthy aqua (`#427b58`) for emphasis, warm orange (`#af3a03`) for strong (light mode); light aqua (`#8ec07c`) and bright orange (`#fe8019`) for dark mode
+  - Custom override via `custom_color_scheme.css` in project `_static/` (auto-detected)
+  - New `_color-schemes.scss` module for built-in scheme definitions
+
+## [0.16.0] - 2026-02-06
+
+### Added
+- **Customizable emphasis and bold text colors** (#355, #356)
+  - Six new `html_theme_options`: `emphasis_color`, `emphasis_color_dark`, `strong_color`, `strong_color_dark`, `definition_color`, `definition_color_dark`
+  - Allows per-site color customization of italic (`<em>`), bold (`<strong>`/`<b>`), and definition list (`<dt>`) elements
+  - Supports light and dark mode independently
+  - CSS custom properties (`--qe-emphasis-color`, `--qe-strong-color`, `--qe-definition-color`) with SCSS fallbacks
+  - Server-side validation of color values to prevent CSS injection
+  - Comprehensive documentation in `docs/configure.md` with examples
+
+### Fixed
+- **Math equation visual test stability** (#357)
+  - Replaced fixed 1000ms timeout with `MathJax.startup.promise` for reliable math rendering detection
+  - Captures paragraph container instead of tiny MathJax element to avoid dimension mismatches
+- **Update-snapshots workflow** (#357)
+  - Added `continue-on-error: true` to handle missing snapshot exit codes gracefully
+
+### Changed
+- **Dependency updates** (Dependabot)
+  - Bump codecov/codecov-action from 5.5.1 to 5.5.2 (#351)
+  - Bump actions/upload-artifact from 5 to 6 (#352)
+
 ## [0.15.1] - 2025-12-11
 
 ### Fixed
@@ -170,7 +206,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.1...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.1...v0.16.0
 [0.15.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.13.2...v0.14.0

@@ -276,5 +276,37 @@ The CI workflow runs:
 1. Pre-commit checks (black, flake8, etc.)
 2. Full test suite with `tox`
 3. Documentation build
+4. Visual regression tests with Playwright
 
 See `.github/workflows/` for the CI configuration.
+
+## Visual Regression Tests
+
+Playwright-based tests capture screenshots of key pages from a real lecture site build and compare them against baseline snapshots to detect unintended styling changes.
+
+See `tests/visual/README.md` for full details on setup and running tests locally.
+
+### Updating Snapshots via PR Comments
+
+Two commands are available as PR comments to update CI baselines (ubuntu):
+
+| Command | Behavior |
+|---|---|
+| `/update-snapshots` | Regenerates **all** baselines — use when styling changes legitimately (e.g. color scheme updates) |
+| `/update-new-snapshots` | Adds only **missing** baselines — use when adding new visual tests |
+
+Both commands:
+- Build the lecture site with the PR's theme changes
+- Run Playwright on ubuntu to generate platform-consistent snapshots
+- Commit updated snapshots to the PR branch
+- Post a summary comment on the PR
+
+The `/update-snapshots` command also uploads a `snapshot-update-diff` artifact with before/after images for review.
+
+### Updating Local Baselines
+
+```console
+$ tox -e visual-update
+```
+
+Local baselines are stored in `tests/visual/macos/` (gitignored) and are separate from CI baselines in `tests/visual/__snapshots__/`.

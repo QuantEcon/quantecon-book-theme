@@ -4,8 +4,8 @@ on:
     types: [created]
 
 jobs:
-  update-snapshots:
-    # Only run on PR comments with the trigger phrase
+  # /update-new-snapshots — only creates MISSING snapshots (safe for adding new tests)
+  update-new-snapshots:
     if: |
       github.event.issue.pull_request &&
       contains(github.event.comment.body, '/update-new-snapshots')
@@ -70,7 +70,8 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
 
-      - name: Update Snapshots
+      - name: Update Snapshots (missing only)
+        continue-on-error: true
         run: npx playwright test --update-snapshots=missing
         env:
           SITE_PATH: lecture-python-programming.myst/_build/html
@@ -83,7 +84,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No snapshot changes to commit"
           else
-            git commit -m "UPDATE: Visual regression snapshots [skip ci]"
+            git commit -m "UPDATE: Visual regression snapshots (new)"
             git push
           fi
 
@@ -106,5 +107,123 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '✅ Visual snapshots have been updated and committed to this PR.'
+              body: '✅ Missing visual snapshots have been added and committed to this PR.'
+            });
+
+  # /update-snapshots — regenerates ALL snapshots (use when styling changes legitimately)
+  update-all-snapshots:
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/update-snapshots') &&
+      !contains(github.event.comment.body, '/update-new-snapshots')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Get PR branch
+        id: pr
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('ref', pr.data.head.ref);
+            core.setOutput('sha', pr.data.head.sha);
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.pr.outputs.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch lecture-python-programming.myst
+        shell: bash -l {0}
+        run: |
+          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming.myst
+
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.13"
+          environment-file: lecture-python-programming.myst/environment.yml
+          activate-environment: lecture-python-programming
+
+      - name: Install quantecon-book-theme
+        shell: bash -l {0}
+        run: |
+          python -m pip install .
+
+      - name: Build HTML
+        shell: bash -l {0}
+        run: |
+          cd lecture-python-programming.myst
+          jb build lectures --path-output ./
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Playwright
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Regenerate All Snapshots
+        continue-on-error: true
+        run: npx playwright test --update-snapshots
+        env:
+          SITE_PATH: lecture-python-programming.myst/_build/html
+
+      - name: Upload Old vs New Diff
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: snapshot-update-diff
+          path: test-results/
+          retention-days: 30
+
+      - name: Commit and Push Updated Snapshots
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add tests/visual/__snapshots__/
+          if git diff --staged --quiet; then
+            echo "No snapshot changes to commit"
+          else
+            CHANGED=$(git diff --staged --name-only | wc -l)
+            git commit -m "UPDATE: Regenerate all visual snapshots ($CHANGED files)"
+            git push
+          fi
+
+      - name: Add reaction to comment
+        uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket'
+            });
+
+      - name: Comment on PR with summary
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: '✅ All visual snapshots have been regenerated and committed to this PR.\n\n' +
+                    `📦 [Download snapshot-update-diff artifact](${runUrl}#artifacts) to review before/after images.`
             });
