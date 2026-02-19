@@ -119,9 +119,8 @@ git push
 **For detailed analysis:**
 1. Download the `playwright-report` artifact from the failed workflow
 2. Open `index.html` to see visual diffs
-3. If changes are intentional, update baselines:
-   - For CI: Download new snapshots from `visual-test-diff` artifact and commit
-   - For local: Run `tox -e visual-update`
+3. If changes are intentional, comment `/update-snapshots` on the PR to regenerate all baselines
+4. For local testing: Run `tox -e visual-update`
 
 ## Baseline Snapshots
 
@@ -136,16 +135,16 @@ This separation allows local testing on macOS without interfering with CI baseli
 
 When the theme styling intentionally changes:
 
-1. **For new tests (CI baselines):**
-   - Comment `/update-new-snapshots` on the PR
-   - The workflow will generate and commit only the missing snapshots
-   - This is safe - it won't overwrite existing baselines
+1. **Regenerate all snapshots (recommended for styling changes):**
+   - Comment `/update-snapshots` on the PR
+   - The workflow regenerates ALL baselines using `--update-snapshots`
+   - Uploads a `snapshot-update-diff` artifact with before/after images for review
+   - Commits the new baselines to your PR branch
 
-2. **For existing tests that need updating:**
-   - Push changes and let CI run
-   - Download `visual-test-diff` artifact with new screenshots
-   - Extract and copy to `tests/visual/__snapshots__/`
-   - Commit and push
+2. **Add missing snapshots only (for new tests):**
+   - Comment `/update-new-snapshots` on the PR
+   - The workflow generates only MISSING snapshots — existing baselines are not overwritten
+   - This is safe for adding new visual tests without affecting existing baselines
 
 3. **For local baselines:**
    ```bash
