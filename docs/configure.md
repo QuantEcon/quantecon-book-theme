@@ -229,6 +229,7 @@ When enabled, the sticky TOC provides:
 
 - **Fixed positioning**: The TOC stays visible as you scroll
 - **Active section highlighting**: The currently visible section is highlighted in the TOC
+- **Copy section link**: Hover over any TOC entry to reveal a copy icon — click it to copy the full URL with anchor to your clipboard for easy sharing
 - **Back to top button**: A discrete "Back to top" button appears after scrolling down 300px
 - **Auto-expand subsections**: Subsections automatically expand to show the current hierarchy
 

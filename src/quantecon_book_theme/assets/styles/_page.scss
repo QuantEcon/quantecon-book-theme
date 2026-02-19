@@ -97,6 +97,42 @@ Main page structure and components
             color: colors.$primary;
             opacity: 1;
           }
+
+          // Copy-link button: hidden by default, shown on hover
+          .toc-copy-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: colors.$body;
+            opacity: 0;
+            padding: 0 0 0 4px;
+            margin: 0;
+            vertical-align: middle;
+            transition: opacity 0.15s ease, color 0.15s ease;
+            line-height: 1;
+
+            &:hover {
+              color: colors.$primary;
+            }
+
+            // "Copied!" state feedback
+            &.copied {
+              color: colors.$primary;
+              opacity: 1;
+            }
+          }
+
+          // Show copy button when hovering the list item
+          &:hover .toc-copy-link {
+            opacity: 0.6;
+
+            &:hover {
+              opacity: 1;
+            }
+          }
         }
       }
     }

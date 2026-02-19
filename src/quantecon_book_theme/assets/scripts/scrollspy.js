@@ -202,4 +202,51 @@ export function initScrollSpy() {
 
   // Initial update
   updateActiveSection();
+
+  // Add copy-link buttons to each TOC entry
+  initCopyLinks(stickyToc);
+}
+
+/**
+ * Add copy-to-clipboard buttons next to each TOC link
+ * On hover, a small copy icon appears; clicking copies the full section URL
+ */
+function initCopyLinks(stickyToc) {
+  const tocLinks = stickyToc.querySelectorAll("a[href^='#']");
+
+  tocLinks.forEach((link) => {
+    const btn = document.createElement("button");
+    btn.className = "toc-copy-link";
+    btn.setAttribute("aria-label", "Copy link to section");
+    btn.setAttribute("title", "Copy link to section");
+    // Use a simple clipboard SVG icon
+    btn.innerHTML =
+      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>' +
+      '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>' +
+      "</svg>";
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const href = link.getAttribute("href");
+      const url =
+        window.location.origin + window.location.pathname + href;
+
+      navigator.clipboard.writeText(url).then(() => {
+        // Show brief "Copied!" feedback
+        btn.classList.add("copied");
+        const originalTitle = btn.getAttribute("title");
+        btn.setAttribute("title", "Copied!");
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          btn.setAttribute("title", originalTitle);
+        }, 1500);
+      });
+    });
+
+    // Insert button after the link
+    link.parentElement.insertBefore(btn, link.nextSibling);
+  });
 }
