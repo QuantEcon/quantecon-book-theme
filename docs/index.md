@@ -6,6 +6,8 @@
 This is a lightweight Sphinx theme designed to mimic the look-and-feel of an
 interactive book. It has the following primary features:
 
+* **[Dark mode](configure.html#dark-mode)**. A modern, consistent dark theme with full syntax
+  highlighting support, accessible colors, and no flash of white on page load.
 * **[Git-based metadata](configure.html#git-based-metadata)**. Automatically display last
   modified timestamps and interactive changelog with commit history for each page.
 * **[Collapsible stderr warnings](features/stderr_warnings.html)**. Automatically wrap verbose
