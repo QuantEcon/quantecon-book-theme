@@ -26,6 +26,11 @@ body.dark-theme {
     color: var(--qe-emphasis-color, colors.$emphasis-dark);
   }
 
+  // Reset emphasis styling inside citation reference links (dark mode)
+  a.reference em {
+    color: inherit;
+  }
+
   strong,
   b {
     color: var(--qe-strong-color, colors.$definition-dark);
