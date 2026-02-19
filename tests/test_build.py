@@ -487,6 +487,9 @@ def test_sticky_toc(sphinx_build):
     # String "false" should disable autoexpand
     assert toc_inner.get("data-autoexpand") == "false"
     sphinx_build.clean()
+
+
+def test_git_functions_unit():
     """Unit tests for git helper functions."""
     from quantecon_book_theme import (
         get_git_last_modified,

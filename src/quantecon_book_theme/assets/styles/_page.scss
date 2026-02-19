@@ -165,16 +165,16 @@ Main page structure and components
         opacity: 1;
         transform: translateY(0);
       }
+    }
 
-      .logo {
-        img {
-          max-width: 150px;
-        }
+    .logo {
+      img {
+        max-width: 150px;
       }
+    }
 
-      .powered {
-        font-size: 0.8rem;
-      }
+    .powered {
+      font-size: 0.8rem;
     }
 
     &-footer {
