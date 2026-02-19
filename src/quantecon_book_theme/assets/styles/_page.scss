@@ -98,33 +98,30 @@ Main page structure and components
             opacity: 1;
           }
 
-          // Copy-link icon: absolutely positioned so it never causes wrapping
-          a {
-            position: relative;
+          // Copy-link icon: zero-width inline element that can't cause wrapping
+          a .toc-copy-link {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            cursor: pointer;
+            color: colors.$body;
+            opacity: 0;
+            vertical-align: middle;
+            transition: opacity 0.15s ease, color 0.15s ease;
 
-            .toc-copy-link {
-              position: absolute;
-              right: -18px;
-              top: 50%;
-              transform: translateY(-50%);
-              cursor: pointer;
-              color: colors.$body;
-              opacity: 0;
-              transition: opacity 0.15s ease, color 0.15s ease;
+            svg {
+              display: block;
+              margin-left: 4px;
+            }
 
-              svg {
-                display: block;
-              }
+            &:hover {
+              color: colors.$primary;
+            }
 
-              &:hover {
-                color: colors.$primary;
-              }
-
-              // "Copied!" state feedback
-              &.copied {
-                color: colors.$primary;
-                opacity: 1;
-              }
+            // "Copied!" state feedback
+            &.copied {
+              color: colors.$primary;
+              opacity: 1;
             }
           }
 
