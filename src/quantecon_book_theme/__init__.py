@@ -596,7 +596,7 @@ def _string_or_bool(var):
 
 
 # Built-in text color schemes
-_VALID_COLOR_SCHEMES = ["seoul256", "none"]
+_VALID_COLOR_SCHEMES = ["seoul256", "gruvbox", "none"]
 
 
 def validate_color_scheme(app):

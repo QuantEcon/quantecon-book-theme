@@ -121,9 +121,11 @@ a:visited {
 </style>
 {%- endif %}
 
-<!-- Color scheme: "none" disables colored text markup -->
+<!-- Color scheme: applies scheme-specific body class -->
 {%- if theme_color_scheme == 'none' %}
 <script>document.body.classList.add('color-scheme-none');</script>
+{%- elif theme_color_scheme == 'gruvbox' %}
+<script>document.body.classList.add('color-scheme-gruvbox');</script>
 {%- endif %}
 
     <span id="top"></span>

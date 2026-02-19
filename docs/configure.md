@@ -334,6 +334,7 @@ using a built-in color scheme system inspired by [Seoul256](https://github.com/j
 | Scheme | Description |
 |---|---|
 | `seoul256` (default) | Dark teal (`#005f5f`) for emphasis, dark amber (`#875f00`) for strong — with matching light variants for dark mode |
+| `gruvbox` | Earthy aqua (`#427b58`) for emphasis, warm orange (`#af3a03`) for strong — with light variants for dark mode |
 | `none` | Restores standard typography — italic for `em`, bold for `strong`, no color |
 
 ### Selecting a Scheme
@@ -343,7 +344,7 @@ In `conf.py`:
 ```python
 html_theme_options = {
     ...
-    "color_scheme": "seoul256",  # or "none"
+    "color_scheme": "seoul256",  # or "gruvbox" or "none"
     ...
 }
 ```
@@ -375,6 +376,26 @@ dl dt    { color: #875f00; }  /* inherits from strong */
 em       { color: #5fafaf; }  /* medium-light teal */
 strong   { color: #d7af5f; }  /* light amber-gold */
 dl dt    { color: #d7af5f; }  /* inherits from strong */
+```
+
+### Gruvbox Scheme Colors
+
+| Element | Light Mode | Dark Mode |
+|---|---|---|
+| **Emphasis** (`em`) | `#427b58` earthy aqua | `#8ec07c` light aqua |
+| **Bold/Strong** (`strong`, `b`) | `#af3a03` warm orange | `#fe8019` bright orange |
+| **Definitions** (`dl dt`) | Inherits from bold/strong | Inherits from bold/strong |
+
+```css
+/* Gruvbox — Light Mode */
+em       { color: #427b58; }  /* earthy aqua */
+strong   { color: #af3a03; }  /* warm orange */
+dl dt    { color: #af3a03; }  /* inherits from strong */
+
+/* Gruvbox — Dark Mode */
+em       { color: #8ec07c; }  /* light aqua */
+strong   { color: #fe8019; }  /* bright orange */
+dl dt    { color: #fe8019; }  /* inherits from strong */
 ```
 
 ### Custom Color Scheme

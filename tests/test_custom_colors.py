@@ -82,6 +82,35 @@ class TestSeoul256ColorScheme:
         assert "$definition-dark: #d7af5f" in content
 
 
+class TestGruvboxColorScheme:
+    """Test that Gruvbox colors are defined in SCSS source files."""
+
+    def test_colors_scss_defines_gruvbox_emphasis(self):
+        """_colors.scss should define $gruvbox-emphasis."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-emphasis: #427b58" in content
+
+    def test_colors_scss_defines_gruvbox_emphasis_dark(self):
+        """_colors.scss should define $gruvbox-emphasis-dark."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-emphasis-dark: #8ec07c" in content
+
+    def test_colors_scss_defines_gruvbox_definition(self):
+        """_colors.scss should define $gruvbox-definition."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-definition: #af3a03" in content
+
+    def test_colors_scss_defines_gruvbox_definition_dark(self):
+        """_colors.scss should define $gruvbox-definition-dark."""
+        content = (ASSETS_DIR / "styles" / "_colors.scss").read_text()
+        assert "$gruvbox-definition-dark: #fe8019" in content
+
+    def test_color_schemes_scss_has_gruvbox(self):
+        """_color-schemes.scss should define a gruvbox scheme."""
+        content = (ASSETS_DIR / "styles" / "_color-schemes.scss").read_text()
+        assert "color-scheme-gruvbox" in content
+
+
 class TestColorSchemeCSSVariables:
     """Test that SCSS uses CSS custom properties for emphasis/strong."""
 
@@ -196,6 +225,12 @@ class TestCompiledCSS:
         content = css_path.read_text()
         assert "color-scheme-none" in content
 
+    def test_compiled_css_has_gruvbox_scheme(self):
+        """Compiled CSS should contain the color-scheme-gruvbox class."""
+        css_path = THEME_DIR / "static" / "styles" / "quantecon-book-theme.css"
+        content = css_path.read_text()
+        assert "color-scheme-gruvbox" in content
+
 
 class TestLayoutTemplateScheme:
     """Test that layout.html handles color scheme correctly."""
@@ -213,6 +248,11 @@ class TestLayoutTemplateScheme:
         content = self._read_layout()
         assert "color-scheme-none" in content
 
+    def test_template_handles_gruvbox_scheme(self):
+        """Layout template should add color-scheme-gruvbox class for 'gruvbox'."""
+        content = self._read_layout()
+        assert "color-scheme-gruvbox" in content
+
     def test_template_no_individual_color_injection(self):
         """Layout template should NOT inject individual color variables."""
         content = self._read_layout()
@@ -227,6 +267,10 @@ class TestValidColorSchemes:
     def test_seoul256_is_valid(self):
         """'seoul256' should be a valid color scheme."""
         assert "seoul256" in _VALID_COLOR_SCHEMES
+
+    def test_gruvbox_is_valid(self):
+        """'gruvbox' should be a valid color scheme."""
+        assert "gruvbox" in _VALID_COLOR_SCHEMES
 
     def test_none_is_valid(self):
         """'none' should be a valid color scheme."""
@@ -264,6 +308,12 @@ class TestValidateColorSchemeFunction:
         app = self._make_app(color_scheme="none")
         validate_color_scheme(app)
         assert app.config.html_theme_options["color_scheme"] == "none"
+
+    def test_valid_gruvbox_preserved(self):
+        """Valid 'gruvbox' scheme should be preserved."""
+        app = self._make_app(color_scheme="gruvbox")
+        validate_color_scheme(app)
+        assert app.config.html_theme_options["color_scheme"] == "gruvbox"
 
     def test_invalid_scheme_falls_back(self):
         """Invalid scheme should fall back to 'seoul256' with warning."""

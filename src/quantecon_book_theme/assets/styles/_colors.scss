@@ -9,3 +9,9 @@ $emphasis: #005f5f;        // Seoul256 #23 - dark teal for emphasis (em tags)
 $emphasis-dark: #5fafaf;   // Seoul256 #73 - medium-light teal for dark mode
 $definition: #875f00;      // Seoul256 #94 - dark amber for strong/definitions
 $definition-dark: #d7af5f; // Seoul256 #179 - light amber-gold for dark mode
+
+// Text color scheme: Gruvbox
+$gruvbox-emphasis: #427b58;        // Gruvbox aqua (dark) - 5.2:1 contrast vs white
+$gruvbox-emphasis-dark: #8ec07c;   // Gruvbox aqua (light) - 8.3:1 contrast vs #222
+$gruvbox-definition: #af3a03;      // Gruvbox orange (dark) - 5.0:1 contrast vs white
+$gruvbox-definition-dark: #fe8019; // Gruvbox orange (light) - 7.5:1 contrast vs #222

@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Text color scheme system** — replaces individual color options with scheme-based approach
-  - New `color_scheme` theme option (`seoul256` default, `none` to disable)
+  - New `color_scheme` theme option (`seoul256` default, `gruvbox`, `none` to disable)
   - Seoul256-inspired palette: dark teal (`#005f5f`) for emphasis, dark amber (`#875f00`) for strong (light mode); medium-light teal (`#5fafaf`) and light amber-gold (`#d7af5f`) for dark mode
+  - Gruvbox palette: earthy aqua (`#427b58`) for emphasis, warm orange (`#af3a03`) for strong (light mode); light aqua (`#8ec07c`) and bright orange (`#fe8019`) for dark mode
   - Custom override via `custom_color_scheme.css` in project `_static/` (auto-detected)
   - New `_color-schemes.scss` module for built-in scheme definitions
 
