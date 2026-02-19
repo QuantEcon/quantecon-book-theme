@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1] - 2026-02-19
+
+### Fixed
+- **Horizontal scrollbar on sticky TOC** (#363) — added `overflow-x: hidden` to the sticky "On this page" sidebar to prevent an unwanted horizontal scrollbar when long section titles wrap
+- **npm security vulnerabilities** (#364) — resolved 9 dependency vulnerabilities (5 high, 3 moderate, 1 low) via `npm audit fix`, updating webpack, node-forge, qs, lodash, cross-spawn, ajv, and nanoid
+
 ## [0.17.0] - 2026-02-19
 
 ### Breaking Changes
@@ -226,6 +232,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial stable release with core theme features
 
 [Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.0...HEAD
+[0.17.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.1...v0.16.0
 [0.15.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.0...v0.15.1
