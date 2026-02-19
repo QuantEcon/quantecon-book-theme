@@ -7,18 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-02-19
+
 ### Breaking Changes
 - **Removed individual color options** — the following `html_theme_options` have been removed:
   `emphasis_color`, `emphasis_color_dark`, `strong_color`, `strong_color_dark`, `definition_color`, `definition_color_dark`.
   These are replaced by the new `color_scheme` option (see Changed below). Projects using the old options should migrate to either the built-in `seoul256` scheme or a `custom_color_scheme.css` file.
 
+### Added
+- **Sticky table of contents with scroll highlighting** (#350, #133)
+  - New `sticky_contents` option enables a fixed-position RHS TOC that tracks scroll position
+  - Scroll spy highlights the currently visible section in the TOC
+  - Auto-expand subsections show the active hierarchy (configurable via `contents_autoexpand`)
+  - Copy section link: hover over any TOC entry to copy the full URL with anchor
+  - Back to top button appears after scrolling down 300px
+  - New `scrollspy.js` module with `requestAnimationFrame` throttling
+  - Full documentation in `docs/configure.md`
+- **CI: `/update-snapshots` command** (#362)
+  - PR comment command to regenerate all Playwright visual baselines
+
 ### Changed
-- **Text color scheme system** — replaces individual color options with scheme-based approach
+- **Text color scheme system** (#360) — replaces individual color options with scheme-based approach
   - New `color_scheme` theme option (`seoul256` default, `gruvbox`, `none` to disable)
   - Seoul256-inspired palette: dark teal (`#005f5f`) for emphasis, dark amber (`#875f00`) for strong (light mode); medium-light teal (`#5fafaf`) and light amber-gold (`#d7af5f`) for dark mode
   - Gruvbox palette: earthy aqua (`#427b58`) for emphasis, warm orange (`#af3a03`) for strong (light mode); light aqua (`#8ec07c`) and bright orange (`#fe8019`) for dark mode
   - Custom override via `custom_color_scheme.css` in project `_static/` (auto-detected)
   - New `_color-schemes.scss` module for built-in scheme definitions
+
+### Fixed
+- **Math equation visual test stability** (#361)
+  - Regenerated stale snapshots for consistent cross-environment rendering
+  - Increased tolerance with `maxDiffPixelRatio: 0.15` for MathJax font variance
 
 ## [0.16.0] - 2026-02-06
 
@@ -206,7 +225,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.1...v0.16.0
 [0.15.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.14.0...v0.15.0
