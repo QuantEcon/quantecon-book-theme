@@ -62,6 +62,67 @@ body.dark-theme {
   }
 
   // =========================================
+  // PAGE HEADER: Title, authors, changelog
+  // =========================================
+  .qe-page__header {
+    &-heading a {
+      color: var(--qe-dark-heading-top);
+    }
+
+    &-authors {
+      color: var(--qe-dark-text);
+    }
+
+    &-changed {
+      color: var(--qe-dark-text-muted);
+      border-bottom-color: var(--qe-dark-accent);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+    }
+
+    &-changelog {
+      background: var(--qe-dark-surface);
+      border-left-color: var(--qe-dark-border);
+      border-right-color: var(--qe-dark-border);
+      border-bottom-color: var(--qe-dark-border);
+
+      h4 {
+        color: var(--qe-dark-heading);
+
+        a {
+          color: var(--qe-dark-link);
+        }
+      }
+
+      .changelog-entry {
+        border-bottom-color: var(--qe-dark-border);
+      }
+
+      .changelog-hash {
+        color: var(--qe-dark-text-muted);
+
+        &:hover {
+          color: var(--qe-dark-link);
+        }
+      }
+
+      .changelog-author {
+        color: var(--qe-dark-text);
+      }
+
+      .changelog-time {
+        color: var(--qe-dark-text-muted);
+      }
+
+      .changelog-message {
+        color: var(--qe-dark-text);
+      }
+    }
+  }
+
+  // =========================================
   // LINKS: Distinguishable, accessible
   // =========================================
   a {
