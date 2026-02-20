@@ -227,20 +227,37 @@ For projects that provide a dedicated dark mode logo, see the [dark logo configu
 
 ### Customizing Dark Mode Colors
 
-To override specific dark mode colors for your project, add CSS custom properties in a stylesheet in your `_static/` directory:
+The dark theme defines CSS custom properties that downstream projects can override.
+Add a stylesheet in your `_static/` directory:
 
 ```css
 /* _static/custom_dark.css */
 body.dark-theme {
-  /* Override the link color */
   --qe-dark-link: #58a6ff;
-}
-
-/* Target specific elements */
-body.dark-theme .qe-page__content a {
-  color: #58a6ff;
+  --qe-dark-bg: #1e1e2e;
 }
 ```
+
+**Available custom properties:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `--qe-dark-bg` | `#1a1a2e` | Page background |
+| `--qe-dark-surface` | `#252540` | Cards, sidebars, elevated surfaces |
+| `--qe-dark-surface-alt` | `#2d2d4a` | Toolbar, inputs, alternate surfaces |
+| `--qe-dark-border` | `#3a3a5c` | Borders |
+| `--qe-dark-text` | `#d4d4e4` | Primary body text |
+| `--qe-dark-text-muted` | `#9898b0` | Secondary/muted text |
+| `--qe-dark-heading` | `#e8e8f0` | Heading text (h2–h5) |
+| `--qe-dark-heading-top` | `#f0f0f8` | Top-level heading (h1) |
+| `--qe-dark-text-light` | `#b8b8d0` | Light text (sidebar nav) |
+| `--qe-dark-link` | `#6cb6ff` | Link color |
+| `--qe-dark-link-hover` | `#91cdff` | Link hover color |
+| `--qe-dark-link-visited` | `#a08fff` | Visited link color |
+| `--qe-dark-code-bg` | `#1e1e32` | Code block background |
+| `--qe-dark-inline-code` | `#e0b0ff` | Inline code text color |
+| `--qe-dark-accent` | `#0072bc` | Primary accent (buttons) |
+| `--qe-dark-accent-dark` | `#005a96` | Accent hover state |
 
 ```{note}
 Dark mode works with all other theme features including the sticky table of contents,

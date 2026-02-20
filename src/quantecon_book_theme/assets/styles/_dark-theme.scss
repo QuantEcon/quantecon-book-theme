@@ -20,49 +20,69 @@ Palette:
 
 body.dark-theme {
   // =========================================
+  // CSS CUSTOM PROPERTIES (overridable by downstream projects)
+  // =========================================
+  --qe-dark-bg:          #1a1a2e;
+  --qe-dark-surface:     #252540;
+  --qe-dark-surface-alt: #2d2d4a;
+  --qe-dark-border:      #3a3a5c;
+  --qe-dark-text:        #d4d4e4;
+  --qe-dark-text-muted:  #9898b0;
+  --qe-dark-heading:     #e8e8f0;
+  --qe-dark-heading-top: #f0f0f8;
+  --qe-dark-text-light:  #b8b8d0;
+  --qe-dark-link:        #6cb6ff;
+  --qe-dark-link-hover:  #91cdff;
+  --qe-dark-link-visited:#a08fff;
+  --qe-dark-code-bg:     #1e1e32;
+  --qe-dark-inline-code: #e0b0ff;
+  --qe-dark-accent:      #0072bc;
+  --qe-dark-accent-dark: #005a96;
+
+  // =========================================
   // BASE: Body, text, headings
   // =========================================
-  background-color: #1a1a2e;
-  color: #d4d4e4;
+  background-color: var(--qe-dark-bg);
+  color: var(--qe-dark-text);
 
   h1,
   h2,
   h3,
   h4,
   h5 {
-    color: #e8e8f0;
+    color: var(--qe-dark-heading);
   }
 
   h1 {
-    color: #f0f0f8;
+    color: var(--qe-dark-heading-top);
   }
 
   p {
-    color: #d4d4e4;
+    color: var(--qe-dark-text);
   }
 
   // =========================================
   // LINKS: Distinguishable, accessible
   // =========================================
   a {
-    color: #6cb6ff;
+    color: var(--qe-dark-link);
 
     &:hover {
-      color: #91cdff;
+      color: var(--qe-dark-link-hover);
     }
 
     &:visited {
-      color: #a08fff;
+      color: var(--qe-dark-link-visited);
     }
   }
 
   .reference.external,
   .reference.internal {
-    color: #6cb6ff;
+    color: var(--qe-dark-link);
     font-weight: 600;
 
     &:hover {
-      color: #91cdff;
+      color: var(--qe-dark-link-hover);
     }
   }
 
@@ -90,30 +110,30 @@ body.dark-theme {
   cite,
   code,
   tt {
-    background-color: #252540;
-    border-color: #3a3a5c;
-    color: #e0b0ff;
+    background-color: var(--qe-dark-surface);
+    border-color: var(--qe-dark-border);
+    color: var(--qe-dark-inline-code);
   }
 
   // =========================================
   // TOOLBAR
   // =========================================
   .qe-toolbar {
-    background-color: #252540;
-    border-bottom-color: #3a3a5c;
+    background-color: var(--qe-dark-surface);
+    border-bottom-color: var(--qe-dark-border);
   }
 
   .qe-toolbar__inner > ul > li > a {
-    color: #d4d4e4;
+    color: var(--qe-dark-text);
   }
 
   .qe-toolbar__inner > ul > li.btn__search input {
-    background-color: #1e1e32;
-    color: #d4d4e4;
-    border-color: #3a3a5c;
+    background-color: var(--qe-dark-code-bg);
+    color: var(--qe-dark-text);
+    border-color: var(--qe-dark-border);
 
     &:focus {
-      border-color: #6cb6ff;
+      border-color: var(--qe-dark-link);
     }
   }
 
@@ -122,11 +142,11 @@ body.dark-theme {
   }
 
   .btn__search input {
-    background-color: #1e1e32;
-    color: #d4d4e4;
+    background-color: var(--qe-dark-code-bg);
+    color: var(--qe-dark-text);
 
     &:focus {
-      border-color: #6cb6ff;
+      border-color: var(--qe-dark-link);
     }
   }
 
@@ -134,8 +154,8 @@ body.dark-theme {
   // LEFT SIDEBAR
   // =========================================
   .qe-sidebar {
-    background-color: #252540;
-    border-right-color: #3a3a5c;
+    background-color: var(--qe-dark-surface);
+    border-right-color: var(--qe-dark-border);
 
     @media (max-width: 1340px) {
       box-shadow: 10px 10px 5px 9999px rgba(0, 0, 0, 0.6);
@@ -143,30 +163,30 @@ body.dark-theme {
   }
 
   .qe-sidebar__nav ul > li > a {
-    color: #b8b8d0;
+    color: var(--qe-dark-text-light);
 
     &.active {
-      color: #6cb6ff;
+      color: var(--qe-dark-link);
     }
   }
 
   .drawer,
   .drawer .inner {
-    background-color: #252540;
+    background-color: var(--qe-dark-surface);
   }
 
   // Sidebar search area
   .bd-search {
-    background-color: #1e1e32;
+    background-color: var(--qe-dark-code-bg);
 
     .form-control {
-      background: #252540;
-      border-color: #3a3a5c;
-      color: #d4d4e4;
+      background: var(--qe-dark-surface);
+      border-color: var(--qe-dark-border);
+      color: var(--qe-dark-text);
     }
 
     svg {
-      color: #9898b0;
+      color: var(--qe-dark-text-muted);
     }
   }
 
@@ -176,38 +196,38 @@ body.dark-theme {
   .qe-page__toc {
     &-nav {
       ul li a {
-        color: #9898b0;
+        color: var(--qe-dark-text-muted);
 
         &.active {
-          color: #6cb6ff;
+          color: var(--qe-dark-link);
         }
       }
 
       ul li.active > a {
-        color: #6cb6ff;
+        color: var(--qe-dark-link);
       }
 
       // Copy-link icon
       ul li a .toc-copy-link {
-        color: #9898b0;
+        color: var(--qe-dark-text-muted);
 
         &:hover {
-          color: #6cb6ff;
+          color: var(--qe-dark-link);
         }
       }
     }
   }
 
   .toc-entry a.nav-link {
-    color: #9898b0;
+    color: var(--qe-dark-text-muted);
   }
 
   // Back to top button
   .back-to-top-btn {
-    color: #6cb6ff;
+    color: var(--qe-dark-link);
 
     &:hover {
-      color: #91cdff;
+      color: var(--qe-dark-link-hover);
     }
   }
 
@@ -233,8 +253,8 @@ body.dark-theme {
   // CODE BLOCKS & SYNTAX HIGHLIGHTING
   // =========================================
   .highlight {
-    background: #1e1e32 !important;
-    border-color: #3a3a5c !important;
+    background: var(--qe-dark-code-bg) !important;
+    border-color: var(--qe-dark-border) !important;
   }
 
   .highlight-none .highlight {
@@ -243,8 +263,8 @@ body.dark-theme {
   }
 
   pre {
-    background-color: #1e1e32;
-    color: #d4d4e4;
+    background-color: var(--qe-dark-code-bg);
+    color: var(--qe-dark-text);
   }
 
   // =========================================
@@ -252,7 +272,7 @@ body.dark-theme {
   // =========================================
   .qe-page__content table {
     tbody tr:nth-child(odd) {
-      background-color: #252540;
+      background-color: var(--qe-dark-surface);
     }
 
     tbody tr:nth-child(even) {
@@ -261,18 +281,18 @@ body.dark-theme {
 
     td,
     th {
-      color: #d4d4e4;
+      color: var(--qe-dark-text);
     }
 
     td > p,
     th > p {
-      color: #d4d4e4;
+      color: var(--qe-dark-text);
     }
 
     thead th,
     thead td {
-      border-bottom-color: #3a3a5c;
-      color: #e8e8f0;
+      border-bottom-color: var(--qe-dark-border);
+      color: var(--qe-dark-heading);
     }
   }
 
@@ -281,9 +301,9 @@ body.dark-theme {
   // =========================================
   div.admonition,
   .admonition {
-    background-color: #252540;
+    background-color: var(--qe-dark-surface);
     box-shadow: none;
-    border: 1px solid #3a3a5c;
+    border: 1px solid var(--qe-dark-border);
 
     > .admonition-title {
       background-color: rgba(108, 182, 255, 0.1);
@@ -320,7 +340,7 @@ body.dark-theme {
   }
 
   .admonition.important {
-    border-color: #6cb6ff;
+    border-color: var(--qe-dark-link);
 
     > .admonition-title {
       background-color: rgba(108, 182, 255, 0.12);
@@ -331,11 +351,11 @@ body.dark-theme {
   // BLOCKQUOTES
   // =========================================
   blockquote {
-    border-left-color: #6cb6ff;
-    color: #d4d4e4;
+    border-left-color: var(--qe-dark-link);
+    color: var(--qe-dark-text);
 
     p {
-      color: #d4d4e4;
+      color: var(--qe-dark-text);
     }
   }
 
@@ -344,20 +364,20 @@ body.dark-theme {
   // =========================================
   .maths,
   .math {
-    color: #d4d4e4 !important;
+    color: var(--qe-dark-text) !important;
   }
 
   .qe-page__content .MathJax {
-    color: #d4d4e4 !important;
+    color: var(--qe-dark-text) !important;
   }
 
   .qe-page__content a .MathJax,
   .qe-page__content a .math {
-    color: #6cb6ff !important;
+    color: var(--qe-dark-link) !important;
   }
 
   mjx-math mjx-mstyle {
-    color: #d4d4e4 !important;
+    color: var(--qe-dark-text) !important;
   }
 
   // =========================================
@@ -390,13 +410,13 @@ body.dark-theme {
   // CELLS (Jupyter notebook)
   // =========================================
   div.cell div.cell_input {
-    background-color: #1e1e32;
-    border-left-color: #6cb6ff;
+    background-color: var(--qe-dark-code-bg);
+    border-left-color: var(--qe-dark-link);
   }
 
   div.cell details.below-input > summary,
   div.cell details.above-input > summary {
-    background-color: #252540;
+    background-color: var(--qe-dark-surface);
   }
 
   .cell_output .output.text_plain,
@@ -406,15 +426,15 @@ body.dark-theme {
   }
 
   .cell .input .prompt:before {
-    color: #6cb6ff;
+    color: var(--qe-dark-link);
   }
 
   // Copy button
   .qe-page__content a.copybtn {
-    color: #9898b0;
+    color: var(--qe-dark-text-muted);
 
     &:hover {
-      color: #d4d4e4;
+      color: var(--qe-dark-text);
     }
   }
 
@@ -425,40 +445,40 @@ body.dark-theme {
   div.topic,
   div.topic.contents,
   nav.contents {
-    background-color: #252540;
-    border-color: #3a3a5c;
+    background-color: var(--qe-dark-surface);
+    border-color: var(--qe-dark-border);
     box-shadow: none;
   }
 
   aside.sidebar {
-    background-color: #252540;
+    background-color: var(--qe-dark-surface);
   }
 
   // =========================================
   // COLLAPSE / TOGGLE BARS
   // =========================================
   div[class^="cell tag_collapse"] .collapse-toggle-bar {
-    background-color: #252540;
-    border-color: #3a3a5c;
+    background-color: var(--qe-dark-surface);
+    border-color: var(--qe-dark-border);
 
     &:hover {
-      background-color: #2d2d4a;
+      background-color: var(--qe-dark-surface-alt);
     }
 
     .collapse-indicator {
-      color: #6cb6ff;
+      color: var(--qe-dark-link);
     }
   }
 
   button.toggle-button.toggle-button-hidden::before {
-    color: #d4d4e4;
+    color: var(--qe-dark-text);
   }
 
   // =========================================
   // CONTENT TOC (in-page)
   // =========================================
   .qe-page__content #contents + ul {
-    border-color: #3a3a5c !important;
+    border-color: var(--qe-dark-border) !important;
   }
 
   // =========================================
@@ -466,10 +486,10 @@ body.dark-theme {
   // =========================================
   .qe-page__content .anchor-link,
   .qe-page__content .headerlink {
-    color: #9898b0;
+    color: var(--qe-dark-text-muted);
 
     &:hover {
-      color: #6cb6ff;
+      color: var(--qe-dark-link);
     }
   }
 
@@ -477,74 +497,74 @@ body.dark-theme {
   // TIPPY TOOLTIPS
   // =========================================
   .tippy-box {
-    background-color: #2d2d4a;
-    color: #d4d4e4;
-    border: 1px solid #3a3a5c;
+    background-color: var(--qe-dark-surface-alt);
+    color: var(--qe-dark-text);
+    border: 1px solid var(--qe-dark-border);
   }
 
   .tippy-box .tippy-arrow {
-    color: #2d2d4a;
+    color: var(--qe-dark-surface-alt);
   }
 
   // =========================================
   // MODALS
   // =========================================
   #downloadPDFModal {
-    background-color: #252540;
-    color: #d4d4e4;
+    background-color: var(--qe-dark-surface);
+    color: var(--qe-dark-text);
 
     p {
-      color: #6cb6ff;
+      color: var(--qe-dark-link);
     }
   }
 
   #settingsModal {
-    background-color: #252540;
-    color: #d4d4e4;
+    background-color: var(--qe-dark-surface);
+    color: var(--qe-dark-text);
 
     span {
-      color: #d4d4e4;
+      color: var(--qe-dark-text);
     }
 
     .modal-desc {
-      color: #9898b0;
+      color: var(--qe-dark-text-muted);
     }
 
     .modal-subtitle {
-      border-bottom-color: #3a3a5c;
+      border-bottom-color: var(--qe-dark-border);
     }
 
     .modal-servers li {
-      border-color: #3a3a5c;
-      color: #d4d4e4;
+      border-color: var(--qe-dark-border);
+      color: var(--qe-dark-text);
 
       &.active {
-        border-color: #6cb6ff;
+        border-color: var(--qe-dark-link);
         background: rgba(108, 182, 255, 0.1);
 
         i {
-          color: #6cb6ff;
+          color: var(--qe-dark-link);
         }
       }
 
       i {
-        color: #3a3a5c;
+        color: var(--qe-dark-border);
       }
 
       select,
       input {
-        background-color: #1e1e32;
-        color: #d4d4e4;
-        border: 1px solid #3a3a5c;
+        background-color: var(--qe-dark-code-bg);
+        color: var(--qe-dark-text);
+        border: 1px solid var(--qe-dark-border);
       }
     }
 
     .launch a {
-      background: #0072bc;
+      background: var(--qe-dark-accent);
       color: #fff;
 
       &:hover {
-        background: #005a96;
+        background: var(--qe-dark-accent-dark);
       }
     }
   }
@@ -554,63 +574,63 @@ body.dark-theme {
   // =========================================
   .bd-search-container ul.search li div.context,
   .bd-search-container ul.search li p.context {
-    color: #d4d4e4;
+    color: var(--qe-dark-text);
   }
 
   // =========================================
   // HOMEPAGE / QUANTECON DEFAULTS
   // =========================================
   .web-version a {
-    color: #d4d4e4;
-    border-color: #3a3a5c;
+    color: var(--qe-dark-text);
+    border-color: var(--qe-dark-border);
 
     &:hover {
-      background: #2d2d4a;
-      border-color: #6cb6ff;
-      color: #e8e8f0;
+      background: var(--qe-dark-surface-alt);
+      border-color: var(--qe-dark-link);
+      color: var(--qe-dark-heading);
 
       p {
-        color: #b8b8d0;
+        color: var(--qe-dark-text-light);
       }
     }
 
     .thumb {
-      color: #d4d4e4;
+      color: var(--qe-dark-text);
     }
 
     p {
-      color: #9898b0;
+      color: var(--qe-dark-text-muted);
     }
   }
 
   .home-alternatives li a {
-    color: #d4d4e4;
-    border-color: #3a3a5c;
+    color: var(--qe-dark-text);
+    border-color: var(--qe-dark-border);
 
     &:hover {
-      background: #2d2d4a;
-      border-color: #6cb6ff;
-      color: #e8e8f0;
+      background: var(--qe-dark-surface-alt);
+      border-color: var(--qe-dark-link);
+      color: var(--qe-dark-heading);
 
       svg {
-        color: #e8e8f0;
+        color: var(--qe-dark-heading);
       }
 
       p {
-        color: #b8b8d0;
+        color: var(--qe-dark-text-light);
       }
     }
 
     svg {
-      color: #d4d4e4;
+      color: var(--qe-dark-text);
     }
 
     h3 {
-      color: #e8e8f0;
+      color: var(--qe-dark-heading);
     }
 
     p {
-      color: #9898b0;
+      color: var(--qe-dark-text-muted);
     }
   }
 
@@ -619,8 +639,8 @@ body.dark-theme {
   // =========================================
   dl.py {
     dt {
-      background-color: #252540;
-      border-color: #3a3a5c;
+      background-color: var(--qe-dark-surface);
+      border-color: var(--qe-dark-border);
     }
   }
 
@@ -632,11 +652,11 @@ body.dark-theme {
   // DROPDOWN TOGGLE BUTTONS
   // =========================================
   details.toggle-details {
-    border-color: #3a3a5c;
+    border-color: var(--qe-dark-border);
 
     summary {
-      background-color: #252540;
-      color: #d4d4e4;
+      background-color: var(--qe-dark-surface);
+      color: var(--qe-dark-text);
     }
   }
 
@@ -644,10 +664,10 @@ body.dark-theme {
   // FOOTNOTES
   // =========================================
   .footnote-reference {
-    color: #6cb6ff;
+    color: var(--qe-dark-link);
   }
 
   dl.footnote dt {
-    color: #d4d4e4;
+    color: var(--qe-dark-text);
   }
 }
