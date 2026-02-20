@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Complete dark theme overhaul** (#365) — rewrote the dark theme for a modern, consistent, and readable experience
+  - Replaced ad-hoc grays (`#222`/`#333`/`#444`) with a cohesive navy-charcoal palette (`#1a1a2e` background, `#252540` surfaces, `#d4d4e4` text, `#6cb6ff` links)
+  - Images now use subtle opacity reduction instead of aggressive CSS inversion
+- **CSS custom properties for dark theme** (#365) — all 16 palette colors declared as overridable `--qe-dark-*` custom properties; downstream projects can now customize colors without duplicating selectors
+
+### Added
+- **Dark mode syntax highlighting** (#365) — complete token colors for all ~40 Pygments syntax classes using a VS Code Dark+ inspired palette
+- **FOUC prevention** (#365) — early inline script applies dark mode class before first paint, eliminating the flash of white on page load
+- **Dark mode documentation** (#365) — new "Dark Mode" section in `configure.md` covering palette, syntax highlighting, admonitions, image handling, and CSS customization with full reference table of all overridable custom properties
+- **Dark mode coverage for unstyled elements** (#365) — modals, admonitions (type-specific accents), homepage elements, collapse/toggle bars, tooltips, autodoc, footnotes, and non-QuantEcon project overrides
+
+### Fixed
+- **Double logo in dark theme** (#365) — when a dedicated dark logo is configured, both light and dark logos were shown; fixed `:only-child` selector to check the `<a>` wrapper instead of the `<img>`
+- **Page header unreadable in dark mode** (#365) — title link, authors, "Last changed" button, and changelog dropdown used `#444` text on dark backgrounds
+- **Unreadable table text in dark mode** (#365) — table rows used `#333` text on dark backgrounds
+- **Indistinguishable links in dark mode** (#365) — all links were `#fff`, same as body text
+- **Inline code light border in dark mode** (#365) — code spans retained light-theme borders
+- **Sidebar search white in dark mode** (#365) — search input area remained white
+- **Toolbar border in dark mode** (#365) — toolbar border remained light gray
+- **Syntax highlighting gaps** (#365) — only 3 of ~40 token types had dark mode overrides
+- **Stderr warnings in dark mode** (#365) — updated to use amber accents matching the new palette
+
 ## [0.17.1] - 2026-02-19
 
 ### Fixed
