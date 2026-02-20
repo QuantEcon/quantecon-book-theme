@@ -242,8 +242,13 @@ body.dark-theme {
     display: block;
   }
 
-  .logo-img:only-child,
-  .qe-sidebar__nav .logo img:only-child {
+  // Fallback: when no dedicated dark logo is provided, show the light
+  // logo with an inversion filter. We check :only-child on the <a>
+  // wrapper (not the <img>) because each <img> is always the sole
+  // child of its own <a>. When a dark logo IS configured there are
+  // two <a> siblings, so :only-child won't match.
+  p.logo > a:only-child > .logo-img,
+  .qe-sidebar__nav .logo > a:only-child > img {
     display: block;
     filter: invert(100%) hue-rotate(-180deg);
     -webkit-filter: invert(100%) hue-rotate(-180deg);
