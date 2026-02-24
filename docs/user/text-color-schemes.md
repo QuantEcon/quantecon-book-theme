@@ -1,6 +1,6 @@
 # Text Color Schemes
 
-The theme applies colors to emphasis (italic), bold/strong, and definition list
+The theme applies colors to the `em` (emphasis) element, bold/strong, and definition list
 terms using a built-in color scheme system.
 
 ```{contents}

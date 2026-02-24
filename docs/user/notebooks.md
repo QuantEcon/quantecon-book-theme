@@ -24,7 +24,7 @@ As it is markdown, you can embed images, HTML, etc into your posts!
 
 ![](../images/cool.jpg)
 
-You an also $add_{math}$ and
+You can also $add_{math}$ and
 
 $$
 math^{blocks}
@@ -177,7 +177,7 @@ We can do the same for *interactive* material. Below we'll display a map using
 converted to Markdown, the code for creating the interactive map is retained.
 
 **Note that this will only work for some packages.** They need to be able to output
-standalone HTML/Javascript, and not depend on an underlying Python kernel to work.
+standalone HTML/JavaScript, and not depend on an underlying Python kernel to work.
 
 ```{code-cell} ipython3
 import folium

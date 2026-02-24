@@ -93,7 +93,7 @@ extension:
 ```python
 extensions = [
     ...
-    "sphinx_thebe"
+    "sphinx_thebe",
     ...
 ]
 ```
