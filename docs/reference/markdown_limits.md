@@ -219,7 +219,8 @@ Link to above: {eq}`my_label2`
 
 Margin content can include all kinds of things, such as code blocks:
 
-````{margin} Code blocks in margins
+````{admonition} Margin example — Code blocks
+:class: tip
 ```python
 print("here is some python")
 ```
@@ -227,7 +228,8 @@ print("here is some python")
 
 as well as admonitions and images:
 
-````{margin} **Notes in margins**
+````{admonition} Margin example — Notes
+:class: tip
 ```{note}
 Wow, a note with an image in a margin!
 ![](../images/cool.jpg)
@@ -237,7 +239,7 @@ Wow, a note with an image in a margin!
 
 Here's some margin content, let's see how it interacts w/ the toggle button
 
-```{margin} My margin
+```{tip} Margin content
 Here's my margin content
 ```
 

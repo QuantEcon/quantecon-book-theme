@@ -52,6 +52,7 @@ code_style = [
     "pre-commit"
 ]
 doc = [
+    "pydata-sphinx-theme>=0.15",
     "folium",
     "numpy",
     "matplotlib",
@@ -60,7 +61,6 @@ doc = [
     "nbclient",
     "myst-nb",
     "sphinx-togglebutton>=0.2.1",
-    "sphinx-thebe",
     "sphinx-copybutton",
     "docutils>=0.20",
     "plotly",

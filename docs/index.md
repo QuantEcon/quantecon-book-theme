@@ -57,7 +57,6 @@ developer/index
 
 reference/index
 api/index
-GitHub Repository <https://github.com/QuantEcon/quantecon-book-theme>
 ```
 
 ## Acknowledgements
