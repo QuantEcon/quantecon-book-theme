@@ -16,14 +16,10 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_togglebutton",
     "sphinxcontrib.bibtex",
-    "sphinx_thebe",
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
 ]
-
-# Add any paths that contain templates here, relative to this directory.
-templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -43,12 +39,12 @@ numfig = True
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
-html_theme = "quantecon_book_theme"
+# The theme to use for HTML and HTML Help pages.
+# We use pydata-sphinx-theme for the documentation site itself, while
+# quantecon_book_theme is the theme being documented.
+html_theme = "pydata_sphinx_theme"
 html_logo = "_static/qe-logo.png"
-html_title = "Quantecon Book Theme"
+html_title = "QuantEcon Book Theme"
 html_copy_source = True
 html_sourcelink_suffix = ""
 html_favicon = "_static/qe-logo.png"
@@ -62,37 +58,28 @@ nb_execution_mode = "auto"
 # -- Togglebutton configuration ----------------------------------------------
 togglebutton_hint = "Show"
 togglebutton_hint_hide = "Hide"
-thebe_config = {
-    "repository_url": "https://github.com/binder-examples/jupyter-stacks-datascience",
-    "repository_branch": "master",
-}
 
 html_theme_options = {
-    "path_to_docs": "docs",
-    "repository_url": "https://github.com/QuantEcon/quantecon-book-theme",
-    # "repository_branch": "gh-pages",  # For testing
-    "launch_buttons": {
-        "binderhub_url": "https://mybinder.org",
-        # "jupyterhub_url": "https://datahub.berkeley.edu",  # For testing
-        "colab_url": "https://colab.research.google.com/",
-        "notebook_interface": "jupyterlab",
-        "thebe": True,
-    },
+    "github_url": "https://github.com/QuantEcon/quantecon-book-theme",
     "use_edit_page_button": True,
-    "use_issues_button": True,
-    "use_repository_button": True,
-    "expand_sections": ["reference/index"],
-    # For testing
-    # "home_page_in_toc": True,
-    # "single_page": True
-    # "extra_footer": "<a href='https://google.com'>Test</a>",
-    # "extra_navbar": "<a href='https://google.com'>Test</a>",
-    # Uncomment to test Pygments built-in styles:
-    # "qetheme_code_style": False,
+    "show_prev_next": True,
+    "navigation_with_keys": False,
+    "header_links_before_dropdown": 6,
+    "icon_links": [
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/quantecon-book-theme/",
+            "icon": "fas fa-box",
+        },
+    ],
 }
 
-# Uncomment to test different Pygments styles:
-# pygments_style = "monokai"
+html_context = {
+    "github_user": "QuantEcon",
+    "github_repo": "quantecon-book-theme",
+    "github_version": "main",
+    "doc_path": "docs",
+}
 
 bibtex_bibfiles = ["references.bib"]
 bibtex_reference_style = "author_year"

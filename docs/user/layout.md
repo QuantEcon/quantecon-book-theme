@@ -27,8 +27,11 @@ Here is my margin content, it is pretty cool!
 ```
 ````
 
-```{margin} **Here is my margin content**
-It is pretty cool!
+```{admonition} Margin example
+:class: tip
+In the quantecon-book-theme, this pops out to the right margin:
+
+**Here is my margin content** — It is pretty cool!
 ```
 
 ### Content sidebars
@@ -55,7 +58,9 @@ Here is my sidebar content, it is pretty cool!
 
 Sidebar/margin content supports code blocks:
 
-````{margin} Code blocks in margins
+````{admonition} Margin example — Code blocks
+:class: tip
+In the theme, this renders as a code block in the right margin:
 ```python
 print("here is some python")
 ```
@@ -71,7 +76,9 @@ print("here is some python")
 
 As well as admonitions and images:
 
-````{margin} **Notes in margins**
+````{admonition} Margin example — Notes
+:class: tip
+In the theme, this renders as a note in the right margin:
 ```{note}
 Wow, a note with an image in a margin!
 ![](../images/cool.jpg)
@@ -132,7 +139,7 @@ This content will be full-width
 This content will be full-width
 ```
 
-```{margin} A note for ipynb users
+```{tip} A note for ipynb users
 If you are using a Jupyter Notebook as inputs to your documentation using the
 [MyST-NB extension](https://myst-nb.readthedocs.io/en/latest/), you can trigger
 this behavior with a code cell by adding a `full-width` tag to the cell.

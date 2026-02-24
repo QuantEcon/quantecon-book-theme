@@ -22,7 +22,7 @@ html_theme_options = {
 }
 ```
 
-```{margin} Paired ipynb files
+```{tip} Paired ipynb files
 If you're using [Jupytext](https://jupytext.readthedocs.io/en/latest/) to
 pair an ipynb file with your text files, and that ipynb file is in the same
 folder as your content, then Binder/JupyterHub links will point to the ipynb
