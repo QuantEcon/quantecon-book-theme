@@ -12,21 +12,19 @@ kernelspec:
   name: python3
 ---
 
-# Content with notebooks
+# Content with Notebooks
 
-You can also create content with Jupyter Notebooks. The content for the current page is contained
-in a Jupyter Notebook in the `notebooks/` folder of the repository. This means that we can include
-code blocks and their outputs, and export them to Jekyll markdown.
-
-**You can find the original notebook for this page [at this address](https://github.com/jupyter/jupyter-book/blob/master/jupyter_book/book_template/content/features/notebooks.ipynb)**
+You can create content with Jupyter Notebooks. This page demonstrates how
+notebook content — code blocks, outputs, and interactive elements — renders
+with `quantecon-book-theme`.
 
 ## Markdown + notebooks
 
 As it is markdown, you can embed images, HTML, etc into your posts!
 
-![](images/cool.jpg)
+![](../images/cool.jpg)
 
-You an also $add_{math}$ and
+You can also $add_{math}$ and
 
 $$
 math^{blocks}
@@ -104,7 +102,7 @@ ax.legend(custom_lines, ['Cold', 'Medium', 'Hot'])
 ax.set(title="Smoother lines");
 ```
 
-```{margin} You can also pop out content to the margin
+```{tip} You can also pop out content to the margin
 For more information on how to do this,
 check out {doc}`layout`.
 ```
@@ -122,7 +120,7 @@ Math("\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}")
 
 ## Removing content before publishing
 
-You can also remove some content before publishing your book to the web. For example,
+You can remove some content before publishing your book to the web. For example,
 in [the original notebook](https://github.com/jupyter/jupyter-book/blob/master/jupyter_book/book_template/content/features/notebooks.ipynb) there
 used to be a cell below...
 
@@ -157,8 +155,7 @@ ax.text(0, .5, thisvariable, fontsize=20, transform=ax.transAxes)
 ax.set_axis_off()
 ```
 
-And here we'll *only* display a Pandas DataFrame. Again, this was generated with Python code
-from [this original notebook](https://github.com/jupyter/textbooks-with-jupyter/blob/master/notebooks/introduction/notebooks.ipynb).
+And here we'll *only* display a Pandas DataFrame.
 
 ```{code-cell} ipython3
 :tags: [hide_input]
@@ -175,11 +172,12 @@ Testing popouts before headers
 
 ## Interactive outputs
 
-We can even do the same for *interactive* material. Below we'll display a map using [folium](https://python-visualization.github.io/folium/). When the notebook
-is converted to Markdown, the code for creating the interactive map is retained.
+We can do the same for *interactive* material. Below we'll display a map using
+[folium](https://python-visualization.github.io/folium/). When the notebook is
+converted to Markdown, the code for creating the interactive map is retained.
 
-**Note that this will only work for some packages.** They need to be able to output standalone HTML/Javascript, and not
-depend on an underlying Python kernel to work.
+**Note that this will only work for some packages.** They need to be able to output
+standalone HTML/JavaScript, and not depend on an underlying Python kernel to work.
 
 ```{code-cell} ipython3
 import folium
@@ -189,7 +187,7 @@ import folium
 m = folium.Map(
     location=[45.372, -121.6972],
     zoom_start=12,
-    tiles='Stamen Terrain'
+    tiles='OpenStreetMap'
 )
 
 folium.Marker(
@@ -215,8 +213,6 @@ m
 ```
 
 ## Rich outputs from notebook cells
-
-+++
 
 Because notebooks have rich text outputs, you can store these in
 your Jupyter Book as well!
