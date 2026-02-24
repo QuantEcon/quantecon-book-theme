@@ -1,75 +1,63 @@
-# The Quantecon Book Theme
+# The QuantEcon Book Theme
 
+**An interactive book theme for Sphinx.**
 
-**An interactive book theme for Sphinx**.
+A lightweight Sphinx theme designed to mimic the look-and-feel of an
+interactive book. Key features:
 
-This is a lightweight Sphinx theme designed to mimic the look-and-feel of an
-interactive book. It has the following primary features:
+* **[Dark mode](user/dark-mode.md)** — modern dark theme with full syntax highlighting, accessible colors, no flash on load
+* **[Git-based metadata](user/git-metadata.md)** — automatic last-modified timestamps and interactive changelog per page
+* **[Collapsible stderr warnings](user/features/stderr-warnings.md)** — wrap verbose notebook warnings in an expandable interface
+* **[Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/)** for visual elements
+* **[Flexible content layout](user/layout.md)** inspired by [Edward Tufte CSS](https://edwardtufte.github.io/tufte-css/)
+* **[Jupyter Notebook support](user/notebooks.md)** with visual classes for cell inputs, outputs, and interactivity
+* **[Configurable code highlighting](user/code-highlighting.md)** — QuantEcon styles or Pygments built-in themes
+* **[Launch buttons](user/launch.md)** — connect to BinderHub, JupyterHub, Colab, or Thebe for interactive content
+* **[Text color schemes](user/text-color-schemes.md)** — Seoul256, Gruvbox, or custom colors for emphasis and bold
+* **[RTL support](user/rtl-support.md)** — full right-to-left layout for Arabic, Hebrew, Persian, and more
 
-* **[Dark mode](configure.html#dark-mode)**. A modern, consistent dark theme with full syntax
-  highlighting support, accessible colors, and no flash of white on page load.
-* **[Git-based metadata](configure.html#git-based-metadata)**. Automatically display last
-  modified timestamps and interactive changelog with commit history for each page.
-* **[Collapsible stderr warnings](features/stderr_warnings.html)**. Automatically wrap verbose
-  warnings in notebook cells with an expandable interface for cleaner presentation.
-* **[Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/)**
-  for visual elements and functionality.
-* **[Flexible content layout](layout)** that is inspired by beautiful online books,
-  such as [the Edward Tufte CSS guide](https://edwardtufte.github.io/tufte-css/)
-* **[Visual classes designed for Jupyter Notebooks](notebooks)**. Cell inputs, outputs,
-  and interactive functionality are all supported.
-* **[Configurable code syntax highlighting](configure.html#custom-code-syntax-highlighting)**.
-  Choose between custom QuantEcon styles or Pygments built-in themes.
-* **[Launch buttons for online interactivity](launch)**. For pages that are built with
-  computational material, connect your site to an online BinderHub for interactive content.
+## Quick Start
 
-## Requirements
-
-- **Python 3.12** or newer
-- **Sphinx 7.0** or newer
-
-## Get started
-
-To get started with `quantecon-book-theme`, first install it with `pip`:
-
-```
+```bash
 pip install quantecon-book-theme
 ```
 
-then, activate the theme in your Sphinx configuration (`conf.py`):
-
 ```python
+# conf.py
 html_theme = "quantecon_book_theme"
 ```
 
-This will activate the Quantecon Book Theme for your documentation. Note that you may
-need to change your `html_theme_options` configuration depending on your previous
-theme. See the pages to the left for information about what you can configure with
-`quantecon-book-theme`.
+## User Guide
 
-## Site contents
+Everything you need to install, configure, and use the theme.
 
 ```{toctree}
-:maxdepth: 1
-:caption: Main docs
+:maxdepth: 2
+:caption: User Guide
 
-configure
-Controlling page elements <layout>
-notebooks
-features/stderr_warnings
-launch
-contributing/index
-GitHub repository <https://github.com/quantecon/quantecon-book-theme>
+user/index
 ```
 
-## Reference pages
+## Developer Guide
+
+Contributing, architecture, testing, and release processes.
 
 ```{toctree}
-:caption: Reference items
+:maxdepth: 2
+:caption: Developer Guide
+
+developer/index
+```
+
+## Reference
+
+```{toctree}
+:caption: Reference
 :maxdepth: 2
 
 reference/index
 api/index
+GitHub Repository <https://github.com/QuantEcon/quantecon-book-theme>
 ```
 
 ## Acknowledgements
