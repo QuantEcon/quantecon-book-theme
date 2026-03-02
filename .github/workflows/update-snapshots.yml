@@ -184,7 +184,7 @@ jobs:
           SITE_PATH: lecture-python-programming.myst/_build/html
 
       - name: Upload Old vs New Diff
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: snapshot-update-diff
