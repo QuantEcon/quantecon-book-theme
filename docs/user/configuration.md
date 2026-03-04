@@ -191,7 +191,7 @@ html_theme_options = {
 }
 ```
 
-When `contents_autoexpand` is `False`, only top-level section names are displayed.
+When `contents_autoexpand` is `False`, only top-level section names are displayed. Note that this option only has an effect when the sticky TOC is enabled (the default); it has no impact when `sticky_contents` is set to `False`.
 
 ## Customizing Toggle Buttons
 

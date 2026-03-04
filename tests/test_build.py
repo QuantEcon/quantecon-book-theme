@@ -452,6 +452,12 @@ def test_sticky_toc(sphinx_build):
     toc_inner = index_html.find("div", class_="inner")
     # When disabled, sticky class should NOT be present
     assert toc_inner is None or "sticky" not in toc_inner.get("class", [])
+    # Back to top button should NOT be present when sticky contents are disabled
+    back_to_top = index_html.find("a", class_="back-to-top-btn")
+    assert back_to_top is None
+    # data-autoexpand attribute should NOT be present when sticky contents are disabled
+    if toc_inner is not None:
+        assert toc_inner.get("data-autoexpand") is None
     sphinx_build.clean()
 
     # Test with sticky_contents enabled and contents_autoexpand disabled
