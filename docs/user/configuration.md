@@ -149,12 +149,25 @@ filter to the site logo.
 
 ## Sticky Table of Contents
 
-Enable a fixed right-hand table of contents with scroll spy and auto-expansion:
+The theme includes a fixed right-hand table of contents with scroll spy and
+auto-expansion, enabled by default.
+
+### Features
+
+- **Fixed positioning** — the TOC stays visible while scrolling
+- **Active section highlighting** — the current section is highlighted
+- **Copy section link** — hover over a TOC entry to reveal a copy icon
+- **Back to top button** — appears after scrolling down 300px
+- **Auto-expand subsections** — subsections expand as you scroll
+
+### Disable sticky TOC
+
+To revert to the classic (non-sticky) table of contents:
 
 ```python
 html_theme_options = {
     ...
-    "sticky_contents": True,
+    "sticky_contents": False,
     ...
 }
 ```
@@ -165,24 +178,14 @@ For Jupyter Book projects:
 sphinx:
   config:
     html_theme_options:
-      sticky_contents: true
+      sticky_contents: false
 ```
-
-### Features
-
-When enabled:
-- **Fixed positioning** — the TOC stays visible while scrolling
-- **Active section highlighting** — the current section is highlighted
-- **Copy section link** — hover over a TOC entry to reveal a copy icon
-- **Back to top button** — appears after scrolling down 300px
-- **Auto-expand subsections** — subsections expand as you scroll
 
 ### Disable auto-expansion
 
 ```python
 html_theme_options = {
     ...
-    "sticky_contents": True,
     "contents_autoexpand": False,
     ...
 }

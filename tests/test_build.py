@@ -428,23 +428,11 @@ def test_sticky_toc(sphinx_build):
     """Test that sticky_contents and contents_autoexpand options work correctly."""
     sphinx_build.copy()
 
-    # Test default behavior - sticky TOC should be disabled
+    # Test default behavior - sticky TOC should be enabled by default
     sphinx_build.build()
     index_html = sphinx_build.get("index.html")
     toc_inner = index_html.find("div", class_="inner")
-    # By default, sticky class should NOT be present
-    assert toc_inner is None or "sticky" not in toc_inner.get("class", [])
-    sphinx_build.clean()
-
-    # Test with sticky_contents enabled
-    cmd = [
-        "-D",
-        "html_theme_options.sticky_contents=True",
-    ]
-    sphinx_build.build(cmd)
-    index_html = sphinx_build.get("index.html")
-    toc_inner = index_html.find("div", class_="inner")
-    # When enabled, sticky class should be present
+    # By default, sticky class should be present
     assert toc_inner is not None
     assert "sticky" in toc_inner.get("class", [])
     # Default contents_autoexpand should be True
@@ -452,6 +440,18 @@ def test_sticky_toc(sphinx_build):
     # Back to top button should be present
     back_to_top = index_html.find("a", class_="back-to-top-btn")
     assert back_to_top is not None
+    sphinx_build.clean()
+
+    # Test with sticky_contents explicitly disabled
+    cmd = [
+        "-D",
+        "html_theme_options.sticky_contents=False",
+    ]
+    sphinx_build.build(cmd)
+    index_html = sphinx_build.get("index.html")
+    toc_inner = index_html.find("div", class_="inner")
+    # When disabled, sticky class should NOT be present
+    assert toc_inner is None or "sticky" not in toc_inner.get("class", [])
     sphinx_build.clean()
 
     # Test with sticky_contents enabled and contents_autoexpand disabled
