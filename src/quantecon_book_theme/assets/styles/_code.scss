@@ -432,3 +432,10 @@
     color: #4a4a6a;
   }
 }
+
+/* Override pydata-sphinx-theme's html[data-theme=light] .highlight .nf rule
+ * which uses !important and would override our low-specificity :where() rules.
+ * Only applies when the theme's custom code style is active (no .use-pygments-style). */
+html[data-theme="light"] body:not(.use-pygments-style) .highlight .nf {
+  color: #06287e !important;
+}
