@@ -3,10 +3,25 @@
  * To use Pygments built-in styles instead, set qetheme_code_style = False in html_theme_options
  * and configure pygments_style in conf.py
  *
- * Using :where() pseudo-class to keep specificity low so Pygments styles can override when enabled
+ * The `html` ancestor ensures specificity (0,3,2) beats pydata-sphinx-theme's
+ * Pygments rules scoped to html[data-theme] at (0,3,1).
+ * When body has .use-pygments-style, these rules don't match so the configured
+ * Pygments style takes effect instead.
  */
 
-:where(body:not(.use-pygments-style)) {
+/* Override pydata-sphinx-theme's code.literal box styling.
+ * When inline_literal_box is False (default), we strip the background,
+ * border, and padding from inline code elements to match our original look.
+ * Set inline_literal_box: True in html_theme_options to re-enable boxes.
+ */
+body:not(.inline-literal-box) code.literal {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+html body:not(.use-pygments-style) {
   .highlight .hll {
     background-color: #ffc;
   }
@@ -213,7 +228,7 @@
  * A carefully chosen palette for readability on dark backgrounds (#1e1e32).
  * Inspired by VS Code Dark+ / One Dark themes.
  */
-:where(body.dark-theme:not(.use-pygments-style)) {
+html body.dark-theme:not(.use-pygments-style) {
   .highlight .hll {
     background-color: #3a3a5c;
   }

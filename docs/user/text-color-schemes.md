@@ -12,8 +12,8 @@ terms using a built-in color scheme system.
 
 | Scheme | Description |
 |---|---|
-| `seoul256` (default) | Dark teal for emphasis, dark amber for strong — with matching light variants for dark mode |
-| `gruvbox` | Earthy aqua for emphasis, warm orange for strong — with light variants for dark mode |
+| `seoul256` (default) | Dark teal for emphasis, dark amber for strong, muted rust for inline code — with matching light variants for dark mode |
+| `gruvbox` | Earthy aqua for emphasis, warm orange for strong, dark red for inline code — with light variants for dark mode |
 | `none` | Restores standard typography — italic for `em`, bold for `strong`, no color |
 
 ## Selecting a Scheme
@@ -44,17 +44,20 @@ sphinx:
 | **Emphasis** (`em`) | `#005f5f` dark teal | `#5fafaf` medium-light teal |
 | **Bold/Strong** (`strong`, `b`) | `#875f00` dark amber | `#d7af5f` light amber-gold |
 | **Definitions** (`dl dt`) | Inherits from bold/strong | Inherits from bold/strong |
+| **Inline Code** (`code.literal`) | `#af5f5f` muted rust | `#d78787` soft rose |
 
 ```css
 /* Seoul256 — Light Mode */
 em       { color: #005f5f; }  /* dark teal */
 strong   { color: #875f00; }  /* dark amber */
 dl dt    { color: #875f00; }  /* inherits from strong */
+code.literal { color: #af5f5f; }  /* muted rust */
 
 /* Seoul256 — Dark Mode */
 em       { color: #5fafaf; }  /* medium-light teal */
 strong   { color: #d7af5f; }  /* light amber-gold */
 dl dt    { color: #d7af5f; }  /* inherits from strong */
+code.literal { color: #d78787; }  /* soft rose */
 ```
 
 ## Gruvbox Colors
@@ -64,17 +67,20 @@ dl dt    { color: #d7af5f; }  /* inherits from strong */
 | **Emphasis** (`em`) | `#427b58` earthy aqua | `#8ec07c` light aqua |
 | **Bold/Strong** (`strong`, `b`) | `#af3a03` warm orange | `#fe8019` bright orange |
 | **Definitions** (`dl dt`) | Inherits from bold/strong | Inherits from bold/strong |
+| **Inline Code** (`code.literal`) | `#9d0006` dark red | `#fb4934` bright red |
 
 ```css
 /* Gruvbox — Light Mode */
 em       { color: #427b58; }  /* earthy aqua */
 strong   { color: #af3a03; }  /* warm orange */
 dl dt    { color: #af3a03; }  /* inherits from strong */
+code.literal { color: #9d0006; }  /* dark red */
 
 /* Gruvbox — Dark Mode */
 em       { color: #8ec07c; }  /* light aqua */
 strong   { color: #fe8019; }  /* bright orange */
 dl dt    { color: #fe8019; }  /* inherits from strong */
+code.literal { color: #fb4934; }  /* bright red */
 ```
 
 ## Custom Color Scheme
@@ -88,11 +94,13 @@ The theme will automatically detect and include it:
   --qe-emphasis-color: #005f5f;
   --qe-strong-color: #875f00;
   --qe-definition-color: #875f00;
+  --qe-literal-color: #af5f5f;
 }
 body.dark-theme {
   --qe-emphasis-color: #5fafaf;
   --qe-strong-color: #d7af5f;
   --qe-definition-color: #d7af5f;
+  --qe-literal-color: #d78787;
 }
 ```
 

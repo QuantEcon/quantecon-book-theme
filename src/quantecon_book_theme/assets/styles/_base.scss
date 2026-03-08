@@ -168,6 +168,11 @@ dl.field-list dt {
   color: var(--qe-definition-color, var(--qe-strong-color, colors.$definition));
 }
 
+// Inline code literal styling - colored text for code.literal elements
+code.literal {
+  color: var(--qe-literal-color, colors.$literal);
+}
+
 li {
   margin: 0.5rem 0;
 }
