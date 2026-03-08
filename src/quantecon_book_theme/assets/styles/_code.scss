@@ -3,10 +3,13 @@
  * To use Pygments built-in styles instead, set qetheme_code_style = False in html_theme_options
  * and configure pygments_style in conf.py
  *
- * Using :where() pseudo-class to keep specificity low so Pygments styles can override when enabled
+ * The `html` ancestor ensures specificity (0,3,2) beats pydata-sphinx-theme's
+ * Pygments rules scoped to html[data-theme] at (0,3,1).
+ * When body has .use-pygments-style, these rules don't match so the configured
+ * Pygments style takes effect instead.
  */
 
-:where(body:not(.use-pygments-style)) {
+html body:not(.use-pygments-style) {
   .highlight .hll {
     background-color: #ffc;
   }
@@ -213,7 +216,7 @@
  * A carefully chosen palette for readability on dark backgrounds (#1e1e32).
  * Inspired by VS Code Dark+ / One Dark themes.
  */
-:where(body.dark-theme:not(.use-pygments-style)) {
+html body.dark-theme:not(.use-pygments-style) {
   .highlight .hll {
     background-color: #3a3a5c;
   }
@@ -431,11 +434,4 @@
   .highlight .w {
     color: #4a4a6a;
   }
-}
-
-/* Override pydata-sphinx-theme's html[data-theme=light] .highlight .nf rule
- * which uses !important and would override our low-specificity :where() rules.
- * Only applies when the theme's custom code style is active (no .use-pygments-style). */
-html[data-theme="light"] body:not(.use-pygments-style) .highlight .nf {
-  color: #06287e !important;
 }
