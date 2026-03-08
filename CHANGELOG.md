@@ -7,8 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-03-08
+
 ### Changed
-- **`sticky_contents` now defaults to `True`** — the sticky right-hand table of contents with scroll spy is now enabled by default for all projects using the theme. To revert to the classic TOC, set `sticky_contents: False` in `html_theme_options` in `conf.py`, or `sticky_contents: false` in YAML-based configuration (e.g. `_config.yml`).
+- **`sticky_contents` now defaults to `True`** (#371) — the sticky right-hand table of contents with scroll spy is now enabled by default for all projects using the theme. To revert to the classic TOC, set `sticky_contents: False` in `html_theme_options`.
+- **Increased CSS specificity for custom code highlighting** (#373) — replaced `:where()` wrappers with `html body:not(.use-pygments-style)` to ensure custom token colors are not overridden by pydata-sphinx-theme's Pygments rules when `data-theme` is set.
+
+### Added
+- **`data-theme` attribute on `<html>`** (#373) — sets the standard `data-theme="light"` or `"dark"` attribute used by pydata-sphinx-theme, Furo, and sphinx-book-theme, fixing compatibility with `myst-nb` 1.4.0+ which uses this attribute for dark mode detection. Resolves dark code cell backgrounds appearing on light-themed sites for users with OS dark mode.
+- **`inline_literal_box` theme option** (#373) — new boolean option (default: `False`) that controls whether inline code literals (`code.literal`) display with pydata-sphinx-theme's background box and border styling. Set to `True` to re-enable boxes.
+- **`--qe-literal-color` CSS variable** (#373) — inline code literal color integrated into the text color scheme system alongside emphasis, strong, and definition colors:
+  - Seoul256: `#af5f5f` (muted rust) / `#d78787` (soft rose) for dark mode
+  - Gruvbox: `#9d0006` (dark red) / `#fb4934` (bright red) for dark mode
+  - None: inherits text color
+  - Overridable via `--qe-literal-color` in custom CSS
+
+### Fixed
+- **Dark code cells with myst-nb 1.4+** (#373) — myst-nb 1.4.0 changed CSS dark mode detection to a space-toggle technique with `@media (prefers-color-scheme)` fallback; since the theme only used `body.dark-theme` class, myst-nb fell through to OS preference causing dark backgrounds on light sites. Fixed by setting `data-theme` attribute.
+
+### CI
+- Bump `actions/upload-pages-artifact` from 3 to 4 (#370)
+- Bump `actions/upload-artifact` from 6 to 7 (#369)
 
 ## [0.18.0] - 2026-02-24
 
@@ -259,7 +278,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.18.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.1...v0.18.0
 [0.17.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.16.0...v0.17.0
