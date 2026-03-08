@@ -548,6 +548,11 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
     # Set a context variable that can be used in templates
     context["use_pygments_style"] = not qetheme_code_style
 
+    inline_literal_box = config_theme.get("inline_literal_box", False)
+    if isinstance(inline_literal_box, str):
+        inline_literal_box = inline_literal_box.lower() == "true"
+    context["inline_literal_box"] = inline_literal_box
+
 
 def setup_pygments_css(app):
     """Ensure Pygments CSS is included when using Pygments styles.

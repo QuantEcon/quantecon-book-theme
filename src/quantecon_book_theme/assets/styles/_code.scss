@@ -9,6 +9,18 @@
  * Pygments style takes effect instead.
  */
 
+/* Override pydata-sphinx-theme's code.literal box styling.
+ * When inline_literal_box is False (default), we strip the background,
+ * border, and padding from inline code elements to match our original look.
+ * Set inline_literal_box: True in html_theme_options to re-enable boxes.
+ */
+body:not(.inline-literal-box) code.literal {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
 html body:not(.use-pygments-style) {
   .highlight .hll {
     background-color: #ffc;
