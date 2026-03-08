@@ -1,7 +1,7 @@
 /*
 -----------------------------------
 TEXT COLOR SCHEMES
-Built-in color scheme definitions for emphasis, strong, and definition markup.
+Built-in color scheme definitions for emphasis, strong, literal, and definition markup.
 
 Available schemes:
   - seoul256 (default): Seoul256-inspired teal & amber palette
@@ -9,8 +9,8 @@ Available schemes:
   - none: Restores standard typography (italic for em, bold for strong, no color)
 
 Custom override: Place a custom_color_scheme.css in your project's _static/
-directory defining --qe-emphasis-color, --qe-strong-color, --qe-definition-color
-on :root and body.dark-theme.
+directory defining --qe-emphasis-color, --qe-strong-color, --qe-definition-color,
+--qe-literal-color on :root and body.dark-theme.
 -----------------------------------
 */
 
@@ -35,6 +35,10 @@ body.color-scheme-gruvbox {
     color: var(--qe-definition-color, var(--qe-strong-color, colors.$gruvbox-definition));
   }
 
+  code.literal {
+    color: var(--qe-literal-color, colors.$gruvbox-literal);
+  }
+
   &.dark-theme {
     em {
       color: var(--qe-emphasis-color, colors.$gruvbox-emphasis-dark);
@@ -49,6 +53,10 @@ body.color-scheme-gruvbox {
     dl.glossary dt,
     dl.field-list dt {
       color: var(--qe-definition-color, var(--qe-strong-color, colors.$gruvbox-definition-dark));
+    }
+
+    code.literal {
+      color: var(--qe-literal-color, colors.$gruvbox-literal-dark);
     }
   }
 }
@@ -70,6 +78,10 @@ body.color-scheme-none {
   dl.simple dt,
   dl.glossary dt,
   dl.field-list dt {
+    color: inherit;
+  }
+
+  code.literal {
     color: inherit;
   }
 }

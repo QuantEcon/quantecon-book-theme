@@ -175,6 +175,10 @@ body.dark-theme {
     color: var(--qe-dark-inline-code);
   }
 
+  code.literal {
+    color: var(--qe-literal-color, colors.$literal-dark);
+  }
+
   // =========================================
   // TOOLBAR
   // =========================================
