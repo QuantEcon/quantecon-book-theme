@@ -404,10 +404,10 @@ body.dark-theme .toctree-wrapper .caption-text {
                             <button class="language-switcher__toggle" aria-label="Switch language" aria-expanded="false" aria-haspopup="true">
                                 <i data-feather="globe"></i>
                             </button>
-                            <ul class="language-switcher__menu" role="menu">
+                            <ul class="language-switcher__menu">
                                 {% for lang in theme_languages %}
-                                <li role="menuitem">
-                                    <a href="{{ lang.url }}/{{ pagename }}.html"
+                                <li role="none">
+                                    <a role="menuitem" href="{{ lang.url }}/{{ pagename }}.html"
                                        hreflang="{{ lang.code }}"
                                        {% if lang.code == theme_current_language %}aria-current="true" class="active"{% endif %}
                                        {% if lang.rtl is defined and lang.rtl %}dir="rtl"{% endif %}>

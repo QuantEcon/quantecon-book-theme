@@ -165,7 +165,7 @@ The language switcher renders plain `<a href="...">` links to whatever URLs you
 configure. It does not fetch, proxy, or iframe content.
 
 For guidance on hosting translated sites (GitHub Pages, subdomains, reverse
-proxies), see `PLAN-INFRASTRUCTURE.md` in the repository root.
+proxies), see the [Infrastructure](infrastructure.md) documentation.
 
 ## Architecture
 
