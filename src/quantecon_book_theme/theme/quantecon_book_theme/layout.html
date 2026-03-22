@@ -73,6 +73,14 @@
 <meta property="og:description" content="{{ theme_description | e }}" />
 <meta property="og:site_name" content="{{ docstitle | e }}" />
 <meta name="theme-color" content="#ffffff" />
+
+{# hreflang tags for SEO — language alternate links #}
+{% if theme_languages and theme_languages | length > 1 %}
+{% for lang in theme_languages %}
+<link rel="alternate" hreflang="{{ lang.code }}" href="{{ lang.url }}/{{ pagename }}.html" />
+{% endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ theme_languages[0].url }}/{{ pagename }}.html" />
+{% endif %}
 {% endblock %}
 
 {# Silence the sidebar's, relbar's #}
@@ -389,6 +397,28 @@ body.dark-theme .toctree-wrapper .caption-text {
                     <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}{{github_sourcefolder}}/{{ sourcename }}" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}" download><i data-feather="github"></i></a></li>
+                    {# Language Switcher — far right of toolbar, only when multiple languages configured #}
+                    {% if theme_languages and theme_languages | length > 1 %}
+                    <li class="btn__language" data-tippy-content="Switch language">
+                        <div class="language-switcher">
+                            <button class="language-switcher__toggle" aria-label="Switch language" aria-expanded="false" aria-haspopup="true">
+                                <i data-feather="globe"></i>
+                            </button>
+                            <ul class="language-switcher__menu" role="menu">
+                                {% for lang in theme_languages %}
+                                <li role="menuitem">
+                                    <a href="{{ lang.url }}/{{ pagename }}.html"
+                                       hreflang="{{ lang.code }}"
+                                       {% if lang.code == theme_current_language %}aria-current="true" class="active"{% endif %}
+                                       {% if lang.rtl is defined and lang.rtl %}dir="rtl"{% endif %}>
+                                        {{ lang.name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul>
 
             </div>

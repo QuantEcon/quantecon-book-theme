@@ -1,0 +1,127 @@
+/*
+-----------------------------------
+LANGUAGE SWITCHER
+Dropdown for switching between language versions
+-----------------------------------
+*/
+
+@use "colors";
+
+.language-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  &__toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: inherit;
+    opacity: 0.8;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &[aria-expanded="true"] {
+      opacity: 1;
+    }
+  }
+
+  &__menu {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 12px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    list-style: none;
+    padding: 4px 0;
+    margin-top: 0;
+    min-width: 140px;
+    z-index: 100;
+
+    // Arrow pointing down toward the toolbar button
+    &::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #fff;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 7px solid transparent;
+      border-top-color: #ccc;
+    }
+
+    &.is-open {
+      display: block;
+    }
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      display: block;
+      padding: 6px 16px;
+      color: colors.$body;
+      text-decoration: none;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
+      &.active {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Dark theme support
+body.dark-theme {
+  .language-switcher {
+    &__menu {
+      background: #2a2a3c;
+      border-color: #444;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+      &::after {
+        border-top-color: #2a2a3c;
+      }
+
+      &::before {
+        border-top-color: #444;
+      }
+
+      a {
+        color: #d4d4e4;
+
+        &:hover {
+          background-color: #3a3a5c;
+        }
+      }
+    }
+  }
+}

@@ -465,6 +465,16 @@ def add_to_context(app, pagename, templatename, context, doctree):
         context["theme_repository_url"] = None
         context["theme_source_file"] = None
 
+    # Process language switcher configuration
+    languages = config_theme.get("languages", [])
+    current_language = config_theme.get("current_language", "")
+    if isinstance(languages, list) and len(languages) > 1:
+        context["theme_languages"] = languages
+        context["theme_current_language"] = current_language
+    else:
+        context["theme_languages"] = []
+        context["theme_current_language"] = ""
+
     # Make sure the context values are bool
     blns = [
         "theme_use_edit_page_button",

@@ -1,661 +1,291 @@
-# Multilingual Support Plan for QuantEcon Lecture Sites
+# Multilingual Support Plan — Theme Features
 
-**Date:** December 2024
+**Date:** December 2024 (updated March 2026)
 **Status:** Planning
-**Author:** QuantEcon Team
+**Scope:** Theme-level features only (see `PLAN-INFRASTRUCTURE.md` for hosting/DNS)
 
 ## Overview
 
-This document outlines the architecture for supporting multiple language versions of QuantEcon lecture sites (e.g., `lecture-python-programming.myst` with Persian, Chinese translations).
+This document defines the theme features needed to support multiple language versions of QuantEcon lecture sites. The theme provides a **hosting-agnostic language switcher** — it renders links to whatever URLs are configured, regardless of whether sites live on GitHub Pages, custom subdomains, or behind a reverse proxy.
 
-### Goals
+### Design Principle
 
-1. **Unified branding** - All language versions feel like part of one integrated site
-2. **Easy translation management** - Separate repos per language for clean source file organization
-3. **Simple sync workflow** - Continue using `action-translation` for PR-based synchronization
-4. **Language switching** - Users can easily switch between available translations
-5. **SEO-friendly** - Proper canonical URLs and hreflang tags
+The theme does **not** know or care about hosting topology. Each lecture site configures explicit URLs for its language variants. When hosting changes (e.g., GitHub Pages → subdomains → Cloudflare proxy), only the `url` values in each site's `_config.yml` need updating — no theme code changes.
 
-### Current State
+### Test Repositories
 
-- **English:** `github.com/QuantEcon/lecture-python-programming.myst`
-- **Persian:** `github.com/QuantEcon/lecture-python-programming.fa`
-- **Chinese:** (Coming soon)
-
-Each repo currently deploys independently to GitHub Pages.
+| Language | Repository | Current Live URL |
+|----------|-----------|-----------------|
+| English (source) | `QuantEcon/lecture-python-programming` | `python-programming.quantecon.org` |
+| Persian (Farsi) | `QuantEcon/lecture-python-programming.fa` | `quantecon.github.io/lecture-python-programming.fa` |
+| Chinese (Simplified) | `QuantEcon/lecture-python-programming.zh-cn` | `quantecon.github.io/lecture-python-programming.zh-cn` |
 
 ---
 
-## Architecture Decision: Separate Repos per Language
+## Feature 1: Language Switcher Configuration
 
-**Decision: Keep separate repositories for each language translation.**
+### New Theme Options
 
-### Rationale
+Two new options in `html_theme_options`:
 
-| Aspect | Separate Repos ✅ | Single Repo with Branches |
-|--------|------------------|---------------------------|
-| Source organization | Clean, isolated per language | Complex branching strategy |
-| Translation workflow | Independent PRs, easy review | Branch management overhead |
-| CI/CD | Each repo has own pipeline | Complex conditional builds |
-| Contributor access | Grant per-language team access | All-or-nothing access |
-| `action-translation` sync | Works naturally with PRs | Would need adaptation |
-| Build isolation | One language failure doesn't block others | Shared failure risk |
+- **`languages`** — list of available language variants with explicit URLs
+- **`current_language`** — language code identifying the current build
 
-### Repository Naming Convention
+### Configuration Example
 
-```
-lecture-python-programming.myst     # English (source/base)
-lecture-python-programming.fa       # Persian (Farsi)
-lecture-python-programming.zh-cn    # Simplified Chinese
-lecture-python-programming.zh-tw    # Traditional Chinese (if needed)
-lecture-python-programming.ja       # Japanese (if needed)
-```
-
----
-
-## URL Structure Options
-
-### Option A: Subdirectory Pattern (Preferred)
-
-```
-https://python-programming.quantecon.org/           # English (base)
-https://python-programming.quantecon.org/fa/        # Persian
-https://python-programming.quantecon.org/zh-cn/     # Chinese
-```
-
-**Pros:**
-- Clean, intuitive URL structure
-- Single domain for all languages
-- Better for SEO (consolidated domain authority)
-- Matches common i18n patterns (Django, Next.js, etc.)
-
-**Cons:**
-- Requires either combined deployment OR reverse proxy
-- Cannot be achieved with independent gh-pages hosting alone
-
-### Option B: Subdomain Pattern
-
-```
-https://python-programming.quantecon.org/           # English
-https://fa.python-programming.quantecon.org/        # Persian
-https://zh.python-programming.quantecon.org/        # Chinese
-```
-
-**Pros:**
-- Each repo deploys independently to gh-pages
-- Simple DNS configuration (CNAME per subdomain)
-- No deployment coordination needed
-- Wikipedia uses this pattern successfully
-
-**Cons:**
-- Less "integrated" appearance
-- Separate SSL certificates (or wildcard needed)
-- Domain authority split across subdomains
-
----
-
-## Hosting Implementation Comparison
-
-### Feature Comparison Matrix
-
-| Feature | Combined Deployment | Subdomain Pattern | Cloudflare Proxy |
-|---------|:------------------:|:-----------------:|:----------------:|
-| **URL Structure** | `/fa/` subdirectories ✅ | `fa.xxx.org` subdomains | `/fa/` subdirectories ✅ |
-| **Pure GitHub Pages** | ✅ Yes | ✅ Yes | ❌ No (needs Cloudflare) |
-| **Independent Deployments** | ❌ No (coordinated) | ✅ Yes | ✅ Yes |
-| **CI/CD Complexity** | 🔴 High | 🟢 Low | 🟢 Low |
-| **Add New Language** | 🟡 Medium (update workflow) | 🟢 Easy (new repo + DNS) | 🟢 Easy (update worker) |
-| **Build Failure Isolation** | ❌ All languages affected | ✅ Independent | ✅ Independent |
-| **Single Domain Authority** | ✅ Yes | ❌ Split across subdomains | ✅ Yes |
-| **External Dependencies** | None | None | Cloudflare |
-| **DNS Entries Required** | 1 | 1 per language | 1 + subdomains for origins |
-| **SSL Certificates** | 1 | Wildcard or 1 per language | 1 (Cloudflare handles) |
-| **Debugging Complexity** | 🟡 Medium | 🟢 Low | 🟡 Medium |
-| **Cost** | Free | Free | Free (Workers free tier) |
-
-### Decision Criteria
-
-**Choose Combined Deployment if:**
-- Clean `/fa/` URLs are essential
-- You want to stay 100% on GitHub infrastructure
-- You can accept coordinated builds and cross-repo CI complexity
-
-**Choose Subdomain Pattern if:**
-- Simplicity is the priority
-- Each translation team needs full autonomy
-- You're okay with `fa.xxx.org` URL structure
-- You want the fastest path to deployment
-
-**Choose Cloudflare Proxy if:**
-- Clean `/fa/` URLs are essential
-- You want independent deployments per language
-- You're comfortable with Cloudflare as a dependency
-- You want CDN benefits (caching, DDoS protection)
-
-### Recommended Upgrade Path
-
-The **Subdomain Pattern → Cloudflare Proxy** path is recommended because Phase 1 work is not wasted—it becomes the foundation for Phase 2.
-
-```
-Phase 1: Subdomain Pattern              Phase 2: Add Cloudflare Proxy
-────────────────────────────────        ────────────────────────────────
-
-fa.python-programming.org ──────┐
-                                │       Cloudflare Worker routes:
-python-programming.org ─────────┼──▶      /    → python-programming.org
-                                │         /fa/ → fa.python-programming.org
-zh.python-programming.org ──────┘         /zh/ → zh.python-programming.org
-
-(Each repo deploys to gh-pages)         (Same backends, unified URLs)
-```
-
-#### What Changes When Adding Cloudflare (Phase 1 → Phase 2)
-
-| Aspect | Phase 1 (Subdomains) | Phase 2 (Cloudflare) |
-|--------|---------------------|----------------------|
-| DNS | Points to GitHub Pages | Points to Cloudflare |
-| Subdomains | User-facing URLs | Backend origins (still exist) |
-| `html_baseurl` | `https://fa.xxx.org/` | `https://xxx.org/fa/` |
-| Repos & CI/CD | No change | No change ✅ |
-| gh-pages deployment | No change | No change ✅ |
-
-#### Migration Steps (Phase 1 → Phase 2)
-
-1. **Set up Cloudflare** (if not already using for DNS)
-2. **Create Worker script** (~20 lines of JavaScript)
-3. **Update DNS** to route through Cloudflare
-4. **Update `html_baseurl`** in each translation repo's `_config.yml`
-5. **Update language switcher URLs** in theme configuration
-
-**Key benefit:** All the repo setup, CI/CD pipelines, and gh-pages deployments from Phase 1 remain unchanged. Only the "front door" (DNS + URL routing) changes.
-
-### Recommendation Summary
-
-| Phase | Approach | URLs | Effort |
-|-------|----------|------|--------|
-| **Phase 1** | Subdomain Pattern | `fa.python-programming.org` | 🟢 Low |
-| **Phase 2** (optional) | Add Cloudflare Proxy | `python-programming.org/fa/` | 🟢 Low (incremental) |
-
----
-
-## Hosting Implementation Options
-
-### Implementation 1: Combined Deployment (Pure GitHub Pages)
-
-Assemble all language builds into a single gh-pages deployment with subdirectory structure.
-
-#### Why This Works: Relative Links
-
-Jupyter Book (via Sphinx) generates **relative paths** for internal navigation by default:
-
-```html
-<!-- Example generated HTML -->
-<a href="getting_started.html">Getting Started</a>
-<a href="../chapter2/intro.html">Chapter 2 Intro</a>
-<a href="_static/custom.css">Stylesheet</a>
-```
-
-This means internal links work correctly regardless of subdirectory:
-
-```
-# English site at root
-/index.html links to → ./getting_started.html ✅
-
-# Persian site in /fa/
-/fa/index.html links to → ./getting_started.html → resolves to /fa/getting_started.html ✅
-```
-
-**What needs explicit configuration:**
-
-| Link Type | Format | Needs Configuration? |
-|-----------|--------|---------------------|
-| Internal page links | Relative (`./page.html`) | ❌ No |
-| Navigation (prev/next) | Relative | ❌ No |
-| Static assets | Relative (`_static/`) | ❌ No |
-| Table of contents | Relative | ❌ No |
-| Canonical URL | Absolute | ✅ Set `html_baseurl` |
-| Social meta tags | Absolute | ✅ Set `html_baseurl` |
-| Language switcher | Absolute | ✅ Must configure |
-| Sitemap | Absolute | ✅ Set `html_baseurl` |
-
-Each language build should set its `html_baseurl` appropriately:
+Each language repo includes the **same `languages` list** but sets a different `current_language`:
 
 ```yaml
-# lecture-python-programming.fa/_config.yml
-sphinx:
-  config:
-    html_baseurl: https://python-programming.quantecon.org/fa/
-```
-
-#### Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Coordinator Repository                        │
-│              (or workflow in main English repo)                  │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-            ┌─────────────────┼─────────────────┐
-            ▼                 ▼                 ▼
-    ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-    │  English Repo │ │  Persian Repo │ │  Chinese Repo │
-    │   (source)    │ │     (.fa)     │ │   (.zh-cn)    │
-    └───────┬───────┘ └───────┬───────┘ └───────┬───────┘
-            │                 │                 │
-            ▼                 ▼                 ▼
-    ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-    │  Build HTML   │ │  Build HTML   │ │  Build HTML   │
-    │  (artifact)   │ │  (artifact)   │ │  (artifact)   │
-    └───────┬───────┘ └───────┬───────┘ └───────┬───────┘
-            │                 │                 │
-            └─────────────────┼─────────────────┘
-                              ▼
-                    ┌─────────────────┐
-                    │ Assemble into   │
-                    │ single gh-pages │
-                    │                 │
-                    │ /index.html     │
-                    │ /fa/index.html  │
-                    │ /zh-cn/index.html│
-                    └─────────────────┘
-```
-
-#### GitHub Actions Workflow (Conceptual)
-
-```yaml
-# .github/workflows/deploy-multilingual.yml
-name: Deploy Multilingual Site
-
-on:
-  workflow_dispatch:
-  repository_dispatch:
-    types: [translation-updated]
-  push:
-    branches: [main]
-
-jobs:
-  build-english:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build English site
-        run: jupyter-book build lectures/
-      - uses: actions/upload-artifact@v4
-        with:
-          name: site-en
-          path: lectures/_build/html/
-
-  build-persian:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: QuantEcon/lecture-python-programming.fa
-      - name: Build Persian site
-        run: jupyter-book build lectures/
-      - uses: actions/upload-artifact@v4
-        with:
-          name: site-fa
-          path: lectures/_build/html/
-
-  build-chinese:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: QuantEcon/lecture-python-programming.zh-cn
-      - name: Build Chinese site
-        run: jupyter-book build lectures/
-      - uses: actions/upload-artifact@v4
-        with:
-          name: site-zh-cn
-          path: lectures/_build/html/
-
-  deploy:
-    needs: [build-english, build-persian, build-chinese]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-en
-          path: combined/
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-fa
-          path: combined/fa/
-      - uses: actions/download-artifact@v4
-        with:
-          name: site-zh-cn
-          path: combined/zh-cn/
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./combined
-```
-
-#### Triggering Cross-Repo Builds
-
-Each translation repo notifies the coordinator when updated:
-
-```yaml
-# In lecture-python-programming.fa/.github/workflows/notify.yml
-name: Notify Coordinator
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  notify:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger multilingual deploy
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.CROSS_REPO_TOKEN }}
-          repository: QuantEcon/lecture-python-programming.myst
-          event-type: translation-updated
-          client-payload: '{"language": "fa"}'
-```
-
-#### Pros & Cons
-
-| Pros | Cons |
-|------|------|
-| Pure GitHub Pages hosting | Complex CI/CD orchestration |
-| True `/fa/` URL structure | Build coordination overhead |
-| Single deployment target | All languages rebuild together |
-| No external services needed | Need cross-repo tokens/permissions |
-
----
-
-### Implementation 2: Subdomain with Independent Hosting
-
-Each language repo deploys to its own subdomain independently.
-
-#### DNS Configuration
-
-```
-# DNS Records (Cloudflare, Route53, etc.)
-python-programming.quantecon.org      CNAME  quantecon.github.io
-fa.python-programming.quantecon.org   CNAME  quantecon.github.io
-zh.python-programming.quantecon.org   CNAME  quantecon.github.io
-```
-
-#### GitHub Pages Configuration
-
-Each repo's `CNAME` file:
-
-```
-# lecture-python-programming.myst/CNAME
-python-programming.quantecon.org
-
-# lecture-python-programming.fa/CNAME
-fa.python-programming.quantecon.org
-
-# lecture-python-programming.zh-cn/CNAME
-zh.python-programming.quantecon.org
-```
-
-#### Jupyter Book Configuration
-
-```yaml
-# lecture-python-programming.fa/lectures/_config.yml
-sphinx:
-  config:
-    language: fa
-    html_baseurl: https://fa.python-programming.quantecon.org/
-```
-
-#### Pros & Cons
-
-| Pros | Cons |
-|------|------|
-| Simple, independent deployments | Subdomain URLs less elegant |
-| No coordination needed | Multiple DNS entries |
-| Each repo fully autonomous | Domain authority fragmented |
-| Easy to add new languages | Wildcard SSL or per-subdomain certs |
-
----
-
-### Implementation 3: Cloudflare Reverse Proxy (Hybrid)
-
-Use Cloudflare Workers or Page Rules to route subdirectory paths to different gh-pages origins.
-
-#### Architecture
-
-```
-                         ┌─────────────────┐
-    User Request ───────▶│   Cloudflare    │
-    /fa/intro.html       │   (DNS + CDN)   │
-                         └────────┬────────┘
-                                  │
-                    ┌─────────────┴─────────────┐
-                    │     Cloudflare Worker     │
-                    │   (Path-based routing)    │
-                    └─────────────┬─────────────┘
-                                  │
-        ┌─────────────────────────┼─────────────────────────┐
-        ▼                         ▼                         ▼
-   /fa/* → fa.xxx.org       /* → xxx.org         /zh-cn/* → zh.xxx.org
-   (Persian gh-pages)       (English gh-pages)   (Chinese gh-pages)
-```
-
-#### Cloudflare Worker Code
-
-```javascript
-// Cloudflare Worker for path-based routing
-const ROUTES = {
-  '/fa/': 'https://fa.python-programming.quantecon.org',
-  '/zh-cn/': 'https://zh.python-programming.quantecon.org',
-  '/': 'https://python-programming.quantecon.org'
-};
-
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
-
-async function handleRequest(request) {
-  const url = new URL(request.url);
-  const path = url.pathname;
-
-  // Find matching route
-  for (const [prefix, origin] of Object.entries(ROUTES)) {
-    if (prefix !== '/' && path.startsWith(prefix)) {
-      // Rewrite to origin, preserving rest of path
-      const newPath = path.slice(prefix.length - 1); // Keep leading /
-      const newUrl = origin + newPath + url.search;
-      return fetch(newUrl, {
-        headers: request.headers,
-        method: request.method
-      });
-    }
-  }
-
-  // Default to English
-  return fetch(ROUTES['/'] + path + url.search);
-}
-```
-
-#### Pros & Cons
-
-| Pros | Cons |
-|------|------|
-| Clean `/fa/` URLs | Requires Cloudflare (free tier works) |
-| Independent repo deployments | Additional infrastructure layer |
-| Easy to add languages | Slightly more complex debugging |
-| CDN benefits included | Cloudflare dependency |
-
----
-
-## Theme Modifications for Language Support
-
-### 1. Language Switcher Component
-
-Add a dropdown to the theme navbar allowing users to switch languages.
-
-#### Configuration (per-site `_config.yml`)
-
-```yaml
-html:
-  extra_navbar: ""
+# lecture-python-programming/_config.yml (English — source)
 sphinx:
   config:
     html_theme_options:
       languages:
-        - name: English
-          code: en
-          url: https://python-programming.quantecon.org/
-        - name: فارسی
-          code: fa
-          url: https://python-programming.quantecon.org/fa/
+        - code: en
+          name: English
+          url: https://python-programming.quantecon.org
+        - code: fa
+          name: فارسی
+          url: https://quantecon.github.io/lecture-python-programming.fa
           rtl: true
-        - name: 中文
-          code: zh-cn
-          url: https://python-programming.quantecon.org/zh-cn/
-      current_language: en  # or fa, zh-cn
+        - code: zh-cn
+          name: 中文
+          url: https://quantecon.github.io/lecture-python-programming.zh-cn
+      current_language: en
 ```
-
-#### Template Addition (`layout.html`)
-
-```jinja
-{# Language Switcher Component #}
-{% if theme_languages %}
-<div class="language-switcher dropdown">
-  <button class="btn btn-sm dropdown-toggle" type="button"
-          id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-    🌐 {{ theme_current_language_name }}
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-    {% for lang in theme_languages %}
-    <li>
-      <a class="dropdown-item {% if lang.code == theme_current_language %}active{% endif %}"
-         href="{{ lang.url }}{{ pagename }}.html"
-         hreflang="{{ lang.code }}"
-         {% if lang.rtl %}dir="rtl"{% endif %}>
-        {{ lang.name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-{% endif %}
-```
-
-### 2. RTL Support (Already Implemented)
-
-The theme already supports RTL via `enable_rtl` option. Persian sites should configure:
 
 ```yaml
-# lecture-python-programming.fa/_config.yml
+# lecture-python-programming.fa/_config.yml (Persian)
 sphinx:
   config:
     language: fa
     html_theme_options:
       enable_rtl: true
+      languages:
+        - code: en
+          name: English
+          url: https://python-programming.quantecon.org
+        - code: fa
+          name: فارسی
+          url: https://quantecon.github.io/lecture-python-programming.fa
+          rtl: true
+        - code: zh-cn
+          name: 中文
+          url: https://quantecon.github.io/lecture-python-programming.zh-cn
+      current_language: fa
 ```
 
-### 3. SEO: hreflang Tags
+```yaml
+# lecture-python-programming.zh-cn/_config.yml (Chinese)
+sphinx:
+  config:
+    language: zh-cn
+    html_theme_options:
+      languages:
+        - code: en
+          name: English
+          url: https://python-programming.quantecon.org
+        - code: fa
+          name: فارسی
+          url: https://quantecon.github.io/lecture-python-programming.fa
+          rtl: true
+        - code: zh-cn
+          name: 中文
+          url: https://quantecon.github.io/lecture-python-programming.zh-cn
+      current_language: zh-cn
+```
 
-Add alternate language links to `<head>` for SEO:
+### URL Construction
+
+When a user clicks a language link, the switcher navigates to:
+
+```
+{lang.url}/{pagename}.html
+```
+
+For example, on the `intro` page of the English site, clicking "فارسی" navigates to:
+
+```
+https://quantecon.github.io/lecture-python-programming.fa/intro.html
+```
+
+This works because all translation repos mirror the source repo's page structure (via `action-translation`).
+
+### Graceful Behavior
+
+- **No `languages` configured** → no switcher rendered (backwards compatible)
+- **Single language configured** → no switcher rendered (nothing to switch to)
+- **Page doesn't exist in target language** → user sees a 404 on the target site (acceptable for Phase 1; translation repos should mirror source structure)
+
+---
+
+## Feature 2: Language Switcher UI Component
+
+### Placement
+
+A globe icon button at the **far right** of the bottom toolbar (`qe-toolbar__links`), after the GitHub source link:
+
+```
+[TOC] [Home] [Logo]     ...     [Search] [Fullscreen] [A+] [A-] [◐] [⬇] [▶] [PDF] [GitHub] [🌐]
+```
+
+This prominent position signals that language switching is a site-level action, and pairs naturally with the GitHub icon as a "meta/external" control.
+
+### Behavior
+
+- **Click** opens a dropdown/popover listing available languages
+- **Current language** is visually marked (e.g., bold, checkmark, or highlighted)
+- **RTL languages** display their name in the correct direction (the `dir` attribute on the link handles this)
+- **Dropdown position** is RTL-aware (flips side when `enable_rtl` is active)
+
+### Template (`layout.html`)
 
 ```jinja
-{# In layout.html <head> section #}
-{% if theme_languages %}
-{% for lang in theme_languages %}
-<link rel="alternate" hreflang="{{ lang.code }}"
-      href="{{ lang.url }}{{ pagename }}.html" />
-{% endfor %}
-<link rel="alternate" hreflang="x-default"
-      href="{{ theme_languages[0].url }}{{ pagename }}.html" />
+{# Language Switcher — only rendered when multiple languages are configured #}
+{% if theme_languages and theme_languages | length > 1 %}
+<li class="btn__language">
+  <div class="language-switcher">
+    <button class="language-switcher__toggle" aria-label="Switch language"
+            aria-expanded="false" aria-haspopup="true">
+      <svg><!-- globe icon --></svg>
+    </button>
+    <ul class="language-switcher__menu" role="menu">
+      {% for lang in theme_languages %}
+      <li role="menuitem">
+        <a href="{{ lang.url }}/{{ pagename }}.html"
+           hreflang="{{ lang.code }}"
+           {% if lang.code == theme_current_language %}aria-current="true"{% endif %}
+           {% if lang.rtl %}dir="rtl"{% endif %}>
+          {{ lang.name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</li>
 {% endif %}
 ```
 
-### 4. Localized Theme Strings
+### Styling
 
-The parent theme (pydata-sphinx-theme) already supports localized UI strings. Ensure the language is set correctly:
+New SCSS partial: `_language-switcher.scss`
+
+Key design requirements:
+- Matches existing toolbar button style (consistent with search, font size, etc.)
+- Dropdown appears above the toolbar (since toolbar is at the bottom)
+- RTL-aware positioning (flip when `body[dir="rtl"]`)
+- Language names use appropriate font/direction for each script
+- Current language is visually distinguished
+- Accessible: keyboard navigable, proper ARIA roles
+
+---
+
+## Feature 3: SEO — hreflang Tags
+
+### Purpose
+
+Tell search engines that each page has equivalent content in other languages. This prevents duplicate content penalties and helps serve the right language in search results.
+
+### Template (`layout.html` — inside `<head>`)
+
+```jinja
+{% if theme_languages and theme_languages | length > 1 %}
+{% for lang in theme_languages %}
+<link rel="alternate" hreflang="{{ lang.code }}"
+      href="{{ lang.url }}/{{ pagename }}.html" />
+{% endfor %}
+<link rel="alternate" hreflang="x-default"
+      href="{{ theme_languages[0].url }}/{{ pagename }}.html" />
+{% endif %}
+```
+
+The `x-default` tag points to the first language in the list (English, by convention) as the fallback for unmatched locales.
+
+---
+
+## Feature 4: RTL Integration (Already Implemented)
+
+The theme already supports RTL layout via `enable_rtl: true`. Persian and Arabic sites use:
+
+```yaml
+html_theme_options:
+  enable_rtl: true
+```
+
+The language switcher adds one additional RTL concern: its dropdown styling must respect `body[dir="rtl"]`. This is handled in `_rtl.scss` alongside existing RTL adjustments.
+
+### Localized UI Strings
+
+Sphinx and the parent theme (pydata-sphinx-theme) handle UI string localization (e.g., "Next", "Previous", "Search") when `language` is set in the Sphinx config. The quantecon-book-theme does **not** need its own translation catalogs.
 
 ```yaml
 sphinx:
   config:
-    language: fa  # Triggers Persian translations for "Next", "Previous", etc.
+    language: fa  # Sphinx handles translating built-in UI strings
 ```
 
 ---
 
-## Recommended Approach
+## Implementation Plan
 
-### For Immediate Implementation (Phase 1)
+### Theme Changes Required
 
-**Use Implementation 2: Subdomain Pattern**
+| Step | Description | Files Modified |
+|------|-------------|---------------|
+| 1 | Register `languages` and `current_language` theme options | `theme.conf`, `__init__.py` |
+| 2 | Process language list in `add_to_context()` | `__init__.py` |
+| 3 | Add language switcher template markup | `layout.html` |
+| 4 | Add `hreflang` tags to `<head>` | `layout.html` |
+| 5 | Create language switcher styles | `_language-switcher.scss`, `index.scss` |
+| 6 | Add RTL-aware switcher styles | `_rtl.scss` |
+| 7 | Add switcher toggle JavaScript | `assets/scripts/` |
+| 8 | Compile assets | `npm run build` |
+| 9 | Write documentation | `docs/developer/multilingual.md` |
+| 10 | Add tests | `tests/` |
 
-1. ✅ Simplest to set up
-2. ✅ Each repo remains fully independent
-3. ✅ No CI/CD coordination needed
-4. ✅ Works with existing gh-pages setup
-5. ✅ Language switcher links to subdomains
+### Per-Site Configuration (Not Theme Work)
 
-### For Future Enhancement (Phase 2)
+Each lecture repo needs these changes in `_config.yml` (done by site maintainers, not the theme):
 
-**Migrate to Implementation 1 or 3**
-
-If unified `/fa/` URLs become important:
-- **Option 1 (Combined Deployment)** if you want to stay pure GitHub
-- **Option 3 (Cloudflare)** if you want independent deploys + clean URLs
-
----
-
-## Implementation Checklist
-
-### Phase 1: Subdomain Setup
-
-- [ ] Configure DNS for `fa.python-programming.quantecon.org`
-- [ ] Add `CNAME` file to Persian repo
-- [ ] Configure `html_baseurl` in Persian repo's `_config.yml`
-- [ ] Enable RTL in Persian repo's theme options
-- [ ] Add language switcher to theme
-- [ ] Test cross-language navigation
-
-### Phase 2: Theme Enhancements
-
-- [ ] Implement language switcher dropdown component
-- [ ] Add `languages` theme option
-- [ ] Add hreflang meta tags
-- [ ] Style language switcher (including RTL-aware positioning)
-- [ ] Add documentation for multilingual configuration
-
-### Phase 3: Additional Languages
-
-- [ ] Create `lecture-python-programming.zh-cn` repo
-- [ ] Set up Chinese translation workflow
-- [ ] Configure DNS and deployment
-- [ ] Update language switcher configuration
+```yaml
+sphinx:
+  config:
+    language: fa                    # Sphinx built-in — localizes UI strings
+    html_theme_options:
+      enable_rtl: true              # For RTL languages (fa, ar, he, ur)
+      languages: [...]              # Language list with URLs
+      current_language: fa          # This build's language code
+```
 
 ---
 
-## Open Questions
+## Design Decisions
 
-1. **Page equivalence:** When switching languages, should the switcher:
-   - (a) Link to the same page path in other language (may 404 if not translated)
-   - (b) Always link to homepage of other language
-   - (c) Link to same page with fallback to homepage
+### Decided
 
-2. **Partial translations:** How to handle pages that aren't translated yet?
-   - Show English version with notice?
-   - 404 with link to English?
-   - Hide language option for untranslated pages?
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| Page linking | Link to same `pagename` in target language | Translation repos mirror source structure via `action-translation` |
+| No translation available | User sees 404 on target site | Acceptable for Phase 1; repos should mirror structure |
+| Search | Per-language (each site has own search index) | Cross-language search is unnecessary complexity |
+| English URL | Remains at root `/` (no `/en/` prefix) | Breaking existing links is not worth it |
+| UI string localization | Handled by Sphinx via `language` config | No need for theme-level translation catalogs |
+| Hosting topology | Theme is agnostic — uses explicit URLs | Decouples theme from infrastructure decisions |
 
-3. **Search:** Should search be per-language or cross-language?
+### Open for Discussion
 
-4. **URL canonicalization:** Should English site be at root `/` or `/en/`?
+1. **Switcher placement** — Bottom toolbar (proposed) vs. top header area? The toolbar is consistent with other controls but may be less discoverable.
+
+2. **Language label format** — Show native name only ("فارسی") or native + English ("فارسی / Persian")? Native-only is cleaner; dual labels help users who might not recognize a script.
+
+3. **Visual design** — Globe icon dropdown (proposed) or inline flag/text links? Globe icon is compact and internationally recognized; flags are controversial (languages ≠ countries).
 
 ---
 
 ## References
 
-- [Sphinx Internationalization](https://www.sphinx-doc.org/en/master/usage/advanced/intl.html)
-- [Jupyter Book i18n Discussion](https://github.com/executablebooks/jupyter-book/issues/1234)
-- [pydata-sphinx-theme Localization](https://pydata-sphinx-theme.readthedocs.io/en/stable/user_guide/i18n.html)
 - [Google hreflang Guidelines](https://developers.google.com/search/docs/specialty/international/localized-versions)
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
+- [pydata-sphinx-theme Localization](https://pydata-sphinx-theme.readthedocs.io/en/stable/user_guide/i18n.html)
+- [Sphinx Internationalization](https://www.sphinx-doc.org/en/master/usage/advanced/intl.html)
+- [W3C Language Tags](https://www.w3.org/International/articles/language-tags/)
+- Hosting and infrastructure options → see `PLAN-INFRASTRUCTURE.md`
