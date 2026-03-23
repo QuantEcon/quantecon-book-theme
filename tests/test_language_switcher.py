@@ -1,6 +1,5 @@
 """Tests for the language switcher feature."""
 
-import pytest
 from quantecon_book_theme import _process_languages
 
 
