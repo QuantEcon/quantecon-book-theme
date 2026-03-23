@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Language switcher for multilingual site support** (#374) — a globe icon dropdown in the bottom toolbar that enables users to switch between translated versions of a lecture site. Only renders when 2+ languages are configured via `html_theme_options`. Includes keyboard navigation, click-outside-to-close, and dark mode support.
+- **SEO hreflang tags** (#374) — automatically injects `<link rel="alternate" hreflang="...">` meta tags in `<head>` for all configured languages, improving search engine discovery of translated content.
+- **Multilingual infrastructure documentation** (#374) — new developer guide at `docs/developer/infrastructure.md` covering three hosting options (GitHub Pages, subdomains, reverse proxy) for deploying translated lecture sites.
+
+### Changed
+- **Renamed `lecture-python-programming.myst` to `lecture-python-programming`** (#374) — updated all CI workflows, tox config, Playwright config, and documentation to reflect the renamed test repository.
+
 ## [0.19.0] - 2026-03-08
 
 ### Changed
