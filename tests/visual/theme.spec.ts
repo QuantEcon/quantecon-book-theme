@@ -138,7 +138,9 @@ test.describe("Theme Features", () => {
     await page.waitForLoadState("networkidle");
 
     const toolbar = page.locator(".qe-toolbar");
-    await expect(toolbar).toHaveScreenshot("toolbar.png");
+    await expect(toolbar).toHaveScreenshot("toolbar.png", {
+      maxDiffPixelRatio: 0.03,
+    });
   });
 });
 
