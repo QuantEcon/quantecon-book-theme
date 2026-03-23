@@ -242,12 +242,4 @@ RTL (Right-to-Left) Script Support
     margin-right: 6px; // Move anchor links to the right
   }
 
-  // Language switcher adjustments
-  .language-switcher {
-    &__menu {
-      a[dir="rtl"] {
-        text-align: right;
-      }
-    }
-  }
 }

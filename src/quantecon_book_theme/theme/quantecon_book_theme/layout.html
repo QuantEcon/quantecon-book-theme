@@ -409,8 +409,7 @@ body.dark-theme .toctree-wrapper .caption-text {
                                 <li role="none">
                                     <a role="menuitem" href="{{ lang.url }}/{{ pagename }}.html"
                                        hreflang="{{ lang.code }}"
-                                       {% if lang.code == theme_current_language %}aria-current="true" class="active"{% endif %}
-                                       {% if lang.rtl is defined and lang.rtl %}dir="rtl"{% endif %}>
+                                       {% if lang.code == theme_current_language %}aria-current="true" class="active"{% endif %}>
                                         {{ lang.name }}
                                     </a>
                                 </li>
