@@ -118,7 +118,7 @@ src/quantecon_book_theme/
     2. Run: `gh pr edit 123 --body-file /tmp/pr_body.md`
   - Example workflow for creating a release:
     1. Use `create_file` to write release notes to `/tmp/release_notes.md`
-    2. Run: `gh release create vX.Y.Z --title "Title" --notes-file /tmp/release_notes.md`
+    2. Run: `gh release create vX.Y.Z --title "vX.Y.Z" --notes-file /tmp/release_notes.md`
 - **Output Capture**: Always write gh output to `/tmp` file for reliable capture: `gh pr view 123 2>&1 | tee /tmp/gh_output.txt`
 
 ### Missing Python 3.13
@@ -268,13 +268,14 @@ git push && git push origin vX.Y.Z
 ### 5. Create GitHub Release
 ```bash
 # Write release notes to a temp file first (use create_file tool)
+# Release notes should start with a descriptive heading: # Descriptive Release Title
 # Then create the release using --notes-file
 gh release create vX.Y.Z \
-  --title "vX.Y.Z - Release Title" \
+  --title "vX.Y.Z" \
   --notes-file /tmp/release_notes.md
 ```
 
-**IMPORTANT**: Always use `--notes-file` with a temp file instead of `--notes` to avoid zsh shell escaping issues. Creating the GitHub release triggers the PyPI publish workflow automatically.
+**IMPORTANT**: The GitHub release title should be the version only (e.g. `v0.20.0`). Put the descriptive title as an `# H1` heading at the top of the release notes file instead.
 
 ### 6. Verify PyPI Publication
 - Check GitHub Actions for successful PyPI publish workflow
