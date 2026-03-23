@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-03-23
+
 ### Added
 - **Language switcher for multilingual site support** (#374) — a globe icon dropdown in the bottom toolbar that enables users to switch between translated versions of a lecture site. Only renders when 2+ languages are configured via `html_theme_options`. Includes keyboard navigation, click-outside-to-close, and dark mode support.
 - **SEO hreflang tags** (#374) — automatically injects `<link rel="alternate" hreflang="...">` meta tags in `<head>` for all configured languages, improving search engine discovery of translated content.
@@ -286,7 +288,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.19.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.1...v0.18.0
 [0.17.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.0...v0.17.1
