@@ -1,7 +1,7 @@
-# Multilingual Support Plan
+# Multilingual Support
 
-Architecture plan for supporting multiple language versions of QuantEcon lecture
-sites.
+The theme supports a language switcher for sites that have translated versions
+hosted in separate repositories.
 
 ```{contents}
 :local:
@@ -10,145 +10,174 @@ sites.
 
 ## Overview
 
-**Status:** Planning
-**Date:** December 2024
+The language switcher is a **hosting-agnostic** dropdown in the bottom toolbar
+that links to equivalent pages on other language versions of a site. It works
+with any URL structure — GitHub Pages, custom subdomains, reverse proxies, or
+any combination.
 
-### Goals
+Each site configures explicit URLs for its language variants. When hosting
+changes, only the `url` values in each site's `_config.yml` need updating — no
+theme code changes required.
 
-1. Unified branding across all language versions
-2. Easy translation management with separate repos per language
-3. Simple sync workflow using `action-translation` for PR-based synchronization
-4. Language switching — users can switch between available translations
-5. SEO-friendly canonical URLs and hreflang tags
+## Configuration
 
-### Current State
+Add two options to `html_theme_options`:
 
-- **English:** `github.com/QuantEcon/lecture-python-programming.myst`
-- **Persian:** `github.com/QuantEcon/lecture-python-programming.fa`
-- **Chinese:** Coming soon
+- **`languages`** — list of available language variants
+- **`current_language`** — the language code for this build
 
-## Architecture: Separate Repos per Language
+### Required Fields per Language Entry
 
-| Aspect | Separate Repos | Single Repo with Branches |
-|--------|---------------|---------------------------|
-| Source organization | Clean, isolated per language | Complex branching |
-| Translation workflow | Independent PRs | Branch management overhead |
-| CI/CD | Own pipeline per repo | Complex conditional builds |
-| Contributor access | Per-language team access | All-or-nothing |
-| Build isolation | One failure doesn't block others | Shared failure risk |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `code` | string | yes | Language code (e.g., `en`, `fa`, `zh-cn`) |
+| `name` | string | yes | Display name in native script (e.g., `فارسی`) |
+| `url` | string | yes | Base URL of the language version (no trailing slash) |
+| `rtl` | boolean | no | Set `true` for right-to-left languages |
 
-### Naming Convention
-
-```
-lecture-python-programming.myst     # English (source)
-lecture-python-programming.fa       # Persian (Farsi)
-lecture-python-programming.zh-cn    # Simplified Chinese
-lecture-python-programming.ja       # Japanese (if needed)
-```
-
-## URL Structure
-
-### Recommended: Subdomain → Cloudflare Proxy upgrade path
-
-**Phase 1** (simple): Subdomain pattern
-
-```
-fa.python-programming.quantecon.org   # Persian
-zh.python-programming.quantecon.org   # Chinese
-python-programming.quantecon.org      # English
-```
-
-**Phase 2** (optional): Add Cloudflare proxy for clean subdirectory URLs
-
-```
-python-programming.quantecon.org/fa/     # Persian
-python-programming.quantecon.org/zh-cn/  # Chinese
-python-programming.quantecon.org/        # English
-```
-
-## Theme Modifications
-
-### Language Switcher Component
-
-Configuration per-site `_config.yml`:
+### Example: English Site (Source)
 
 ```yaml
+# lecture-python-programming/_config.yml
 sphinx:
   config:
     html_theme_options:
       languages:
-        - name: English
-          code: en
-          url: https://python-programming.quantecon.org/
-        - name: فارسی
-          code: fa
-          url: https://python-programming.quantecon.org/fa/
+        - code: en
+          name: English
+          url: https://python-programming.quantecon.org
+        - code: fa
+          name: فارسی
+          url: https://quantecon.github.io/lecture-python-programming.fa
           rtl: true
-        - name: 中文
-          code: zh-cn
-          url: https://python-programming.quantecon.org/zh-cn/
+        - code: zh-cn
+          name: 中文
+          url: https://quantecon.github.io/lecture-python-programming.zh-cn
       current_language: en
 ```
 
-### SEO: hreflang Tags
-
-Alternate language links in `<head>`:
-
-```html
-<link rel="alternate" hreflang="fa" href=".../fa/page.html" />
-<link rel="alternate" hreflang="zh-cn" href=".../zh-cn/page.html" />
-<link rel="alternate" hreflang="x-default" href=".../page.html" />
-```
-
-### RTL Support
-
-Persian sites should configure:
+### Example: Persian Site (RTL Translation)
 
 ```yaml
+# lecture-python-programming.fa/_config.yml
 sphinx:
   config:
     language: fa
     html_theme_options:
       enable_rtl: true
+      languages:
+        - code: en
+          name: English
+          url: https://python-programming.quantecon.org
+        - code: fa
+          name: فارسی
+          url: https://quantecon.github.io/lecture-python-programming.fa
+          rtl: true
+        - code: zh-cn
+          name: 中文
+          url: https://quantecon.github.io/lecture-python-programming.zh-cn
+      current_language: fa
 ```
 
-## Implementation Checklist
+### Example: Chinese Site (LTR Translation)
 
-### Phase 1: Subdomain Setup
+```yaml
+# lecture-python-programming.zh-cn/_config.yml
+sphinx:
+  config:
+    language: zh-cn
+    html_theme_options:
+      languages:
+        - code: en
+          name: English
+          url: https://python-programming.quantecon.org
+        - code: fa
+          name: فارسی
+          url: https://quantecon.github.io/lecture-python-programming.fa
+          rtl: true
+        - code: zh-cn
+          name: 中文
+          url: https://quantecon.github.io/lecture-python-programming.zh-cn
+      current_language: zh-cn
+```
 
-- [ ] Configure DNS for `fa.python-programming.quantecon.org`
-- [ ] Add `CNAME` file to Persian repo
-- [ ] Configure `html_baseurl` in Persian repo
-- [ ] Enable RTL in Persian repo
-- [ ] Add language switcher to theme
-- [ ] Test cross-language navigation
+## Behavior
 
-### Phase 2: Theme Enhancements
+### Language Switcher
 
-- [ ] Implement language switcher dropdown component
-- [ ] Add `languages` theme option
-- [ ] Add hreflang meta tags
-- [ ] Style language switcher (RTL-aware)
-- [ ] Add documentation for multilingual configuration
+- Appears as a **globe icon** at the far right of the bottom toolbar, after the GitHub icon
+- Only renders when **2 or more languages** are configured
+- Clicking opens a dropdown listing all available languages
+- The current language is **bold** in the dropdown
+- RTL language names display with correct text direction
+- Clicking a language navigates to `{lang.url}/{pagename}.html`
+- Closes when clicking outside or pressing Escape
 
-### Phase 3: Additional Languages
+### hreflang Tags (SEO)
 
-- [ ] Create `lecture-python-programming.zh-cn` repo
-- [ ] Set up Chinese translation workflow
-- [ ] Configure DNS and deployment
-- [ ] Update language switcher configuration
+When multiple languages are configured, the theme automatically injects
+`<link rel="alternate" hreflang="...">` tags in the `<head>` for each language,
+plus an `x-default` tag pointing to the first language in the list. This tells
+search engines about equivalent content in other languages.
 
-## Open Questions
+### No Languages Configured
 
-1. **Page equivalence:** When switching languages, should the switcher link to the
-   same page path (may 404), always link to the homepage, or fallback to homepage?
-2. **Partial translations:** Show English version with notice? 404 with link? Hide option?
-3. **Search:** Per-language or cross-language?
-4. **URL canonicalization:** English at root `/` or `/en/`?
+When `languages` is empty, has only one entry, or is not set, the switcher is
+not rendered and no hreflang tags are emitted. This is fully backwards
+compatible.
 
-## References
+## RTL Integration
 
-- [Sphinx Internationalization](https://www.sphinx-doc.org/en/master/usage/advanced/intl.html)
-- [pydata-sphinx-theme Localization](https://pydata-sphinx-theme.readthedocs.io/en/stable/user_guide/i18n.html)
-- [Google hreflang Guidelines](https://developers.google.com/search/docs/specialty/international/localized-versions)
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
+For right-to-left languages (Persian, Arabic, Hebrew, etc.), configure both:
+
+```yaml
+html_theme_options:
+  enable_rtl: true    # Activates RTL layout for the entire site
+  current_language: fa
+  languages:
+    - code: fa
+      name: فارسی
+      url: https://...
+      rtl: true       # Marks this language as RTL in the switcher dropdown
+```
+
+The `enable_rtl` option controls the page layout direction. The `rtl: true`
+field on a language entry only affects how that language's name is displayed
+in the dropdown (via `dir="rtl"` on the link).
+
+## Localized UI Strings
+
+Sphinx and the parent theme (pydata-sphinx-theme) handle translating built-in
+UI strings like "Next", "Previous", and "Search" when `language` is set in the
+Sphinx configuration:
+
+```yaml
+sphinx:
+  config:
+    language: fa  # Triggers Sphinx's built-in translations
+```
+
+The quantecon-book-theme does not need its own translation catalogs.
+
+## Infrastructure
+
+The language switcher renders plain `<a href="...">` links to whatever URLs you
+configure. It does not fetch, proxy, or iframe content.
+
+For guidance on hosting translated sites (GitHub Pages, subdomains, reverse
+proxies), see the [Infrastructure](infrastructure.md) documentation.
+
+## Architecture
+
+### Files Modified
+
+| File | Purpose |
+|------|---------|
+| `theme.conf` | `languages` and `current_language` option defaults |
+| `__init__.py` | Process language list in `add_to_context()` |
+| `layout.html` | Language switcher markup + hreflang tags |
+| `_language-switcher.scss` | Switcher dropdown styles |
+| `_rtl.scss` | RTL-aware adjustments for the switcher |
+| `language-switcher.js` | Toggle open/close, keyboard nav, click-outside |
+| `index.js` | Import and initialize the switcher module |
+| `index.scss` | Import the new SCSS partial |

@@ -10,10 +10,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Fetch lecture-python-programming.myst
+      - name: Fetch lecture-python-programming
         shell: bash -l {0}
         run: |
-          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming.myst
+          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v3
         with:
@@ -21,7 +21,7 @@ jobs:
           auto-activate-base: true
           miniconda-version: 'latest'
           python-version: "3.13"
-          environment-file: lecture-python-programming.myst/environment.yml
+          environment-file: lecture-python-programming/environment.yml
           activate-environment: lecture-python-programming
       - name: Install quantecon-book-theme
         shell: bash -l {0}
@@ -36,7 +36,7 @@ jobs:
       - name: Build HTML
         shell: bash -l {0}
         run: |
-          cd lecture-python-programming.myst
+          cd lecture-python-programming
           jb build lectures --path-output ./
 
       # Visual Regression Testing
@@ -54,7 +54,7 @@ jobs:
         run: npm run test:visual
         continue-on-error: true
         env:
-          SITE_PATH: lecture-python-programming.myst/_build/html
+          SITE_PATH: lecture-python-programming/_build/html
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v7
         if: always()
@@ -83,7 +83,7 @@ jobs:
       - name: Preview Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
         with:
-          publish-dir: 'lecture-python-programming.myst/_build/html/'
+          publish-dir: 'lecture-python-programming/_build/html/'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Preview Deploy from GitHub Actions"

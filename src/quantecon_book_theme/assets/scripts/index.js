@@ -18,6 +18,7 @@ import { initPopups, initLauncherSettings } from "./popups.js";
 import { initPageHeader, initChangelog } from "./page-header.js";
 import { initStderrWarnings } from "./stderr-warnings.js";
 import { initScrollSpy } from "./scrollspy.js";
+import { initLanguageSwitcher } from "./language-switcher.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   // Load feather icon set
@@ -50,4 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize sticky TOC scroll tracking
   initScrollSpy();
+
+  // Initialize language switcher
+  initLanguageSwitcher();
 });
