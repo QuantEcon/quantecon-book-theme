@@ -43,8 +43,8 @@ If you prefer to run tests manually:
 
 1. Build the lecture site first:
    ```bash
-   git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming.myst
-   cd lecture-python-programming.myst
+   git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
+   cd lecture-python-programming
    pip install -r requirements.txt
    jb build lectures --path-output ./
    cd ..

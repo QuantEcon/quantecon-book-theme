@@ -189,7 +189,7 @@ test.describe("Typography Styling", () => {
   });
 
   // Note: Definition list (<dl>) visual tests are not included because the
-  // lecture-python-programming.myst site does not currently contain definition
+  // lecture-python-programming site does not currently contain definition
   // lists, glossaries, or field-lists. When a page with <dl> content is added,
   // a corresponding visual test should be created here.
 });

@@ -145,7 +145,7 @@ playwright-report/
 test-results/
 
 # Visual test lecture site (cloned by tox -e visual)
-lecture-python-programming.myst/
+lecture-python-programming/
 
 # macOS visual test snapshots (tox uses macos/ dir, CI uses __snapshots__/)
 tests/visual/macos/

@@ -18,7 +18,7 @@ $ tox -e visual
 ```
 
 This will:
-1. Clone `lecture-python-programming.myst` (if not present)
+1. Clone `lecture-python-programming` (if not present)
 2. Build the lecture site with Jupyter Book
 3. Install Playwright and Chromium
 4. Run visual regression tests

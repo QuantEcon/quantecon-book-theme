@@ -33,10 +33,10 @@ jobs:
           ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Fetch lecture-python-programming.myst
+      - name: Fetch lecture-python-programming
         shell: bash -l {0}
         run: |
-          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming.myst
+          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
 
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v3
@@ -45,7 +45,7 @@ jobs:
           auto-activate-base: true
           miniconda-version: 'latest'
           python-version: "3.13"
-          environment-file: lecture-python-programming.myst/environment.yml
+          environment-file: lecture-python-programming/environment.yml
           activate-environment: lecture-python-programming
 
       - name: Install quantecon-book-theme
@@ -56,7 +56,7 @@ jobs:
       - name: Build HTML
         shell: bash -l {0}
         run: |
-          cd lecture-python-programming.myst
+          cd lecture-python-programming
           jb build lectures --path-output ./
 
       - name: Setup Node.js
@@ -74,7 +74,7 @@ jobs:
         continue-on-error: true
         run: npx playwright test --update-snapshots=missing
         env:
-          SITE_PATH: lecture-python-programming.myst/_build/html
+          SITE_PATH: lecture-python-programming/_build/html
 
       - name: Commit and Push Updated Snapshots
         run: |
@@ -140,10 +140,10 @@ jobs:
           ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Fetch lecture-python-programming.myst
+      - name: Fetch lecture-python-programming
         shell: bash -l {0}
         run: |
-          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming.myst
+          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
 
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v3
@@ -152,7 +152,7 @@ jobs:
           auto-activate-base: true
           miniconda-version: 'latest'
           python-version: "3.13"
-          environment-file: lecture-python-programming.myst/environment.yml
+          environment-file: lecture-python-programming/environment.yml
           activate-environment: lecture-python-programming
 
       - name: Install quantecon-book-theme
@@ -163,7 +163,7 @@ jobs:
       - name: Build HTML
         shell: bash -l {0}
         run: |
-          cd lecture-python-programming.myst
+          cd lecture-python-programming
           jb build lectures --path-output ./
 
       - name: Setup Node.js
@@ -181,7 +181,7 @@ jobs:
         continue-on-error: true
         run: npx playwright test --update-snapshots
         env:
-          SITE_PATH: lecture-python-programming.myst/_build/html
+          SITE_PATH: lecture-python-programming/_build/html
 
       - name: Upload Old vs New Diff
         uses: actions/upload-artifact@v7
