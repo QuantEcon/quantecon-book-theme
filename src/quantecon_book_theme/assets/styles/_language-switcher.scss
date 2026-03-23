@@ -35,39 +35,35 @@ Dropdown for switching between language versions
   &__menu {
     display: none;
     position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 12px;
+    top: 100%;
+    right: 0;
+    margin-top: 12px;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     list-style: none;
     padding: 4px 0;
-    margin-top: 0;
     min-width: 140px;
     z-index: 100;
 
-    // Arrow pointing down toward the toolbar button
+    // Arrow pointing up toward the toolbar button
     &::after {
       content: "";
       position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
+      bottom: 100%;
+      right: 12px;
       border: 6px solid transparent;
-      border-top-color: #fff;
+      border-bottom-color: #fff;
     }
 
     &::before {
       content: "";
       position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
+      bottom: 100%;
+      right: 11px;
       border: 7px solid transparent;
-      border-top-color: #ccc;
+      border-bottom-color: #ccc;
     }
 
     &.is-open {
@@ -108,11 +104,11 @@ body.dark-theme {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 
       &::after {
-        border-top-color: #2a2a3c;
+        border-bottom-color: #2a2a3c;
       }
 
       &::before {
-        border-top-color: #444;
+        border-bottom-color: #444;
       }
 
       a {
