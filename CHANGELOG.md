@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.1] - 2026-04-06
+
+### Fixed
+- **Emphasis color applied to "et al." in citation links** (#366) — added `a.reference em` CSS overrides so `<em>` tags inside sphinxcontrib-bibtex citation reference links inherit color and font-weight from the parent anchor instead of the theme's emphasis styling. Applied across light, dark, and gruvbox color schemes.
+
+### Changed
+- **Relaxed `sphinxcontrib-bibtex` upper bound** (#366) — updated docs dependency from `<=2.5.0` to `<3`, allowing compatibility with the 2.6.x series (latest 2.6.5).
+
+### CI
+- Bump `codecov/codecov-action` from 5.5.2 to 6.0.0 (#377)
+- Bump `actions/deploy-pages` from 4 to 5 (#376)
+
 ## [0.20.0] - 2026-03-23
 
 ### Added
@@ -289,6 +301,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial stable release with core theme features
 
 [Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.0...HEAD
+[0.20.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.0...v0.20.1
 [0.20.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.1...v0.18.0
