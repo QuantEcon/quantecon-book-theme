@@ -64,7 +64,7 @@ doc = [
     "sphinx-copybutton",
     "docutils>=0.20",
     "plotly",
-    "sphinxcontrib-bibtex>=2.2.0,<=2.5.0",
+    "sphinxcontrib-bibtex>=2.2.0,<3",
 ]
 test = [
     "myst_nb",
