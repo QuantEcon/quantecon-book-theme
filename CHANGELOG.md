@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.2] - 2026-04-06
+
+### Fixed
+- **Emphasis color on "et al." in textual citations** (#378) — the v0.20.1 fix only targeted `<em>` inside `<a class="reference">` links. With `bibtex_reference_style: author_year`, sphinxcontrib-bibtex places `<em>et al.</em>` as a sibling of the link, not a child. Added `span:has(> a.reference) > em` selector to handle this HTML structure across all theme variants.
+
 ## [0.20.1] - 2026-04-06
 
 ### Fixed
@@ -300,7 +305,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...HEAD
+[0.20.2]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.1...v0.20.2
 [0.20.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.0...v0.20.1
 [0.20.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.18.0...v0.19.0
