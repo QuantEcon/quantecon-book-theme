@@ -18,4 +18,5 @@ testing
 visual-testing
 release
 multilingual
+infrastructure
 ```

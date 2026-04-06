@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * Playwright configuration for visual regression testing.
  *
- * Tests are run against a locally served build of lecture-python-programming.myst
+ * Tests are run against a locally served build of lecture-python-programming
  * to verify theme styling hasn't regressed.
  */
 export default defineConfig({
@@ -64,7 +64,7 @@ export default defineConfig({
   // Web server to serve the built lecture site
   // Path varies: CI uses _build/html, tox uses lectures/_build/html
   webServer: {
-    command: `python -m http.server 8000 --directory ${process.env.SITE_PATH || "lecture-python-programming.myst/lectures/_build/html"}`,
+    command: `python -m http.server 8000 --directory ${process.env.SITE_PATH || "lecture-python-programming/lectures/_build/html"}`,
     url: "http://localhost:8000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

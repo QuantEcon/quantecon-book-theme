@@ -44,3 +44,57 @@ full color table.
 
 If you use a custom Pygments style (`qetheme_code_style: False`), the dark mode
 syntax colors are not applied and your Pygments configuration takes precedence.
+
+## Inline Code Box Styling
+
+By default, the theme removes the background box and border that
+`pydata-sphinx-theme` applies to inline code literals (e.g., `` `x` `` or
+`` `x = 42` ``). This keeps inline code visually consistent with the original
+QuantEcon look.
+
+To re-enable the box styling (background color, border, and padding) on inline
+code elements:
+
+```python
+html_theme_options = {
+    ...
+    "inline_literal_box": True,
+    ...
+}
+```
+
+For Jupyter Book projects:
+
+```yaml
+sphinx:
+  config:
+    html_theme_options:
+      inline_literal_box: true
+```
+
+When `inline_literal_box` is `False` (the default), inline code appears without
+any visual container. When set to `True`, inline code elements display with a
+subtle background and border provided by the parent theme.
+
+## Inline Code Color
+
+Inline code literals (e.g., `` `x` ``) are styled with a distinct text color
+that integrates with the theme's color scheme system:
+
+| Scheme | Light Mode | Dark Mode |
+|---|---|---|
+| **seoul256** (default) | `#af5f5f` (muted rust) | `#d78787` (soft rose) |
+| **gruvbox** | `#9d0006` (dark red) | `#fb4934` (bright red) |
+| **none** | inherits text color | inherits text color |
+
+To override the inline code color, set `--qe-literal-color` in a custom CSS
+file placed in your `_static/` directory:
+
+```css
+:root {
+  --qe-literal-color: #912583;  /* custom color for light mode */
+}
+body.dark-theme {
+  --qe-literal-color: #f3c7ee;  /* custom color for dark mode */
+}
+```

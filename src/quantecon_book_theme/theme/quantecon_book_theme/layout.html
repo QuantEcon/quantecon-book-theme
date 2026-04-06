@@ -73,6 +73,14 @@
 <meta property="og:description" content="{{ theme_description | e }}" />
 <meta property="og:site_name" content="{{ docstitle | e }}" />
 <meta name="theme-color" content="#ffffff" />
+
+{# hreflang tags for SEO — language alternate links #}
+{% if theme_languages and theme_languages | length > 1 %}
+{% for lang in theme_languages %}
+<link rel="alternate" hreflang="{{ lang.code }}" href="{{ lang.url }}/{{ pagename }}.html" />
+{% endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ theme_languages[0].url }}/{{ pagename }}.html" />
+{% endif %}
 {% endblock %}
 
 {# Silence the sidebar's, relbar's #}
@@ -82,7 +90,7 @@
 {% block sidebarsourcelink %}{% endblock %}
 
 {% block body_tag %}
-<body{% if master_doc == pagename %} class="main-index{% if use_pygments_style %} use-pygments-style{% endif %}"{% elif use_pygments_style %} class="use-pygments-style"{% endif %}{% if theme_enable_rtl %} dir="rtl"{% endif %}>
+<body{% if master_doc == pagename %} class="main-index{% if use_pygments_style %} use-pygments-style{% endif %}{% if inline_literal_box %} inline-literal-box{% endif %}"{% elif use_pygments_style or inline_literal_box %} class="{% if use_pygments_style %}use-pygments-style{% endif %}{% if inline_literal_box %}{% if use_pygments_style %} {% endif %}inline-literal-box{% endif %}"{% endif %}{% if theme_enable_rtl %} dir="rtl"{% endif %}>
 {%- endblock %}
 {%- block content %}
 
@@ -92,8 +100,13 @@
   try {
     if (localStorage.setContrast === '1') {
       document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
-  } catch(e) {}
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
 })();
 </script>
 
@@ -384,6 +397,27 @@ body.dark-theme .toctree-wrapper .caption-text {
                     <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}{{github_sourcefolder}}/{{ sourcename }}" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}" download><i data-feather="github"></i></a></li>
+                    {# Language Switcher — far right of toolbar, only when multiple languages configured #}
+                    {% if theme_languages and theme_languages | length > 1 %}
+                    <li class="btn__language" data-tippy-content="Switch language">
+                        <div class="language-switcher">
+                            <button class="language-switcher__toggle" aria-label="Switch language" aria-expanded="false" aria-haspopup="true">
+                                <i data-feather="globe"></i>
+                            </button>
+                            <ul class="language-switcher__menu">
+                                {% for lang in theme_languages %}
+                                <li role="none">
+                                    <a role="menuitem" href="{{ lang.url }}/{{ pagename }}.html"
+                                       hreflang="{{ lang.code }}"
+                                       {% if lang.code == theme_current_language %}aria-current="true" class="active"{% endif %}>
+                                        {{ lang.name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul>
 
             </div>

@@ -14,6 +14,9 @@ export function initThemeSettings() {
     if (setContrast == 1) {
       $body.addClass("dark-theme");
       $(".btn__contrast").addClass("btn-active");
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
   }
 
@@ -28,10 +31,12 @@ export function initThemeSettings() {
       $(this).removeClass("btn-active");
       localStorage.setContrast = 0;
       $body.removeClass("dark-theme");
+      document.documentElement.setAttribute('data-theme', 'light');
     } else {
       $(this).addClass("btn-active");
       localStorage.setContrast = 1;
       $body.addClass("dark-theme");
+      document.documentElement.setAttribute('data-theme', 'dark');
       if (!$darkLogo.length) {
         $lightLogo.css("display", "block");
       }

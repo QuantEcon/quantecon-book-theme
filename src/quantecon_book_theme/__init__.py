@@ -15,7 +15,7 @@ from sphinx.util.osutil import ensuredir
 
 from .launch import add_hub_urls
 
-__version__ = "0.18.0"
+__version__ = "0.20.0"
 """quantecon-book-theme version"""
 
 SPHINX_LOGGER = logging.getLogger(__name__)
@@ -221,6 +221,28 @@ def get_relative_time(past_date):
     else:
         years = int(seconds / 31536000)
         return f"{years} year{'s' if years != 1 else ''} ago"
+
+
+def _process_languages(config_theme):
+    """Validate and normalize language switcher configuration.
+
+    Returns a tuple of (languages_list, current_language_string).
+    Only returns languages when there are 2+ valid entries.
+    """
+    languages = config_theme.get("languages", [])
+    current_language = config_theme.get("current_language", "")
+    if isinstance(languages, list) and len(languages) > 1:
+        valid_languages = []
+        for lang in languages:
+            if isinstance(lang, dict) and all(
+                k in lang for k in ("code", "name", "url")
+            ):
+                normalized = dict(lang)
+                normalized["url"] = normalized["url"].rstrip("/")
+                valid_languages.append(normalized)
+        if len(valid_languages) > 1:
+            return valid_languages, current_language
+    return [], ""
 
 
 def add_to_context(app, pagename, templatename, context, doctree):
@@ -465,6 +487,11 @@ def add_to_context(app, pagename, templatename, context, doctree):
         context["theme_repository_url"] = None
         context["theme_source_file"] = None
 
+    # Process language switcher configuration
+    context["theme_languages"], context["theme_current_language"] = _process_languages(
+        config_theme
+    )
+
     # Make sure the context values are bool
     blns = [
         "theme_use_edit_page_button",
@@ -547,6 +574,11 @@ def add_pygments_style_class(app, pagename, templatename, context, doctree):
 
     # Set a context variable that can be used in templates
     context["use_pygments_style"] = not qetheme_code_style
+
+    inline_literal_box = config_theme.get("inline_literal_box", False)
+    if isinstance(inline_literal_box, str):
+        inline_literal_box = inline_literal_box.lower() == "true"
+    context["inline_literal_box"] = inline_literal_box
 
 
 def setup_pygments_css(app):
