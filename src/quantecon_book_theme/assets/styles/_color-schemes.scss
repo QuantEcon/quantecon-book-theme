@@ -25,7 +25,8 @@ body.color-scheme-gruvbox {
   }
 
   // Reset emphasis styling inside citation reference links (gruvbox)
-  a.reference em {
+  a.reference em,
+  span:has(> a.reference) > em {
     color: inherit;
     font-weight: inherit;
   }
@@ -51,7 +52,8 @@ body.color-scheme-gruvbox {
     }
 
     // Reset emphasis styling inside citation reference links (gruvbox dark)
-    a.reference em {
+    a.reference em,
+    span:has(> a.reference) > em {
       color: inherit;
     }
 
