@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.3] - 2026-04-14
+
+### Fixed
+- **h5 headings appearing larger than h4** (#381) — `h5` had no dedicated CSS rule, so it inherited the browser default size and "PT Serif" (a visually larger serif font) while `h4` used the more compact "Source Sans Pro" at `1.2rem`. Added explicit `h5` styling (`1rem`, Source Sans Pro, weight 900) to restore the correct heading size hierarchy.
+
+### CI
+- Bump `actions/github-script` from 8 to 9 (#380)
+- Bump `pypa/gh-action-pypi-publish` from 1.13.0 to 1.14.0 (#379)
+
 ## [0.20.2] - 2026-04-06
 
 ### Fixed
@@ -308,6 +317,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...HEAD
 [0.20.2]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.1...v0.20.2
 [0.20.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.0...v0.20.1
+[0.20.3]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...v0.20.3
 [0.20.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.1...v0.18.0
