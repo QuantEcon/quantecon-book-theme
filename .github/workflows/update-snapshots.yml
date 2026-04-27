@@ -39,7 +39,7 @@ jobs:
           git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
 
       - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
           auto-activate-base: true
@@ -146,7 +146,7 @@ jobs:
           git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
 
       - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
           auto-activate-base: true
