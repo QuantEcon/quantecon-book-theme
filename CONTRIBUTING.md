@@ -16,7 +16,7 @@ Thank you for your interest in contributing to the QuantEcon Book Theme! This do
 ### Prerequisites
 
 - Python 3.12 or higher
-- Node.js 18.18.0 or higher (see `.nvmrc`)
+- Node.js 20.18.0 or higher (see `.nvmrc`)
 - Git
 
 ### Initial Setup

@@ -9,11 +9,11 @@
     "devDependencies": {
         "@playwright/test": "^1.49.0",
         "css-loader": "^7.1.2",
-        "css-minimizer-webpack-plugin": "^7.0.2",
+        "css-minimizer-webpack-plugin": "^8.0.0",
         "dedent": "^1.7.0",
         "html-webpack-plugin": "^5.6.5",
         "mini-css-extract-plugin": "^2.9.4",
-        "sass": "^1.94.2",
+        "sass": "^1.99.0",
         "sass-loader": "^16.0.6",
         "webpack": "^5.103.0",
         "webpack-cli": "^6.0.1",
