@@ -12,8 +12,34 @@ env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
   FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
 
+# Explicit least-privilege permissions:
+#   contents: read         — checkout + upload-artifact
+#   actions: read          — download-artifact (cross-job)
+#   pull-requests: write   — daun/playwright-report-summary (PR comment from
+#                            visual job) and nwtgck/actions-netlify (preview
+#                            URL comment from preview job)
+# Without this block the workflow relies on the repo/org default GITHUB_TOKEN
+# permissions, which can flip read-only and silently break PR commenting.
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
+# The CI is split into three jobs so the Netlify preview deploys regardless
+# of whether visual regression tests pass. Reviewers need the preview link
+# to *decide* whether failing visual tests reflect intentional design changes
+# (in which case they comment /update-snapshots) or genuine regressions.
+# Previously the preview was a later step of a single job and got skipped on
+# visual-test failure — exactly the case where reviewers need it most.
+#
+#   build  →  visual   (gate; may fail)
+#          ↘
+#            preview   (always runs; uploads the artifact reviewers eyeball)
+#
+# `build` produces the fixtures HTML once; `visual` and `preview` consume it
+# in parallel via actions/upload-artifact + download-artifact.
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout theme
@@ -41,22 +67,44 @@ jobs:
         working-directory: fixtures
         run: jb build . --warningiserror
 
-      # Visual Regression Testing
+      - name: Upload fixtures build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: fixtures-build
+          path: fixtures/_build/html/
+          retention-days: 1
+
+  visual:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout theme
+        uses: actions/checkout@v6
+
+      - name: Download fixtures build artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: fixtures-build
+          path: fixtures/_build/html/
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
+
       - name: Install Playwright
         run: |
           npm ci
           npx playwright install --with-deps chromium
+
       - name: Run Visual Regression Tests
         id: visual-tests
         run: npm run test:visual
         continue-on-error: true
         env:
           SITE_PATH: fixtures/_build/html
+
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v7
         if: always()
@@ -64,6 +112,7 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
       - name: Upload Test Results (on failure)
         uses: actions/upload-artifact@v7
         if: steps.visual-tests.outcome == 'failure'
@@ -71,6 +120,7 @@ jobs:
           name: visual-test-diff
           path: test-results/
           retention-days: 30
+
       - name: Post Visual Test Results to PR
         uses: daun/playwright-report-summary@v3
         if: github.event_name == 'pull_request'
@@ -78,9 +128,27 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           report-file: playwright-report/results.json
           comment-title: '🎭 Visual Regression Test Results'
+
       - name: Fail if Visual Tests Failed
         if: steps.visual-tests.outcome == 'failure'
         run: exit 1
+
+  preview:
+    needs: build
+    # Skip on forks: PRs from fork repos don't get NETLIFY_AUTH_TOKEN /
+    # NETLIFY_SITE_ID secrets, so the deploy would fail and block external
+    # contributors' CI. Matches the codecov guard pattern in tests.yml:51.
+    if: >
+      github.repository == 'QuantEcon/quantecon-book-theme' &&
+      (github.event_name == 'push' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download fixtures build artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: fixtures-build
+          path: fixtures/_build/html/
 
       - name: Preview Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0

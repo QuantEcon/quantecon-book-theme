@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### CI
+- **Split visual regression CI into `build` / `visual` / `preview` jobs** — the Netlify preview now deploys regardless of whether visual tests pass, since reviewers need the preview link to decide whether failing visual tests reflect intentional design changes (in which case they `/update-snapshots`) or genuine regressions. Previously the preview was a later step of a single job and got skipped on visual-test failure. `visual` and `preview` both consume the fixtures build artifact produced by `build`; visual failure no longer blocks preview deploy.
+
 ## [0.20.3] - 2026-04-14
 
 ### Fixed
