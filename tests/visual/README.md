@@ -1,28 +1,43 @@
 # Visual Regression Tests
 
-This directory contains Playwright-based visual regression tests for the quantecon-book-theme.
+Playwright-based visual regression tests for the quantecon-book-theme.
 
 ## Overview
 
-These tests capture screenshots of key pages from a real lecture site build and compare them against baseline snapshots to detect unintended styling changes.
+These tests capture screenshots of pages from the
+[`quantecon-book-theme-fixtures`](https://github.com/QuantEcon/quantecon-book-theme-fixtures)
+site and compare them against baseline snapshots to detect unintended styling
+changes. The fixtures repo is a curated, stable rendering target: the
+landing page (`intro.html`), 12 synthetic pages (one per theme surface),
+and real-world lecture captures that previously exposed theme bugs.
+
+The fixtures repo is pinned in CI to a specific commit (`FIXTURES_SHA` in
+`.github/workflows/ci.yml` and `.github/workflows/update-snapshots.yml`), so
+the input doesn't move between theme PRs. To bump it, edit both workflow
+files and `/update-snapshots` on the bump PR.
 
 ## Test Coverage
 
-### Page Types
-- **Homepage** - Main landing page layout
-- **Lecture with code** - Code block styling, syntax highlighting
-- **Lecture with math** - MathJax rendering
-- **Intro pages** - Standard lecture content
+### Per-page (loop)
+- Full-page screenshot
+- Header region (`.qe-page__header`)
+- Sidebar region (`.qe-sidebar`)
 
-### Theme Features
+### Theme features
 - Dark mode toggle
 - Code block styling
-- Math equation rendering
+- F-string interpolation styling (`.si` token regression)
+- Math equation rendering (MathJax)
 - Toolbar visibility
-- Header and sidebar regions
+
+### Typography
+- Bold / italic styling (light + dark)
+
+### Definition lists
+- `<dl>` rendering, glossary block
 
 ### Viewports
-- Desktop (1280x720)
+- Desktop (1280×720)
 - Mobile (Pixel 5)
 
 ## Running Tests
@@ -30,123 +45,129 @@ These tests capture screenshots of key pages from a real lecture site build and 
 ### Using tox (Recommended)
 
 ```bash
-# Run visual tests
+# Run visual tests — clones fixtures repo to ./fixtures/ if not present
 tox -e visual
 
 # Update baselines after intentional changes
 tox -e visual-update
+
+# Pin to a specific fixtures commit for local testing
+FIXTURES_REF=<sha> tox -e visual
 ```
 
-### Manual Setup
+### Manual setup
 
-If you prefer to run tests manually:
+If you prefer to run things by hand:
 
-1. Build the lecture site first:
+1. Clone the fixtures repo as a sibling directory `fixtures/`:
    ```bash
-   git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
-   cd lecture-python-programming
-   pip install -r requirements.txt
-   jb build lectures --path-output ./
-   cd ..
+   git clone https://github.com/QuantEcon/quantecon-book-theme-fixtures fixtures
    ```
 
-2. Install Playwright:
+2. Install fixtures build dependencies + this checkout of the theme:
+   ```bash
+   pip install -r fixtures/requirements.txt
+   pip install -e .
+   ```
+
+3. Build the fixtures site:
+   ```bash
+   (cd fixtures && jb build .)
+   ```
+
+4. Install Playwright:
    ```bash
    npm install
    npx playwright install chromium
    ```
 
-3. Run tests:
+5. Run tests:
    ```bash
    npm run test:visual
    ```
 
-4. Update baselines:
+6. Update baselines:
    ```bash
    npm run test:visual:update
    ```
 
 ## CI Integration
 
-Visual tests run automatically on every push and pull request via GitHub Actions:
-1. Builds lecture site with current theme
-2. Runs Playwright tests against the build
-3. Uploads test results as artifacts
-4. Posts a summary comment on PRs
-5. Reports pass/fail status
+Visual tests run automatically on every push and pull request via
+`.github/workflows/ci.yml`:
+
+1. Checks out the fixtures repo at the pinned SHA.
+2. Builds the fixtures site (`jb build . --warningiserror`).
+3. Runs Playwright against the build.
+4. Uploads test results as artifacts.
+5. Posts a summary comment on PRs.
+6. Deploys the fixtures site to Netlify as a preview — reviewers can click
+   through the deploy link to eyeball every fixture page with this PR's
+   theme applied.
 
 ### Platform-Specific Snapshots
 
-Due to font rendering differences between macOS and Linux (ubuntu), snapshots are stored separately:
+Font rendering differs between macOS and Linux (ubuntu), so snapshots are
+stored separately:
 
-- `tests/visual/__snapshots__/` - **Ubuntu/CI baselines** (committed to repo)
-- `tests/visual/macos/` - **macOS local baselines** (gitignored)
+- `tests/visual/__snapshots__/` — **Ubuntu/CI baselines** (committed to repo)
+- `tests/visual/macos/` — **macOS local baselines** (gitignored)
 
 ### First-Time CI Setup
 
 To create the initial ubuntu baselines for CI:
 
-1. Push your branch to GitHub
-2. CI will fail (no baselines exist yet)
-3. Comment `/update-new-snapshots` on the PR to trigger automatic snapshot generation
-4. The workflow will commit the new baselines to your PR branch
-
-**Note:** The `/update-new-snapshots` command only works after the workflow file exists on the `main` branch. For PRs that add this workflow, you'll need to use the manual method below.
-
-#### Manual Method (Alternative)
-
-If the `/update-new-snapshots` workflow isn't available yet:
-
-1. Push your branch to GitHub
-2. CI will fail (no baselines exist yet)
-3. Download the `visual-test-diff` artifact
-4. Extract and copy snapshots to `tests/visual/__snapshots__/`
-5. Commit and push the snapshots
-
-```bash
-# After CI runs and fails, download and extract artifact, then:
-mkdir -p tests/visual/__snapshots__
-cp -r /path/to/extracted/artifact/* tests/visual/__snapshots__/
-git add tests/visual/__snapshots__
-git commit -m "Add ubuntu visual regression baselines"
-git push
-```
+1. Push your branch to GitHub.
+2. CI will fail (no baselines exist yet).
+3. Comment `/update-new-snapshots` on the PR to trigger automatic snapshot
+   generation.
+4. The workflow commits the new baselines to your PR branch.
 
 ### Reviewing Failures
 
-**On PRs:** Check the "🎭 Visual Regression Test Results" comment for a summary.
+**On PRs:** check the "🎭 Visual Regression Test Results" comment for a
+summary.
 
 **For detailed analysis:**
-1. Download the `playwright-report` artifact from the failed workflow
-2. Open `index.html` to see visual diffs
-3. If changes are intentional, comment `/update-snapshots` on the PR to regenerate all baselines
-4. For local testing: Run `tox -e visual-update`
+1. Download the `playwright-report` artifact from the failed workflow.
+2. Open `index.html` to see visual diffs.
+3. If changes are intentional, comment `/update-snapshots` on the PR to
+   regenerate all baselines.
+4. For local testing: `tox -e visual-update`.
 
 ## Baseline Snapshots
 
-Baseline images are stored in different directories depending on the platform:
-
-- **CI (ubuntu)**: `tests/visual/__snapshots__/` - committed to repository
-- **Local (macOS via tox)**: `tests/visual/macos/` - gitignored
-
-This separation allows local testing on macOS without interfering with CI baselines, since screenshot rendering differs between operating systems.
-
-### Updating Baselines After Intentional Changes
+### Updating baselines after intentional changes
 
 When the theme styling intentionally changes:
 
 1. **Regenerate all snapshots (recommended for styling changes):**
-   - Comment `/update-snapshots` on the PR
-   - The workflow regenerates ALL baselines using `--update-snapshots`
-   - Uploads a `snapshot-update-diff` artifact with before/after images for review
-   - Commits the new baselines to your PR branch
+   - Comment `/update-snapshots` on the PR.
+   - The workflow regenerates ALL baselines using `--update-snapshots`.
+   - Uploads a `snapshot-update-diff` artifact with before/after images for
+     review.
+   - Commits the new baselines to your PR branch.
 
 2. **Add missing snapshots only (for new tests):**
-   - Comment `/update-new-snapshots` on the PR
-   - The workflow generates only MISSING snapshots — existing baselines are not overwritten
-   - This is safe for adding new visual tests without affecting existing baselines
+   - Comment `/update-new-snapshots` on the PR.
+   - Generates only MISSING snapshots — existing baselines are not
+     overwritten.
 
 3. **For local baselines:**
    ```bash
    tox -e visual-update
    ```
+
+## Adding new fixture pages
+
+To exercise a new theme surface (or capture a real-world lecture that
+breaks):
+
+1. Open a PR on
+   [`quantecon-book-theme-fixtures`](https://github.com/QuantEcon/quantecon-book-theme-fixtures)
+   adding the page. See its `real-world/README.md` for capture conventions.
+2. Once merged, open a follow-up PR on this repo that bumps `FIXTURES_SHA`
+   in both workflows and adds a corresponding test (if needed) in
+   `theme.spec.ts`.
+3. Comment `/update-new-snapshots` on that PR to seed baselines for the new
+   page.
