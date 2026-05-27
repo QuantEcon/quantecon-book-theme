@@ -26,6 +26,10 @@ $qe-sidebar-width-lg: 350px;
   width: $qe-sidebar-width-default;
   height: 100vh;
   overflow-y: auto;
+  // Opaque default — needed for drawer mode (<1024px) where the sidebar
+  // overlays content when toggled open. Translucency there would expose
+  // content text bleed-through. Lighter translucent value applied at rail
+  // widths via the @media block below.
   background-color: #efefef;
   padding: 2rem;
   padding-top: 5rem;  // clear the fixed toolbar above
@@ -34,6 +38,14 @@ $qe-sidebar-width-lg: 350px;
   transform: translate3d(0, 0, 0);
   visibility: visible;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  // Translucent at rail widths (>=1024): sidebar sits over body background
+  // (white), not over content, so the lighter tint reads as a softer chrome
+  // surface without exposing content text. Below 1024 we keep the opaque
+  // default so the drawer is fully readable when overlaying content.
+  @media (min-width: 1024px) {
+    background-color: rgba(239, 239, 239, 0.4);
+  }
 
   @media (min-width: 1340px) {
     width: $qe-sidebar-width-md;
