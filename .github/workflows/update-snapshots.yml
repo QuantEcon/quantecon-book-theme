@@ -3,6 +3,12 @@ on:
   issue_comment:
     types: [created]
 
+# Snapshots are generated against quantecon-book-theme-fixtures at this
+# pinned SHA. Keep this in sync with .github/workflows/ci.yml.
+env:
+  FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
+  FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
+
 jobs:
   # /update-new-snapshots — only creates MISSING snapshots (safe for adding new tests)
   update-new-snapshots:
@@ -33,31 +39,27 @@ jobs:
           ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Fetch lecture-python-programming
-        shell: bash -l {0}
-        run: |
-          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
-
-      - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v4
+      - name: Checkout fixtures
+        uses: actions/checkout@v6
         with:
-          auto-update-conda: true
-          auto-activate-base: true
-          miniconda-version: 'latest'
+          repository: ${{ env.FIXTURES_REPO }}
+          ref: ${{ env.FIXTURES_SHA }}
+          path: fixtures
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
           python-version: "3.13"
-          environment-file: lecture-python-programming/environment.yml
-          activate-environment: lecture-python-programming
+          cache: "pip"
 
-      - name: Install quantecon-book-theme
-        shell: bash -l {0}
+      - name: Install fixtures build deps + this PR's theme
         run: |
-          python -m pip install .
+          pip install -r fixtures/requirements.txt
+          pip install .
 
-      - name: Build HTML
-        shell: bash -l {0}
-        run: |
-          cd lecture-python-programming
-          jb build lectures --path-output ./
+      - name: Build fixtures site
+        working-directory: fixtures
+        run: jb build . --warningiserror
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -74,7 +76,7 @@ jobs:
         continue-on-error: true
         run: npx playwright test --update-snapshots=missing
         env:
-          SITE_PATH: lecture-python-programming/_build/html
+          SITE_PATH: fixtures/_build/html
 
       - name: Commit and Push Updated Snapshots
         run: |
@@ -140,31 +142,27 @@ jobs:
           ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Fetch lecture-python-programming
-        shell: bash -l {0}
-        run: |
-          git clone --branch quantecon-book-theme https://github.com/QuantEcon/lecture-python-programming
-
-      - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v4
+      - name: Checkout fixtures
+        uses: actions/checkout@v6
         with:
-          auto-update-conda: true
-          auto-activate-base: true
-          miniconda-version: 'latest'
+          repository: ${{ env.FIXTURES_REPO }}
+          ref: ${{ env.FIXTURES_SHA }}
+          path: fixtures
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
           python-version: "3.13"
-          environment-file: lecture-python-programming/environment.yml
-          activate-environment: lecture-python-programming
+          cache: "pip"
 
-      - name: Install quantecon-book-theme
-        shell: bash -l {0}
+      - name: Install fixtures build deps + this PR's theme
         run: |
-          python -m pip install .
+          pip install -r fixtures/requirements.txt
+          pip install .
 
-      - name: Build HTML
-        shell: bash -l {0}
-        run: |
-          cd lecture-python-programming
-          jb build lectures --path-output ./
+      - name: Build fixtures site
+        working-directory: fixtures
+        run: jb build . --warningiserror
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -181,7 +179,7 @@ jobs:
         continue-on-error: true
         run: npx playwright test --update-snapshots
         env:
-          SITE_PATH: lecture-python-programming/_build/html
+          SITE_PATH: fixtures/_build/html
 
       - name: Upload Old vs New Diff
         uses: actions/upload-artifact@v7
