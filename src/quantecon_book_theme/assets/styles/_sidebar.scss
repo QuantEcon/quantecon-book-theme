@@ -8,93 +8,48 @@ Left navigation sidebar
 @use "colors";
 @use "breakpoints";
 
-// Width-collapse transition needs an explicit max-width so the empty space
-// animates out cleanly when the sidebar becomes inactive at wide widths.
+// Sidebar width scales with viewport — wider sidebars at wider viewports
+// look intentional rather than rattling around in extra space.
 $qe-sidebar-width-default: 250px;
 $qe-sidebar-width-md: 300px;
 $qe-sidebar-width-lg: 350px;
 
-// Breakpoint at which the sidebar switches from in-flow (sticky column) to
-// drawer overlay. Below this, there's not enough horizontal room for both
-// a sidebar column (250-350px) and the content column (max-width 900px)
-// plus padding, so the sidebar reverts to an overlay that the user toggles
-// open. Chosen as ~1200px = 250 + 900 + ~50px gutter — the minimum width
-// where in-flow doesn't squeeze the sidebar below its configured width.
-$qe-sidebar-drawer-max: 1199px;
-$qe-sidebar-inflow-min: 1200px;
-
 .qe-sidebar {
-  background-color: transparent;
+  // Always position:fixed — sidebar floats as a left rail anchored to the
+  // viewport top-left (behind the fixed toolbar, which has higher z-index).
+  // Content's horizontal positioning is handled in .qe-main / .qe-page so
+  // the sidebar doesn't have to coordinate with the document flow.
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: $qe-sidebar-width-default;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #efefef;
   padding: 2rem;
-  padding-top: 5rem;
+  padding-top: 5rem;  // clear the fixed toolbar above
   margin: 0;
   border-right: 1px solid #ccc;
-  width: $qe-sidebar-width-default;
-  max-width: $qe-sidebar-width-default;
+  transform: translate3d(0, 0, 0);
   visibility: visible;
-  transition: max-width 0.2s ease, padding 0.2s ease, border 0.2s ease, transform 0.2s ease;
-  overflow-y: auto;
-
-  // In-flow (default at wide widths): sidebar is a real flex column of
-  // .qe-main, sticky against the viewport top so it stays visible on scroll.
-  // Content lives cleanly to its right via .qe-page's flex-grow.
-  @media (min-width: #{$qe-sidebar-inflow-min}) {
-    position: sticky;
-    top: 0;
-    left: auto;
-    height: 100vh;
-    z-index: auto;
-  }
-
-  // Drawer (narrow widths): sidebar reverts to the previous overlay model.
-  // Hidden by default via .inactive (toggle opens it); slides in over content
-  // when active. Background goes opaque here so the drawer is readable over
-  // whatever it's covering. z-index:1 keeps the toolbar (z-index:2) above
-  // the drawer so the toggle button at top-left stays clickable when the
-  // drawer is open.
-  @media (max-width: #{$qe-sidebar-drawer-max}) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    height: 100vh;
-    background-color: #ffffff;
-    transform: translate3d(0, 0, 0);
-  }
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   @media (min-width: 1340px) {
     width: $qe-sidebar-width-md;
-    max-width: $qe-sidebar-width-md;
   }
 
   @media (min-width: 1600px) {
     width: $qe-sidebar-width-lg;
-    max-width: $qe-sidebar-width-lg;
   }
 
-  // `inactive` means the user (or the JS default at narrow widths) has
-  // hidden the sidebar.
-  //
-  // - At wide widths (in-flow): collapse max-width to zero so the content
-  //   column reclaims the row width inline. Padding + border zero out too
-  //   so no residual chrome remains.
-  // - At narrow widths (drawer): slide off-screen via translate3d (preserves
-  //   the existing drawer animation).
+  // `inactive`: hidden by default (HTML adds this class) and applied by the
+  // toggle JS when the user closes the sidebar. Slides off-screen via
+  // translate3d — works the same at all widths.
   &.inactive {
-    @media (min-width: #{$qe-sidebar-inflow-min}) {
-      max-width: 0;
-      width: 0;
-      padding-left: 0;
-      padding-right: 0;
-      border-right: 0;
-      overflow: hidden;
-    }
-
-    @media (max-width: #{$qe-sidebar-drawer-max}) {
-      transform: translate3d(-100%, 0, 0);
-      visibility: visible;
-      box-shadow: none;
-    }
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+    box-shadow: none;
   }
 
   &__header {
