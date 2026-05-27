@@ -3,8 +3,11 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * Playwright configuration for visual regression testing.
  *
- * Tests are run against a locally served build of lecture-python-programming
- * to verify theme styling hasn't regressed.
+ * Tests are run against a locally served build of the
+ * quantecon-book-theme-fixtures site to verify theme styling hasn't
+ * regressed. The fixtures repo is checked out as a sibling directory
+ * (`fixtures/`) by CI; local users can clone it manually or use
+ * `tox -e visual`, which clones it automatically.
  */
 export default defineConfig({
   testDir: "./tests/visual",
@@ -61,10 +64,11 @@ export default defineConfig({
     ? `{testDir}/{testFileDir}/${process.env.SNAPSHOT_DIR}/{projectName}/{arg}{ext}`
     : "{testDir}/{testFileDir}/__snapshots__/{projectName}/{arg}{ext}",
 
-  // Web server to serve the built lecture site
-  // Path varies: CI uses _build/html, tox uses lectures/_build/html
+  // Web server to serve the built fixtures site.
+  // CI sets SITE_PATH=fixtures/_build/html; local default matches the tox
+  // clone path.
   webServer: {
-    command: `python -m http.server 8000 --directory ${process.env.SITE_PATH || "lecture-python-programming/lectures/_build/html"}`,
+    command: `python -m http.server 8000 --directory ${process.env.SITE_PATH || "fixtures/_build/html"}`,
     url: "http://localhost:8000",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

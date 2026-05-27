@@ -4,9 +4,7 @@ on:
     types: [created]
 
 # Snapshots are generated against quantecon-book-theme-fixtures at this
-# pinned SHA. ci.yml will be migrated to the same fixtures repo in #390
-# (it still builds lecture-python-programming on main today); once that
-# lands, keep FIXTURES_SHA in sync between the two workflows.
+# pinned SHA. Keep FIXTURES_SHA in sync with .github/workflows/ci.yml.
 env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
   FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
