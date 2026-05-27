@@ -12,6 +12,19 @@ env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
   FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
 
+# Explicit least-privilege permissions:
+#   contents: read         — checkout + upload-artifact
+#   actions: read          — download-artifact (cross-job)
+#   pull-requests: write   — daun/playwright-report-summary (PR comment from
+#                            visual job) and nwtgck/actions-netlify (preview
+#                            URL comment from preview job)
+# Without this block the workflow relies on the repo/org default GITHUB_TOKEN
+# permissions, which can flip read-only and silently break PR commenting.
+permissions:
+  contents: read
+  actions: read
+  pull-requests: write
+
 # The CI is split into three jobs so the Netlify preview deploys regardless
 # of whether visual regression tests pass. Reviewers need the preview link
 # to *decide* whether failing visual tests reflect intentional design changes
@@ -122,6 +135,13 @@ jobs:
 
   preview:
     needs: build
+    # Skip on forks: PRs from fork repos don't get NETLIFY_AUTH_TOKEN /
+    # NETLIFY_SITE_ID secrets, so the deploy would fail and block external
+    # contributors' CI. Matches the codecov guard pattern in tests.yml:51.
+    if: >
+      github.repository == 'QuantEcon/quantecon-book-theme' &&
+      (github.event_name == 'push' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     steps:
       - name: Download fixtures build artifact
