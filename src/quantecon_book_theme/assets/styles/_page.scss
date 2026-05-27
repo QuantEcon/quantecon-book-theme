@@ -60,8 +60,11 @@ Main page structure and components
       overflow-x: hidden;  // Prevent horizontal scrollbar on long TOC entries
       overflow-y: hidden;  // Clip by default; switches to auto on hover/focus
 
-      // Fade-out mask hints at clipped content; invisible when nothing overflows.
-      // Last 2rem fades to transparent so cut-off entries don't end abruptly.
+      // Bottom fade hints that overflowing content is clipped. Applied
+      // unconditionally (pure-CSS, no JS overflow detection), so the last 2rem
+      // of the panel is always softened — including the final visible entry
+      // when content fits. Hovering/focusing removes the mask and exposes the
+      // full content.
       mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent 100%);
 
