@@ -27,21 +27,26 @@ async function waitForReady(page: Page) {
   await page.waitForTimeout(500);
 }
 
+// hasMath: true loosens the snapshot tolerance for that page. MathJax font
+// metrics shift slightly across environments (Ubuntu CI vs macOS local),
+// so pages with rendered math need a wider tolerance than the strict default.
+// Pages without math keep the default `maxDiffPixelRatio: 0.01` from
+// playwright.config.ts so sub-pixel regressions still get caught.
 const fixturePages = [
-  { name: "intro",            path: "/intro.html" },
-  { name: "typography",       path: "/synthetic/typography.html" },
-  { name: "definition-lists", path: "/synthetic/definition-lists.html" },
-  { name: "code-blocks",      path: "/synthetic/code-blocks.html" },
-  { name: "math",             path: "/synthetic/math.html" },
-  { name: "admonitions",      path: "/synthetic/admonitions.html" },
-  { name: "exercises",        path: "/synthetic/exercises.html" },
-  { name: "proofs",           path: "/synthetic/proofs.html" },
-  { name: "tables",           path: "/synthetic/tables.html" },
-  { name: "figures",          path: "/synthetic/figures.html" },
-  { name: "toc-deep-nesting", path: "/synthetic/toc-deep-nesting.html" },
-  { name: "long-page",        path: "/synthetic/long-page.html" },
-  { name: "cross-references", path: "/synthetic/cross-references.html" },
-  { name: "prob-matrix",      path: "/real-world/from-lecture-python/prob_matrix.html" },
+  { name: "intro",            path: "/intro.html",                                       hasMath: false },
+  { name: "typography",       path: "/synthetic/typography.html",                        hasMath: false },
+  { name: "definition-lists", path: "/synthetic/definition-lists.html",                  hasMath: true  },
+  { name: "code-blocks",      path: "/synthetic/code-blocks.html",                       hasMath: false },
+  { name: "math",             path: "/synthetic/math.html",                              hasMath: true  },
+  { name: "admonitions",      path: "/synthetic/admonitions.html",                       hasMath: true  },
+  { name: "exercises",        path: "/synthetic/exercises.html",                         hasMath: true  },
+  { name: "proofs",           path: "/synthetic/proofs.html",                            hasMath: true  },
+  { name: "tables",           path: "/synthetic/tables.html",                            hasMath: true  },
+  { name: "figures",          path: "/synthetic/figures.html",                           hasMath: false },
+  { name: "toc-deep-nesting", path: "/synthetic/toc-deep-nesting.html",                  hasMath: false },
+  { name: "long-page",        path: "/synthetic/long-page.html",                         hasMath: true  },
+  { name: "cross-references", path: "/synthetic/cross-references.html",                  hasMath: true  },
+  { name: "prob-matrix",      path: "/real-world/from-lecture-python/prob_matrix.html",  hasMath: true  },
 ];
 
 test.describe("Visual Regression Tests", () => {
@@ -52,9 +57,9 @@ test.describe("Visual Regression Tests", () => {
 
       await expect(browserPage).toHaveScreenshot(`${page.name}.png`, {
         fullPage: true,
-        // Pages with rendered math need a wider tolerance — MathJax font
-        // metrics shift slightly across environments.
-        maxDiffPixelRatio: 0.05,
+        // Apply the looser tolerance only for pages with rendered math.
+        // Non-math pages keep the strict default from playwright.config.ts.
+        ...(page.hasMath ? { maxDiffPixelRatio: 0.05 } : {}),
       });
     });
 

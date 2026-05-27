@@ -7,9 +7,9 @@ Playwright-based visual regression tests for the quantecon-book-theme.
 These tests capture screenshots of pages from the
 [`quantecon-book-theme-fixtures`](https://github.com/QuantEcon/quantecon-book-theme-fixtures)
 site and compare them against baseline snapshots to detect unintended styling
-changes. The fixtures repo is a curated, stable rendering target: 12
-synthetic pages (one per theme surface) plus real-world lecture captures that
-previously exposed theme bugs.
+changes. The fixtures repo is a curated, stable rendering target: the
+landing page (`intro.html`), 12 synthetic pages (one per theme surface),
+and real-world lecture captures that previously exposed theme bugs.
 
 The fixtures repo is pinned in CI to a specific commit (`FIXTURES_SHA` in
 `.github/workflows/ci.yml` and `.github/workflows/update-snapshots.yml`), so
