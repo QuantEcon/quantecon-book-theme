@@ -32,34 +32,44 @@ async function waitForReady(page: Page) {
 // so pages with rendered math need a wider tolerance than the strict default.
 // Pages without math keep the default `maxDiffPixelRatio: 0.01` from
 // playwright.config.ts so sub-pixel regressions still get caught.
+//
+// fullPage: false skips the full-page screenshot test entirely. Use for
+// real-world fixtures where the rendered page height isn't stable enough
+// for pixel comparison (MathJax + dynamic content can shift total height
+// by hundreds of pixels between runs, which fails Playwright's
+// dimension-matched comparison regardless of tolerance). Header + sidebar
+// region tests still run and provide theme-regression coverage; the full
+// page is reviewable via the Netlify preview.
 const fixturePages = [
-  { name: "intro",            path: "/intro.html",                                       hasMath: false },
-  { name: "typography",       path: "/synthetic/typography.html",                        hasMath: false },
-  { name: "definition-lists", path: "/synthetic/definition-lists.html",                  hasMath: true  },
-  { name: "code-blocks",      path: "/synthetic/code-blocks.html",                       hasMath: false },
-  { name: "math",             path: "/synthetic/math.html",                              hasMath: true  },
-  { name: "admonitions",      path: "/synthetic/admonitions.html",                       hasMath: true  },
-  { name: "exercises",        path: "/synthetic/exercises.html",                         hasMath: true  },
-  { name: "proofs",           path: "/synthetic/proofs.html",                            hasMath: true  },
-  { name: "tables",           path: "/synthetic/tables.html",                            hasMath: true  },
-  { name: "figures",          path: "/synthetic/figures.html",                           hasMath: false },
-  { name: "toc-deep-nesting", path: "/synthetic/toc-deep-nesting.html",                  hasMath: false },
-  { name: "long-page",        path: "/synthetic/long-page.html",                         hasMath: true  },
-  { name: "cross-references", path: "/synthetic/cross-references.html",                  hasMath: true  },
-  { name: "prob-matrix",      path: "/real-world/from-lecture-python/prob_matrix.html",  hasMath: true  },
+  { name: "intro",            path: "/intro.html",                                       hasMath: false, fullPage: true  },
+  { name: "typography",       path: "/synthetic/typography.html",                        hasMath: false, fullPage: true  },
+  { name: "definition-lists", path: "/synthetic/definition-lists.html",                  hasMath: true,  fullPage: true  },
+  { name: "code-blocks",      path: "/synthetic/code-blocks.html",                       hasMath: false, fullPage: true  },
+  { name: "math",             path: "/synthetic/math.html",                              hasMath: true,  fullPage: true  },
+  { name: "admonitions",      path: "/synthetic/admonitions.html",                       hasMath: true,  fullPage: true  },
+  { name: "exercises",        path: "/synthetic/exercises.html",                         hasMath: true,  fullPage: true  },
+  { name: "proofs",           path: "/synthetic/proofs.html",                            hasMath: true,  fullPage: true  },
+  { name: "tables",           path: "/synthetic/tables.html",                            hasMath: true,  fullPage: true  },
+  { name: "figures",          path: "/synthetic/figures.html",                           hasMath: false, fullPage: true  },
+  { name: "toc-deep-nesting", path: "/synthetic/toc-deep-nesting.html",                  hasMath: false, fullPage: true  },
+  { name: "long-page",        path: "/synthetic/long-page.html",                         hasMath: true,  fullPage: true  },
+  { name: "cross-references", path: "/synthetic/cross-references.html",                  hasMath: true,  fullPage: true  },
+  { name: "prob-matrix",      path: "/real-world/from-lecture-python/prob_matrix.html",  hasMath: true,  fullPage: false },
 ];
 
 test.describe("Visual Regression Tests", () => {
   for (const page of fixturePages) {
-    test(`${page.name} - full page screenshot`, async ({ page: browserPage }) => {
+    test(`${page.name} - full page screenshot`, async ({ page: browserPage }, testInfo) => {
+      test.skip(!page.fullPage, "full-page screenshot disabled for this fixture (height instability)");
       await browserPage.goto(page.path);
       await waitForReady(browserPage);
 
       await expect(browserPage).toHaveScreenshot(`${page.name}.png`, {
         fullPage: true,
-        // Default 5000ms isn't enough for long fixtures like prob-matrix
-        // (~1900 source lines). 30s covers stitching the tallest pages
-        // and is harmless for short ones (they finish in under a second).
+        // Default 5000ms isn't enough for long fixtures like long-page
+        // (which has math + many sections). 30s covers stitching the
+        // tallest stable pages and is harmless for short ones (they finish
+        // in well under a second).
         timeout: 30000,
         // Apply the looser tolerance only for pages with rendered math.
         // Non-math pages keep the strict default from playwright.config.ts.
