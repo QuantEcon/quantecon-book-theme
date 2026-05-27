@@ -49,12 +49,14 @@ $qe-sidebar-inflow-min: 1200px;
   // Drawer (narrow widths): sidebar reverts to the previous overlay model.
   // Hidden by default via .inactive (toggle opens it); slides in over content
   // when active. Background goes opaque here so the drawer is readable over
-  // whatever it's covering.
+  // whatever it's covering. z-index:1 keeps the toolbar (z-index:2) above
+  // the drawer so the toggle button at top-left stays clickable when the
+  // drawer is open.
   @media (max-width: #{$qe-sidebar-drawer-max}) {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 1;
     height: 100vh;
     background-color: #ffffff;
     transform: translate3d(0, 0, 0);

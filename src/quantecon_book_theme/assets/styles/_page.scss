@@ -22,13 +22,23 @@ Main page structure and components
   justify-content: center;
   padding-left: 2rem;
   padding-right: 2rem;
-  padding-top: 4rem;
+  // No padding-top here so .qe-sidebar (a flex child with position:sticky;
+  // top:0) extends visually to the viewport top, behind the sticky toolbar.
+  // This anchors the sidebar to the same top-left corner as the toolbar's
+  // toggle button. Content's toolbar clearance moves to .qe-page below.
 }
 
 .qe-page {
   max-width: 900px;
   position: relative;
   flex-grow: 1;
+  // Clears the sticky toolbar at top:0 (height ~4rem). Previously this lived
+  // on .qe-main, but moving it here lets .qe-sidebar extend up under the
+  // toolbar without leaving a visible gap between the toggle button and the
+  // sidebar's "Contents" header. The RHS TOC (`.qe-page__toc`) is
+  // position:absolute relative to .qe-page's padding box, so it lands at the
+  // same visual y-offset as before.
+  padding-top: 4rem;
 
   @media (max-width: breakpoints.$md) {
     max-width: 100%;
