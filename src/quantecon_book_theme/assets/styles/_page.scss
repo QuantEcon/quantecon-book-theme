@@ -58,7 +58,37 @@ Main page structure and components
       width: 200px;
       max-height: calc(100vh - 8rem);
       overflow-x: hidden;  // Prevent horizontal scrollbar on long TOC entries
-      overflow-y: hidden;  // Clip content at bottom, no scrollbar
+      overflow-y: hidden;  // Clip by default; switches to auto on hover/focus
+
+      // Fade-out mask hints at clipped content; invisible when nothing overflows.
+      // Last 2rem fades to transparent so cut-off entries don't end abruptly.
+      mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent 100%);
+
+      // Reveal hidden entries on interaction: scroll the panel, not the page.
+      &:hover,
+      &:focus-within {
+        overflow-y: auto;
+        mask-image: none;
+        -webkit-mask-image: none;
+
+        // Discreet scrollbar styling so it doesn't dominate the panel.
+        scrollbar-width: thin;
+        scrollbar-color: rgba(colors.$body, 0.2) transparent;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(colors.$body, 0.2);
+          border-radius: 3px;
+        }
+      }
     }
 
     &-header {
