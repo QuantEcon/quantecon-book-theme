@@ -13,17 +13,21 @@ env:
   FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
 
 # Explicit least-privilege permissions:
-#   contents: read         — checkout + upload-artifact
+#   contents: write        — checkout + upload-artifact + nwtgck/actions-netlify
+#                            posts commit comments (POST /commits/<sha>/comments)
 #   actions: read          — download-artifact (cross-job)
-#   pull-requests: write   — daun/playwright-report-summary (PR comment from
-#                            visual job) and nwtgck/actions-netlify (preview
-#                            URL comment from preview job)
-# Without this block the workflow relies on the repo/org default GITHUB_TOKEN
-# permissions, which can flip read-only and silently break PR commenting.
+#   pull-requests: write   — daun/playwright-report-summary PR comment
+#   statuses: write        — nwtgck/actions-netlify commit status (preview URL)
+#   deployments: write     — nwtgck/actions-netlify GitHub deployments record
+# The earlier narrower version (contents:read, pull-requests:write only) caused
+# the Netlify action's preview-URL notification to fail 403 — deploy succeeded
+# but reviewers couldn't see the link from the PR.
 permissions:
-  contents: read
+  contents: write
   actions: read
   pull-requests: write
+  statuses: write
+  deployments: write
 
 # The CI is split into three jobs so the Netlify preview deploys regardless
 # of whether visual regression tests pass. Reviewers need the preview link
