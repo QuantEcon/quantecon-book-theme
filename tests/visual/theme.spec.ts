@@ -57,6 +57,10 @@ test.describe("Visual Regression Tests", () => {
 
       await expect(browserPage).toHaveScreenshot(`${page.name}.png`, {
         fullPage: true,
+        // Default 5000ms isn't enough for long fixtures like prob-matrix
+        // (~1900 source lines). 30s covers stitching the tallest pages
+        // and is harmless for short ones (they finish in under a second).
+        timeout: 30000,
         // Apply the looser tolerance only for pages with rendered math.
         // Non-math pages keep the strict default from playwright.config.ts.
         ...(page.hasMath ? { maxDiffPixelRatio: 0.05 } : {}),

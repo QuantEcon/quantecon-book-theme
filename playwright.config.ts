@@ -54,11 +54,6 @@ export default defineConfig({
       maxDiffPixelRatio: 0.01,
       // Threshold for individual pixel color difference
       threshold: 0.2,
-      // Playwright's default 5000ms isn't enough to capture full-page
-      // screenshots of long real-world fixtures (e.g. prob_matrix is ~1900
-      // source lines). Bump generously — short captures finish in well
-      // under a second, so this is just a ceiling for the long-page case.
-      timeout: 30000,
     },
   },
 
