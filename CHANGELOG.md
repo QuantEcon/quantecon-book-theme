@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **LHS sidebar moved from `position: fixed` to `position: sticky` (in-flow)** (#387, #388) — at viewport widths ≥ 1200px the sidebar is now a real flex column of `.qe-main`, taking its share of the row width. Content sits cleanly to its right with no overlap, eliminating the layout bug where centered content slid underneath the fixed sidebar at common laptop widths. Below 1200px the sidebar reverts to a drawer overlay (current narrow-viewport behaviour preserved). Two pre-existing workarounds removed: the opaque `#efefef` sidebar background (no longer needed to mask content overlap) and the `box-shadow: ... 9999px` white halo at ≤1340px.
+- **Books built with this theme will see a noticeable layout change on upgrade** — sidebar position shifts at wide viewports. Downstream sites should re-verify their snapshots / visual review.
+
+### Fixed
+- **RHS "On this page" TOC truncated on long lectures** (#387) — `.qe-page__toc .inner.sticky` now has a bottom fade-mask hint and switches to `overflow-y: auto` with a discreet scrollbar on `:hover` / `:focus-within`, so overflowing TOC entries are reachable.
+
 ### CI
-- **Split visual regression CI into `build` / `visual` / `preview` jobs** — the Netlify preview now deploys regardless of whether visual tests pass, since reviewers need the preview link to decide whether failing visual tests reflect intentional design changes (in which case they `/update-snapshots`) or genuine regressions. Previously the preview was a later step of a single job and got skipped on visual-test failure. `visual` and `preview` both consume the fixtures build artifact produced by `build`; visual failure no longer blocks preview deploy.
+- **Split visual regression CI into `build` / `visual` / `preview` jobs** (#394) — the Netlify preview now deploys regardless of whether visual tests pass, since reviewers need the preview link to decide whether failing visual tests reflect intentional design changes (in which case they `/update-snapshots`) or genuine regressions. Previously the preview was a later step of a single job and got skipped on visual-test failure. `visual` and `preview` both consume the fixtures build artifact produced by `build`; visual failure no longer blocks preview deploy.
 
 ## [0.20.3] - 2026-04-14
 

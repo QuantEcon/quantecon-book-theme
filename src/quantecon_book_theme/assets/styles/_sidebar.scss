@@ -8,40 +8,91 @@ Left navigation sidebar
 @use "colors";
 @use "breakpoints";
 
+// Width-collapse transition needs an explicit max-width so the empty space
+// animates out cleanly when the sidebar becomes inactive at wide widths.
+$qe-sidebar-width-default: 250px;
+$qe-sidebar-width-md: 300px;
+$qe-sidebar-width-lg: 350px;
+
+// Breakpoint at which the sidebar switches from in-flow (sticky column) to
+// drawer overlay. Below this, there's not enough horizontal room for both
+// a sidebar column (250-350px) and the content column (max-width 900px)
+// plus padding, so the sidebar reverts to an overlay that the user toggles
+// open. Chosen as ~1200px = 250 + 900 + ~50px gutter — the minimum width
+// where in-flow doesn't squeeze the sidebar below its configured width.
+$qe-sidebar-drawer-max: 1199px;
+$qe-sidebar-inflow-min: 1200px;
+
 .qe-sidebar {
-  top: 0px;
-  left: 0px;
-  z-index: 1;
-  background-color: rgba(239, 239, 239, 0.4);
+  background-color: transparent;
   padding: 2rem;
+  padding-top: 5rem;
   margin: 0;
   border-right: 1px solid #ccc;
-  width: 250px;
-  transform: translate3d(0px, 0px, 0px);
+  width: $qe-sidebar-width-default;
+  max-width: $qe-sidebar-width-default;
   visibility: visible;
-  transition: all 0.2s ease 0s;
-  height: 100vh;
-  overflow-y: scroll;
-  position: fixed;
-  padding-top: 5rem;
+  transition: max-width 0.2s ease, padding 0.2s ease, border 0.2s ease, transform 0.2s ease;
+  overflow-y: auto;
 
-  @media (max-width: 1340px) {
-    box-shadow: 10px 10px 5px 9999px rgba(255, 255, 255, 0.8);
-    width: 300px;
+  // In-flow (default at wide widths): sidebar is a real flex column of
+  // .qe-main, sticky against the viewport top so it stays visible on scroll.
+  // Content lives cleanly to its right via .qe-page's flex-grow.
+  @media (min-width: #{$qe-sidebar-inflow-min}) {
+    position: sticky;
+    top: 0;
+    left: auto;
+    height: 100vh;
+    z-index: auto;
   }
 
-  @media (min-width: 1439px) {
-    width: 300px;
+  // Drawer (narrow widths): sidebar reverts to the previous overlay model.
+  // Hidden by default via .inactive (toggle opens it); slides in over content
+  // when active. Background goes opaque here so the drawer is readable over
+  // whatever it's covering.
+  @media (max-width: #{$qe-sidebar-drawer-max}) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    height: 100vh;
+    background-color: #ffffff;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (min-width: 1340px) {
+    width: $qe-sidebar-width-md;
+    max-width: $qe-sidebar-width-md;
   }
 
   @media (min-width: 1600px) {
-    width: 350px;
+    width: $qe-sidebar-width-lg;
+    max-width: $qe-sidebar-width-lg;
   }
 
+  // `inactive` means the user (or the JS default at narrow widths) has
+  // hidden the sidebar.
+  //
+  // - At wide widths (in-flow): collapse max-width to zero so the content
+  //   column reclaims the row width inline. Padding + border zero out too
+  //   so no residual chrome remains.
+  // - At narrow widths (drawer): slide off-screen via translate3d (preserves
+  //   the existing drawer animation).
   &.inactive {
-    transform: translate3d(-100%, 0px, 0px);
-    visibility: visible;
-    box-shadow: none;
+    @media (min-width: #{$qe-sidebar-inflow-min}) {
+      max-width: 0;
+      width: 0;
+      padding-left: 0;
+      padding-right: 0;
+      border-right: 0;
+      overflow: hidden;
+    }
+
+    @media (max-width: #{$qe-sidebar-drawer-max}) {
+      transform: translate3d(-100%, 0, 0);
+      visibility: visible;
+      box-shadow: none;
+    }
   }
 
   &__header {
