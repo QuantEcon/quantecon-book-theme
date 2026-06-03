@@ -86,7 +86,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download fixtures build artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: fixtures-build
           path: fixtures/_build/html/
@@ -126,7 +126,7 @@ jobs:
           retention-days: 30
 
       - name: Post Visual Test Results to PR
-        uses: daun/playwright-report-summary@v3
+        uses: daun/playwright-report-summary@v4
         if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download fixtures build artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: fixtures-build
           path: fixtures/_build/html/
