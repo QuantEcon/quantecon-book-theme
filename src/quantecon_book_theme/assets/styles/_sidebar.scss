@@ -8,38 +8,58 @@ Left navigation sidebar
 @use "colors";
 @use "breakpoints";
 
+// Sidebar width scales with viewport — wider sidebars at wider viewports
+// look intentional rather than rattling around in extra space.
+$qe-sidebar-width-default: 250px;
+$qe-sidebar-width-md: 300px;
+$qe-sidebar-width-lg: 350px;
+
 .qe-sidebar {
-  top: 0px;
-  left: 0px;
+  // Always position:fixed — sidebar floats as a left rail anchored to the
+  // viewport top-left (behind the fixed toolbar, which has higher z-index).
+  // Content's horizontal positioning is handled in .qe-main / .qe-page so
+  // the sidebar doesn't have to coordinate with the document flow.
+  position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1;
+  width: $qe-sidebar-width-default;
+  height: 100vh;
+  overflow-y: auto;
+  // Opaque default — needed for drawer mode (<1024px) where the sidebar
+  // overlays content when toggled open. Translucency there would expose
+  // content text bleed-through. Lighter translucent value applied at rail
+  // widths via the @media block below.
   background-color: #efefef;
   padding: 2rem;
+  padding-top: 5rem;  // clear the fixed toolbar above
   margin: 0;
   border-right: 1px solid #ccc;
-  width: 250px;
-  transform: translate3d(0px, 0px, 0px);
+  transform: translate3d(0, 0, 0);
   visibility: visible;
-  transition: all 0.2s ease 0s;
-  height: 100vh;
-  overflow-y: scroll;
-  position: fixed;
-  padding-top: 5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-  @media (max-width: 1340px) {
-    box-shadow: 10px 10px 5px 9999px rgba(255, 255, 255, 0.8);
-    width: 300px;
+  // Translucent at rail widths (>=1024): sidebar sits over body background
+  // (white), not over content, so the lighter tint reads as a softer chrome
+  // surface without exposing content text. Below 1024 we keep the opaque
+  // default so the drawer is fully readable when overlaying content.
+  @media (min-width: 1024px) {
+    background-color: rgba(239, 239, 239, 0.4);
   }
 
-  @media (min-width: 1439px) {
-    width: 300px;
+  @media (min-width: 1340px) {
+    width: $qe-sidebar-width-md;
   }
 
   @media (min-width: 1600px) {
-    width: 350px;
+    width: $qe-sidebar-width-lg;
   }
 
+  // `inactive`: hidden by default (HTML adds this class) and applied by the
+  // toggle JS when the user closes the sidebar. Slides off-screen via
+  // translate3d — works the same at all widths.
   &.inactive {
-    transform: translate3d(-100%, 0px, 0px);
+    transform: translate3d(-100%, 0, 0);
     visibility: visible;
     box-shadow: none;
   }

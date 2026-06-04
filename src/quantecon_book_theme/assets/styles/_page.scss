@@ -22,13 +22,51 @@ Main page structure and components
   justify-content: center;
   padding-left: 2rem;
   padding-right: 2rem;
-  padding-top: 4rem;
+  // No padding-top: .qe-sidebar is position:fixed at top:0 and the toolbar
+  // is also fixed at top:0 (toolbar z-index higher). Content's toolbar
+  // clearance lives on .qe-page below.
+
+  // Push content right when the sidebar would otherwise overlap it. At
+  // viewports ≥1500px the sidebar (250-350px) + max-width 900px content
+  // centered in the viewport leave a natural gap — no push needed. In the
+  // 1024-1499 medium zone, content would slide under the sidebar, so we
+  // bump padding-left to the sidebar's width + a 2rem visual gutter.
+  // Below 1024px the sidebar is a drawer overlay (toggled, not always
+  // visible) so no push — content uses full width and accepts overlap when
+  // user opens the drawer.
+  //
+  // :has() detects the sidebar's visible state — applies only when sidebar
+  // is NOT .inactive (i.e. user has it open). Supported in Safari 15.4+,
+  // Chrome 105+, Firefox 121+ (all modern browsers as of 2024+).
+  &:has(.qe-sidebar:not(.inactive)) {
+    @media (min-width: 1024px) and (max-width: 1339px) {
+      padding-left: calc(250px + 2rem);  // matches $qe-sidebar-width-default
+    }
+
+    @media (min-width: 1340px) and (max-width: 1499px) {
+      padding-left: calc(300px + 2rem);  // matches $qe-sidebar-width-md
+    }
+  }
 }
 
 .qe-page {
   max-width: 900px;
   position: relative;
   flex-grow: 1;
+  // Allow content to shrink below max-width when the container is narrower
+  // (e.g. at 1100px viewport with the sidebar's padding-left push, the
+  // available space is ~780px). Flex items have min-width:auto by default,
+  // which respects intrinsic content size and prevents shrinking — leading
+  // to overflow into the sidebar's area. min-width:0 lets the flex item
+  // shrink to whatever the container can give it.
+  min-width: 0;
+  // Clears the sticky toolbar at top:0 (height ~4rem). Previously this lived
+  // on .qe-main, but moving it here lets .qe-sidebar extend up under the
+  // toolbar without leaving a visible gap between the toggle button and the
+  // sidebar's "Contents" header. The RHS TOC (`.qe-page__toc`) is
+  // position:absolute relative to .qe-page's padding box, so it lands at the
+  // same visual y-offset as before.
+  padding-top: 4rem;
 
   @media (max-width: breakpoints.$md) {
     max-width: 100%;
@@ -58,7 +96,40 @@ Main page structure and components
       width: 200px;
       max-height: calc(100vh - 8rem);
       overflow-x: hidden;  // Prevent horizontal scrollbar on long TOC entries
-      overflow-y: hidden;  // Clip content at bottom, no scrollbar
+      overflow-y: hidden;  // Clip by default; switches to auto on hover/focus
+
+      // Bottom fade hints that overflowing content is clipped. Applied
+      // unconditionally (pure-CSS, no JS overflow detection), so the last 2rem
+      // of the panel is always softened — including the final visible entry
+      // when content fits. Hovering/focusing removes the mask and exposes the
+      // full content.
+      mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 2rem), transparent 100%);
+
+      // Reveal hidden entries on interaction: scroll the panel, not the page.
+      &:hover,
+      &:focus-within {
+        overflow-y: auto;
+        mask-image: none;
+        -webkit-mask-image: none;
+
+        // Discreet scrollbar styling so it doesn't dominate the panel.
+        scrollbar-width: thin;
+        scrollbar-color: rgba(colors.$body, 0.2) transparent;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(colors.$body, 0.2);
+          border-radius: 3px;
+        }
+      }
     }
 
     &-header {

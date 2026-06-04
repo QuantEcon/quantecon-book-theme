@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **LHS sidebar / content overlap fixed at common laptop widths** (#387, #388) — at viewports 1024–1499px (most laptops: 1280, 1366, 1440), `.qe-main` now pushes content right via a `:has(.qe-sidebar:not(.inactive))` conditional `padding-left` so the centered 900px content column no longer slides underneath the fixed sidebar. At viewports ≥1500px there's natural room for the sidebar as a left rail with content centered in the viewport (the established three-column look). Below 1024px the sidebar remains a drawer overlay (toggle to open). The pre-existing `box-shadow: ... 9999px` white halo workaround at ≤1340px is removed — it was masking the overlap; no longer needed now that the layout handles it.
+- **Toolbar repositioned `sticky` → `fixed`** (#387, #388) — lets the LHS sidebar extend visually to the viewport top, anchoring it to the same top-left corner as the toolbar's toggle button. Content's toolbar clearance moves from `.qe-main` to `.qe-page` (no visible change to content position).
+- **Books built with this theme will see a small layout shift at 1024–1499px viewports on upgrade** — content gets a left margin in that zone instead of overlapping the sidebar. Downstream sites should re-verify their snapshots / visual review.
+
+### Fixed
+- **RHS "On this page" TOC truncated on long lectures** (#387) — `.qe-page__toc .inner.sticky` now has a bottom fade-mask hint and switches to `overflow-y: auto` with a discreet scrollbar on `:hover` / `:focus-within`, so overflowing TOC entries are reachable.
+
 ### CI
-- **Split visual regression CI into `build` / `visual` / `preview` jobs** — the Netlify preview now deploys regardless of whether visual tests pass, since reviewers need the preview link to decide whether failing visual tests reflect intentional design changes (in which case they `/update-snapshots`) or genuine regressions. Previously the preview was a later step of a single job and got skipped on visual-test failure. `visual` and `preview` both consume the fixtures build artifact produced by `build`; visual failure no longer blocks preview deploy.
+- **Split visual regression CI into `build` / `visual` / `preview` jobs** (#394) — the Netlify preview now deploys regardless of whether visual tests pass, since reviewers need the preview link to decide whether failing visual tests reflect intentional design changes (in which case they `/update-snapshots`) or genuine regressions. Previously the preview was a later step of a single job and got skipped on visual-test failure. `visual` and `preview` both consume the fixtures build artifact produced by `build`; visual failure no longer blocks preview deploy.
 
 ## [0.20.3] - 2026-04-14
 
