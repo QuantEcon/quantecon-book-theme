@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-06-05
+
 ### Changed
 - **LHS sidebar / content overlap fixed at common laptop widths** (#387, #388) — at viewports 1024–1499px (most laptops: 1280, 1366, 1440), `.qe-main` now pushes content right via a `:has(.qe-sidebar:not(.inactive))` conditional `padding-left` so the centered 900px content column no longer slides underneath the fixed sidebar. At viewports ≥1500px there's natural room for the sidebar as a left rail with content centered in the viewport (the established three-column look). Below 1024px the sidebar remains a drawer overlay (toggle to open). The pre-existing `box-shadow: ... 9999px` white halo workaround at ≤1340px is removed — it was masking the overlap; no longer needed now that the layout handles it.
 - **Toolbar repositioned `sticky` → `fixed`** (#387, #388) — lets the LHS sidebar extend visually to the viewport top, anchoring it to the same top-left corner as the toolbar's toggle button. Content's toolbar clearance moves from `.qe-main` to `.qe-page` (no visible change to content position).
@@ -17,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### CI
 - **Split visual regression CI into `build` / `visual` / `preview` jobs** (#394) — the Netlify preview now deploys regardless of whether visual tests pass, since reviewers need the preview link to decide whether failing visual tests reflect intentional design changes (in which case they `/update-snapshots`) or genuine regressions. Previously the preview was a later step of a single job and got skipped on visual-test failure. `visual` and `preview` both consume the fixtures build artifact produced by `build`; visual failure no longer blocks preview deploy.
+- **Visual regression tests migrated to the `quantecon-book-theme-fixtures` repo** (#390, #392) — replaces the old `lecture-python-programming` dependency (cloned + conda-built per run, ~3–5 min) with the curated [`quantecon-book-theme-fixtures`](https://github.com/QuantEcon/quantecon-book-theme-fixtures) repo (pip-built in ~30–60s, pinned to a fixed SHA so test input doesn't drift between PRs). Adds first-ever `<dl>` / glossary coverage. #392 landed the `update-snapshots.yml` half early so the `issue_comment`-triggered workflow on `main` stayed consistent with the new fixture paths.
+- **Cleared all open Dependabot security alerts** (#385) — `npm audit fix` plus major bumps of two build-time `devDependencies` (`css-minimizer-webpack-plugin` 7→8, `sass`) to clear `serialize-javascript` advisories. Transitive dev/build-time only; no runtime or shipped theme code changed.
+- Bump `actions/upload-pages-artifact` from 4 to 5 (#382)
+- Bump `conda-incubator/setup-miniconda` from 3 to 4 (#383)
+- Bump `codecov/codecov-action` from 6.0.0 to 6.0.1 (#386)
+- Bump `actions/download-artifact` from 7 to 8 (#395)
+- Bump `daun/playwright-report-summary` from 3 to 4 (#396)
 
 ## [0.20.3] - 2026-04-14
 
@@ -325,10 +334,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.21.0...HEAD
+[0.21.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.3...v0.21.0
+[0.20.3]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...v0.20.3
 [0.20.2]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.1...v0.20.2
 [0.20.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.0...v0.20.1
-[0.20.3]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...v0.20.3
 [0.20.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.17.1...v0.18.0
