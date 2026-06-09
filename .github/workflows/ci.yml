@@ -155,7 +155,7 @@ jobs:
           path: fixtures/_build/html/
 
       - name: Preview Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3.0
+        uses: nwtgck/actions-netlify@v4.0
         with:
           publish-dir: 'fixtures/_build/html/'
           production-branch: main
