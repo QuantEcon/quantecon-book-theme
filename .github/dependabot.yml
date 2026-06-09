@@ -11,3 +11,13 @@ updates:
       prefix: ⬆️
     schedule:
       interval: weekly
+  - package-ecosystem: npm
+    directory: /
+    commit-message:
+      prefix: ⬆️
+    schedule:
+      interval: monthly
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
