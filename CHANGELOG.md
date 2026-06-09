@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### CI
+- **Cleared open Dependabot security alerts via `npm audit fix`** — `webpack-dev-server` 5.2.2→5.2.4 (GHSA-79cf-xcqc-c78w), `shell-quote` 1.8.1→1.8.4 (GHSA-w7jw-789q-3m8p, critical), `qs` 6.14.2→6.15.2 (GHSA-q8mj-m7cp-5q26), `ws` 8.18.0→8.21.0 (GHSA-58qx-3vcg-4xpx). All transitive dev/build-time only; built theme assets unchanged. The remaining `uuid` alert (GHSA-w5hq-g745-h8pq) was dismissed as not exploitable — `sockjs` only calls `uuid.v4()`, the advisory affects `v3`/`v5`/`v6` with a caller-provided `buf`.
+- **Dependabot now watches npm** — added an `npm` ecosystem entry to `dependabot.yml` (monthly, grouped into a single PR) alongside the existing `github-actions` config.
+
 ## [0.21.0] - 2026-06-05
 
 ### Changed
