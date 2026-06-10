@@ -14,6 +14,14 @@ import { test, expect, Page } from "@playwright/test";
 
 // Wait for the page to fully settle, including MathJax typesetting when the
 // page contains math. Pages without MathJax resolve immediately.
+//
+// After MathJax's startup promise resolves, font loading and late reflow
+// can still shift the total page height for a short window. Full-page
+// screenshots fail outright on any dimension mismatch (before pixel
+// tolerances apply), so a fixed post-typeset delay isn't enough: math-heavy
+// pages were observed settling ~60px apart between runs on mobile-chrome.
+// Instead of sleeping, wait for web fonts and then require the document
+// height to hold steady across consecutive polls.
 async function waitForReady(page: Page) {
   await page.waitForLoadState("networkidle");
   await page.waitForFunction(
@@ -24,7 +32,26 @@ async function waitForReady(page: Page) {
     },
     { timeout: 15000 }
   );
-  await page.waitForTimeout(500);
+  await page.evaluate(() => document.fonts.ready.then(() => true));
+  // Stable means three consecutive 250ms polls (750ms) without the
+  // document height changing.
+  await page.waitForFunction(
+    () => {
+      const w = window as any;
+      const height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+      if (w.__qeLastHeight === height) {
+        w.__qeStablePolls = (w.__qeStablePolls ?? 0) + 1;
+      } else {
+        w.__qeLastHeight = height;
+        w.__qeStablePolls = 0;
+      }
+      return w.__qeStablePolls >= 3;
+    },
+    { timeout: 15000, polling: 250 }
+  );
 }
 
 // hasMath: true loosens the snapshot tolerance for that page. MathJax font
