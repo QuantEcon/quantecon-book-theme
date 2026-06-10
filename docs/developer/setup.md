@@ -5,7 +5,7 @@ Set up a local development environment for `quantecon-book-theme`.
 ## Prerequisites
 
 - **Python 3.12 or newer**
-- **Node.js 20.18.0 or newer** — for compiling SCSS/JS assets with webpack
+- **Node.js 24 or newer** — for compiling SCSS/JS assets with webpack
 - **Git**
 
 ## Initial Setup
