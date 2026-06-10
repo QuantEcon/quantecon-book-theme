@@ -13,7 +13,9 @@ import { test, expect, Page } from "@playwright/test";
  */
 
 // Wait for the page to fully settle, including MathJax typesetting when the
-// page contains math. Pages without MathJax resolve immediately.
+// page contains math (pages without MathJax pass the typeset gate
+// immediately; the font and height-stability waits below apply to every
+// page).
 //
 // After MathJax's startup promise resolves, font loading and late reflow
 // can still shift the total page height for a short window. Full-page
@@ -22,6 +24,9 @@ import { test, expect, Page } from "@playwright/test";
 // pages were observed settling ~60px apart between runs on mobile-chrome.
 // Instead of sleeping, wait for web fonts and then require the document
 // height to hold steady across consecutive polls.
+//
+// NB: waitForFunction's second positional parameter is `arg` (forwarded to
+// the page function) — `timeout`/`polling` options must go third.
 async function waitForReady(page: Page) {
   await page.waitForLoadState("networkidle");
   await page.waitForFunction(
@@ -30,9 +35,14 @@ async function waitForReady(page: Page) {
       if (!mj || !mj.startup || !mj.startup.promise) return true;
       return mj.startup.promise.then(() => true);
     },
+    undefined,
     { timeout: 15000 }
   );
-  await page.evaluate(() => document.fonts.ready.then(() => true));
+  await page.waitForFunction(
+    () => document.fonts.ready.then(() => true),
+    undefined,
+    { timeout: 15000 }
+  );
   // Stable means three consecutive 250ms polls (750ms) without the
   // document height changing.
   await page.waitForFunction(
@@ -50,6 +60,7 @@ async function waitForReady(page: Page) {
       }
       return w.__qeStablePolls >= 3;
     },
+    undefined,
     { timeout: 15000, polling: 250 }
   );
 }
