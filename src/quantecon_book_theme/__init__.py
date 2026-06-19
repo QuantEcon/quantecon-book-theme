@@ -5,7 +5,7 @@ import os
 import hashlib
 from functools import lru_cache
 import subprocess
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from docutils import nodes
 from sphinx.util import logging
@@ -255,11 +255,14 @@ def _build_announcements(config_theme):
     if message:
         expires = (config_theme.get("announcement_expires") or "").strip()
         expires_date = _parse_iso_date(expires)
-        # Build-time skip: drop if we are already past the expiry day.
-        if (
-            expires_date is not None
-            and datetime.now(timezone.utc).date() > expires_date
-        ):
+        # Build-time skip is only an optimization: drop a clearly-stale notice so
+        # it isn't shipped in the HTML at all. Keep it conservative — the expiry
+        # day ends at different UTC instants across timezones, and the client
+        # side hides the banner precisely per-reader, so we only skip once the
+        # date is past for every real-world timezone (a one-day UTC grace
+        # covers the full UTC-12..UTC+14 range).
+        today_utc = datetime.now(timezone.utc).date()
+        if expires_date is not None and today_utc > expires_date + timedelta(days=1):
             return announcements
         announcement_id = hashlib.sha1(message.encode("utf-8")).hexdigest()[:12]
         announcements.append(

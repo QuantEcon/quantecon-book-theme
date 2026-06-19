@@ -57,10 +57,13 @@ sphinx:
 
 The expiry is enforced two ways, so it works whether or not the site is rebuilt:
 
-- **In the reader's browser** — the banner hides itself once the date passes,
-  even if the published site has not been rebuilt since.
-- **At build time** — if the date has already passed when the site is built, the
-  banner is omitted from the generated HTML entirely.
+- **In the reader's browser** — the banner hides itself at the end of the expiry
+  day in the reader's local timezone, even if the published site has not been
+  rebuilt since.
+- **At build time** — once the expiry day is well past (a one-day grace ensures
+  it has ended in every timezone), the banner is omitted from the generated HTML
+  entirely. Around the expiry date the markup is still emitted and the per-reader
+  browser check above governs exactly when it disappears.
 
 If `announcement_expires` is not a valid `YYYY-MM-DD` date, the build logs a
 warning and ignores the expiry (the banner keeps showing) — a typo will never

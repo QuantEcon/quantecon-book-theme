@@ -133,11 +133,23 @@ class TestBuildAnnouncements:
         assert len(result) == 1
         assert result[0]["expires_iso"] == future
 
-    def test_past_expiry_is_skipped_at_build_time(self):
+    def test_clearly_past_expiry_is_skipped_at_build_time(self):
+        # Past the one-day UTC grace (covers all timezones) -> omitted entirely.
         result = _build_announcements(
-            {"announcement": "Stale notice", "announcement_expires": _past_date()}
+            {"announcement": "Stale notice", "announcement_expires": _past_date(3)}
         )
         assert result == []
+
+    def test_yesterday_expiry_is_kept_at_build_time(self):
+        # Within the one-day grace: it may still be the expiry day for some
+        # reader's timezone, so the notice is kept in the HTML and the client
+        # side hides it precisely per-reader.
+        yesterday = _past_date(1)
+        result = _build_announcements(
+            {"announcement": "Ended yesterday (UTC)", "announcement_expires": yesterday}
+        )
+        assert len(result) == 1
+        assert result[0]["expires_iso"] == yesterday
 
     def test_today_expiry_is_kept(self):
         today = datetime.now(timezone.utc).date().isoformat()

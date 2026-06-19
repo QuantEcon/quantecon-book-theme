@@ -46,10 +46,14 @@ function rememberDismissed(id) {
 
 function isExpired(expires) {
   if (!expires) return false;
-  // Expire at the end of the given calendar day, in the visitor's timezone.
-  const expiryDate = new Date(`${expires}T23:59:59`);
-  if (Number.isNaN(expiryDate.getTime())) return false; // fail open on bad date
-  return new Date() > expiryDate;
+  // Parse YYYY-MM-DD into explicit local-time components (unambiguous across
+  // engines, and not subject to the "date-only string is UTC" parsing rule).
+  // Expire at the very end of that calendar day in the visitor's timezone.
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(expires.trim());
+  if (!m) return false; // fail open on bad/unsupported format
+  const endOfDay = new Date(+m[1], +m[2] - 1, +m[3], 23, 59, 59, 999);
+  if (Number.isNaN(endOfDay.getTime())) return false;
+  return new Date() > endOfDay;
 }
 
 export function initAnnouncement() {
