@@ -1,0 +1,111 @@
+/*
+-----------------------------------
+ANNOUNCEMENT BANNER
+Dismissible notice bar at the top of the page content column.
+Holds one or more stacked rows (n-aware for future per-page notices).
+-----------------------------------
+*/
+
+@use "colors";
+
+.qe-announcement-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem 0;
+
+  // Honour the server-rendered `hidden` attribute even though the bar is a
+  // flex container (announcement.js removes it once rows are evaluated).
+  &[hidden] {
+    display: none;
+  }
+}
+
+.qe-announcement {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background-color: #eaf4fb;
+  border: 1px solid #cfe6f7;
+  border-left: 4px solid colors.$primary;
+  border-radius: 4px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #1a3a4d;
+
+  &__text {
+    flex: 1;
+
+    a {
+      color: colors.$primary;
+      text-decoration: underline;
+    }
+
+    // Drop the bottom margin from a trailing paragraph if the message is rich.
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__close {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #5a7184;
+    line-height: 1;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: #1a3a4d;
+    }
+
+    &:focus-visible {
+      outline: 2px solid colors.$primary;
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+/* Dark mode */
+body.dark-theme .qe-announcement {
+  background-color: #1e2a38;
+  border-color: #2f4356;
+  border-left-color: #5fa8e0;
+  color: #d4e6f4;
+
+  .qe-announcement__text a {
+    color: #6cb6ff;
+  }
+
+  .qe-announcement__close {
+    color: #9bb4c8;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+}
+
+/* RTL: move the accent border and align the close button to the left */
+[dir="rtl"] .qe-announcement {
+  border-left: 1px solid #cfe6f7;
+  border-right: 4px solid colors.$primary;
+}
+
+body.dark-theme[dir="rtl"] .qe-announcement,
+[dir="rtl"] body.dark-theme .qe-announcement {
+  border-left-color: #2f4356;
+  border-right-color: #5fa8e0;
+}

@@ -19,6 +19,7 @@ import { initPageHeader, initChangelog } from "./page-header.js";
 import { initStderrWarnings } from "./stderr-warnings.js";
 import { initScrollSpy } from "./scrollspy.js";
 import { initLanguageSwitcher } from "./language-switcher.js";
+import { initAnnouncement } from "./announcement.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   // Load feather icon set
@@ -54,4 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize language switcher
   initLanguageSwitcher();
+
+  // Initialize the dismissible announcement banner
+  initAnnouncement();
 });

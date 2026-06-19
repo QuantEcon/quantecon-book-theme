@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Dismissible announcement banner** — a new `announcement` theme option renders a notice at the top of every page (HTML allowed, so you can include emphasis and a link to changelog notes). Readers dismiss it with a `×`; the dismissal persists in `localStorage` and is keyed to a hash of the message, so editing the text re-shows the banner for everyone who dismissed the previous one. An optional `announcement_expires` ISO date (`YYYY-MM-DD`) auto-hides the banner after that day — enforced client-side (so it disappears for visitors even without a rebuild) and at build time (an already-expired notice is omitted from the HTML). An invalid expiry date logs a warning and fails open. The banner defaults to empty/off, so existing sites are unaffected. The renderer iterates a list of notices internally so per-page announcements can be added additively later (tracked in #403).
+
 ### CI
 - **CI Node bumped 20 → 24** — Node 20 reached end-of-life in April 2026, and the grouped npm updates in #400 raised engine floors (`sass-loader` 17 requires Node ≥22.11). Node 24 is the current active LTS (supported to April 2028). Applies to `ci.yml`, `docs.yml`, and `update-snapshots.yml`; `.nvmrc` and the contributor docs (`CONTRIBUTING.md`, `docs/developer/setup.md`) move to Node 24 in step so local dev matches CI.
 - **Stabilized flaky mobile-chrome visual tests on math-heavy pages** — after the Playwright 1.57→1.60 (Chromium) bump in #400, `math`/`proofs`/`cross-references` full-page screenshots intermittently rendered ~60px shorter than baseline, failing Playwright's dimension check before pixel tolerances apply. `waitForReady` now waits for `document.fonts.ready` and polls until the document height holds steady for 750ms, instead of a fixed 500ms sleep after MathJax typesetting.

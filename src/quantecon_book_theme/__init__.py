@@ -223,6 +223,55 @@ def get_relative_time(past_date):
         return f"{years} year{'s' if years != 1 else ''} ago"
 
 
+def _parse_iso_date(value):
+    """Parse a ``YYYY-MM-DD`` string into a ``date``, or return ``None``."""
+    if not value:
+        return None
+    try:
+        return datetime.strptime(value.strip(), "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        return None
+
+
+def _build_announcements(config_theme):
+    """Build the list of announcements to render in the page banner.
+
+    Currently this is a single site-wide announcement (from the ``announcement``
+    option), but it returns a *list* so per-page announcements can be appended
+    additively in future without changing the template or JavaScript (tracked in
+    GitHub issue #403). Each entry is a dict with:
+
+    - ``html``: the (trusted) HTML message
+    - ``id``: a short content hash, used to key dismissal in localStorage so an
+      edited message re-appears for everyone who dismissed the old one
+    - ``expires_iso``: the ISO expiry date (or ``""``), checked client-side so the
+      banner disappears for visitors on the date even without a rebuild
+
+    An announcement whose expiry has already passed at build time is omitted
+    entirely; the client-side check handles expiry that falls between builds.
+    """
+    announcements = []
+    message = (config_theme.get("announcement") or "").strip()
+    if message:
+        expires = (config_theme.get("announcement_expires") or "").strip()
+        expires_date = _parse_iso_date(expires)
+        # Build-time skip: drop if we are already past the expiry day.
+        if (
+            expires_date is not None
+            and datetime.now(timezone.utc).date() > expires_date
+        ):
+            return announcements
+        announcement_id = hashlib.sha1(message.encode("utf-8")).hexdigest()[:12]
+        announcements.append(
+            {
+                "html": message,
+                "id": announcement_id,
+                "expires_iso": expires if expires_date is not None else "",
+            }
+        )
+    return announcements
+
+
 def _process_languages(config_theme):
     """Validate and normalize language switcher configuration.
 
@@ -492,6 +541,10 @@ def add_to_context(app, pagename, templatename, context, doctree):
         config_theme
     )
 
+    # Build the announcement banner list (currently site-wide only; the list
+    # shape leaves room for additive per-page announcements later).
+    context["announcements"] = _build_announcements(config_theme)
+
     # Make sure the context values are bool
     blns = [
         "theme_use_edit_page_button",
@@ -627,6 +680,24 @@ def _string_or_bool(var):
         return var is None
 
 
+def validate_announcement(app):
+    """Validate the ``announcement_expires`` date once, at build start.
+
+    Fails open: an unparseable date is dropped (cleared) so a typo can never
+    silently hide an active announcement, and a warning is logged so the
+    misconfiguration surfaces during the build.
+    """
+    theme_options = app.config.html_theme_options
+    expires = theme_options.get("announcement_expires", "")
+    if expires and _parse_iso_date(expires) is None:
+        SPHINX_LOGGER.warning(
+            "Invalid announcement_expires %r. Expected ISO date YYYY-MM-DD. "
+            "Ignoring expiry; the announcement will not auto-expire.",
+            expires,
+        )
+        theme_options["announcement_expires"] = ""
+
+
 # Built-in text color schemes
 _VALID_COLOR_SCHEMES = ["seoul256", "gruvbox", "none"]
 
@@ -676,6 +747,7 @@ def setup(app):
 
     app.connect("html-page-context", add_hub_urls)
     app.connect("builder-inited", add_plugins_list)
+    app.connect("builder-inited", validate_announcement)
     app.connect("builder-inited", validate_color_scheme)
     app.connect("builder-inited", setup_pygments_css)
     app.connect("html-page-context", hash_html_assets)
