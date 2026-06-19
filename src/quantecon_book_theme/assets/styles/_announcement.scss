@@ -130,21 +130,25 @@ body.dark-theme[dir="rtl"] .qe-announcement-bar--callout .qe-announcement,
 .qe-announcement-bar--bar {
   // Break out of the centered content column to span the viewport width.
   // .qe-page is centered in the window when the sidebar drawer is closed (its
-  // default), so this aligns the strip to the window edges; it sits just below
-  // the fixed toolbar and scrolls away with the page.
+  // default), so this aligns the strip to the window edges.
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
+  // Sit flush beneath the fixed toolbar (50px tall + its 1px bottom border) by
+  // absorbing the gap that .qe-page's 4rem top padding would otherwise leave,
+  // so the strip reads as a second tier of the header. It scrolls away with
+  // the page.
+  margin-top: calc(51px - 4rem);
   margin-bottom: 1.5rem;
   gap: 0;
 
   .qe-announcement {
     position: relative;
     justify-content: center;
-    padding: 0.4rem 2.75rem; // horizontal room so centred text clears the close
+    padding: 0.25rem 2.75rem; // thin strip; horizontal room clears the close
     background-color: #f3f4f6;
     border-bottom: 1px solid #e3e5ea;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: #3a3a3a;
   }
 
