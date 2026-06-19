@@ -7,7 +7,9 @@ on:
 # pinned SHA. Keep FIXTURES_SHA in sync with .github/workflows/ci.yml.
 env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
-  FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
+  # Kept in sync with ci.yml — pinned to the announcement-banner demo branch
+  # (fixtures PR #1) so regenerated baselines include the banner.
+  FIXTURES_SHA: 1aa4a7288cfca2d3a8020affdea536f74ba6c453
 
 jobs:
   # /update-new-snapshots — only creates MISSING snapshots (safe for adding new tests)
