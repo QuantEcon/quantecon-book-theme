@@ -186,7 +186,7 @@ body.dark-theme .toctree-wrapper .caption-text {
                 {# Announcement banner — hidden until announcement.js decides which
                    rows survive the dismissed/expired check (avoids a flash). #}
                 {%- if announcements %}
-                <div class="qe-announcement-bar" hidden>
+                <div class="qe-announcement-bar qe-announcement-bar--{{ theme_announcement_style | default('bar') }}" hidden>
                     {%- for ann in announcements %}
                     <div class="qe-announcement" role="region" aria-label="Site announcement"
                          data-announcement-id="{{ ann.id }}"

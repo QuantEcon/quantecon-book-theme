@@ -31,6 +31,27 @@ html_theme_options = {
 
 Leave the option empty (the default) and no banner is shown.
 
+## Style
+
+Choose how the banner looks with `announcement_style`:
+
+```yaml
+sphinx:
+  config:
+    html_theme_options:
+      announcement: 'We upgraded to <strong>Anaconda 2026.06</strong>.'
+      announcement_style: bar   # "bar" (default) or "callout"
+```
+
+- **`bar`** (default) — a thin, full-width strip with centered text, sitting just
+  below the toolbar and scrolling away with the page. Discreet; good for standing
+  notices.
+- **`callout`** — a boxed notice in the content column with an accent border.
+  More prominent; good for a notice you want to stand out.
+
+Both styles adapt to dark mode and right-to-left layouts, and both are
+dismissible. An unrecognized value logs a warning and falls back to `bar`.
+
 ## Dismissal
 
 Readers can dismiss the banner with the `×` button. The dismissal is remembered

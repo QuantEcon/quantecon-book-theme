@@ -683,11 +683,18 @@ def _string_or_bool(var):
         return var is None
 
 
-def validate_announcement(app):
-    """Validate the ``announcement_expires`` date once, at build start.
+# Announcement banner styles. "bar" is a thin full-width strip; "callout" is
+# the original boxed in-column notice.
+_VALID_ANNOUNCEMENT_STYLES = ["bar", "callout"]
+_DEFAULT_ANNOUNCEMENT_STYLE = "bar"
 
-    Fails open: an unparseable date is dropped (cleared) so a typo can never
-    silently hide an active announcement, and a warning is logged so the
+
+def validate_announcement(app):
+    """Validate the announcement options once, at build start.
+
+    Fails open: an unparseable ``announcement_expires`` is dropped (cleared) so a
+    typo can never silently hide an active announcement, and an unknown
+    ``announcement_style`` falls back to the default. Warnings are logged so the
     misconfiguration surfaces during the build.
     """
     theme_options = app.config.html_theme_options
@@ -699,6 +706,19 @@ def validate_announcement(app):
             expires,
         )
         theme_options["announcement_expires"] = ""
+
+    style = str(theme_options.get("announcement_style", "") or "").strip().lower()
+    if not style:
+        style = _DEFAULT_ANNOUNCEMENT_STYLE
+    elif style not in _VALID_ANNOUNCEMENT_STYLES:
+        SPHINX_LOGGER.warning(
+            "Unknown announcement_style %r. Valid styles: %s. Falling back to %r.",
+            style,
+            ", ".join(_VALID_ANNOUNCEMENT_STYLES),
+            _DEFAULT_ANNOUNCEMENT_STYLE,
+        )
+        style = _DEFAULT_ANNOUNCEMENT_STYLE
+    theme_options["announcement_style"] = style
 
 
 # Built-in text color schemes

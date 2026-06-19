@@ -44,6 +44,15 @@ class TestAnnouncementThemeOption:
         content = (THEME_DIR / "theme.conf").read_text()
         assert "announcement_expires =" in content
 
+    def test_announcement_style_option_defaults_to_bar(self):
+        content = (THEME_DIR / "theme.conf").read_text()
+        lines = content.splitlines()
+        matching = [
+            line for line in lines if line.strip().startswith("announcement_style =")
+        ]
+        assert len(matching) == 1
+        assert matching[0].strip() == "announcement_style = bar"
+
 
 class TestAnnouncementAssets:
     """The SCSS, JS, and template pieces must be present and wired together."""
@@ -79,6 +88,16 @@ class TestAnnouncementAssets:
         assert "qe-announcement-bar" in content
         assert "data-announcement-id" in content
         assert "data-announcement-expires" in content
+
+    def test_layout_renders_style_modifier(self):
+        content = (THEME_DIR / "layout.html").read_text()
+        assert "qe-announcement-bar--" in content
+        assert "theme_announcement_style" in content
+
+    def test_scss_defines_both_styles(self):
+        content = (ASSETS_DIR / "styles" / "_announcement.scss").read_text()
+        assert ".qe-announcement-bar--bar" in content
+        assert ".qe-announcement-bar--callout" in content
 
 
 class TestParseIsoDate:
@@ -193,3 +212,24 @@ class TestValidateAnnouncement:
         app = self._make_app({"announcement_expires": ""})
         validate_announcement(app)
         assert app.config.html_theme_options["announcement_expires"] == ""
+
+    def test_valid_style_is_preserved(self):
+        for style in ("bar", "callout"):
+            app = self._make_app({"announcement_style": style})
+            validate_announcement(app)
+            assert app.config.html_theme_options["announcement_style"] == style
+
+    def test_style_is_case_insensitive(self):
+        app = self._make_app({"announcement_style": "Callout"})
+        validate_announcement(app)
+        assert app.config.html_theme_options["announcement_style"] == "callout"
+
+    def test_unknown_style_falls_back_to_bar(self):
+        app = self._make_app({"announcement_style": "fancy"})
+        validate_announcement(app)
+        assert app.config.html_theme_options["announcement_style"] == "bar"
+
+    def test_missing_style_defaults_to_bar(self):
+        app = self._make_app({"announcement": "Notice"})
+        validate_announcement(app)
+        assert app.config.html_theme_options["announcement_style"] == "bar"
