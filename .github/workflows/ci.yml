@@ -47,10 +47,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout theme
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Checkout fixtures
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.FIXTURES_REPO }}
           ref: ${{ env.FIXTURES_SHA }}
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout theme
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Download fixtures build artifact
         uses: actions/download-artifact@v8
