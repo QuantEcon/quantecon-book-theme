@@ -92,7 +92,7 @@ jobs:
           path: fixtures/_build/html/
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '24'
           cache: 'npm'
