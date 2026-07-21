@@ -183,6 +183,23 @@ body.dark-theme .toctree-wrapper .caption-text {
 
             <div class="qe-page" id={{pagename}}>
 
+                {# Announcement banner — hidden until announcement.js decides which
+                   rows survive the dismissed/expired check (avoids a flash). #}
+                {%- if announcements %}
+                <div class="qe-announcement-bar qe-announcement-bar--{{ theme_announcement_style | default('bar') }}" hidden>
+                    {%- for ann in announcements %}
+                    <div class="qe-announcement" role="region" aria-label="Site announcement"
+                         data-announcement-id="{{ ann.id }}"
+                         data-announcement-expires="{{ ann.expires_iso }}">
+                        <div class="qe-announcement__text">{{ ann.html }}</div>
+                        <button class="qe-announcement__close" type="button" aria-label="Dismiss announcement">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    {%- endfor %}
+                </div>
+                {%- endif %}
+
                 <div class="qe-page__toc">
 
                     {# Determine sticky TOC and autoexpand settings once #}

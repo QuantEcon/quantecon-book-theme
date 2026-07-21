@@ -1,0 +1,210 @@
+/*
+-----------------------------------
+ANNOUNCEMENT BANNER
+Dismissible notice rendered near the top of the page. Two selectable styles
+(set via the `announcement_style` theme option):
+
+  --bar      thin full-width strip, discrete, scrolls away (default)
+  --callout  boxed in-column notice (the original style)
+
+Both share the same markup, JS, and global dismissal; only the look differs.
+The bar holds one or more stacked rows (n-aware for future per-page notices).
+-----------------------------------
+*/
+
+@use "colors";
+
+/* Shared structure ----------------------------------------------------- */
+.qe-announcement-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem 0;
+
+  // Honour the server-rendered `hidden` attribute even though the bar is a
+  // flex container (announcement.js removes it once rows are evaluated).
+  &[hidden] {
+    display: none;
+  }
+}
+
+.qe-announcement {
+  display: flex;
+  align-items: center;
+  font-family: "Source Sans Pro", sans-serif;
+  line-height: 1.4;
+
+  &__text {
+    // Drop the bottom margin from a trailing paragraph if the message is rich.
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__close {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.15s ease;
+  }
+}
+
+/* Style: callout — boxed in-column notice (original style) -------------- */
+.qe-announcement-bar--callout .qe-announcement {
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background-color: #eaf4fb;
+  border: 1px solid #cfe6f7;
+  border-left: 4px solid colors.$primary;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #1a3a4d;
+
+  .qe-announcement__text {
+    flex: 1;
+
+    a {
+      color: colors.$primary;
+      text-decoration: underline;
+    }
+  }
+
+  .qe-announcement__close {
+    color: #5a7184;
+
+    &:hover {
+      color: #1a3a4d;
+    }
+
+    &:focus-visible {
+      outline: 2px solid colors.$primary;
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+body.dark-theme .qe-announcement-bar--callout .qe-announcement {
+  background-color: #1e2a38;
+  border-color: #2f4356;
+  border-left-color: #5fa8e0;
+  color: #d4e6f4;
+
+  .qe-announcement__text a {
+    color: #6cb6ff;
+  }
+
+  .qe-announcement__close {
+    color: #9bb4c8;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+}
+
+// RTL: move the accent border to the right edge.
+[dir="rtl"] .qe-announcement-bar--callout .qe-announcement {
+  border-left: 1px solid #cfe6f7;
+  border-right: 4px solid colors.$primary;
+}
+
+body.dark-theme[dir="rtl"] .qe-announcement-bar--callout .qe-announcement,
+[dir="rtl"] body.dark-theme .qe-announcement-bar--callout .qe-announcement {
+  border-left-color: #2f4356;
+  border-right-color: #5fa8e0;
+}
+
+/* Style: bar — thin full-width strip (default) ------------------------- */
+.qe-announcement-bar--bar {
+  // Break out of the centered content column to span the viewport width.
+  // .qe-page is centered in the window when the sidebar drawer is closed (its
+  // default), so this aligns the strip to the window edges.
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  // Sit flush beneath the fixed toolbar (50px tall + its 1px bottom border) by
+  // absorbing the gap that .qe-page's 4rem top padding would otherwise leave,
+  // so the strip reads as a second tier of the header. It scrolls away with
+  // the page.
+  margin-top: calc(51px - 4rem);
+  margin-bottom: 1.5rem;
+  gap: 0;
+
+  .qe-announcement {
+    position: relative;
+    justify-content: center;
+    padding: 0.25rem 2.75rem; // thin strip; horizontal room clears the close
+    background-color: #f3f4f6;
+    border-bottom: 1px solid #e3e5ea;
+    font-size: 0.82rem;
+    color: #3a3a3a;
+  }
+
+  .qe-announcement__text {
+    flex: 0 1 auto;
+    text-align: center;
+
+    a {
+      color: colors.$primary;
+      text-decoration: underline;
+    }
+  }
+
+  .qe-announcement__close {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7a7a7a;
+
+    &:hover {
+      color: #1a1a1a;
+    }
+
+    &:focus-visible {
+      outline: 2px solid colors.$primary;
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+body.dark-theme .qe-announcement-bar--bar .qe-announcement {
+  background-color: #1b2130;
+  border-bottom-color: #313a52;
+  color: #c8cbd6;
+
+  .qe-announcement__text a {
+    color: #6cb6ff;
+  }
+}
+
+body.dark-theme .qe-announcement-bar--bar .qe-announcement__close {
+  color: #8a92a6;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+// RTL: move the close button to the left edge.
+[dir="rtl"] .qe-announcement-bar--bar .qe-announcement__close {
+  right: auto;
+  left: 1rem;
+}
