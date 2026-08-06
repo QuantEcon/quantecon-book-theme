@@ -3,8 +3,12 @@ on:
   issue_comment:
     types: [created]
 
-# Snapshots are generated against quantecon-book-theme-fixtures at this
-# pinned SHA. Keep FIXTURES_SHA in sync with .github/workflows/ci.yml.
+# Snapshots are generated against quantecon-book-theme-fixtures. The values
+# below are only a FALLBACK: on `issue_comment` events GitHub always runs the
+# copy of this workflow that is on the default branch, so these would pin the
+# fixtures main uses rather than the ones the PR under test uses. Each job
+# re-reads the pin out of the checked-out PR branch's ci.yml instead — see the
+# "Resolve fixtures pin" step.
 env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
   FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
@@ -39,11 +43,29 @@ jobs:
           ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # Must run after the PR branch is checked out. On `issue_comment` events
+      # the workflow definition comes from the default branch, so the top-level
+      # env pins main's fixtures. A PR that bumps the pin (because it needs a
+      # fixtures change to exercise a new feature) would otherwise regenerate
+      # against the OLD fixtures, produce byte-identical snapshots, and commit
+      # nothing — leaving the PR's visual job failing with no way to fix it.
+      - name: Resolve fixtures pin from the PR branch
+        id: pin
+        run: |
+          CI=.github/workflows/ci.yml
+          SHA=$(grep -oE '^[[:space:]]*FIXTURES_SHA:[[:space:]]*[0-9a-f]{40}' "$CI" \
+                | head -1 | grep -oE '[0-9a-f]{40}' || true)
+          REPO=$(grep -oE '^[[:space:]]*FIXTURES_REPO:[[:space:]]*[^[:space:]]+' "$CI" \
+                | head -1 | awk '{print $2}' || true)
+          echo "sha=${SHA:-$FIXTURES_SHA}" >> "$GITHUB_OUTPUT"
+          echo "repo=${REPO:-$FIXTURES_REPO}" >> "$GITHUB_OUTPUT"
+          echo "Fixtures: ${REPO:-$FIXTURES_REPO}@${SHA:-$FIXTURES_SHA}"
+
       - name: Checkout fixtures
         uses: actions/checkout@v7
         with:
-          repository: ${{ env.FIXTURES_REPO }}
-          ref: ${{ env.FIXTURES_SHA }}
+          repository: ${{ steps.pin.outputs.repo }}
+          ref: ${{ steps.pin.outputs.sha }}
           path: fixtures
 
       - name: Setup Python
@@ -79,15 +101,20 @@ jobs:
           SITE_PATH: fixtures/_build/html
 
       - name: Commit and Push Updated Snapshots
+        id: commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add tests/visual/__snapshots__/
           if git diff --staged --quiet; then
             echo "No snapshot changes to commit"
+            echo "committed=false" >> "$GITHUB_OUTPUT"
           else
+            CHANGED=$(git diff --staged --name-only | wc -l)
             git commit -m "UPDATE: Visual regression snapshots (new)"
             git push
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+            echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Add reaction to comment
@@ -103,13 +130,20 @@ jobs:
 
       - name: Comment on PR
         uses: actions/github-script@v9
+        env:
+          COMMITTED: ${{ steps.commit.outputs.committed }}
+          CHANGED: ${{ steps.commit.outputs.changed }}
         with:
           script: |
+            const committed = process.env.COMMITTED === 'true';
+            const body = committed
+              ? `✅ Added ${process.env.CHANGED} missing visual snapshot(s) and committed them to this PR.`
+              : 'ℹ️ No missing visual snapshots — nothing was committed. Every test already has a baseline, so this PR is unchanged.';
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '✅ Missing visual snapshots have been added and committed to this PR.'
+              body
             });
 
   # /update-snapshots — regenerates ALL snapshots (use when styling changes legitimately)
@@ -142,11 +176,29 @@ jobs:
           ref: ${{ steps.pr.outputs.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # Must run after the PR branch is checked out. On `issue_comment` events
+      # the workflow definition comes from the default branch, so the top-level
+      # env pins main's fixtures. A PR that bumps the pin (because it needs a
+      # fixtures change to exercise a new feature) would otherwise regenerate
+      # against the OLD fixtures, produce byte-identical snapshots, and commit
+      # nothing — leaving the PR's visual job failing with no way to fix it.
+      - name: Resolve fixtures pin from the PR branch
+        id: pin
+        run: |
+          CI=.github/workflows/ci.yml
+          SHA=$(grep -oE '^[[:space:]]*FIXTURES_SHA:[[:space:]]*[0-9a-f]{40}' "$CI" \
+                | head -1 | grep -oE '[0-9a-f]{40}' || true)
+          REPO=$(grep -oE '^[[:space:]]*FIXTURES_REPO:[[:space:]]*[^[:space:]]+' "$CI" \
+                | head -1 | awk '{print $2}' || true)
+          echo "sha=${SHA:-$FIXTURES_SHA}" >> "$GITHUB_OUTPUT"
+          echo "repo=${REPO:-$FIXTURES_REPO}" >> "$GITHUB_OUTPUT"
+          echo "Fixtures: ${REPO:-$FIXTURES_REPO}@${SHA:-$FIXTURES_SHA}"
+
       - name: Checkout fixtures
         uses: actions/checkout@v7
         with:
-          repository: ${{ env.FIXTURES_REPO }}
-          ref: ${{ env.FIXTURES_SHA }}
+          repository: ${{ steps.pin.outputs.repo }}
+          ref: ${{ steps.pin.outputs.sha }}
           path: fixtures
 
       - name: Setup Python
@@ -190,16 +242,20 @@ jobs:
           retention-days: 30
 
       - name: Commit and Push Updated Snapshots
+        id: commit
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add tests/visual/__snapshots__/
           if git diff --staged --quiet; then
             echo "No snapshot changes to commit"
+            echo "committed=false" >> "$GITHUB_OUTPUT"
           else
             CHANGED=$(git diff --staged --name-only | wc -l)
             git commit -m "UPDATE: Regenerate all visual snapshots ($CHANGED files)"
             git push
+            echo "committed=true" >> "$GITHUB_OUTPUT"
+            echo "changed=$CHANGED" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Add reaction to comment
@@ -215,13 +271,25 @@ jobs:
 
       - name: Comment on PR with summary
         uses: actions/github-script@v9
+        env:
+          COMMITTED: ${{ steps.commit.outputs.committed }}
+          CHANGED: ${{ steps.commit.outputs.changed }}
+          FIXTURES: ${{ steps.pin.outputs.repo }}@${{ steps.pin.outputs.sha }}
         with:
           script: |
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const committed = process.env.COMMITTED === 'true';
+            const body = committed
+              ? `✅ Regenerated visual snapshots and committed ${process.env.CHANGED} changed file(s) to this PR.\n\n` +
+                `Built against fixtures \`${process.env.FIXTURES}\`.\n\n` +
+                `📦 [Download snapshot-update-diff artifact](${runUrl}#artifacts) to review before/after images.\n\n` +
+                `⚠️ The bot's commit uses \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines.`
+              : `ℹ️ Snapshots were regenerated but came out identical to the existing baselines, so **nothing was committed** and this PR is unchanged.\n\n` +
+                `Built against fixtures \`${process.env.FIXTURES}\`. If the visual job is still failing, check that this is the fixtures commit you expect — the pin is read from \`.github/workflows/ci.yml\` on this branch.\n\n` +
+                `📦 [Run log](${runUrl})`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: '✅ All visual snapshots have been regenerated and committed to this PR.\n\n' +
-                    `📦 [Download snapshot-update-diff artifact](${runUrl}#artifacts) to review before/after images.`
+              body
             });
