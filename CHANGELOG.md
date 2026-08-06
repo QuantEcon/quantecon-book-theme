@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- **Developer setup troubleshooting for stale `.nodeenv`** — documented the `nodeenv-version-mismatch` error (an in-repo `.nodeenv/` left over from an older pinned Node.js version) and its fix (`rm -rf .nodeenv` then rebuild), which otherwise blocks `tox` and editable installs locally. Also clarified that `tox` keeps the toolchain fully repo-local (`.tox/`, `.nodeenv/`, `node_modules/` are all git-ignored and regenerated), so nothing is installed into the base/global environment.
+
 ### CI
 - **CI Node bumped 20 → 24** — Node 20 reached end-of-life in April 2026, and the grouped npm updates in #400 raised engine floors (`sass-loader` 17 requires Node ≥22.11). Node 24 is the current active LTS (supported to April 2028). Applies to `ci.yml`, `docs.yml`, and `update-snapshots.yml`; `.nvmrc` and the contributor docs (`CONTRIBUTING.md`, `docs/developer/setup.md`) move to Node 24 in step so local dev matches CI.
 - **Stabilized flaky mobile-chrome visual tests on math-heavy pages** — after the Playwright 1.57→1.60 (Chromium) bump in #400, `math`/`proofs`/`cross-references` full-page screenshots intermittently rendered ~60px shorter than baseline, failing Playwright's dimension check before pixel tolerances apply. `waitForReady` now waits for `document.fonts.ready` and polls until the document height holds steady for 750ms, instead of a fixed 500ms sleep after MathJax typesetting.

@@ -77,6 +77,17 @@ See [Testing](testing.md) for detailed information about test fixtures and
 writing new tests.
 :::
 
+### Everything stays repo-local
+
+`tox` keeps the toolchain isolated to this repository — it builds its
+virtualenvs under `.tox/` and installs the package plus its `[test]` extras
+there, never into your base/global Python. The theme's SCSS/JS assets are
+compiled by `sphinx-theme-builder`, which provisions its own Node.js into an
+in-repo `.nodeenv/`; `npm` then installs into `node_modules/` at the repository
+root. All three directories — `.tox/`, `.nodeenv/`, and `node_modules/` — are
+git-ignored, so nothing leaks system-wide and the environment can always be
+rebuilt from scratch by deleting them.
+
 ## Code Style
 
 ### Python
@@ -96,3 +107,28 @@ writing new tests.
 - Modern `@use` / `@forward` syntax (not `@import`)
 - BEM-inspired class naming
 - Maximum 3–4 levels of nesting
+
+## Troubleshooting
+
+### `nodeenv-version-mismatch` when running `tox` or installing
+
+`tox` (or a `pip install -e .`) may fail with something like this:
+
+```text
+× The `nodeenv` for this project is unhealthy.
+╰─> There is a mismatch between what is present in the environment (v18.18.0)
+    and the expected version of NodeJS (v20.18.0).
+```
+
+Your in-repo `.nodeenv/` is stale — it was provisioned against an older pinned
+Node.js version and never refreshed. `sphinx-theme-builder` rebuilds it
+automatically once it's removed:
+
+```console
+$ rm -rf .nodeenv
+$ tox
+```
+
+The pinned version lives under `[tool.sphinx-theme-builder]` (`node-version`)
+in `pyproject.toml`; deleting `.nodeenv/` is always safe since it is git-ignored
+and regenerated on the next build.
