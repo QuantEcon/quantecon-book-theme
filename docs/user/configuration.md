@@ -102,6 +102,23 @@ html_theme_options = {
 
 This disables the left navigation bar.
 
+## Announcement Banner
+
+Show a dismissible notice at the top of every page (for example, a software
+upgrade with a link to changelog notes):
+
+```python
+html_theme_options = {
+    ...
+    "announcement": 'We upgraded to <strong>Anaconda 2026.06</strong> — see the <a href="/status.html">CHANGELOG</a>.',
+    "announcement_expires": "2026-07-01",  # optional ISO date; banner auto-hides after this day
+    ...
+}
+```
+
+See [Announcement Banner](announcements.md) for dismissal behavior and expiry
+details.
+
 ## Add Authors
 
 Display a list of authors just below the page title:

@@ -51,6 +51,7 @@ html_theme_options = {
 :caption: User Guide
 
 configuration
+announcements
 layout
 notebooks
 launch

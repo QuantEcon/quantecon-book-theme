@@ -10,7 +10,9 @@ on:
 # PRs. To bump the pin, update FIXTURES_SHA below.
 env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
-  FIXTURES_SHA: d8ffc17c753ecf45fa25c6062827e1aa9de201b3
+  # Includes the announcement-banner demo in the fixtures config (merged in
+  # fixtures #1), so the preview/visual build exercises the banner.
+  FIXTURES_SHA: 32763e43b893c1520df8e58c0c6e10d81db7f1ac
 
 # Explicit least-privilege permissions:
 #   contents: write        — checkout + upload-artifact + nwtgck/actions-netlify
