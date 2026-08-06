@@ -54,7 +54,7 @@ html_theme_options = {
 pygments_style = 'friendly'  # or 'monokai', 'github-dark', etc.
 ```
 
-See the [full documentation](https://quantecon-book-theme.readthedocs.io/) for all configuration options.
+See the [full documentation](https://quantecon.github.io/quantecon-book-theme/) for all configuration options.
 
 ## Development
 
