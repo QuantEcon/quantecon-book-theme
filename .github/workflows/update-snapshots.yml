@@ -123,15 +123,19 @@ jobs:
         env:
           SITE_PATH: fixtures/_build/html
 
-      # The core of issue #358: nothing validated the baselines this job just
-      # wrote. Re-run the suite (no --update-snapshots) against the very site
-      # that produced them. Passing proves the render is deterministic; failing
-      # means the new baselines are already unreproducible, which is exactly the
-      # state that used to reach `main` unnoticed.
+      # Part of issue #358: nothing checked the baselines this job just wrote.
+      # Re-run the suite (no --update-snapshots) against the very site that
+      # produced them. Note this job adds only MISSING baselines, so a failure
+      # here is not necessarily about what was just written — see the summary
+      # comment below, which is careful not to assert a cause.
       - name: Verify regenerated baselines reproduce
         id: verify
         continue-on-error: true
-        run: npx playwright test
+        # --output is load-bearing: Playwright clears its output dir as the first
+        # task of every run, so without this the verify run would wipe the
+        # regeneration run's images out of test-results/ — the exact content the
+        # snapshot-update-diff artifact exists to carry.
+        run: npx playwright test --output=test-results-verify
         env:
           SITE_PATH: fixtures/_build/html
 
@@ -173,17 +177,29 @@ jobs:
           TOKEN_MODE: ${{ steps.token.outputs.mode }}
         with:
           script: |
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const committed = process.env.COMMITTED === 'true';
+            const verifyOk = process.env.VERIFY === 'success';
             const built = `\n\nBuilt against fixtures \`${process.env.FIXTURES}\`.`;
-            const verified = process.env.VERIFY === 'success'
-              ? `\n\n✅ Re-ran the suite against the new baselines — they reproduce.`
-              : `\n\n❌ Re-ran the suite against the new baselines and it **failed**. The baselines this job just wrote do not reproduce against the same build, which points at non-deterministic rendering rather than a stale baseline. Do not rely on them — investigate before merging.`;
+            // Reported in all four cases, and deliberately non-committal about the
+            // cause. This job runs --update-snapshots=missing, which only creates
+            // ABSENT baselines and leaves existing-but-differing ones failing. The
+            // verify run is the whole suite, and steps.verify.outcome is only
+            // pass/fail — so a failure here may be in what was just added OR in a
+            // pre-existing baseline this PR legitimately invalidated. Don't guess.
+            const verified = committed
+              ? (verifyOk
+                  ? `\n\n✅ Re-ran the full suite afterwards — everything passes.`
+                  : `\n\n❌ Re-ran the full suite afterwards and it **failed**. This job only adds *missing* baselines and leaves existing ones untouched, so the failure may be in the snapshots just added or in an existing baseline this PR invalidated. See the [run log](${runUrl}).`)
+              : (verifyOk
+                  ? `\n\n✅ Re-ran the full suite anyway — the existing baselines still pass.`
+                  : `\n\n❌ Re-ran the full suite anyway and it **failed**. Nothing was added, so the failure is in existing baselines rather than in anything this job wrote — this PR has visual changes that need \`/update-snapshots\`. See the [run log](${runUrl}).`);
             const nextStep = process.env.TOKEN_MODE === 'pat'
               ? `\n\nThe commit was pushed with \`SNAPSHOT_BOT_TOKEN\`, so CI re-runs on this PR automatically.`
               : `\n\n⚠️ The commit was pushed with \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines. (Set a \`SNAPSHOT_BOT_TOKEN\` secret to make this automatic.)`;
             const body = committed
               ? `✅ Added ${process.env.CHANGED} missing visual snapshot(s) and committed them to this PR.${built}${verified}${nextStep}`
-              : `ℹ️ No missing visual snapshots — nothing was committed. Every test already has a baseline, so this PR is unchanged.${built}`;
+              : `ℹ️ No missing visual snapshots — nothing was committed. Every test already has a baseline, so this PR is unchanged.${built}${verified}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -306,7 +322,11 @@ jobs:
       - name: Verify regenerated baselines reproduce
         id: verify
         continue-on-error: true
-        run: npx playwright test
+        # --output is load-bearing: Playwright clears its output dir as the first
+        # task of every run, so without this the verify run would wipe the
+        # regeneration run's images out of test-results/ — the exact content the
+        # snapshot-update-diff artifact exists to carry.
+        run: npx playwright test --output=test-results-verify
         env:
           SITE_PATH: fixtures/_build/html
 
@@ -315,7 +335,9 @@ jobs:
         if: always()
         with:
           name: snapshot-update-diff
-          path: test-results/
+          path: |
+            test-results/
+            test-results-verify/
           retention-days: 30
 
       - name: Commit and Push Updated Snapshots
@@ -358,9 +380,17 @@ jobs:
           script: |
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const committed = process.env.COMMITTED === 'true';
-            const verified = process.env.VERIFY === 'success'
-              ? `✅ Re-ran the suite against the new baselines — they reproduce.`
-              : `❌ Re-ran the suite against the new baselines and it **failed**. The baselines this job just wrote do not reproduce against the same build, which points at non-deterministic rendering rather than a stale baseline. Do not rely on them — investigate before merging.`;
+            const verifyOk = process.env.VERIFY === 'success';
+            // Reported in all four cases. What a failure MEANS depends on whether
+            // anything was written, so don't assert one cause — steps.verify.outcome
+            // only carries pass/fail. Point at the log instead.
+            const verified = committed
+              ? (verifyOk
+                  ? `✅ Re-ran the suite against the new baselines — they reproduce.`
+                  : `❌ Re-ran the suite against the new baselines and it **failed** — the snapshots just written do not reproduce against the same build. See the [run log](${runUrl}) before relying on them.`)
+              : (verifyOk
+                  ? `✅ Re-ran the suite against the existing baselines — they still pass.`
+                  : `❌ Re-ran the suite and it **failed**, even though no baselines changed — the existing baselines do not reproduce against this build. See the [run log](${runUrl}).`);
             const nextStep = process.env.TOKEN_MODE === 'pat'
               ? `The commit was pushed with \`SNAPSHOT_BOT_TOKEN\`, so CI re-runs on this PR automatically.`
               : `⚠️ The commit was pushed with \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines. (Set a \`SNAPSHOT_BOT_TOKEN\` secret to make this automatic.)`;
@@ -372,6 +402,7 @@ jobs:
                 `${nextStep}`
               : `ℹ️ Snapshots were regenerated but came out identical to the existing baselines, so **nothing was committed** and this PR is unchanged.\n\n` +
                 `Built against fixtures \`${process.env.FIXTURES}\`. If the visual job is still failing, check that this is the fixtures commit you expect — the pin is read from \`.github/workflows/ci.yml\` on this branch.\n\n` +
+                `${verified}\n\n` +
                 `📦 [Run log](${runUrl})`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,

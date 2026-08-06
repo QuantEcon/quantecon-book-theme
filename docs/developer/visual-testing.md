@@ -86,15 +86,30 @@ write access.
 The `/update-snapshots` command also uploads a `snapshot-update-diff` artifact
 with before/after images for review.
 
-### Baselines are verified before they are committed
+### Baselines are re-checked before the commit
 
 After regenerating, the workflow runs the suite once more *without*
-`--update-snapshots`, against the same built site that produced the images. A
-pass means the render is deterministic. A failure means the baselines the job
-just wrote already don't reproduce — which points at non-deterministic
-rendering (animation, font loading, a timing-dependent layout) rather than a
-stale baseline. The summary comment reports the outcome either way, so a bad
-regeneration is visible immediately instead of surfacing later on `main`.
+`--update-snapshots`, against the same built site that produced the images. The
+summary comment reports the outcome either way, so a bad regeneration is visible
+immediately instead of surfacing later on `main`. Note this reports; it does not
+gate — the commit and push happen regardless, so the images are always available
+to inspect.
+
+What a failure means depends on which command you ran:
+
+- After `/update-snapshots`, every baseline was rewritten, so a failure means
+  the images just written don't reproduce against the same build — that is,
+  the render is not deterministic.
+- After `/update-new-snapshots`, only *missing* baselines were created and
+  existing ones were left untouched, while the verify run covers the whole
+  suite. A failure there may be in what was just added, or in an existing
+  baseline the PR legitimately invalidated. The comment says so rather than
+  guessing; use `/update-snapshots` if the latter.
+
+The verify run writes to its own `test-results-verify/` directory. This matters:
+Playwright clears its output directory at the start of every run, so sharing
+`test-results/` would erase the regeneration images that the
+`snapshot-update-diff` artifact exists to carry.
 
 ### Making the bot's commit trigger CI
 
