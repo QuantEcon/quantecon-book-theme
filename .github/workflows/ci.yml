@@ -49,17 +49,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout theme
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Checkout fixtures
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.FIXTURES_REPO }}
           ref: ${{ env.FIXTURES_SHA }}
           path: fixtures
 
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
           cache: "pip"
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout theme
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Download fixtures build artifact
         uses: actions/download-artifact@v8
@@ -94,7 +94,7 @@ jobs:
           path: fixtures/_build/html/
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '24'
           cache: 'npm'
