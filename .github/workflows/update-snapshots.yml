@@ -43,11 +43,28 @@ jobs:
             core.setOutput('ref', pr.data.head.ref);
             core.setOutput('sha', pr.data.head.sha);
 
+      # SNAPSHOT_BOT_TOKEN (optional) is what makes the bot's commit trigger CI.
+      # Commits pushed with GITHUB_TOKEN never raise `push`/`pull_request` events
+      # — GitHub's loop guard — so the regenerated baselines land with the PR's
+      # visual check still showing its old, stale failure. If the secret is not
+      # set this falls back to GITHUB_TOKEN and everything still works; the
+      # summary comment then tells the author to push an empty commit.
       - name: Checkout PR branch
         uses: actions/checkout@v7
         with:
           ref: ${{ steps.pr.outputs.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SNAPSHOT_BOT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Detect push-token mode
+        id: token
+        env:
+          BOT_TOKEN: ${{ secrets.SNAPSHOT_BOT_TOKEN }}
+        run: |
+          if [ -n "$BOT_TOKEN" ]; then
+            echo "mode=pat" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=github_token" >> "$GITHUB_OUTPUT"
+          fi
 
       # Must run after the PR branch is checked out. On `issue_comment` events
       # the workflow definition comes from the default branch, so the top-level
@@ -106,6 +123,18 @@ jobs:
         env:
           SITE_PATH: fixtures/_build/html
 
+      # The core of issue #358: nothing validated the baselines this job just
+      # wrote. Re-run the suite (no --update-snapshots) against the very site
+      # that produced them. Passing proves the render is deterministic; failing
+      # means the new baselines are already unreproducible, which is exactly the
+      # state that used to reach `main` unnoticed.
+      - name: Verify regenerated baselines reproduce
+        id: verify
+        continue-on-error: true
+        run: npx playwright test
+        env:
+          SITE_PATH: fixtures/_build/html
+
       - name: Commit and Push Updated Snapshots
         id: commit
         run: |
@@ -140,13 +169,20 @@ jobs:
           COMMITTED: ${{ steps.commit.outputs.committed }}
           CHANGED: ${{ steps.commit.outputs.changed }}
           FIXTURES: ${{ steps.pin.outputs.repo }}@${{ steps.pin.outputs.sha }}
+          VERIFY: ${{ steps.verify.outcome }}
+          TOKEN_MODE: ${{ steps.token.outputs.mode }}
         with:
           script: |
             const committed = process.env.COMMITTED === 'true';
             const built = `\n\nBuilt against fixtures \`${process.env.FIXTURES}\`.`;
+            const verified = process.env.VERIFY === 'success'
+              ? `\n\n✅ Re-ran the suite against the new baselines — they reproduce.`
+              : `\n\n❌ Re-ran the suite against the new baselines and it **failed**. The baselines this job just wrote do not reproduce against the same build, which points at non-deterministic rendering rather than a stale baseline. Do not rely on them — investigate before merging.`;
+            const nextStep = process.env.TOKEN_MODE === 'pat'
+              ? `\n\nThe commit was pushed with \`SNAPSHOT_BOT_TOKEN\`, so CI re-runs on this PR automatically.`
+              : `\n\n⚠️ The commit was pushed with \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines. (Set a \`SNAPSHOT_BOT_TOKEN\` secret to make this automatic.)`;
             const body = committed
-              ? `✅ Added ${process.env.CHANGED} missing visual snapshot(s) and committed them to this PR.${built}\n\n` +
-                `⚠️ The bot's commit uses \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines.`
+              ? `✅ Added ${process.env.CHANGED} missing visual snapshot(s) and committed them to this PR.${built}${verified}${nextStep}`
               : `ℹ️ No missing visual snapshots — nothing was committed. Every test already has a baseline, so this PR is unchanged.${built}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -182,11 +218,28 @@ jobs:
             core.setOutput('ref', pr.data.head.ref);
             core.setOutput('sha', pr.data.head.sha);
 
+      # SNAPSHOT_BOT_TOKEN (optional) is what makes the bot's commit trigger CI.
+      # Commits pushed with GITHUB_TOKEN never raise `push`/`pull_request` events
+      # — GitHub's loop guard — so the regenerated baselines land with the PR's
+      # visual check still showing its old, stale failure. If the secret is not
+      # set this falls back to GITHUB_TOKEN and everything still works; the
+      # summary comment then tells the author to push an empty commit.
       - name: Checkout PR branch
         uses: actions/checkout@v7
         with:
           ref: ${{ steps.pr.outputs.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SNAPSHOT_BOT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Detect push-token mode
+        id: token
+        env:
+          BOT_TOKEN: ${{ secrets.SNAPSHOT_BOT_TOKEN }}
+        run: |
+          if [ -n "$BOT_TOKEN" ]; then
+            echo "mode=pat" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=github_token" >> "$GITHUB_OUTPUT"
+          fi
 
       # Must run after the PR branch is checked out. On `issue_comment` events
       # the workflow definition comes from the default branch, so the top-level
@@ -245,6 +298,18 @@ jobs:
         env:
           SITE_PATH: fixtures/_build/html
 
+      # The core of issue #358: nothing validated the baselines this job just
+      # wrote. Re-run the suite (no --update-snapshots) against the very site
+      # that produced them. Passing proves the render is deterministic; failing
+      # means the new baselines are already unreproducible, which is exactly the
+      # state that used to reach `main` unnoticed.
+      - name: Verify regenerated baselines reproduce
+        id: verify
+        continue-on-error: true
+        run: npx playwright test
+        env:
+          SITE_PATH: fixtures/_build/html
+
       - name: Upload Old vs New Diff
         uses: actions/upload-artifact@v7
         if: always()
@@ -287,15 +352,24 @@ jobs:
           COMMITTED: ${{ steps.commit.outputs.committed }}
           CHANGED: ${{ steps.commit.outputs.changed }}
           FIXTURES: ${{ steps.pin.outputs.repo }}@${{ steps.pin.outputs.sha }}
+          VERIFY: ${{ steps.verify.outcome }}
+          TOKEN_MODE: ${{ steps.token.outputs.mode }}
         with:
           script: |
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const committed = process.env.COMMITTED === 'true';
+            const verified = process.env.VERIFY === 'success'
+              ? `✅ Re-ran the suite against the new baselines — they reproduce.`
+              : `❌ Re-ran the suite against the new baselines and it **failed**. The baselines this job just wrote do not reproduce against the same build, which points at non-deterministic rendering rather than a stale baseline. Do not rely on them — investigate before merging.`;
+            const nextStep = process.env.TOKEN_MODE === 'pat'
+              ? `The commit was pushed with \`SNAPSHOT_BOT_TOKEN\`, so CI re-runs on this PR automatically.`
+              : `⚠️ The commit was pushed with \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines. (Set a \`SNAPSHOT_BOT_TOKEN\` secret to make this automatic.)`;
             const body = committed
               ? `✅ Regenerated visual snapshots and committed ${process.env.CHANGED} changed file(s) to this PR.\n\n` +
                 `Built against fixtures \`${process.env.FIXTURES}\`.\n\n` +
+                `${verified}\n\n` +
                 `📦 [Download snapshot-update-diff artifact](${runUrl}#artifacts) to review before/after images.\n\n` +
-                `⚠️ The bot's commit uses \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines.`
+                `${nextStep}`
               : `ℹ️ Snapshots were regenerated but came out identical to the existing baselines, so **nothing was committed** and this PR is unchanged.\n\n` +
                 `Built against fixtures \`${process.env.FIXTURES}\`. If the visual job is still failing, check that this is the fixtures commit you expect — the pin is read from \`.github/workflows/ci.yml\` on this branch.\n\n` +
                 `📦 [Run log](${runUrl})`;
