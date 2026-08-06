@@ -16,9 +16,15 @@ env:
 jobs:
   # /update-new-snapshots — only creates MISSING snapshots (safe for adding new tests)
   update-new-snapshots:
+    # The author_association check is a privilege gate, not a convenience: these
+    # jobs check out the PR branch and execute its code (`pip install .` runs the
+    # PR's build backend) with a `contents: write` token. Without it, anyone able
+    # to comment on a PR could trigger that.
     if: |
       github.event.issue.pull_request &&
-      contains(github.event.comment.body, '/update-new-snapshots')
+      contains(github.event.comment.body, '/update-new-snapshots') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'),
+               github.event.comment.author_association)
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -110,7 +116,7 @@ jobs:
             echo "No snapshot changes to commit"
             echo "committed=false" >> "$GITHUB_OUTPUT"
           else
-            CHANGED=$(git diff --staged --name-only | wc -l)
+            CHANGED=$(git diff --staged --name-only | wc -l | tr -d "[:space:]")
             git commit -m "UPDATE: Visual regression snapshots (new)"
             git push
             echo "committed=true" >> "$GITHUB_OUTPUT"
@@ -133,12 +139,15 @@ jobs:
         env:
           COMMITTED: ${{ steps.commit.outputs.committed }}
           CHANGED: ${{ steps.commit.outputs.changed }}
+          FIXTURES: ${{ steps.pin.outputs.repo }}@${{ steps.pin.outputs.sha }}
         with:
           script: |
             const committed = process.env.COMMITTED === 'true';
+            const built = `\n\nBuilt against fixtures \`${process.env.FIXTURES}\`.`;
             const body = committed
-              ? `✅ Added ${process.env.CHANGED} missing visual snapshot(s) and committed them to this PR.`
-              : 'ℹ️ No missing visual snapshots — nothing was committed. Every test already has a baseline, so this PR is unchanged.';
+              ? `✅ Added ${process.env.CHANGED} missing visual snapshot(s) and committed them to this PR.${built}\n\n` +
+                `⚠️ The bot's commit uses \`GITHUB_TOKEN\`, which does not trigger workflows — push an empty commit to re-run CI against the new baselines.`
+              : `ℹ️ No missing visual snapshots — nothing was committed. Every test already has a baseline, so this PR is unchanged.${built}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -148,10 +157,13 @@ jobs:
 
   # /update-snapshots — regenerates ALL snapshots (use when styling changes legitimately)
   update-all-snapshots:
+    # See the privilege-gate note on update-new-snapshots above.
     if: |
       github.event.issue.pull_request &&
       contains(github.event.comment.body, '/update-snapshots') &&
-      !contains(github.event.comment.body, '/update-new-snapshots')
+      !contains(github.event.comment.body, '/update-new-snapshots') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'),
+               github.event.comment.author_association)
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -251,7 +263,7 @@ jobs:
             echo "No snapshot changes to commit"
             echo "committed=false" >> "$GITHUB_OUTPUT"
           else
-            CHANGED=$(git diff --staged --name-only | wc -l)
+            CHANGED=$(git diff --staged --name-only | wc -l | tr -d "[:space:]")
             git commit -m "UPDATE: Regenerate all visual snapshots ($CHANGED files)"
             git push
             echo "committed=true" >> "$GITHUB_OUTPUT"
