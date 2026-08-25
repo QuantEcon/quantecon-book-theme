@@ -73,6 +73,14 @@ body.dark-theme {
       color: var(--qe-dark-text);
     }
 
+    &-meta {
+      border-bottom-color: var(--qe-dark-accent);
+    }
+
+    &-translators {
+      color: var(--qe-dark-text-muted);
+    }
+
     &-changed {
       color: var(--qe-dark-text-muted);
       border-bottom-color: var(--qe-dark-accent);

@@ -277,27 +277,41 @@ body.dark-theme .toctree-wrapper .caption-text {
 
                     <!-- Authors section -->
                     {%- if theme_authors | length > 0 %}
-                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">
+                        <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{% if theme_authors_label %}<span class="qe-page__header-authors-label">{{ theme_authors_label }}</span> {% endif %}
                             {% for author in theme_authors %}
                                 {% if loop.last and theme_authors|length >= 2 %}
-                                    and <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                    and <a href="{{ author.url }}" rel="author" target="_blank"><span>{{ author.name }}</span></a>
                                 {% elif loop.first and theme_authors|length <= 2 %}
-                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>
+                                    <a href="{{ author.url }}" rel="author" target="_blank"><span>{{ author.name }}</span></a>
                                 {% else %}
-                                    <a href="{{ author.url }}" target="_blank"><span>{{ author.name }}</span></a>,
+                                    <a href="{{ author.url }}" rel="author" target="_blank"><span>{{ author.name }}</span></a>,
                                 {% endif %}
                             {% endfor %}
                         </p>
-                    {%- else %}
+                    {%- elif not authors_suppressed %}
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
                     {%- endif %}
 
                     <!-- Last modified / Changelog dropdown -->
+                    {%- if theme_translators | length > 0 %}
+                    <div class="qe-page__header-meta">
+                    {%- endif %}
                     {%- if has_git_info %}
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
                             Last changed: {{ last_modified_date }}
                             <span class="changelog-icon">▼</span>
                         </button>
+                    {%- endif %}
+                    {%- if theme_translators | length > 0 %}
+                        <!-- Translators section -->
+                        <p class="qe-page__header-translators">
+                            {%- if theme_translators_label %}<span class="qe-page__header-translators-label">{{ theme_translators_label }}</span> {% endif -%}
+                            {%- for translator in theme_translators -%}
+                                {%- if not loop.first %}{% if loop.last %}{% if theme_translators|length > 2 %},{% endif %} and {% else %}, {% endif %}{% endif -%}
+                                {%- if translator.url %}<a href="{{ translator.url }}" target="_blank"><span>{{ translator.name }}</span></a>{% else %}<span>{{ translator.name }}</span>{% endif -%}
+                            {%- endfor -%}
+                        </p>
+                    </div>
                     {%- endif %}
 
                     <!-- Changelog dropdown content -->

@@ -52,6 +52,7 @@ html_theme_options = {
 
 configuration
 announcements
+authors
 layout
 notebooks
 launch

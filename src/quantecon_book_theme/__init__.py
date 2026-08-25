@@ -1,12 +1,14 @@
 """A lightweight book theme based on the pydata sphinx theme."""
 
 from pathlib import Path
+import json
 import os
 import hashlib
 from functools import lru_cache
 import subprocess
 from datetime import datetime, timedelta, timezone
 
+import yaml
 from docutils import nodes
 from sphinx.util import logging
 from bs4 import BeautifulSoup as bs
@@ -297,6 +299,169 @@ def _process_languages(config_theme):
     return [], ""
 
 
+def _normalise_people(value):
+    """Coerce an authors/translators value into a list of ``{name, url}`` dicts.
+
+    Accepts the documented list-of-dicts form, and tolerates a list of plain
+    strings, a single dict, or a single string. Anything else -- including
+    ``None`` and the empty string that ``theme.conf`` uses for its default --
+    becomes an empty list. Entries without a usable name are dropped. Name and
+    url strings are passed through untouched so that projects already setting
+    ``authors`` keep identical output.
+    """
+    if isinstance(value, (str, dict)):
+        value = [value]
+    if not isinstance(value, (list, tuple)):
+        return []
+    people = []
+    for item in value:
+        if isinstance(item, dict):
+            name = item.get("name", "")
+            url = item.get("url", "") or ""
+        elif isinstance(item, str):
+            name, url = item, ""
+        else:
+            continue
+        name = name if isinstance(name, str) else str(name)
+        url = url if isinstance(url, str) else str(url)
+        if name.strip():
+            people.append({"name": name, "url": url})
+    return people
+
+
+def _is_fence(line, width=3):
+    """True for a front matter fence: a run of at least ``width`` dashes."""
+    return len(line) >= width and line.count("-") == len(line)
+
+
+def _md_front_matter(path):
+    """Return the leading YAML front matter of a markdown source, or ``{}``.
+
+    Sources are opened as ``utf-8-sig`` to match Sphinx's own
+    ``source_encoding`` default, so that a byte-order mark does not hide front
+    matter the parser goes on to read. The fence is a run of three or more
+    dashes closed by a run at least as long, which is what MyST accepts.
+    """
+    try:
+        with open(path, encoding="utf-8-sig") as handle:
+            opening = handle.readline().strip()
+            if not _is_fence(opening):
+                return {}
+            lines = []
+            for line in handle:
+                if _is_fence(line.strip(), width=len(opening)):
+                    break
+                lines.append(line)
+            else:
+                # Unterminated block: not front matter as far as MyST is concerned.
+                return {}
+    except (OSError, UnicodeDecodeError):
+        return {}
+    try:
+        data = yaml.safe_load("".join(lines))
+    except yaml.YAMLError:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _nb_front_matter(path):
+    """Return the notebook-level metadata of an ``.ipynb`` source, or ``{}``."""
+    try:
+        with open(path, encoding="utf-8-sig") as handle:
+            notebook = json.load(handle)
+    except (OSError, UnicodeDecodeError, ValueError):
+        return {}
+    if not isinstance(notebook, dict):
+        return {}
+    metadata = notebook.get("metadata")
+    return metadata if isinstance(metadata, dict) else {}
+
+
+@lru_cache(maxsize=None)
+def _read_front_matter(path, mtime_ns, size):
+    """Front matter for one source file, cached on its path and mtime/size.
+
+    The returned mapping is shared between callers, so treat it as read-only.
+    """
+    if path.endswith(".ipynb"):
+        return _nb_front_matter(path)
+    if path.endswith((".md", ".myst", ".markdown")):
+        return _md_front_matter(path)
+    return {}
+
+
+def _page_front_matter(app, pagename):
+    """Front matter for ``pagename``, or ``{}`` when there is none to read.
+
+    The source file is read directly rather than going through
+    ``app.env.metadata``, because docutils treats ``authors`` as a
+    bibliographic field: MyST's serialised value comes back through that path
+    smart-quoted and split on commas, and in a *different* shape again once
+    ``language`` is set to a locale that does not list ``authors`` among its
+    bibliographic fields. Reading the source keeps one shape in every edition.
+
+    Returns ``{}`` for generated pages such as ``genindex`` and ``search``, and
+    for source formats (notably reStructuredText) whose field lists cannot
+    express a list of mappings.
+    """
+    try:
+        path = str(app.env.doc2path(pagename))
+        stat = os.stat(path)
+    except (OSError, KeyError, AttributeError):
+        return {}
+    return _read_front_matter(path, stat.st_mtime_ns, stat.st_size)
+
+
+def _front_matter_people(value):
+    """Interpret one front matter authors/translators value.
+
+    Returns the people to render, or ``None`` when the value is not something
+    this theme should act on.
+
+    Front matter is stricter than ``html_theme_options`` on purpose. ``authors``
+    is shared ground -- docutils treats it as a bibliographic field and nbformat
+    defines it in the notebook schema -- so a page may already carry one written
+    for something else entirely, in a shape this theme cannot read. Only the
+    documented list-of-mappings form counts as an override, and only an
+    explicitly empty value suppresses the block; anything else is left alone so
+    the project-level credit still renders.
+    """
+    if value is None or (isinstance(value, (list, tuple, str)) and not value):
+        return []
+    if not isinstance(value, (list, tuple)):
+        return None
+    if not all(isinstance(item, dict) for item in value):
+        return None
+    people = _normalise_people(value)
+    return people if len(people) == len(value) else None
+
+
+def _resolve_people(front_matter, config_theme, key):
+    """Resolve the authors or translators of one page.
+
+    Returns ``(people, suppressed)``. Page front matter replaces the
+    project-level value outright rather than merging with it, and an absent key
+    inherits the project value. ``suppressed`` is True when a page set the key
+    explicitly to nobody, which leaves the block off that page rather than
+    falling back to the project-wide credit.
+    """
+    if key in front_matter:
+        people = _front_matter_people(front_matter[key])
+        if people is not None:
+            return people, not people
+    return _normalise_people(config_theme.get(key)), False
+
+
+def _resolve_label(front_matter, context, key):
+    """Resolve an attribution label, letting page front matter override it.
+
+    The fallback is whatever the theme configuration already placed in the
+    context, so ``theme.conf`` stays the only place a default is written down.
+    """
+    value = front_matter[key] if key in front_matter else context.get("theme_" + key)
+    return "" if value is None else str(value)
+
+
 def add_to_context(app, pagename, templatename, context, doctree):
     """Functions and variable additions to context."""
 
@@ -547,6 +712,22 @@ def add_to_context(app, pagename, templatename, context, doctree):
     # Build the announcement banner list (currently site-wide only; the list
     # shape leaves room for additive per-page announcements later).
     context["announcements"] = _build_announcements(config_theme)
+
+    # Authors and translators, either of which a page may override in its own
+    # front matter
+    front_matter = _page_front_matter(app, pagename)
+    context["theme_authors"], context["authors_suppressed"] = _resolve_people(
+        front_matter, config_theme, "authors"
+    )
+    context["theme_translators"], _ = _resolve_people(
+        front_matter, config_theme, "translators"
+    )
+    context["theme_authors_label"] = _resolve_label(
+        front_matter, context, "authors_label"
+    )
+    context["theme_translators_label"] = _resolve_label(
+        front_matter, context, "translators_label"
+    )
 
     # Make sure the context values are bool
     blns = [

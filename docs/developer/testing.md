@@ -30,6 +30,7 @@ tests/
 ├── test_module_structure.py # Module organization tests
 ├── test_custom_colors.py    # Color scheme tests
 ├── test_rtl_functionality.py # RTL language support tests
+├── test_translators.py      # Author and translator attribution tests
 └── sites/                   # Test site configurations
     ├── base/                # Basic test site
     └── rtl_test/            # RTL-specific test site
