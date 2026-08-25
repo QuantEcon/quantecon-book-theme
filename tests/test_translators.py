@@ -168,16 +168,13 @@ class TestResolvePeople:
         assert people == [{"name": "Page Author", "url": "https://p.org"}]
         assert suppressed is False
 
-    def test_explicit_empty_list_suppresses(self):
+    @pytest.mark.parametrize("empty", [None, "", [], ()])
+    def test_any_explicitly_empty_value_suppresses(self, empty):
+        """All of these say "nobody" rather than "I have nothing to say".
+        ``None`` is what a bare ``authors:`` key parses to, and an empty string
+        is what an interpolated template variable leaves behind."""
         people, suppressed = _resolve_people(
-            {"authors": []}, {"authors": AUTHORS}, "authors"
-        )
-        assert people == []
-        assert suppressed is True
-
-    def test_explicit_null_suppresses(self):
-        people, suppressed = _resolve_people(
-            {"authors": None}, {"authors": AUTHORS}, "authors"
+            {"authors": empty}, {"authors": AUTHORS}, "authors"
         )
         assert people == []
         assert suppressed is True

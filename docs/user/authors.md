@@ -88,12 +88,15 @@ that wants to credit both a coordinator and its own translator must list both.
 |--------------|---------------------|
 | key absent | inherits the project-level value |
 | `translators: []` | the block is left out on that page |
+| `translators:` (no value) or `translators: ""` | likewise left out |
 | `translators: [{name: …}]` | replaces the project value entirely |
 | any other shape | ignored — inherits the project-level value |
 
-An explicit empty list is the way to mark a page that has no translator yet — an
-untranslated or machine-translated page in an otherwise translated edition should
-not carry a human's name.
+Any explicitly empty value is the way to mark a page that has no translator yet —
+an untranslated or machine-translated page in an otherwise translated edition
+should not carry a human's name. An empty list is the clearest form, but a bare key
+and an empty string mean the same thing, since all three say "nobody" rather than
+"I have nothing to say about this".
 
 `authors_label` and `translators_label` can be overridden per page in the same way.
 
