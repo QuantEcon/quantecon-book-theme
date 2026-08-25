@@ -10,13 +10,18 @@ on:
 # PRs. To bump the pin, update FIXTURES_SHA below.
 env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
-  # Includes the announcement-banner demo (merged in fixtures #1) and the
-  # author/translator byline demo (fixtures #2), so the preview/visual build
-  # exercises both. Points at the fixtures #2 branch head rather than a merge
-  # commit: that PR's own self-check builds against the latest *released*
-  # theme, which does not know the `translators` option yet, so it stays red
-  # until this ships. Re-pin to the merge commit once it does.
-  FIXTURES_SHA: ab9ba206d48870e86b822c74380546e42fcba299
+  # Includes the announcement-banner demo (fixtures #1) and the author and
+  # translator byline demo (fixtures #2), so the preview/visual build
+  # exercises both.
+  #
+  # Adding a fixtures demo of a brand-new theme option is a two-step dance:
+  # the fixtures repo's own self-check installs the latest *released* theme
+  # and builds with --warningiserror, so it fails with "unsupported theme
+  # option" until that option ships. Pin this to the fixtures branch head to
+  # get the demo under test here (this repo installs the PR's own theme), then
+  # re-pin to the merge commit after the release. Options inherited from
+  # pydata_sphinx_theme, such as `announcement`, skip the dance entirely.
+  FIXTURES_SHA: 0048d104ed1afa587b824d130e5210dc969713c5
 
 # Explicit least-privilege permissions:
 #   contents: write        — checkout + upload-artifact + nwtgck/actions-netlify
