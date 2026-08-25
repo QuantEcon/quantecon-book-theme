@@ -11,7 +11,7 @@ on:
 # "Resolve fixtures pin" step.
 env:
   FIXTURES_REPO: QuantEcon/quantecon-book-theme-fixtures
-  FIXTURES_SHA: ab9ba206d48870e86b822c74380546e42fcba299
+  FIXTURES_SHA: 0048d104ed1afa587b824d130e5210dc969713c5
 
 jobs:
   # /update-new-snapshots — only creates MISSING snapshots (safe for adding new tests)
