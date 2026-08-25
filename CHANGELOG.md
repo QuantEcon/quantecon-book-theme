@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Dismissible announcement banner** — a new `announcement` theme option renders a notice at the top of every page (HTML allowed, so you can include emphasis and a link to changelog notes). Readers dismiss it with a `×`; the dismissal persists in `localStorage` and is keyed to a hash of the message, so editing the text re-shows the banner for everyone who dismissed the previous one. An optional `announcement_expires` ISO date (`YYYY-MM-DD`) auto-hides the banner after that day — enforced client-side (so it disappears for visitors even without a rebuild) and at build time (an already-expired notice is omitted from the HTML). An invalid expiry date logs a warning and fails open. Two looks are available via `announcement_style`: `bar` (default) — a thin full-width strip that scrolls away below the toolbar — or `callout` — a boxed in-column notice; both adapt to dark mode and RTL. The banner defaults to empty/off, so existing sites are unaffected. The renderer iterates a list of notices internally so per-page announcements can be added additively later (tracked in #403).
+
 ### Documentation
 - **Developer setup troubleshooting for stale `.nodeenv`** — documented the `nodeenv-version-mismatch` error (an in-repo `.nodeenv/` left over from an older pinned Node.js version) and its fix (`rm -rf .nodeenv` then rebuild), which otherwise blocks `tox` and editable installs locally. Also clarified that `tox` keeps the toolchain fully repo-local (`.tox/`, `.nodeenv/`, `node_modules/` are all git-ignored and regenerated), so nothing is installed into the base/global environment.
 
