@@ -497,6 +497,14 @@ class TestRendering:
         assert len(soup.select("p.qe-page__header-authors a[rel=author]")) == 2
         assert soup.select("p.qe-page__header-translators a[rel=author]") == []
 
+    def test_translators_share_the_last_changed_row(self, pages):
+        """Translators sit in the meta wrapper next to the "Last changed"
+        control rather than on a line of their own, so the header does not grow
+        a fourth row."""
+        meta = pages["inherit"].select_one("div.qe-page__header-meta")
+        assert meta is not None
+        assert meta.select_one("p.qe-page__header-translators") is not None
+
     def test_page_front_matter_replaces_both_lists(self, pages):
         soup = pages["override"]
         assert attribution(soup, "authors") == "Page Author"
@@ -561,6 +569,12 @@ class TestRenderingWithoutTranslators:
 
     def test_no_translators_comment_left_behind(self, pages):
         assert "Translators section" not in str(pages["plain"])
+
+    def test_no_meta_wrapper_left_behind(self, pages):
+        """The wrapper that puts translators on the "Last changed" row only
+        exists when there are translators, so the accent rule stays on the
+        button and the markup is unchanged for everyone else."""
+        assert pages["plain"].select("div.qe-page__header-meta") == []
 
     def test_authors_still_render(self, pages):
         assert attribution(pages["plain"], "authors") == (

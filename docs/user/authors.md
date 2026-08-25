@@ -1,7 +1,7 @@
 # Authors and Translators
 
 The theme renders author credits below the page title, and translated editions can
-credit their translators in the same place.
+credit their translators in the page header alongside them.
 
 ```{contents}
 :local:
@@ -40,9 +40,12 @@ sphinx:
           url: https://example.org/zhang
 ```
 
-Authors and translators are rendered as separate lines so the two are never
-confused. Author links carry `rel="author"`, which tells crawlers who wrote the
-page; translator links deliberately do not.
+Authors keep the line directly beneath the page title. Translators sit one row
+lower, right-aligned on the same line as the "Last changed" control and sharing its
+accent rule, so crediting them does not add a fourth stacked line to the header. On
+narrow screens the two stack instead. The two groups are never confused for one
+another: author links carry `rel="author"`, which tells crawlers who wrote the page,
+and translator links deliberately do not.
 
 ## Labels
 

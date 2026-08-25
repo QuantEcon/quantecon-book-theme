@@ -362,13 +362,37 @@ Main page structure and components
       }
     }
 
+    // Shares the "Last changed" row so the header does not grow a fourth
+    // stacked line. The accent rule moves here from the button, since it now
+    // has to span both.
+    &-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      column-gap: 1.5rem;
+      border-bottom: 5px solid colors.$primary;
+
+      .qe-page__header-changed {
+        width: auto;
+        border-bottom: none;
+      }
+
+      @media (max-width: breakpoints.$md) {
+        display: block;
+      }
+    }
+
     &-translators {
-      margin: 0.25rem 0 0 0;
-      font-size: 0.95rem;
+      margin: 0 0 0.75rem 0;
+      margin-inline-start: auto;
+      font-size: 0.85rem;
+      text-align: end;
       color: color.adjust(colors.$body, $lightness: 15%);
 
       @media (max-width: breakpoints.$md) {
+        margin: 0 0 0.5rem 0;
         font-size: 0.75rem;
+        text-align: start;
       }
     }
 

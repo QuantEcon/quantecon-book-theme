@@ -275,8 +275,18 @@ body.dark-theme .toctree-wrapper .caption-text {
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
                     {%- endif %}
 
+                    <!-- Last modified / Changelog dropdown -->
                     {%- if theme_translators | length > 0 %}
-                    <!-- Translators section -->
+                    <div class="qe-page__header-meta">
+                    {%- endif %}
+                    {%- if has_git_info %}
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: {{ last_modified_date }}
+                            <span class="changelog-icon">▼</span>
+                        </button>
+                    {%- endif %}
+                    {%- if theme_translators | length > 0 %}
+                        <!-- Translators section -->
                         <p class="qe-page__header-translators">
                             {%- if theme_translators_label %}<span class="qe-page__header-translators-label">{{ theme_translators_label }}</span> {% endif -%}
                             {%- for translator in theme_translators -%}
@@ -284,14 +294,7 @@ body.dark-theme .toctree-wrapper .caption-text {
                                 {%- if translator.url %}<a href="{{ translator.url }}" target="_blank"><span>{{ translator.name }}</span></a>{% else %}<span>{{ translator.name }}</span>{% endif -%}
                             {%- endfor -%}
                         </p>
-                    {%- endif %}
-
-                    <!-- Last modified / Changelog dropdown -->
-                    {%- if has_git_info %}
-                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: {{ last_modified_date }}
-                            <span class="changelog-icon">▼</span>
-                        </button>
+                    </div>
                     {%- endif %}
 
                     <!-- Changelog dropdown content -->
