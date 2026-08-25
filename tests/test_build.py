@@ -190,6 +190,10 @@ def test_build_book(file_regression, sphinx_build):
 
     # Check a few components that should be true on each page
     index_html = sphinx_build.get("index.html")
+    assert (
+        index_html.find("p", class_="qe-page__header-authors").get_text(strip=True)
+        == "Executable Book Project"
+    )
     sidebar = index_html.find_all(attrs={"class": "bd-sidebar"})[0]
     file_regression.check(sidebar.prettify(), extension=".html")
 
@@ -218,6 +222,29 @@ def test_build_book(file_regression, sphinx_build):
         extension=".html",
     )
     sphinx_build.clean()
+
+
+def test_build_book_without_author(tmp_path):
+    """Do not render Sphinx's default author placeholder in the page header."""
+    path_book = tmp_path / "book"
+    copytree(path_base, path_book)
+
+    path_conf = path_book / "conf.py"
+    conf = path_conf.read_text(encoding="utf8")
+    path_conf.write_text(
+        conf.replace('author = "Executable Book Project"\n', ""), encoding="utf8"
+    )
+
+    check_output(["sphinx-build", ".", "_build/html", "-a", "-W"], cwd=path_book)
+    index_html = BeautifulSoup(
+        (path_book / "_build" / "html" / "index.html").read_text(encoding="utf8"),
+        "html.parser",
+    )
+
+    assert (
+        index_html.find("p", class_="qe-page__header-authors").get_text(strip=True)
+        == ""
+    )
 
 
 # def test_navbar_options(file_regression, sphinx_build):
