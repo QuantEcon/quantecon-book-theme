@@ -117,6 +117,23 @@ html_theme_options = {
 }
 ```
 
+## Add Translators
+
+Translated editions can credit their translators alongside the authors:
+
+```python
+html_theme_options = {
+    ...
+    "translators": [
+        {"name": "translator1", "url": "bio-link1"},
+    ],
+    "translators_label": "Translated by",
+    ...
+}
+```
+
+See [Authors and Translators](authors.md) for per-page overrides and label localisation.
+
 ## Plugins
 
 Add custom JavaScript plugins to extend or modify theme features:

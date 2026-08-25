@@ -6,13 +6,15 @@
 export function initPageHeader() {
   // Add authors to the heading of toc page
   const authors = document.getElementsByClassName("qe-page__header-authors")[0];
-  if (!authors) return;
-
-  const fontSize = authors.getAttribute("font-size");
   const h1 = document.querySelector(".main-index h1");
 
   // Check if its the main toc page
   if (!h1) return;
+
+  // A page may have no authors paragraph at all, either because none is
+  // configured or because it set an empty `authors` list in its front matter.
+  // The paragraph is still inserted below, since it carries the styling.
+  const fontSize = authors ? authors.getAttribute("font-size") : null;
 
   // Creating a p tag for styling and author links
   const newParagraph = document.createElement("p");

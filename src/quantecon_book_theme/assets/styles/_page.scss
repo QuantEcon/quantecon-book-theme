@@ -362,6 +362,16 @@ Main page structure and components
       }
     }
 
+    &-translators {
+      margin: 0.25rem 0 0 0;
+      font-size: 0.95rem;
+      color: color.adjust(colors.$body, $lightness: 15%);
+
+      @media (max-width: breakpoints.$md) {
+        font-size: 0.75rem;
+      }
+    }
+
     &-changed {
       margin: 0.5rem 0 0 0;
       padding: 0.25rem 0.5rem 0.75rem 0;

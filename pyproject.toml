@@ -13,6 +13,9 @@ additional-compiled-static-assets = [
 testpaths = [
     "tests"
 ]
+markers = [
+    "build: runs a full sphinx-build in a subprocess, so it is slow",
+]
 
 [project]
 name = "quantecon-book-theme"
