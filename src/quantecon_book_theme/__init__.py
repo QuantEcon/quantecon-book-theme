@@ -618,7 +618,9 @@ def add_to_context(app, pagename, templatename, context, doctree):
         context["theme_description"] = description
 
     # Add the author if it exists
-    if app.config.author != "unknown":
+    if app.config.author in {"unknown", "Author name not set"}:
+        context.pop("author", None)
+    else:
         context["author"] = app.config.author
 
     # Absolute URLs for logo if `html_baseurl` is given
