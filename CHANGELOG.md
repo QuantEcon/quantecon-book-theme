@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.1] - 2026-10-09
+
 ### Changed
 - **Theme assets are now compiled on Node.js 24.21.0** — `sphinx-theme-builder` installs its own Node.js into `.nodeenv/` at the version pinned under `[tool.sphinx-theme-builder]` in `pyproject.toml`, and that Node runs `npm install` and webpack for every wheel: the PyPI release, CI and local installs. The pin still read `20.18.0` after CI's `setup-node` steps and `.nvmrc` moved to Node 24 in #401, so the published assets were still being built on Node 20, which reached end-of-life in April 2026. It is now `24.21.0`, the current Node 24 LTS, and `.nvmrc` names the same exact version so `nvm use` matches the build. The compiled CSS and JS are byte-identical to the Node 20 build. After pulling this change, a local checkout with an existing `.nodeenv/` fails with `nodeenv-version-mismatch` until it is removed (`rm -rf .nodeenv`); see the troubleshooting section of the developer setup guide. With `.nvmrc` pinned exactly, run `nvm install` once after each bump, since `nvm use` only switches to a version already installed. Building from source (an sdist, `pip install --no-binary`, or a git install) now needs a platform that nodejs.org ships a Node 24 binary for, which excludes 32-bit ARM Linux (`linux-armv7l`) and 32-bit Windows; the `py3-none-any` wheel on PyPI is unaffected.
 
@@ -366,7 +368,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.1...HEAD
+[0.22.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.0...v0.22.1
 [0.22.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.21.0...v0.22.0
 [0.21.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.3...v0.21.0
 [0.20.3]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...v0.20.3
