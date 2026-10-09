@@ -945,6 +945,13 @@ def validate_color_scheme(app):
 def setup(app):
     # Configuration for Juypter Book
     app.setup_extension("sphinx_book_theme")
+    # sphinx_book_theme registers its own script, but as it is not the active
+    # theme the file is never copied to _static and every page 404s on it
+    app.registry.js_files[:] = [
+        (name, attrs)
+        for name, attrs in app.registry.js_files
+        if name != "scripts/sphinx-book-theme.js"
+    ]
     app.add_js_file("scripts/quantecon-book-theme.js")
     app.add_js_file("scripts/jquery.js")
     app.add_js_file("scripts/_sphinx_javascript_frameworks_compat.js")

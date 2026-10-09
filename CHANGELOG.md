@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - **"View Source" no longer links to `None` on generated pages** (#384) — Sphinx's generated pages (`genindex.html`, `search.html`, and domain indices such as sphinx-proof's `prf-prf.html`) have no source document, so the theme has no repository URL for them, and the toolbar's GitHub button rendered as `<a href="None">`, which link checkers report as a missing file. The button is now left out on those pages; every other page keeps it, with the same link as before. A site that sets no `repository_url` had the same broken button on every page, and now shows none.
+- **Pages no longer request the missing `_static/scripts/sphinx-book-theme.js`** (#454) — the theme sets up `sphinx_book_theme` as an extension for its Python features, and that registers sphinx-book-theme's own script on every page. The file lives in sphinx-book-theme's static folder, which is only copied when sphinx-book-theme is the active theme, so the script has never loaded on a quantecon-book-theme site and every page 404'd on it. The theme now drops that registration straight after setting the extension up, so the request goes away and nothing else changes. This holds whether the theme sets sphinx-book-theme up itself or Jupyter Book 1 has already loaded it from its default `extensions`.
 
 ## [0.22.0] - 2026-08-25
 
