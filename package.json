@@ -4,7 +4,7 @@
     "scripts": {
         "build": "webpack",
         "test:visual": "playwright test",
-        "test:visual:update": "playwright test --update-snapshots"
+        "test:visual:update": "playwright test --update-snapshots=all"
     },
     "devDependencies": {
         "@playwright/test": "^1.61.1",
