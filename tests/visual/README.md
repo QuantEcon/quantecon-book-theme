@@ -143,9 +143,11 @@ When the theme styling intentionally changes:
 
 1. **Regenerate all snapshots (recommended for styling changes):**
    - Comment `/update-snapshots` on the PR.
-   - The workflow regenerates ALL baselines using `--update-snapshots`.
-   - Uploads a `snapshot-update-diff` artifact with before/after images for
-     review.
+   - The workflow regenerates ALL baselines using `--update-snapshots=all`,
+     so a change that stays within the screenshot tolerance is captured too.
+   - Uploads a `snapshot-update-diff` artifact with the regenerated images;
+     the PR's *Files changed* view shows each rewritten baseline before and
+     after.
    - Commits the new baselines to your PR branch.
 
 2. **Add missing snapshots only (for new tests):**
