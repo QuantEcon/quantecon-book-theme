@@ -427,7 +427,9 @@ body.dark-theme .toctree-wrapper .caption-text {
                     # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}{{github_sourcefolder}}/{{ sourcename }}" download><i data-feather="github"></i></a></li>
                     -->
+                    {%- if theme_repository_url %}
                     <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}" download><i data-feather="github"></i></a></li>
+                    {%- endif %}
                     {# Language Switcher — far right of toolbar, only when multiple languages configured #}
                     {% if theme_languages and theme_languages | length > 1 %}
                     <li class="btn__language" data-tippy-content="Switch language">
