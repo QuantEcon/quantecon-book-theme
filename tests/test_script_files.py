@@ -14,11 +14,29 @@ import subprocess
 import sys
 from pathlib import Path
 from shutil import copytree, ignore_patterns
+from unittest.mock import MagicMock
 
 import pytest
 from bs4 import BeautifulSoup
+from sphinx.registry import SphinxComponentRegistry
+
+from quantecon_book_theme import setup
 
 SITE = Path(__file__).parent / "sites" / "base"
+
+
+def test_setup_drops_only_the_sphinx_book_theme_script():
+    """Run ``setup()`` in-process against a real registry; the builds below
+    run it in a subprocess that coverage does not see."""
+    app = MagicMock()
+    app.registry = SphinxComponentRegistry()
+    app.registry.add_js_file("other.js", priority=500)
+    app.setup_extension.side_effect = lambda name: app.registry.add_js_file(
+        "scripts/sphinx-book-theme.js", priority=500
+    )
+    setup(app)
+    app.setup_extension.assert_any_call("sphinx_book_theme")
+    assert app.registry.js_files == [("other.js", {"priority": 500})]
 
 
 @pytest.fixture(scope="module", params=["theme", "jupyter-book"])
