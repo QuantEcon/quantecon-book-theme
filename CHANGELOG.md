@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Links that open in a new tab now carry `rel="noopener"`** (#429) — the seven `target="_blank"` links in the page template had no `rel` hardening. Author and translator byline links get `noopener` (keeping `rel="author"` on authors), so the sites they point at still see referrer attribution; the toolbar's "View Source" links and the "Launch Notebook" button get `noopener noreferrer`. Browsers released since 2021 already imply `noopener` for `target="_blank"`, so this is defence in depth and keeps the template consistent for security linters.
+- **The dark-mode toolbar button's tooltip now says "Toggle dark mode"** (#132) — it still said "Change contrast", the feature's pre-0.18.0 name, while the docs and the rest of the UI call it dark mode. The `localStorage` key is unchanged, so existing readers keep their setting.
+
+### Documentation
+- **README links to the published docs and the developer guide** (#9) — adds PyPI and documentation badges, and replaces a link to a `docs/contributing/` path that no longer exists with the developer guide at `docs/developer/`.
+
 ## [0.22.1] - 2026-10-09
 
 ### Changed

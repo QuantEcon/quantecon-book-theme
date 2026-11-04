@@ -65,12 +65,14 @@ class TestTemplateMarkup:
         return (theme_dir / "layout.html").read_text()
 
     def test_authors_links_are_marked_up_as_authors(self, layout):
-        assert layout.count('rel="author"') == 3, "one per branch of the author loop"
+        assert (
+            layout.count('rel="author noopener"') == 3
+        ), "one per branch of the author loop"
 
     def test_translators_links_are_not_marked_up_as_authors(self, layout):
         translators_block = layout.split("<!-- Translators section -->")[1]
         translators_block = translators_block.split("{%- endif %}")[0]
-        assert 'rel="author"' not in translators_block
+        assert 'rel="author' not in translators_block
 
     def test_suppression_guard_present(self, layout):
         """Without this the project ``author`` string leaks back onto a page
@@ -494,8 +496,8 @@ class TestRendering:
 
     def test_only_authors_are_marked_up_for_crawlers(self, pages):
         soup = pages["inherit"]
-        assert len(soup.select("p.qe-page__header-authors a[rel=author]")) == 2
-        assert soup.select("p.qe-page__header-translators a[rel=author]") == []
+        assert len(soup.select("p.qe-page__header-authors a[rel~=author]")) == 2
+        assert soup.select("p.qe-page__header-translators a[rel~=author]") == []
 
     def test_translators_share_the_last_changed_row(self, pages):
         """Translators sit in the meta wrapper next to the "Last changed"
