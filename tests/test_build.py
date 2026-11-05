@@ -241,10 +241,7 @@ def test_build_book_without_author(tmp_path):
         "html.parser",
     )
 
-    assert (
-        index_html.find("p", class_="qe-page__header-authors").get_text(strip=True)
-        == ""
-    )
+    assert index_html.find("p", class_="qe-page__header-authors") is None
 
 
 # def test_navbar_options(file_regression, sphinx_build):

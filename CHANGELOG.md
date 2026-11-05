@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **The page header no longer shows "Author name not set"** (#428) — a site that sets neither the theme's `authors` option nor Sphinx's `author` rendered that literal text on every page. Sphinx 7.4 changed its default `author` from `unknown` to `Author name not set`, and the guard in the theme only knew the old string. The theme now treats both placeholders as unset, removes the `author` key from the page context (so the same stale value written by `sphinx_book_theme` cannot leak through either), and leaves the authors paragraph out of the header altogether instead of rendering it empty.
+
 ## [0.22.1] - 2026-10-09
 
 ### Changed
