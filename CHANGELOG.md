@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.2] - 2026-11-05
+
 ### Fixed
 - **Links that open in a new tab now carry `rel="noopener"`** (#429) — the seven `target="_blank"` links in the page template had no `rel` hardening. Author and translator byline links get `noopener` (keeping `rel="author"` on authors), so the sites they point at still see referrer attribution; the toolbar's "View Source" links and the "Launch Notebook" button get `noopener noreferrer`. Browsers released since 2021 already imply `noopener` for `target="_blank"`, so this is defence in depth and keeps the template consistent for security linters.
 - **The dark-mode toolbar button's tooltip now says "Toggle dark mode"** (#132) — it still said "Change contrast", the feature's pre-0.18.0 name, while the docs and the rest of the UI call it dark mode. The `localStorage` key is unchanged, so existing readers keep their setting.
@@ -376,7 +378,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.1...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.2...HEAD
+[0.22.2]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.1...v0.22.2
 [0.22.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.0...v0.22.1
 [0.22.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.21.0...v0.22.0
 [0.21.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.3...v0.21.0
