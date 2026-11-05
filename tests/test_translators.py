@@ -1,6 +1,7 @@
 """Tests for the authors and translators attribution options."""
 
 import json
+import re
 import subprocess
 import sys
 import textwrap
@@ -65,14 +66,16 @@ class TestTemplateMarkup:
         return (theme_dir / "layout.html").read_text()
 
     def test_authors_links_are_marked_up_as_authors(self, layout):
-        assert (
-            layout.count('rel="author noopener"') == 3
-        ), "one per branch of the author loop"
+        rels = re.findall(r'<a href="\{\{ author\.url \}\}" rel="([^"]*)"', layout)
+        assert len(rels) == 3, "one per branch of the author loop"
+        for rel in rels:
+            assert {"author", "noopener"} <= set(rel.split()), rel
 
     def test_translators_links_are_not_marked_up_as_authors(self, layout):
         translators_block = layout.split("<!-- Translators section -->")[1]
         translators_block = translators_block.split("{%- endif %}")[0]
-        assert 'rel="author' not in translators_block
+        for rel in re.findall(r'rel="([^"]*)"', translators_block):
+            assert "author" not in rel.split(), rel
 
     def test_suppression_guard_present(self, layout):
         """Without this the project ``author`` string leaks back onto a page
