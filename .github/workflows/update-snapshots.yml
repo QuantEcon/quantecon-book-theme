@@ -310,7 +310,11 @@ jobs:
 
       - name: Regenerate All Snapshots
         continue-on-error: true
-        run: npx playwright test --update-snapshots
+        # The mode must be explicit: since Playwright 1.50 a bare
+        # --update-snapshots means "changed", which only rewrites snapshots that
+        # fail comparison and so skips any change within maxDiffPixelRatio.
+        # "all" rewrites every snapshot whose render differs from its baseline.
+        run: npx playwright test --update-snapshots=all
         env:
           SITE_PATH: fixtures/_build/html
 
@@ -398,7 +402,7 @@ jobs:
               ? `✅ Regenerated visual snapshots and committed ${process.env.CHANGED} changed file(s) to this PR.\n\n` +
                 `Built against fixtures \`${process.env.FIXTURES}\`.\n\n` +
                 `${verified}\n\n` +
-                `📦 [Download snapshot-update-diff artifact](${runUrl}#artifacts) to review before/after images.\n\n` +
+                `📦 [Download snapshot-update-diff artifact](${runUrl}#artifacts) for the regenerated images; this PR's *Files changed* tab shows each one before and after.\n\n` +
                 `${nextStep}`
               : `ℹ️ Snapshots were regenerated but came out identical to the existing baselines, so **nothing was committed** and this PR is unchanged.\n\n` +
                 `Built against fixtures \`${process.env.FIXTURES}\`. If the visual job is still failing, check that this is the fixtures commit you expect — the pin is read from \`.github/workflows/ci.yml\` on this branch.\n\n` +

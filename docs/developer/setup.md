@@ -116,8 +116,8 @@ rebuilt from scratch by deleting them.
 
 ```text
 × The `nodeenv` for this project is unhealthy.
-╰─> There is a mismatch between what is present in the environment (v18.18.0)
-    and the expected version of NodeJS (v20.18.0).
+╰─> There is a mismatch between what is present in the environment (v20.18.0)
+    and the expected version of NodeJS (v24.21.0).
 ```
 
 Your in-repo `.nodeenv/` is stale — it was provisioned against an older pinned
@@ -130,5 +130,6 @@ $ tox
 ```
 
 The pinned version lives under `[tool.sphinx-theme-builder]` (`node-version`)
-in `pyproject.toml`; deleting `.nodeenv/` is always safe since it is git-ignored
-and regenerated on the next build.
+in `pyproject.toml`, and `.nvmrc` names the same version for `nvm`; the two move
+together. Deleting `.nodeenv/` is always safe since it is git-ignored and
+regenerated on the next build.

@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.1] - 2026-10-09
+
+### Changed
+- **Theme assets are now compiled on Node.js 24.21.0** — `sphinx-theme-builder` installs its own Node.js into `.nodeenv/` at the version pinned under `[tool.sphinx-theme-builder]` in `pyproject.toml`, and that Node runs `npm install` and webpack for every wheel: the PyPI release, CI and local installs. The pin still read `20.18.0` after CI's `setup-node` steps and `.nvmrc` moved to Node 24 in #401, so the published assets were still being built on Node 20, which reached end-of-life in April 2026. It is now `24.21.0`, the current Node 24 LTS, and `.nvmrc` names the same exact version so `nvm use` matches the build. The compiled CSS and JS are byte-identical to the Node 20 build. After pulling this change, a local checkout with an existing `.nodeenv/` fails with `nodeenv-version-mismatch` until it is removed (`rm -rf .nodeenv`); see the troubleshooting section of the developer setup guide. With `.nvmrc` pinned exactly, run `nvm install` once after each bump, since `nvm use` only switches to a version already installed. Building from source (an sdist, `pip install --no-binary`, or a git install) now needs a platform that nodejs.org ships a Node 24 binary for, which excludes 32-bit ARM Linux (`linux-armv7l`) and 32-bit Windows; the `py3-none-any` wheel on PyPI is unaffected.
+
+### Fixed
+- **"View Source" no longer links to `None` on generated pages** (#384) — Sphinx's generated pages (`genindex.html`, `search.html`, and domain indices such as sphinx-proof's `prf-prf.html`) have no source document, so the theme has no repository URL for them, and the toolbar's GitHub button rendered as `<a href="None">`, which link checkers report as a missing file. The button is now left out on those pages; every other page keeps it, with the same link as before. A site that sets no `repository_url` had the same broken button on every page, and now shows none.
+- **Pages no longer request the missing `_static/scripts/sphinx-book-theme.js`** (#454) — the theme sets up `sphinx_book_theme` as an extension for its Python features, and that registers sphinx-book-theme's own script on every page. The file lives in sphinx-book-theme's static folder, which is only copied when sphinx-book-theme is the active theme, so the script has never loaded on a quantecon-book-theme site and every page 404'd on it. The theme now drops that registration straight after setting the extension up, so the request goes away and nothing else changes. This holds whether the theme sets sphinx-book-theme up itself or Jupyter Book 1 has already loaded it from its default `extensions`.
+
+### CI
+- **`/update-snapshots` regenerates all baselines again** — the workflow and `npm run test:visual:update` (used by `tox -e visual-update`) passed a bare `--update-snapshots`, which since Playwright 1.50 means `changed`: only snapshots that fail comparison are rewritten. A real change small enough to stay within the screenshot tolerance therefore left the baselines untouched, and the summary comment wrongly said the regenerated snapshots "came out identical". One example is the toolbar's GitHub icon disappearing from the fixtures site after #453. Both now pass `--update-snapshots=all`, which rewrites every baseline whose render differs, as the developer docs describe. The `snapshot-update-diff` artifact now holds only the regenerated images, so the docs and the summary comment point to the PR's *Files changed* view for before and after.
+
 ## [0.22.0] - 2026-08-25
 
 ### Added
@@ -356,7 +368,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial stable release with core theme features
 
-[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.0...HEAD
+[Unreleased]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.1...HEAD
+[0.22.1]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.22.0...v0.22.1
 [0.22.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.21.0...v0.22.0
 [0.21.0]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.3...v0.21.0
 [0.20.3]: https://github.com/QuantEcon/quantecon-book-theme/compare/v0.20.2...v0.20.3

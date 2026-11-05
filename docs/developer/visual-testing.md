@@ -83,8 +83,12 @@ Both are restricted to users with an `OWNER`, `MEMBER`, or `COLLABORATOR`
 association — they check out and execute PR-branch code under a token with
 write access.
 
-The `/update-snapshots` command also uploads a `snapshot-update-diff` artifact
-with before/after images for review.
+`/update-snapshots` rewrites every baseline whose render has changed, including
+a change small enough to stay within the screenshot tolerance (it runs
+Playwright with `--update-snapshots=all`; a bare `--update-snapshots` means
+`changed` since Playwright 1.50 and skips those). It also uploads a
+`snapshot-update-diff` artifact with the regenerated images; the PR's *Files
+changed* view shows each rewritten baseline before and after.
 
 ### Baselines are re-checked before the commit
 
