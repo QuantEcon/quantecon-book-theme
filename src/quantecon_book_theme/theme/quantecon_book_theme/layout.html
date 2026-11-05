@@ -288,7 +288,7 @@ body.dark-theme .toctree-wrapper .caption-text {
                                 {% endif %}
                             {% endfor %}
                         </p>
-                    {%- elif not authors_suppressed %}
+                    {%- elif author and not authors_suppressed %}
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{{ author }}</p>
                     {%- endif %}
 

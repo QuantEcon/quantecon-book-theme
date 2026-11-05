@@ -79,8 +79,10 @@ class TestTemplateMarkup:
 
     def test_suppression_guard_present(self, layout):
         """Without this the project ``author`` string leaks back onto a page
-        that set ``authors: []`` in its front matter."""
-        assert "{%- elif not authors_suppressed %}" in layout
+        that set ``authors: []`` in its front matter. The ``author`` test keeps
+        the paragraph out of the header when Sphinx's placeholder was removed
+        from the context (#428)."""
+        assert "{%- elif author and not authors_suppressed %}" in layout
 
     def test_translators_paragraph_has_no_font_size_attribute(self, layout):
         """``font-size`` is a non-standard attribute that only exists so
