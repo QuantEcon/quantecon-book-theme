@@ -1,4 +1,7 @@
 # quantecon-book-theme
+
+[![PyPI](https://img.shields.io/pypi/v/quantecon-book-theme)](https://pypi.org/project/quantecon-book-theme/) [![Documentation](https://img.shields.io/badge/docs-quantecon.github.io-0072bc)](https://quantecon.github.io/quantecon-book-theme/)
+
 A Jupyter Book Theme for QuantEcon Book Style Projects
 
 ## Features
@@ -90,4 +93,4 @@ Now future pytests will test against this file, and the subsequent tests should 
 
 ## Contributing Guide
 
-The docs for the contributing guide of this repository: https://github.com/QuantEcon/quantecon-book-theme/blob/master/docs/contributing/index.md
+The developer guide (setup, testing, visual regression tests, releases) lives in [docs/developer/](docs/developer/index.md) and is published with the rest of the documentation at https://quantecon.github.io/quantecon-book-theme/.

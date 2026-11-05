@@ -280,11 +280,11 @@ body.dark-theme .toctree-wrapper .caption-text {
                         <p class="qe-page__header-authors" font-size="{{theme_mainpage_author_fontsize}}">{% if theme_authors_label %}<span class="qe-page__header-authors-label">{{ theme_authors_label }}</span> {% endif %}
                             {% for author in theme_authors %}
                                 {% if loop.last and theme_authors|length >= 2 %}
-                                    and <a href="{{ author.url }}" rel="author" target="_blank"><span>{{ author.name }}</span></a>
+                                    and <a href="{{ author.url }}" rel="author noopener" target="_blank"><span>{{ author.name }}</span></a>
                                 {% elif loop.first and theme_authors|length <= 2 %}
-                                    <a href="{{ author.url }}" rel="author" target="_blank"><span>{{ author.name }}</span></a>
+                                    <a href="{{ author.url }}" rel="author noopener" target="_blank"><span>{{ author.name }}</span></a>
                                 {% else %}
-                                    <a href="{{ author.url }}" rel="author" target="_blank"><span>{{ author.name }}</span></a>,
+                                    <a href="{{ author.url }}" rel="author noopener" target="_blank"><span>{{ author.name }}</span></a>,
                                 {% endif %}
                             {% endfor %}
                         </p>
@@ -308,7 +308,7 @@ body.dark-theme .toctree-wrapper .caption-text {
                             {%- if theme_translators_label %}<span class="qe-page__header-translators-label">{{ theme_translators_label }}</span> {% endif -%}
                             {%- for translator in theme_translators -%}
                                 {%- if not loop.first %}{% if loop.last %}{% if theme_translators|length > 2 %},{% endif %} and {% else %}, {% endif %}{% endif -%}
-                                {%- if translator.url %}<a href="{{ translator.url }}" target="_blank"><span>{{ translator.name }}</span></a>{% else %}<span>{{ translator.name }}</span>{% endif -%}
+                                {%- if translator.url %}<a href="{{ translator.url }}" rel="noopener" target="_blank"><span>{{ translator.name }}</span></a>{% else %}<span>{{ translator.name }}</span>{% endif -%}
                             {%- endfor -%}
                         </p>
                     </div>
@@ -411,7 +411,7 @@ body.dark-theme .toctree-wrapper .caption-text {
                     <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
-                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Toggle dark mode" class="btn__contrast"><i data-feather="sunset"></i></li>
                     {%- if notebook_path %}
                     <li data-tippy-content="Download Notebook"><a href="{{ notebook_path }}" download><i data-feather="download-cloud"></i></a></li>
                     {%- endif %}
@@ -425,10 +425,10 @@ body.dark-theme .toctree-wrapper .caption-text {
                     {%- endif %}
                     <!--
                     # Enable if looking for link to specific document hosted on GitHub
-                    <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}{{github_sourcefolder}}/{{ sourcename }}" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" rel="noopener noreferrer" href="{{ theme_repository_url }}{{github_sourcefolder}}/{{ sourcename }}" download><i data-feather="github"></i></a></li>
                     -->
                     {%- if theme_repository_url %}
-                    <li data-tippy-content="View Source"><a target="_blank" href="{{ theme_repository_url }}" download><i data-feather="github"></i></a></li>
+                    <li data-tippy-content="View Source"><a target="_blank" rel="noopener noreferrer" href="{{ theme_repository_url }}" download><i data-feather="github"></i></a></li>
                     {%- endif %}
                     {# Language Switcher — far right of toolbar, only when multiple languages configured #}
                     {% if theme_languages and theme_languages | length > 1 %}
@@ -490,7 +490,7 @@ body.dark-theme .toctree-wrapper .caption-text {
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="{{default_server}}" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="{{default_server}}" id="advancedLaunchButton" rel="noopener noreferrer" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');

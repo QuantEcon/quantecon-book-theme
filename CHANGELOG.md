@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Links that open in a new tab now carry `rel="noopener"`** (#429) — the seven `target="_blank"` links in the page template had no `rel` hardening. Author and translator byline links get `noopener` (keeping `rel="author"` on authors), so the sites they point at still see referrer attribution; the toolbar's "View Source" links and the "Launch Notebook" button get `noopener noreferrer`. Browsers released since 2021 already imply `noopener` for `target="_blank"`, so this is defence in depth and keeps the template consistent for security linters.
+- **The dark-mode toolbar button's tooltip now says "Toggle dark mode"** (#132) — it still said "Change contrast", the feature's pre-0.18.0 name, while the docs and the rest of the UI call it dark mode. The `localStorage` key is unchanged, so existing readers keep their setting.
 - **The page header no longer shows "Author name not set"** (#428) — a site that sets neither the theme's `authors` option nor Sphinx's `author` rendered that literal text on every page. Sphinx 7.4 changed its default `author` from `unknown` to `Author name not set`, and the guard in the theme only knew the old string. The theme now treats both placeholders as unset, removes the `author` key from the page context (so the same stale value written by `sphinx_book_theme` cannot leak through either), and leaves the authors paragraph out of the header altogether instead of rendering it empty.
+
+### Documentation
+- **README links to the published docs and the developer guide** (#9) — adds PyPI and documentation badges, and replaces a link to a `docs/contributing/` path that no longer exists with the developer guide at `docs/developer/`.
 
 ## [0.22.1] - 2026-10-09
 
